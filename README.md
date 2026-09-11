@@ -79,20 +79,16 @@ UsageNow ships a WidgetKit extension with small and medium sizes.
 
 **The widget never touches providers.** It can’t read `~/.codex` or `~/.claude`, open the keychain, run `codex app-server`, or call Anthropic. The main app publishes a sanitized snapshot to a shared App Group container, and the widget only renders that. The provider and credential code isn’t compiled into the widget target at all.
 
-### Enabling the widget locally
+### Signing and the widget
 
-The App Group needs a signing team, so ad-hoc builds run without it — the app works normally and the widget shows “Open UsageNow to load usage data.” With a team, build with:
+The widget reads from an App Group, which needs a signing team. Signing settings live in a git-ignored `Config/Local.xcconfig`:
 
 ```sh
-xcodebuild -project UsageNow.xcodeproj -scheme UsageNow \
-    DEVELOPMENT_TEAM=YOURTEAMID \
-    USAGENOW_APP_GROUP=YOURTEAMID.group.com.usagenow.UsageNow \
-    USAGENOW_APP_ENTITLEMENTS=Config/UsageNow.entitlements \
-    USAGENOW_WIDGET_ENTITLEMENTS=Config/UsageNowWidget.entitlements \
-    build
+cp Config/Local.xcconfig.example Config/Local.xcconfig
+# then set DEVELOPMENT_TEAM to your team ID
 ```
 
-The same four settings can be set once in Xcode’s build settings instead.
+Without it, UsageNow builds ad-hoc and works normally; the widget just shows “Open UsageNow to load usage data.”
 
 ### Trying different states
 

@@ -22,3 +22,6 @@ Package.resolved
 
 # Local configuration
 *.local.xcconfig
+
+# Machine-specific signing
+Config/Local.xcconfig

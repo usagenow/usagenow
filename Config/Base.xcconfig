@@ -1,0 +1,4 @@
+// Applied to every target. Machine-specific signing lives in Local.xcconfig,
+// which isn't committed. Without it, UsageNow builds ad-hoc and runs
+// normally, but the desktop widget has no App Group to read from.
+#include? "Local.xcconfig"

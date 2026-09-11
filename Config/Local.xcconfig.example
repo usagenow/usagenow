@@ -1,0 +1,11 @@
+// Copy to Local.xcconfig (git-ignored) and fill in your team to sign
+// UsageNow and enable the desktop widget's App Group.
+
+DEVELOPMENT_TEAM = YOURTEAMID
+CODE_SIGN_STYLE = Manual
+CODE_SIGN_IDENTITY = Developer ID Application
+
+// macOS App Group identifiers are prefixed with the team ID.
+USAGENOW_APP_GROUP = $(DEVELOPMENT_TEAM).group.com.usagenow.UsageNow
+USAGENOW_APP_ENTITLEMENTS = Config/UsageNow.entitlements
+USAGENOW_WIDGET_ENTITLEMENTS = Config/UsageNowWidget.entitlements
