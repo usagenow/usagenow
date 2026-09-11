@@ -14,7 +14,7 @@ struct ClaudeCodeProviderTests {
             configDirectoryExists: true,
             configDirectoryIsReadable: true,
             globalConfigExists: profile != nil,
-            hasExecutable: false
+            executable: nil
         )
     }
 
@@ -43,7 +43,7 @@ struct ClaudeCodeProviderTests {
             configDirectoryExists: false,
             configDirectoryIsReadable: false,
             globalConfigExists: false,
-            hasExecutable: false
+            executable: nil
         )
         #expect(try await provider(environment).fetchSnapshot(trigger: .automatic).status == .notInstalled)
     }
@@ -322,6 +322,104 @@ struct ClaudeCodeProviderTests {
         #expect(await credentials.reads == 1)
     }
 
+    // MARK: Letting Claude Code renew its own sign-in
+
+    @Test func expiredSignInIsHandedBackToClaudeCode() async throws {
+        // Expired at first; the CLI "renews" it and the second read succeeds.
+        let credentials = SequencedCredentials([
+            .found(ClaudeOAuthToken(value: "stale", expiresAt: TestDates.noon.addingTimeInterval(-60))),
+            .found(ClaudeOAuthToken(value: "fresh", expiresAt: TestDates.noon.addingTimeInterval(8 * 3_600))),
+        ])
+        let transport = StubTransport(status: 200, body: ClaudeUsageFixture.full)
+        let refreshes = Counter()
+        let client = ClaudeUsageLimitsClient(
+            credentials: credentials,
+            transport: transport,
+            requestSignInRefresh: { refreshes.increment(); return true },
+            now: { TestDates.noon }
+        )
+
+        let entry = await client.windows(trigger: .automatic, now: { TestDates.noon })
+        #expect(entry?.value.count == 3)
+        #expect(refreshes.value == 1)
+        #expect(await client.availability == .available)
+        let request = try #require(await transport.requests.first)
+        #expect(request.value(forHTTPHeaderField: "Authorization") == "Bearer fresh")
+    }
+
+    @Test func aValidSignInIsNeverHandedBack() async throws {
+        let refreshes = Counter()
+        let client = ClaudeUsageLimitsClient(
+            credentials: StubCredentials(token: "fake-token", expiresAt: TestDates.noon.addingTimeInterval(3_600)),
+            transport: StubTransport(status: 200, body: ClaudeUsageFixture.full),
+            requestSignInRefresh: { refreshes.increment(); return true },
+            now: { TestDates.noon }
+        )
+        _ = await client.windows(trigger: .manual, now: { TestDates.noon })
+        #expect(refreshes.value == 0, "Claude Code must not be run while the saved sign-in is still valid")
+    }
+
+    @Test func renewalIsRateLimited() async throws {
+        let credentials = StubCredentials(token: "stale", expiresAt: TestDates.noon.addingTimeInterval(-60))
+        let refreshes = Counter()
+        let clock = TestClock(TestDates.noon)
+        let client = ClaudeUsageLimitsClient(
+            credentials: credentials,
+            transport: StubTransport(status: 200, body: ClaudeUsageFixture.full),
+            minimumInterval: 0,
+            requestSignInRefresh: { refreshes.increment(); return true },
+            now: { clock.now }
+        )
+
+        _ = await client.windows(trigger: .manual, now: { clock.now })
+        _ = await client.windows(trigger: .manual, now: { clock.now })
+        #expect(refreshes.value == 1)
+        #expect(await client.availability == .staleAuthentication)
+
+        clock.advance(by: ClaudeSignInRefresher.minimumInterval + 1)
+        _ = await client.windows(trigger: .manual, now: { clock.now })
+        #expect(refreshes.value == 2)
+    }
+
+    @Test func failedRenewalReportsAStaleSignIn() async throws {
+        let transport = StubTransport(status: 200, body: ClaudeUsageFixture.full)
+        let client = ClaudeUsageLimitsClient(
+            credentials: StubCredentials(token: "stale", expiresAt: TestDates.noon.addingTimeInterval(-60)),
+            transport: transport,
+            requestSignInRefresh: { false },
+            now: { TestDates.noon }
+        )
+        #expect(await client.windows(trigger: .manual, now: { TestDates.noon }) == nil)
+        #expect(await client.availability == .staleAuthentication)
+        #expect(await transport.requests.isEmpty, "An expired token must never be sent")
+    }
+
+    @Test func deniedKeychainIsNotWorkedAroundByRunningTheCLI() async throws {
+        let refreshes = Counter()
+        let client = ClaudeUsageLimitsClient(
+            credentials: StubCredentials(token: nil, denied: true),
+            transport: StubTransport(status: 200, body: ClaudeUsageFixture.full),
+            requestSignInRefresh: { refreshes.increment(); return true },
+            now: { TestDates.noon }
+        )
+        _ = await client.windows(trigger: .manual, now: { TestDates.noon })
+        #expect(refreshes.value == 0)
+        #expect(await client.availability == .keychainDenied)
+    }
+
+    @Test func locatesTheClaudeCodeExecutable() throws {
+        let dir = try TemporaryDirectory()
+        #expect(ClaudeCodeEnvironment.locateExecutable(homeDirectory: dir.url) == nil)
+
+        let native = dir.url.appending(path: ".local/share/claude/versions")
+        try FileManager.default.createDirectory(at: native, withIntermediateDirectories: true)
+        let binary = native.appending(path: "9.9.9")
+        try Data("#!/bin/sh\n".utf8).write(to: binary)
+        try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: binary.path)
+
+        #expect(ClaudeCodeEnvironment.locateExecutable(homeDirectory: dir.url) == binary)
+    }
+
     @Test func tokenIsRedactedInDescriptions() {
         let token = ClaudeOAuthToken(value: "fake-secret", expiresAt: nil)
         #expect(!"\(token)".contains("fake-secret"))
@@ -386,6 +484,21 @@ enum ClaudeUsageFixture {
       "brand_new_bucket": {"utilization": 50}
     }
     """#
+}
+
+/// Returns a different result on each read, so a renewal can be observed.
+actor SequencedCredentials: ClaudeCredentialSource {
+    private var results: [ClaudeCredentialLookup]
+    private(set) var reads = 0
+
+    init(_ results: [ClaudeCredentialLookup]) {
+        self.results = results
+    }
+
+    func lookup() async throws -> ClaudeCredentialLookup {
+        reads += 1
+        return results.count > 1 ? results.removeFirst() : results[0]
+    }
 }
 
 actor StubCredentials: ClaudeCredentialSource {

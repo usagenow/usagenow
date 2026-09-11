@@ -11,7 +11,10 @@ struct ClaudeCodeEnvironment: Sendable, Equatable {
     var configDirectoryExists: Bool
     var configDirectoryIsReadable: Bool
     var globalConfigExists: Bool
-    var hasExecutable: Bool
+    /// The Claude Code CLI, used only to ask it to refresh its own sign-in.
+    var executable: URL?
+
+    var hasExecutable: Bool { executable != nil }
 
     var isInstalled: Bool { configDirectoryExists || globalConfigExists || hasExecutable }
 
@@ -28,20 +31,36 @@ struct ClaudeCodeEnvironment: Sendable, Equatable {
 
         var isDirectory: ObjCBool = false
         let directoryExists = fileManager.fileExists(atPath: configDirectory.path, isDirectory: &isDirectory) && isDirectory.boolValue
-        let executables = [
-            homeDirectory.appending(path: ".local/bin/claude"),
-            homeDirectory.appending(path: ".claude/local/claude"),
-            URL(filePath: "/opt/homebrew/bin/claude"),
-            URL(filePath: "/usr/local/bin/claude"),
-        ]
         return ClaudeCodeEnvironment(
             configDirectory: configDirectory,
             globalConfigFile: globalConfig,
             configDirectoryExists: directoryExists,
             configDirectoryIsReadable: directoryExists && fileManager.isReadableFile(atPath: configDirectory.path),
             globalConfigExists: fileManager.fileExists(atPath: globalConfig.path),
-            hasExecutable: executables.contains { fileManager.isExecutableFile(atPath: $0.path) }
+            executable: locateExecutable(homeDirectory: homeDirectory)
         )
+    }
+
+    /// Well-known install locations. Apps launched from Finder don't inherit
+    /// the shell's `PATH`, so it isn't searched.
+    static func locateExecutable(homeDirectory: URL, fileManager: FileManager = .default) -> URL? {
+        var candidates = [
+            homeDirectory.appending(path: ".local/bin/claude"),
+            homeDirectory.appending(path: ".claude/local/claude"),
+            URL(filePath: "/opt/homebrew/bin/claude"),
+            URL(filePath: "/usr/local/bin/claude"),
+        ]
+        // Native installs keep one binary per version.
+        let versions = homeDirectory.appending(path: ".local/share/claude/versions")
+        if let installed = try? fileManager.contentsOfDirectory(atPath: versions.path) {
+            candidates += installed.sorted(by: >).map { versions.appending(path: $0) }
+        }
+        // npm installs, including one per Node version under nvm.
+        let nodeVersions = homeDirectory.appending(path: ".nvm/versions/node")
+        if let nodes = try? fileManager.contentsOfDirectory(atPath: nodeVersions.path) {
+            candidates += nodes.sorted(by: >).map { nodeVersions.appending(path: "\($0)/bin/claude") }
+        }
+        return candidates.first { fileManager.isExecutableFile(atPath: $0.path) }
     }
 }
 

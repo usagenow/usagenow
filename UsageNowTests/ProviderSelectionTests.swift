@@ -192,7 +192,7 @@ struct EnabledProviderStoreTests {
             configDirectoryExists: true,
             configDirectoryIsReadable: true,
             globalConfigExists: false,
-            hasExecutable: true
+            executable: URL(filePath: "/nonexistent/claude")
         )
         let claude = ClaudeCodeProvider(
             discover: { environment },

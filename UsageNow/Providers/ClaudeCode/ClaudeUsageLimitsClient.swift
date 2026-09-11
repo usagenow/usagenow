@@ -32,17 +32,28 @@ actor ClaudeUsageLimitsClient {
     private let credentials: any ClaudeCredentialSource
     private let transport: any HTTPTransport
     private let cache: QuotaCache<[UsageWindow]>
+    /// Asks Claude Code to renew its own sign-in. UsageNow never does it itself.
+    private let requestSignInRefresh: (@Sendable () async -> Bool)?
+    private let refreshInterval: TimeInterval
+    private let now: @Sendable () -> Date
     private var token: ClaudeOAuthToken?
+    private var lastSignInRefresh: Date?
     private var keychainNeedsManualRetry = false
 
     init(
         credentials: any ClaudeCredentialSource = KeychainClaudeCredentialSource(),
         transport: any HTTPTransport = URLSessionTransport.ephemeral(timeout: 10),
-        minimumInterval: TimeInterval = 5 * 60
+        minimumInterval: TimeInterval = 5 * 60,
+        signInRefreshInterval: TimeInterval = ClaudeSignInRefresher.minimumInterval,
+        requestSignInRefresh: (@Sendable () async -> Bool)? = nil,
+        now: @escaping @Sendable () -> Date = { .now }
     ) {
         self.credentials = credentials
         self.transport = transport
-        self.cache = QuotaCache(minimumInterval: minimumInterval)
+        self.cache = QuotaCache(minimumInterval: minimumInterval, retention: 24 * 60 * 60)
+        self.requestSignInRefresh = requestSignInRefresh
+        self.refreshInterval = signInRefreshInterval
+        self.now = now
     }
 
     /// Cached or freshly fetched windows, or `nil` when unavailable.
@@ -108,7 +119,9 @@ actor ClaudeUsageLimitsClient {
         }
     }
 
-    /// The in-memory token, re-reading the keychain only when it's missing or expired.
+    /// The in-memory token, re-reading the keychain only when it's missing or
+    /// expired. An expired sign-in is handed back to Claude Code to renew,
+    /// then read once more.
     private func validToken(at now: Date) async throws -> ClaudeOAuthToken? {
         if let cached = token, !cached.isExpired(at: now) { return cached }
         token = nil
@@ -121,13 +134,38 @@ actor ClaudeUsageLimitsClient {
         case .found(let expired):
             let expiry = expired.expiresAt?.formatted(.iso8601) ?? "unknown"
             Log.provider.info("Claude usage limits: keychain sign-in expired at \(expiry, privacy: .public)")
-            fail(with: .staleAuthentication)
+            return try await renewedToken(at: now)
         case .notFound:
-            fail(with: .staleAuthentication)
+            return try await renewedToken(at: now)
         case .accessDenied:
             fail(with: .keychainDenied)
+            return nil
         }
-        return nil
+    }
+
+    /// Lets Claude Code renew its credential, then reads the keychain again.
+    /// Rate-limited, and gives up quietly when the CLI isn't there or didn't help.
+    private func renewedToken(at now: Date) async throws -> ClaudeOAuthToken? {
+        guard let requestSignInRefresh else {
+            fail(with: .staleAuthentication)
+            return nil
+        }
+        if let lastSignInRefresh, now.timeIntervalSince(lastSignInRefresh) < refreshInterval {
+            fail(with: .staleAuthentication)
+            return nil
+        }
+        lastSignInRefresh = now
+
+        guard await requestSignInRefresh() else {
+            fail(with: .staleAuthentication)
+            return nil
+        }
+        guard case .found(let renewed) = try await credentials.lookup(), !renewed.isExpired(at: self.now()) else {
+            fail(with: .staleAuthentication)
+            return nil
+        }
+        token = renewed
+        return renewed
     }
 
     private func fail(with availability: ClaudeQuotaAvailability) {

@@ -59,7 +59,17 @@ final class AppState {
 
     /// The app's runtime configuration.
     static func live(defaults: UserDefaults = .standard) -> AppState {
-        let claudeLimits = ClaudeLimitsControl(isEnabled: FeatureSwitch(false), client: ClaudeUsageLimitsClient())
+        // When the saved sign-in has expired, the official CLI renews it —
+        // UsageNow never writes Claude Code credentials.
+        var refreshSignIn: (@Sendable () async -> Bool)?
+        if let executable = ClaudeCodeEnvironment.locateExecutable(homeDirectory: FileManager.default.homeDirectoryForCurrentUser) {
+            let refresher = ClaudeSignInRefresher(executable: executable)
+            refreshSignIn = { await refresher.requestRefresh() }
+        }
+        let claudeLimits = ClaudeLimitsControl(
+            isEnabled: FeatureSwitch(false),
+            client: ClaudeUsageLimitsClient(requestSignInRefresh: refreshSignIn)
+        )
         return AppState(
             providers: makeProviders(defaults: defaults, claudeLimits: claudeLimits),
             defaults: defaults,
