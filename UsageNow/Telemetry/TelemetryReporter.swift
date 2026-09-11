@@ -66,9 +66,10 @@ final class TelemetryReporter {
         guard preferences.isSharingEnabled else { return }
         var reported = Set(defaults.stringArray(forKey: Key.reportedProviders) ?? [])
         for provider in providers.sorted() where !reported.contains(provider.rawValue) {
+            guard let event = TelemetryEvent.detected(provider) else { continue }
             reported.insert(provider.rawValue)
             defaults.set(Array(reported).sorted(), forKey: Key.reportedProviders)
-            await client.send(.detected(provider))
+            await client.send(event)
         }
     }
 

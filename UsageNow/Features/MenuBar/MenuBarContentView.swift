@@ -8,6 +8,7 @@ struct MenuBarContentView: View {
     private static let clockInterval: TimeInterval = 15
 
     let store: UsageStore
+    var navigation = SettingsNavigation()
 
     @Environment(\.openSettings) private var openSettings
 
@@ -17,7 +18,7 @@ struct MenuBarContentView: View {
                 PopoverHeaderView(
                     isRefreshing: store.isRefreshing,
                     onRefresh: refresh,
-                    onOpenSettings: showSettings
+                    onOpenSettings: { showSettings(.general) }
                 )
                 Divider()
                 content(now: context.date)
@@ -39,6 +40,8 @@ struct MenuBarContentView: View {
             LoadingStateView()
         case .empty:
             EmptyStateView()
+        case .noProvidersEnabled:
+            NoProvidersEnabledView { showSettings(.providers) }
         case .providers(let states):
             VStack(spacing: 0) {
                 ForEach(states) { state in
@@ -57,7 +60,8 @@ struct MenuBarContentView: View {
         Task { await store.refresh(trigger: .manual) }
     }
 
-    private func showSettings() {
+    private func showSettings(_ tab: SettingsTab) {
+        navigation.tab = tab
         // A menu bar app isn't active by default; without this the
         // Settings window would open behind other apps.
         NSApplication.shared.activate()
@@ -102,8 +106,12 @@ struct MenuBarContentView: View {
     MenuBarContentView(store: PreviewFixtures.store(codex: .normal, claude: .notAuthenticated))
 }
 
-#Preview("No providers") {
+#Preview("No providers installed") {
     MenuBarContentView(store: PreviewFixtures.store(codex: .notInstalled, claude: .notInstalled))
+}
+
+#Preview("No providers enabled") {
+    MenuBarContentView(store: PreviewFixtures.noProvidersEnabledStore())
 }
 
 #Preview("Dark") {

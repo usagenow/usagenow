@@ -8,6 +8,7 @@ enum PreviewFixtures {
         switch provider {
         case .codex: try? MockCodexProvider(scenario: scenario, referenceDate: now, now: { now }).snapshot()
         case .claudeCode: try? MockClaudeProvider(scenario: scenario, referenceDate: now, now: { now }).snapshot()
+        default: nil // Roadmap providers have no data.
         }
     }
 
@@ -39,6 +40,11 @@ enum PreviewFixtures {
             hasCompletedInitialLoad: true,
             lastRefreshAt: now
         )
+    }
+
+    /// Every provider turned off in Settings.
+    static func noProvidersEnabledStore() -> UsageStore {
+        UsageStore(providers: [], enabledProviders: [], hasCompletedInitialLoad: true, lastRefreshAt: .now)
     }
 
     static func loadingStore() -> UsageStore {

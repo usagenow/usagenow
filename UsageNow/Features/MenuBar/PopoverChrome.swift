@@ -68,6 +68,34 @@ struct LoadingStateView: View {
     }
 }
 
+/// Every supported provider is turned off in Settings.
+struct NoProvidersEnabledView: View {
+    let onOpenProviderSettings: () -> Void
+
+    var body: some View {
+        VStack(spacing: 6) {
+            Image(systemName: "square.grid.2x2")
+                .font(.system(size: 24, weight: .light))
+                .foregroundStyle(.tertiary)
+                .padding(.bottom, 4)
+                .accessibilityHidden(true)
+            Text("No providers enabled")
+                .font(.headline)
+            Text("Choose a provider in Settings to start tracking usage.")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+            Button("Open Provider Settings", action: onOpenProviderSettings)
+                .controlSize(.small)
+                .padding(.top, 6)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 24)
+        .padding(.horizontal, 36)
+    }
+}
+
 struct EmptyStateView: View {
     var body: some View {
         VStack(spacing: 6) {

@@ -29,10 +29,12 @@ enum TelemetryEvent: String, Sendable, CaseIterable {
     /// Claude Code is installed. A yes, never anything about its usage.
     case claudeDetected = "claude_detected"
 
-    static func detected(_ provider: ProviderID) -> TelemetryEvent {
+    /// `nil` for providers with no integration yet — nothing to report.
+    static func detected(_ provider: ProviderID) -> TelemetryEvent? {
         switch provider {
         case .codex: .codexDetected
         case .claudeCode: .claudeDetected
+        default: nil
         }
     }
 }

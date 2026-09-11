@@ -9,9 +9,11 @@ final class AppState {
 
     let store: UsageStore
     let preferences: AppPreferences
+    let providerPreferences: ProviderPreferences
     let analyticsPreferences: AnalyticsPreferences
     let launchAtLogin: LaunchAtLogin
     let claudeLimitsStatus = ClaudeLimitsStatusModel()
+    let settingsNavigation = SettingsNavigation()
 
     /// Deliberately never given `store` or snapshots — only which providers
     /// are installed. See `TelemetryClient`.
@@ -32,7 +34,8 @@ final class AppState {
         identity: InstallationIdentity = InstallationIdentity(),
         claudeLimits: ClaudeLimitsControl? = nil
     ) {
-        let store = UsageStore(providers: providers)
+        let providerPreferences = ProviderPreferences(defaults: defaults)
+        let store = UsageStore(providers: providers, enabledProviders: providerPreferences.enabledProviders)
         let analyticsPreferences = AnalyticsPreferences(defaults: defaults)
         let client = NetworkTelemetryClient(
             configuration: telemetryConfiguration,
@@ -42,6 +45,7 @@ final class AppState {
 
         self.store = store
         self.preferences = AppPreferences(defaults: defaults)
+        self.providerPreferences = providerPreferences
         self.analyticsPreferences = analyticsPreferences
         self.launchAtLogin = LaunchAtLogin()
         self.telemetry = TelemetryReporter(client: client, preferences: analyticsPreferences, identity: identity, defaults: defaults)
@@ -89,6 +93,7 @@ final class AppState {
         observe({ [preferences] in _ = preferences.appearance }, apply: { [weak self] in self?.applyAppearance() })
         observe({ [preferences] in _ = preferences.refreshInterval }, apply: { [weak self] in self?.applyRefreshInterval() })
         observe({ [preferences] in _ = preferences.fetchClaudeUsageLimits }, apply: { [weak self] in self?.applyClaudeLimitsPreference() })
+        observe({ [providerPreferences] in _ = providerPreferences.enabledProviders }, apply: { [weak self] in self?.applyEnabledProviders() })
         observe({ [store] in _ = store.states }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [analyticsPreferences] in _ = analyticsPreferences.isSharingEnabled }, apply: { [weak self] in self?.analyticsSharingChanged() })
 
@@ -109,10 +114,20 @@ final class AppState {
         }
     }
 
+    /// Applies a change in which providers are tracked, and keeps the menu
+    /// bar showing a provider that's still enabled.
+    private func applyEnabledProviders() {
+        let enabled = providerPreferences.enabledProviders
+        if let required = preferences.menuBarDisplayMode.requiredProvider, !enabled.contains(required) {
+            preferences.menuBarDisplayMode = .default
+        }
+        Task { [store] in await store.setEnabledProviders(enabled) }
+    }
+
     /// Turning the feature on fetches right away (macOS asks for keychain
     /// access then); turning it off forgets the token and cached limits.
     private func applyClaudeLimitsPreference() {
-        guard let claudeLimits else { return }
+        guard let claudeLimits, providerPreferences.isEnabled(.claudeCode) else { return }
         let isEnabled = preferences.fetchClaudeUsageLimits
         claudeLimits.isEnabled.isOn = isEnabled
         Task { [store] in
@@ -123,6 +138,7 @@ final class AppState {
 
     /// Asks Claude for limits now, including the keychain after an earlier failure.
     func retryClaudeLimits() {
+        guard providerPreferences.isEnabled(.claudeCode) else { return }
         Task { [store] in await store.refresh(only: [.claudeCode], trigger: .manual) }
     }
 
@@ -169,4 +185,11 @@ final class AppState {
 @MainActor
 final class ClaudeLimitsStatusModel {
     var status: ClaudeUsageLimitsClient.Status = .off
+}
+
+/// Which Settings tab is shown. Lets the popover open a specific one.
+@Observable
+@MainActor
+final class SettingsNavigation {
+    var tab: SettingsTab = .general
 }

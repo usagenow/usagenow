@@ -10,8 +10,22 @@ enum MenuBarDisplayMode: String, CaseIterable, Identifiable, Sendable {
 
     static let `default` = MenuBarDisplayMode.iconOnly
 
-    /// Modes offered in Settings.
-    static let available: [MenuBarDisplayMode] = allCases
+    /// The provider a mode needs; `nil` when it works with any.
+    var requiredProvider: ProviderID? {
+        switch self {
+        case .iconOnly, .mostCriticalPercentage: nil
+        case .codexPercentage: .codex
+        case .claudePercentage: .claudeCode
+        }
+    }
+
+    /// Modes offered in Settings. A provider-specific mode disappears when
+    /// that provider is turned off.
+    static func available(for enabledProviders: Set<ProviderID>) -> [MenuBarDisplayMode] {
+        allCases.filter { mode in
+            mode.requiredProvider.map(enabledProviders.contains) ?? true
+        }
+    }
 
     var id: String { rawValue }
 

@@ -41,8 +41,8 @@ final class AppPreferences {
         fetchClaudeUsageLimits = defaults.bool(forKey: Key.fetchClaudeUsageLimits)
         refreshInterval = (defaults.object(forKey: Key.refreshInterval) as? Int)
             .flatMap(RefreshInterval.init(rawValue:)) ?? .default
-        // Ignore stored modes that aren't offered in this version.
-        let storedMode = defaults.string(forKey: Key.menuBarDisplayMode).flatMap(MenuBarDisplayMode.init(rawValue:))
-        menuBarDisplayMode = storedMode.flatMap { MenuBarDisplayMode.available.contains($0) ? $0 : nil } ?? .default
+        // Unknown identifiers fall back to the default.
+        menuBarDisplayMode = defaults.string(forKey: Key.menuBarDisplayMode)
+            .flatMap(MenuBarDisplayMode.init(rawValue:)) ?? .default
     }
 }

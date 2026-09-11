@@ -12,7 +12,7 @@ struct UsageNowApp: App {
 
     var body: some Scene {
         MenuBarExtra {
-            MenuBarContentView(store: appState.store)
+            MenuBarContentView(store: appState.store, navigation: appState.settingsNavigation)
                 .onPopoverOpen { appState.popoverDidOpen() }
         } label: {
             MenuBarLabel(preferences: appState.preferences, store: appState.store)
@@ -22,10 +22,12 @@ struct UsageNowApp: App {
         Settings {
             SettingsView(
                 preferences: appState.preferences,
+                providerPreferences: appState.providerPreferences,
                 analyticsPreferences: appState.analyticsPreferences,
                 launchAtLogin: appState.launchAtLogin,
                 claudeLimitsStatus: appState.claudeLimitsStatus,
-                retryClaudeLimits: { appState.retryClaudeLimits() }
+                retryClaudeLimits: { appState.retryClaudeLimits() },
+                navigation: appState.settingsNavigation
             )
         }
     }

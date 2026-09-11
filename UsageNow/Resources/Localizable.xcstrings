@@ -94,7 +94,16 @@
     "Appearance" : {
 
     },
+    "Available" : {
+
+    },
     "Checking usage…" : {
+
+    },
+    "Choose a provider in Settings to start tracking usage." : {
+
+    },
+    "Choose which services UsageNow displays and monitors." : {
 
     },
     "Claude Code usage" : {
@@ -104,6 +113,9 @@
 
     },
     "Codex usage" : {
+
+    },
+    "Coming soon" : {
 
     },
     "Couldn’t refresh %@" : {
@@ -169,7 +181,13 @@
     "No providers detected" : {
 
     },
+    "No providers enabled" : {
+
+    },
     "Open Login Items…" : {
+
+    },
+    "Open Provider Settings" : {
 
     },
     "Open Source Licenses" : {
@@ -179,6 +197,9 @@
 
     },
     "Privacy" : {
+
+    },
+    "Providers" : {
 
     },
     "Quit" : {
@@ -233,6 +254,12 @@
 
     },
     "This build doesn’t send analytics yet." : {
+
+    },
+    "Track Claude Code usage and limits." : {
+
+    },
+    "Track Codex usage and limits." : {
 
     },
     "Try Again" : {

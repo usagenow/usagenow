@@ -1,32 +1,46 @@
 import AppKit
 import SwiftUI
 
+enum SettingsTab: Hashable, Sendable {
+    case general
+    case providers
+    case menuBar
+    case privacy
+    case about
+}
+
 struct SettingsView: View {
     static let width: CGFloat = 480
 
     let preferences: AppPreferences
+    let providerPreferences: ProviderPreferences
     let analyticsPreferences: AnalyticsPreferences
     let launchAtLogin: LaunchAtLogin
     let claudeLimitsStatus: ClaudeLimitsStatusModel
     let retryClaudeLimits: () -> Void
+    @Bindable var navigation: SettingsNavigation
 
     var body: some View {
-        TabView {
-            Tab("General", systemImage: "gearshape") {
+        TabView(selection: $navigation.tab) {
+            Tab("General", systemImage: "gearshape", value: SettingsTab.general) {
                 GeneralSettingsView(
                     preferences: preferences,
+                    providerPreferences: providerPreferences,
                     launchAtLogin: launchAtLogin,
                     claudeLimitsStatus: claudeLimitsStatus,
                     retryClaudeLimits: retryClaudeLimits
                 )
             }
-            Tab("Menu Bar", systemImage: "menubar.rectangle") {
-                MenuBarSettingsView(preferences: preferences)
+            Tab("Providers", systemImage: "square.grid.2x2", value: SettingsTab.providers) {
+                ProvidersSettingsView(preferences: providerPreferences)
             }
-            Tab("Privacy", systemImage: "hand.raised") {
+            Tab("Menu Bar", systemImage: "menubar.rectangle", value: SettingsTab.menuBar) {
+                MenuBarSettingsView(preferences: preferences, providerPreferences: providerPreferences)
+            }
+            Tab("Privacy", systemImage: "hand.raised", value: SettingsTab.privacy) {
                 PrivacySettingsView(analyticsPreferences: analyticsPreferences)
             }
-            Tab("About", systemImage: "info.circle") {
+            Tab("About", systemImage: "info.circle", value: SettingsTab.about) {
                 AboutSettingsView()
             }
         }
@@ -36,6 +50,7 @@ struct SettingsView: View {
 
 struct GeneralSettingsView: View {
     @Bindable var preferences: AppPreferences
+    let providerPreferences: ProviderPreferences
     let launchAtLogin: LaunchAtLogin
     let claudeLimitsStatus: ClaudeLimitsStatusModel
     let retryClaudeLimits: () -> Void
@@ -83,23 +98,26 @@ struct GeneralSettingsView: View {
                     .foregroundStyle(.secondary)
             }
 
-            Section {
-                Toggle(isOn: $preferences.fetchClaudeUsageLimits) {
+            // Only meaningful while Claude Code is tracked at all.
+            if providerPreferences.isEnabled(.claudeCode) {
+                Section {
+                    Toggle(isOn: $preferences.fetchClaudeUsageLimits) {
                     Text("Fetch Claude usage limits")
-                    Text("Fetch current Claude Code subscription limits directly from Anthropic using your existing Claude Code sign-in. This uses an undocumented Anthropic endpoint and may stop working without notice.")
-                }
-                if preferences.fetchClaudeUsageLimits, let message = claudeLimitsStatus.status.message {
-                    LabeledContent {
-                        Button("Try Again", action: retryClaudeLimits)
-                    } label: {
-                        Text(message)
-                            .font(.callout)
-                            .foregroundStyle(.secondary)
-                            .fixedSize(horizontal: false, vertical: true)
+                        Text("Fetch current Claude Code subscription limits directly from Anthropic using your existing Claude Code sign-in. This uses an undocumented Anthropic endpoint and may stop working without notice.")
                     }
+                    if preferences.fetchClaudeUsageLimits, let message = claudeLimitsStatus.status.message {
+                        LabeledContent {
+                            Button("Try Again", action: retryClaudeLimits)
+                        } label: {
+                            Text(message)
+                                .font(.callout)
+                                .foregroundStyle(.secondary)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                } header: {
+                    Text("Claude usage limits — Experimental")
                 }
-            } header: {
-                Text("Claude usage limits — Experimental")
             }
         }
         .formStyle(.grouped)
@@ -111,12 +129,13 @@ struct GeneralSettingsView: View {
 
 struct MenuBarSettingsView: View {
     @Bindable var preferences: AppPreferences
+    let providerPreferences: ProviderPreferences
 
     var body: some View {
         Form {
             Section {
                 Picker("Display", selection: $preferences.menuBarDisplayMode) {
-                    ForEach(MenuBarDisplayMode.available) { mode in
+                    ForEach(MenuBarDisplayMode.available(for: providerPreferences.enabledProviders)) { mode in
                         Text(mode.title).tag(mode)
                     }
                 }
@@ -232,12 +251,15 @@ extension ClaudeUsageLimitsClient.Status {
 
 #if DEBUG
 #Preview("Settings") {
+    let defaults = UserDefaults(suiteName: "preview")!
     SettingsView(
-        preferences: AppPreferences(defaults: UserDefaults(suiteName: "preview")!),
-        analyticsPreferences: AnalyticsPreferences(defaults: UserDefaults(suiteName: "preview")!),
+        preferences: AppPreferences(defaults: defaults),
+        providerPreferences: ProviderPreferences(defaults: defaults),
+        analyticsPreferences: AnalyticsPreferences(defaults: defaults),
         launchAtLogin: LaunchAtLogin(),
         claudeLimitsStatus: ClaudeLimitsStatusModel(),
-        retryClaudeLimits: {}
+        retryClaudeLimits: {},
+        navigation: SettingsNavigation()
     )
 }
 #endif

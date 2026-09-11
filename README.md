@@ -25,6 +25,7 @@ Token and request counts are **local activity** observed in session files on thi
 
 - **macOS native.** SwiftUI and `MenuBarExtra`. Lives in the menu bar, not the Dock.
 - **Codex + Claude Code** side by side: usage limits, reset times, and daily token and request activity.
+- **Pick your providers.** Turn Codex and Claude Code on or off in Settings › Providers. A provider that’s off is never refreshed and never read from disk.
 - **Local-first.** Your usage data stays on your Mac.
 - **Open source** under the MIT License.
 - **No accounts required.**
@@ -53,6 +54,10 @@ xcodebuild -project UsageNow.xcodeproj -scheme UsageNow test
 
 UsageNow honors `CODEX_HOME` and `CLAUDE_CONFIG_DIR` when they’re set.
 
+### Roadmap providers
+
+Gemini CLI, Grok, DeepSeek, GLM, Qwen, Kimi, and Meta AI are listed in Settings › Providers as **Coming soon**. They’re labels only: no integration, no credentials, and no network or file access.
+
 ### Trying different states
 
 Real providers run by default. For development, mock providers accept a scenario at launch: `normal`, `high`, `critical`, `unavailable`, `notInstalled`, `notAuthenticated`, `failing`, or `loading`.
@@ -71,13 +76,14 @@ UsageNow/
   Domain/       Normalized models: ProviderSnapshot, UsageWindow, UsagePercentage, UsageLevel…
   Providers/    UsageProvider protocol; Codex, Claude Code, and mock providers
   Services/     UsageStore, auto-refresh, launch at login, keychain storage
-  Preferences/  User preferences and their option types
+  Preferences/  User preferences, provider selection, and option types
   Telemetry/    Telemetry events, network client, installation identity, consent
   Features/     MenuBar popover and Settings UI
   Components/   Shared views
   Utilities/    Formatters and app info
 ```
 
+- **`ProviderCatalog`** is the single source of provider metadata — identifier, display name, artwork, and whether it’s available or on the roadmap.
 - **Providers** turn tool-specific data into a normalized `ProviderSnapshot` with any number of usage windows and optional plan, model, and activity. Views depend only on this normalized state and hide data a provider doesn’t have.
 - **`UsageStore`** refreshes all providers concurrently. It keeps the last good data when a refresh fails and exposes loading, empty, and per-provider error states.
 - **Telemetry** is opt-in and off by default. Clients only receive a small set of events (install, daily active, updated, Codex or Claude Code detected) with the app version, macOS version, and a random installation ID. They never have access to provider data. No analytics server is configured yet, so nothing is sent.

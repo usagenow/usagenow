@@ -8,12 +8,17 @@ import Observation
 final class UsageStore {
     enum Content: Equatable {
         case loading
+        /// Providers are enabled, but none is installed on this Mac.
         case empty
+        /// Every supported provider is turned off in Settings.
+        case noProvidersEnabled
         case providers([ProviderState])
     }
 
     /// One entry per known provider, in display order.
     private(set) var states: [ProviderState]
+    /// Providers the user turned on. Others are never refreshed or shown.
+    private(set) var enabledProviders: Set<ProviderID>
     private(set) var isRefreshing = false
     private(set) var hasCompletedInitialLoad: Bool
     /// When the last refresh attempt finished.
@@ -27,12 +32,14 @@ final class UsageStore {
     ///   - states: Seed state, for previews and tests.
     init(
         providers: [any UsageProvider],
+        enabledProviders: Set<ProviderID> = ProviderCatalog.availableIDs,
         states: [ProviderState] = [],
         hasCompletedInitialLoad: Bool = false,
         lastRefreshAt: Date? = nil,
         now: @escaping @Sendable () -> Date = { .now }
     ) {
         self.providers = providers
+        self.enabledProviders = enabledProviders
         self.now = now
         self.hasCompletedInitialLoad = hasCompletedInitialLoad
         self.lastRefreshAt = lastRefreshAt
@@ -43,18 +50,36 @@ final class UsageStore {
     }
 
     var content: Content {
-        let visible = states.filter(\.isVisible)
+        if enabledProviders.isEmpty { return .noProvidersEnabled }
+        let visible = enabledStates.filter(\.isVisible)
         if !visible.isEmpty { return .providers(visible) }
         return hasCompletedInitialLoad ? .empty : .loading
     }
 
-    /// Latest snapshots of all providers, including not-installed ones.
+    /// Latest snapshots of enabled providers, including not-installed ones.
     var snapshots: [ProviderSnapshot] {
-        states.compactMap(\.snapshot)
+        enabledStates.compactMap(\.snapshot)
     }
 
     var hasFailures: Bool {
-        states.contains { $0.isVisible && $0.failure != nil }
+        enabledStates.contains { $0.isVisible && $0.failure != nil }
+    }
+
+    private var enabledStates: [ProviderState] {
+        states.filter { enabledProviders.contains($0.provider) }
+    }
+
+    /// Applies a change to the enabled providers: a provider turned off
+    /// loses its state immediately, and one turned on is refreshed.
+    func setEnabledProviders(_ enabled: Set<ProviderID>) async {
+        let newlyEnabled = enabled.subtracting(enabledProviders)
+        let disabled = enabledProviders.subtracting(enabled)
+        enabledProviders = enabled
+        for id in disabled {
+            update(id) { $0 = ProviderState(provider: id) }
+        }
+        guard !newlyEnabled.isEmpty else { return }
+        await refresh(only: newlyEnabled)
     }
 
     /// Refreshes all providers, or only `ids`. Calls made while a refresh is
@@ -64,7 +89,12 @@ final class UsageStore {
             await inFlightRefresh.value
             return
         }
-        let targets = providers.filter { ids?.contains($0.id) ?? true }
+        let targets = providers.filter { enabledProviders.contains($0.id) && (ids?.contains($0.id) ?? true) }
+        guard !targets.isEmpty else {
+            hasCompletedInitialLoad = true
+            lastRefreshAt = now()
+            return
+        }
         let task = Task { await performRefresh(of: targets, trigger: trigger) }
         inFlightRefresh = task
         await task.value

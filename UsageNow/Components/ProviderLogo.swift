@@ -17,20 +17,22 @@ struct ProviderLogoTile: View {
     }
 }
 
-/// The provider's logo asset. Monochrome marks (OpenAI) are template images
-/// that follow the foreground color; colored marks keep their brand colors.
-/// Falls back to a neutral SF Symbol if the asset is missing.
+/// The provider's logo, from `ProviderCatalog`. Monochrome marks (OpenAI)
+/// are template images that follow the foreground color; colored marks keep
+/// their brand colors. Providers UsageNow has no artwork for show a neutral
+/// SF Symbol rather than an invented icon.
 struct ProviderLogo: View {
     let provider: ProviderID
 
     var body: some View {
-        if NSImage(named: provider.logoAssetName) != nil {
-            Image(provider.logoAssetName)
+        let definition = ProviderCatalog.definition(for: provider)
+        if let asset = definition.logoAssetName, NSImage(named: asset) != nil {
+            Image(asset)
                 .resizable()
                 .scaledToFit()
                 .foregroundStyle(.primary)
         } else {
-            Image(systemName: provider.fallbackSymbolName)
+            Image(systemName: definition.symbolName)
                 .resizable()
                 .scaledToFit()
                 .fontWeight(.semibold)
@@ -39,25 +41,9 @@ struct ProviderLogo: View {
     }
 }
 
-extension ProviderID {
-    var logoAssetName: String {
-        switch self {
-        case .codex: "OpenAILogo"
-        case .claudeCode: "ClaudeLogo"
-        }
-    }
-
-    var fallbackSymbolName: String {
-        switch self {
-        case .codex: "terminal"
-        case .claudeCode: "asterisk"
-        }
-    }
-}
-
 #Preview("Provider logos") {
     HStack(spacing: 12) {
-        ForEach(ProviderID.allCases) { ProviderLogoTile(provider: $0) }
+        ForEach(ProviderCatalog.all) { ProviderLogoTile(provider: $0.id) }
     }
     .padding()
 }
