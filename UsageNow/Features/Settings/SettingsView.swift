@@ -1,0 +1,243 @@
+import AppKit
+import SwiftUI
+
+struct SettingsView: View {
+    static let width: CGFloat = 480
+
+    let preferences: AppPreferences
+    let analyticsPreferences: AnalyticsPreferences
+    let launchAtLogin: LaunchAtLogin
+    let claudeLimitsStatus: ClaudeLimitsStatusModel
+    let retryClaudeLimits: () -> Void
+
+    var body: some View {
+        TabView {
+            Tab("General", systemImage: "gearshape") {
+                GeneralSettingsView(
+                    preferences: preferences,
+                    launchAtLogin: launchAtLogin,
+                    claudeLimitsStatus: claudeLimitsStatus,
+                    retryClaudeLimits: retryClaudeLimits
+                )
+            }
+            Tab("Menu Bar", systemImage: "menubar.rectangle") {
+                MenuBarSettingsView(preferences: preferences)
+            }
+            Tab("Privacy", systemImage: "hand.raised") {
+                PrivacySettingsView(analyticsPreferences: analyticsPreferences)
+            }
+            Tab("About", systemImage: "info.circle") {
+                AboutSettingsView()
+            }
+        }
+        .frame(width: Self.width)
+    }
+}
+
+struct GeneralSettingsView: View {
+    @Bindable var preferences: AppPreferences
+    let launchAtLogin: LaunchAtLogin
+    let claudeLimitsStatus: ClaudeLimitsStatusModel
+    let retryClaudeLimits: () -> Void
+
+    var body: some View {
+        Form {
+            Section {
+                Toggle("Launch UsageNow at login", isOn: Binding(
+                    get: { launchAtLogin.isEnabled },
+                    set: { launchAtLogin.setEnabled($0) }
+                ))
+                if launchAtLogin.requiresApproval {
+                    LabeledContent {
+                        Button("Open Login Items…") { launchAtLogin.openSystemSettings() }
+                    } label: {
+                        Text("Allow UsageNow in System Settings to finish setup.")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                if let message = launchAtLogin.errorMessage {
+                    Text(message)
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            Section {
+                Picker("Appearance", selection: $preferences.appearance) {
+                    ForEach(AppAppearance.allCases) { appearance in
+                        Text(appearance.title).tag(appearance)
+                    }
+                }
+                .pickerStyle(.segmented)
+            }
+
+            Section {
+                Picker("Refresh interval", selection: $preferences.refreshInterval) {
+                    ForEach(RefreshInterval.allCases) { interval in
+                        Text(interval.title).tag(interval)
+                    }
+                }
+            } footer: {
+                Text("UsageNow also checks for new usage when you open it.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+
+            Section {
+                Toggle(isOn: $preferences.fetchClaudeUsageLimits) {
+                    Text("Fetch Claude usage limits")
+                    Text("Fetch current Claude Code subscription limits directly from Anthropic using your existing Claude Code sign-in. This uses an undocumented Anthropic endpoint and may stop working without notice.")
+                }
+                if preferences.fetchClaudeUsageLimits, let message = claudeLimitsStatus.status.message {
+                    LabeledContent {
+                        Button("Try Again", action: retryClaudeLimits)
+                    } label: {
+                        Text(message)
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+            } header: {
+                Text("Claude usage limits — Experimental")
+            }
+        }
+        .formStyle(.grouped)
+        .scrollDisabled(true)
+        .fixedSize(horizontal: false, vertical: true)
+        .onAppear { launchAtLogin.refreshStatus() }
+    }
+}
+
+struct MenuBarSettingsView: View {
+    @Bindable var preferences: AppPreferences
+
+    var body: some View {
+        Form {
+            Section {
+                Picker("Display", selection: $preferences.menuBarDisplayMode) {
+                    ForEach(MenuBarDisplayMode.available) { mode in
+                        Text(mode.title).tag(mode)
+                    }
+                }
+            } footer: {
+                Text("Shows the icon alone when no usage limit is available.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .formStyle(.grouped)
+        .scrollDisabled(true)
+        .fixedSize(horizontal: false, vertical: true)
+    }
+}
+
+struct PrivacySettingsView: View {
+    @Bindable var analyticsPreferences: AnalyticsPreferences
+
+    var body: some View {
+        Form {
+            Section {
+                Toggle(isOn: $analyticsPreferences.isSharingEnabled) {
+                    Text("Share anonymous usage analytics")
+                    Text("Helps improve UsageNow by sharing basic app usage and device information.")
+                }
+            } header: {
+                Text("Usage Analytics")
+            } footer: {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Never includes prompts, tokens, project names, files, credentials, or coding activity.")
+                    if TelemetryConfiguration.current().endpoint == nil {
+                        Text("This build doesn’t send analytics yet.")
+                    }
+                }
+                .font(.callout)
+                .foregroundStyle(.secondary)
+            }
+
+            Section {
+                Label {
+                    Text("UsageNow is local-first. Your usage data stays on this Mac.")
+                } icon: {
+                    Image(systemName: "lock.laptopcomputer")
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+        .formStyle(.grouped)
+        .scrollDisabled(true)
+        .fixedSize(horizontal: false, vertical: true)
+    }
+}
+
+struct AboutSettingsView: View {
+    @State private var isShowingLicenses = false
+
+    var body: some View {
+        VStack(spacing: 14) {
+            Image(nsImage: NSApplication.shared.applicationIconImage)
+                .resizable()
+                .frame(width: 72, height: 72)
+                .accessibilityHidden(true)
+
+            VStack(spacing: 3) {
+                Text(verbatim: AppInfo.name)
+                    .font(.title2.weight(.semibold))
+                Text("Version \(AppInfo.version) (\(AppInfo.build))")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .textSelection(.enabled)
+            }
+
+            Text(AppInfo.tagline)
+                .foregroundStyle(.secondary)
+
+            HStack(spacing: 18) {
+                Link(destination: AppInfo.website) { Text(verbatim: "usagenow.com") }
+                Link(destination: AppInfo.github) { Text(verbatim: "github.com/usagenow") }
+            }
+            .font(.callout)
+
+            Button("Open Source Licenses…") { isShowingLicenses = true }
+                .controlSize(.small)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 28)
+        .padding(.horizontal, 24)
+        .sheet(isPresented: $isShowingLicenses) {
+            LicensesView()
+        }
+    }
+}
+
+extension ClaudeUsageLimitsClient.Status {
+    /// Explains why limits aren't shown. `nil` when there's nothing to explain.
+    var message: String? {
+        switch self {
+        case .off, .working:
+            nil
+        case .accessDenied:
+            String(localized: "UsageNow wasn’t allowed to read your Claude Code sign-in from the keychain.")
+        case .notSignedIn:
+            String(localized: "No Claude Code sign-in was found in the keychain. Sign in by running claude in Terminal.")
+        case .signInExpired:
+            String(localized: "The Claude Code sign-in saved in the keychain has expired. It’s renewed when you use Claude Code in Terminal; the Claude app doesn’t update it.")
+        case .rejected:
+            String(localized: "Anthropic didn’t accept the saved Claude Code sign-in. Sign in again by running claude in Terminal.")
+        case .unavailable:
+            String(localized: "Anthropic’s usage service didn’t respond. UsageNow will try again later.")
+        }
+    }
+}
+
+#if DEBUG
+#Preview("Settings") {
+    SettingsView(
+        preferences: AppPreferences(defaults: UserDefaults(suiteName: "preview")!),
+        analyticsPreferences: AnalyticsPreferences(defaults: UserDefaults(suiteName: "preview")!),
+        launchAtLogin: LaunchAtLogin(),
+        claudeLimitsStatus: ClaudeLimitsStatusModel(),
+        retryClaudeLimits: {}
+    )
+}
+#endif

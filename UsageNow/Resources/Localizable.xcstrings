@@ -1,0 +1,295 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@ %@ usage" : {
+      "comment" : "e.g. Weekly Opus usage",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@ usage"
+          }
+        }
+      }
+    },
+    "%@ isn’t installed" : {
+
+    },
+    "%@ left" : {
+      "comment" : "Remaining quota, e.g. 58% left"
+    },
+    "%@ plan" : {
+
+    },
+    "%@ usage" : {
+      "comment" : "e.g. Weekly usage"
+    },
+    "%lld-day" : {
+      "comment" : "Usage window length, e.g. 30-day"
+    },
+    "%lld-hour" : {
+      "comment" : "Usage window length, e.g. 12-hour"
+    },
+    "%lld-minute" : {
+      "comment" : "Usage window length, e.g. 90-minute"
+    },
+    "%lldd %lldh" : {
+      "comment" : "Countdown in days and hours, e.g. 2d 4h",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lldd %2$lldh"
+          }
+        }
+      }
+    },
+    "%lldd ago" : {
+
+    },
+    "%lldh %@m" : {
+      "comment" : "Countdown in hours and zero-padded minutes, e.g. 3h 08m",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lldh %2$@m"
+          }
+        }
+      }
+    },
+    "%lldh ago" : {
+
+    },
+    "%lldm" : {
+      "comment" : "Countdown in minutes, e.g. 38m"
+    },
+    "%lldm ago" : {
+
+    },
+    "15 minutes" : {
+
+    },
+    "30 minutes" : {
+
+    },
+    "5 minutes" : {
+
+    },
+    "5-hour" : {
+
+    },
+    "About" : {
+
+    },
+    "Allow UsageNow in System Settings to finish setup." : {
+
+    },
+    "Anthropic didn’t accept the saved Claude Code sign-in. Sign in again by running claude in Terminal." : {
+
+    },
+    "Anthropic’s usage service didn’t respond. UsageNow will try again later." : {
+
+    },
+    "Appearance" : {
+
+    },
+    "Checking usage…" : {
+
+    },
+    "Claude Code usage" : {
+
+    },
+    "Claude usage limits — Experimental" : {
+
+    },
+    "Codex usage" : {
+
+    },
+    "Couldn’t refresh %@" : {
+
+    },
+    "Dark" : {
+
+    },
+    "Display" : {
+
+    },
+    "Done" : {
+
+    },
+    "Fetch Claude usage limits" : {
+
+    },
+    "Fetch current Claude Code subscription limits directly from Anthropic using your existing Claude Code sign-in. This uses an undocumented Anthropic endpoint and may stop working without notice." : {
+
+    },
+    "General" : {
+
+    },
+    "Helps improve UsageNow by sharing basic app usage and device information." : {
+
+    },
+    "High usage" : {
+
+    },
+    "Icon only" : {
+
+    },
+    "Install or use Codex or Claude Code to start tracking usage." : {
+
+    },
+    "Just now" : {
+
+    },
+    "Launch UsageNow at login" : {
+
+    },
+    "Light" : {
+
+    },
+    "Manual" : {
+
+    },
+    "Menu Bar" : {
+
+    },
+    "Most critical usage" : {
+
+    },
+    "Nearly exhausted" : {
+
+    },
+    "Never includes prompts, tokens, project names, files, credentials, or coding activity." : {
+
+    },
+    "No Claude Code sign-in was found in the keychain. Sign in by running claude in Terminal." : {
+
+    },
+    "No providers detected" : {
+
+    },
+    "Open Login Items…" : {
+
+    },
+    "Open Source Licenses" : {
+
+    },
+    "Open Source Licenses…" : {
+
+    },
+    "Privacy" : {
+
+    },
+    "Quit" : {
+
+    },
+    "Quit UsageNow" : {
+
+    },
+    "Refresh" : {
+
+    },
+    "Refresh interval" : {
+
+    },
+    "Resets %@" : {
+
+    },
+    "Resets in %@" : {
+
+    },
+    "Resetting now" : {
+
+    },
+    "Retry" : {
+
+    },
+    "Retry refreshing %@" : {
+
+    },
+    "See what’s left. Keep building." : {
+
+    },
+    "Settings…" : {
+
+    },
+    "Share anonymous usage analytics" : {
+
+    },
+    "Shows the icon alone when no usage limit is available." : {
+
+    },
+    "Sign in to %@ to view usage" : {
+
+    },
+    "System" : {
+
+    },
+    "The Claude Code sign-in saved in the keychain has expired. It’s renewed when you use Claude Code in Terminal; the Claude app doesn’t update it." : {
+
+    },
+    "The UsageNow name, logo, icon, and other brand assets are not covered by the MIT License." : {
+
+    },
+    "This build doesn’t send analytics yet." : {
+
+    },
+    "Try Again" : {
+
+    },
+    "Unavailable" : {
+
+    },
+    "Updated %@" : {
+
+    },
+    "Updated just now" : {
+
+    },
+    "Usage Analytics" : {
+
+    },
+    "Usage limits unavailable" : {
+
+    },
+    "UsageNow also checks for new usage when you open it." : {
+
+    },
+    "UsageNow doesn’t include third-party code. Its own source code is available under the MIT License." : {
+
+    },
+    "UsageNow is local-first. Your usage data stays on this Mac." : {
+
+    },
+    "UsageNow wasn’t allowed to read your Claude Code sign-in from the keychain." : {
+
+    },
+    "Version %@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Version %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "Weekly" : {
+
+    },
+    "left" : {
+      "comment" : "Follows a remaining percentage, e.g. 58% left"
+    },
+    "request" : {
+
+    },
+    "requests" : {
+
+    },
+    "tokens today" : {
+
+    }
+  },
+  "version" : "1.0"
+}
