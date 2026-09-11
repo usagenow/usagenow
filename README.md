@@ -1,3 +1,5 @@
+![UsageNow](docs/banner.png)
+
 # UsageNow
 
 **See what’s left. Keep building.**
@@ -12,7 +14,7 @@ Early development. UsageNow reads real Codex and Claude Code data from your Mac.
 
 | | Codex | Claude Code |
 |---|---|---|
-| Usage limits and reset times | ✓ from the official `codex app-server` | Experimental, opt-in (see below) |
+| Usage limits and reset times | ✓ from the official `codex app-server` | ✓ through an experimental, opt-in source (see below) |
 | Plan | ✓ | ✓ from Claude Code’s cached account profile |
 | Tokens and requests today | ✓ from local session files | ✓ from local session files |
 | Most recent model | ✓ | ✓ |
@@ -57,7 +59,7 @@ UsageNow honors `CODEX_HOME` and `CLAUDE_CONFIG_DIR` when they’re set.
 
 ### Claude Code usage limits
 
-Claude Code does not currently expose subscription limits through a supported local API. UsageNow can optionally read the existing Claude Code access token from macOS Keychain and query Anthropic’s usage endpoint. This integration is experimental and may require launching Claude Code in Terminal periodically to refresh your session.
+Claude Code does not currently expose subscription limits through a supported local API. UsageNow can optionally read the existing Claude Code access token from macOS Keychain and query Anthropic’s usage endpoint. This integration is experimental and may require launching Claude Code in Terminal periodically to refresh your session — the Claude app keeps its own sign-in and doesn’t renew the one in your keychain.
 
 **UsageNow never refreshes, modifies, or stores your Claude Code credentials.**
 
