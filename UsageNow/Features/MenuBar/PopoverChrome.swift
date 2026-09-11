@@ -74,7 +74,7 @@ struct NoProvidersEnabledView: View {
 
     var body: some View {
         VStack(spacing: 6) {
-            Image(systemName: "square.grid.2x2")
+            Image(systemName: "circle.hexagongrid")
                 .font(.system(size: 24, weight: .light))
                 .foregroundStyle(.tertiary)
                 .padding(.bottom, 4)

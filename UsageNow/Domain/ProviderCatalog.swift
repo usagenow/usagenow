@@ -9,12 +9,8 @@ enum ProviderID: String, CaseIterable, Codable, Sendable, Identifiable, Comparab
     case codex
     case claudeCode
     case gemini
-    case grok
     case deepseek
-    case glm
     case qwen
-    case kimi
-    case metaAI
 
     var id: String { rawValue }
 
@@ -79,17 +75,20 @@ enum ProviderCatalog {
             logoAssetName: "GeminiLogo",
             symbolName: "sparkle"
         ),
-        ProviderDefinition(id: .grok, displayName: "Grok", summary: nil, availability: .comingSoon, logoAssetName: nil, symbolName: "circle.dashed"),
-        ProviderDefinition(id: .deepseek, displayName: "DeepSeek", summary: nil, availability: .comingSoon, logoAssetName: nil, symbolName: "circle.dashed"),
-        ProviderDefinition(id: .glm, displayName: "GLM", summary: nil, availability: .comingSoon, logoAssetName: nil, symbolName: "circle.dashed"),
-        ProviderDefinition(id: .qwen, displayName: "Qwen", summary: nil, availability: .comingSoon, logoAssetName: nil, symbolName: "circle.dashed"),
-        ProviderDefinition(id: .kimi, displayName: "Kimi", summary: nil, availability: .comingSoon, logoAssetName: nil, symbolName: "circle.dashed"),
         ProviderDefinition(
-            id: .metaAI,
-            displayName: "Meta AI",
+            id: .deepseek,
+            displayName: "DeepSeek",
             summary: nil,
             availability: .comingSoon,
-            logoAssetName: "MetaLogo",
+            logoAssetName: "DeepSeekLogo",
+            symbolName: "circle.dashed"
+        ),
+        ProviderDefinition(
+            id: .qwen,
+            displayName: "Qwen",
+            summary: nil,
+            availability: .comingSoon,
+            logoAssetName: "QwenLogo",
             symbolName: "circle.dashed"
         ),
     ]

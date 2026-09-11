@@ -52,7 +52,7 @@ struct ProviderPreferencesTests {
 struct ProviderCatalogTests {
     @Test func onlyCodexAndClaudeAreAvailable() {
         #expect(ProviderCatalog.availableIDs == [.codex, .claudeCode])
-        #expect(ProviderCatalog.comingSoon.map(\.id) == [.gemini, .grok, .deepseek, .glm, .qwen, .kimi, .metaAI])
+        #expect(ProviderCatalog.comingSoon.map(\.id) == [.gemini, .deepseek, .qwen])
     }
 
     @Test func geminiLeadsTheRoadmap() {
@@ -72,7 +72,7 @@ struct ProviderCatalogTests {
     @Test func displayNamesAreNotIdentifiers() {
         #expect(ProviderID.claudeCode.rawValue == "claudeCode")
         #expect(ProviderID.claudeCode.displayName == "Claude Code")
-        #expect(ProviderID.metaAI.rawValue == "metaAI")
+        #expect(ProviderID.deepseek.rawValue == "deepseek")
     }
 
     @Test func menuBarModesFollowEnabledProviders() {

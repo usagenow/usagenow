@@ -31,7 +31,7 @@ struct SettingsView: View {
                     retryClaudeLimits: retryClaudeLimits
                 )
             }
-            Tab("Providers", systemImage: "square.grid.2x2", value: SettingsTab.providers) {
+            Tab("Providers", systemImage: "circle.hexagongrid", value: SettingsTab.providers) {
                 ProvidersSettingsView(preferences: providerPreferences)
             }
             Tab("Menu Bar", systemImage: "menubar.rectangle", value: SettingsTab.menuBar) {

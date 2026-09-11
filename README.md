@@ -56,7 +56,7 @@ UsageNow honors `CODEX_HOME` and `CLAUDE_CONFIG_DIR` when they’re set.
 
 ### Roadmap providers
 
-Gemini CLI, Grok, DeepSeek, GLM, Qwen, Kimi, and Meta AI are listed in Settings › Providers as **Coming soon**. They’re labels only: no integration, no credentials, and no network or file access.
+Gemini CLI, DeepSeek, and Qwen are listed in Settings › Providers as **Coming soon**. They’re labels only: no integration, no credentials, and no network or file access.
 
 ### Trying different states
 
