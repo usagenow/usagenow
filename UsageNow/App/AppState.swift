@@ -17,6 +17,7 @@ final class AppState {
     /// Deliberately never given `store` or snapshots — only which providers
     /// are installed. See `TelemetryClient`.
     private let telemetry: TelemetryReporter
+    private let widgetSnapshots: WidgetSnapshotWriter
     private let scheduler: AutoRefreshScheduler
     private let claudeLimits: ClaudeLimitsControl?
 
@@ -31,7 +32,8 @@ final class AppState {
         defaults: UserDefaults = .standard,
         telemetryConfiguration: TelemetryConfiguration = .disabled,
         identity: InstallationIdentity = InstallationIdentity(),
-        claudeLimits: ClaudeLimitsControl? = nil
+        claudeLimits: ClaudeLimitsControl? = nil,
+        widgetSnapshots: WidgetSnapshotWriter = WidgetSnapshotWriter()
     ) {
         let providerPreferences = ProviderPreferences(defaults: defaults)
         let store = UsageStore(providers: providers, enabledProviders: providerPreferences.enabledProviders)
@@ -49,6 +51,7 @@ final class AppState {
         self.launchAtLogin = LaunchAtLogin()
         self.telemetry = TelemetryReporter(client: client, preferences: analyticsPreferences, identity: identity, defaults: defaults)
         self.claudeLimits = claudeLimits
+        self.widgetSnapshots = widgetSnapshots
         self.scheduler = AutoRefreshScheduler { [weak store] in
             await store?.refresh()
         }
@@ -153,6 +156,8 @@ final class AppState {
     private func storeDidChange() {
         let detected = detectedProviders
         Task { [telemetry] in await telemetry.providersDetected(detected) }
+        // The widget only ever sees what this writer publishes.
+        widgetSnapshots.update(states: store.states, enabledProviders: store.enabledProviders)
     }
 
     private func analyticsSharingChanged() {

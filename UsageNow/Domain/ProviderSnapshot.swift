@@ -47,10 +47,7 @@ struct ProviderSnapshot: Sendable, Equatable, Identifiable {
     /// The window closest to exhaustion, ignoring windows with unknown usage.
     var mostCriticalWindow: UsageWindow? {
         guard status == .available else { return nil }
-        return windows
-            .compactMap { window in window.usage.map { (window, $0) } }
-            .max { $0.1 < $1.1 }?
-            .0
+        return windows.mostRelevant
     }
 
     /// The date the displayed data is as fresh as: the quota capture time

@@ -20,7 +20,8 @@ The project uses Xcode’s folder-synchronized groups, so new files in `UsageNow
 - **Privacy is non-negotiable.** Provider data must never reach telemetry, and nothing is sent over the network without explicit design review.
 - **Test non-UI logic.** Normalization, thresholds, formatting, provider parsing, and store behavior all have unit tests (Swift Testing). Add tests alongside changes.
 - **Fabricated fixtures only.** Test data must be synthetic. Never commit real prompts, code, credentials, usernames, project names, session IDs, or account identifiers — and never samples copied from your own `~/.codex` or `~/.claude`. Tests must not depend on the developer’s real account.
-- **Localization.** User-facing strings live in `UsageNow/Resources/Localizable.xcstrings`. Xcode updates it when you build in the IDE; after command-line builds, run `scripts/sync-strings.sh`. Don’t localize product names (UsageNow, Codex, Claude Code).
+- **Respect the widget boundary.** Code in `Shared/` is compiled into the widget extension too, so it must never reach providers, credentials, processes, or the network. Anything that does belongs in `UsageNow/`.
+- **Localization.** User-facing strings live in `Shared/Resources/Localizable.xcstrings`. Xcode updates it when you build in the IDE; after command-line builds, run `scripts/sync-strings.sh`. Don’t localize product names (UsageNow, Codex, Claude Code).
 
 ## Pull requests
 

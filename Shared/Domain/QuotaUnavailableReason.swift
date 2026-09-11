@@ -4,7 +4,7 @@
 ///
 /// `nil` on a snapshot means there's nothing to explain: either quota is
 /// there, or the provider simply doesn't offer it.
-enum QuotaUnavailableReason: Sendable, Equatable {
+enum QuotaUnavailableReason: String, Sendable, Equatable, Codable {
     /// The saved sign-in is missing, expired, or was rejected.
     case signInExpired
     /// UsageNow wasn't allowed to read the sign-in.

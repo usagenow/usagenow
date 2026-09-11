@@ -5,7 +5,7 @@ import Foundation
 /// Providers decide which windows exist, and that changes over time and
 /// between plans. A snapshot may report any number of windows; nothing
 /// assumes a 5-hour or weekly window is present.
-enum UsageWindowKind: Sendable, Hashable {
+enum UsageWindowKind: Sendable, Hashable, Codable {
     case fiveHour
     case weekly
     /// A window of another length reported by an official source.
@@ -27,10 +27,20 @@ enum UsageWindowKind: Sendable, Hashable {
         case .custom(let minutes): minutes
         }
     }
+
+    // Stored as a plain length, so the shape survives new cases.
+    init(from decoder: any Decoder) throws {
+        self.init(durationMinutes: try decoder.singleValueContainer().decode(Int.self))
+    }
+
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(durationMinutes)
+    }
 }
 
 /// Quota usage within one rate-limit window.
-struct UsageWindow: Sendable, Equatable, Identifiable {
+struct UsageWindow: Sendable, Equatable, Identifiable, Codable {
     let kind: UsageWindowKind
     /// Narrows the window to part of the usage, such as one model family
     /// ("Opus"). Comes from the provider; not localized.
@@ -44,6 +54,19 @@ struct UsageWindow: Sendable, Equatable, Identifiable {
 }
 
 extension [UsageWindow] {
+    /// The window that matters most right now: the least left, and among
+    /// equally tight ones, the one resetting soonest. Windows with unknown
+    /// usage are ignored. Shared by the menu bar and the widget so both
+    /// agree on what "most relevant" means.
+    var mostRelevant: UsageWindow? {
+        compactMap { window in window.usage.map { (window, $0) } }
+            .min { left, right in
+                if left.1 != right.1 { return left.1 > right.1 }
+                return (left.0.resetsAt ?? .distantFuture) < (right.0.resetsAt ?? .distantFuture)
+            }?
+            .0
+    }
+
     /// Shortest windows first, then unscoped before scoped.
     func sortedForDisplay() -> [UsageWindow] {
         sorted {

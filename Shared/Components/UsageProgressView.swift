@@ -6,8 +6,8 @@ import SwiftUI
 /// Hidden from accessibility: the enclosing row describes the value.
 struct UsageProgressView: View {
     let usage: UsagePercentage?
-
-    @ScaledMetric(relativeTo: .body) private var height: CGFloat = 5
+    /// Thinner in the widget than in the popover.
+    var height: CGFloat = 5
     @Environment(\.colorSchemeContrast) private var contrast
 
     var body: some View {

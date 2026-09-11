@@ -26,6 +26,7 @@ Token and request counts are **local activity** observed in session files on thi
 - **macOS native.** SwiftUI and `MenuBarExtra`. Lives in the menu bar, not the Dock.
 - **Codex + Claude Code** side by side: usage limits, reset times, and daily token and request activity.
 - **Pick your providers.** Turn Codex and Claude Code on or off in Settings › Providers. A provider that’s off is never refreshed and never read from disk.
+- **Desktop widget.** Small and medium widgets showing what’s left at a glance.
 - **Local-first.** Your usage data stays on your Mac.
 - **Open source** under the MIT License.
 - **No accounts required.**
@@ -66,6 +67,31 @@ Turn it on in **Settings › General › Fetch Claude usage limits**. When limit
 
 Gemini CLI, DeepSeek, and Qwen are listed in Settings › Providers as **Coming soon**. They’re labels only: no integration, no credentials, and no network or file access.
 
+## Desktop widget
+
+UsageNow ships a WidgetKit extension with small and medium sizes.
+
+- **Small** is a glance: each enabled provider’s tightest window — the one with the least left — plus the next reset. With a single provider it expands to show the window name and reset time.
+- **Medium** gives each provider a column with its windows, remaining percentage, and reset times.
+- Disabled providers never appear, quota that isn’t available reads “Usage limits unavailable”, and old data stays visible with an “Updated … ago” note. No placeholder or fabricated values.
+
+**The widget never touches providers.** It can’t read `~/.codex` or `~/.claude`, open the keychain, run `codex app-server`, or call Anthropic. The main app publishes a sanitized snapshot to a shared App Group container, and the widget only renders that. The provider and credential code isn’t compiled into the widget target at all.
+
+### Enabling the widget locally
+
+The App Group needs a signing team, so ad-hoc builds run without it — the app works normally and the widget shows “Open UsageNow to load usage data.” With a team, build with:
+
+```sh
+xcodebuild -project UsageNow.xcodeproj -scheme UsageNow \
+    DEVELOPMENT_TEAM=YOURTEAMID \
+    USAGENOW_APP_GROUP=YOURTEAMID.group.com.usagenow.UsageNow \
+    USAGENOW_APP_ENTITLEMENTS=Config/UsageNow.entitlements \
+    USAGENOW_WIDGET_ENTITLEMENTS=Config/UsageNowWidget.entitlements \
+    build
+```
+
+The same four settings can be set once in Xcode’s build settings instead.
+
 ### Trying different states
 
 Real providers run by default. For development, mock providers accept a scenario at launch: `normal`, `high`, `critical`, `unavailable`, `notInstalled`, `notAuthenticated`, `failing`, or `loading`.
@@ -79,6 +105,9 @@ The shared scheme includes these as disabled launch arguments, which you can ena
 ## Architecture
 
 ```
+Shared/         Code in both the app and the widget: provider catalog,
+                usage models, formatters, widget snapshot, widget views
+UsageNowWidget/ The extension itself: entry point and timeline provider
 UsageNow/
   App/          Entry point and composition root (AppState)
   Domain/       Normalized models: ProviderSnapshot, UsageWindow, UsagePercentage, UsageLevel…
@@ -94,6 +123,7 @@ UsageNow/
 - **`ProviderCatalog`** is the single source of provider metadata — identifier, display name, artwork, and whether it’s available or on the roadmap.
 - **Providers** turn tool-specific data into a normalized `ProviderSnapshot` with any number of usage windows and optional plan, model, and activity. Views depend only on this normalized state and hide data a provider doesn’t have.
 - **`UsageStore`** refreshes all providers concurrently. It keeps the last good data when a refresh fails and exposes loading, empty, and per-provider error states.
+- **`WidgetSnapshotWriter`** is the only path from provider data to the widget. It drops disabled and not-installed providers, copies each display field explicitly, writes atomically, and reloads timelines only when the content changed.
 - **Telemetry** is opt-in and off by default. Clients only receive a small set of events (install, daily active, updated, Codex or Claude Code detected) with the app version, macOS version, and a random installation ID. They never have access to provider data. No analytics server is configured yet, so nothing is sent.
 
 ## Contributing

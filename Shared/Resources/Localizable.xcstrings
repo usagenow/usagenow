@@ -21,6 +21,9 @@
     "%@ plan" : {
 
     },
+    "%@ tokens today" : {
+
+    },
     "%@ usage" : {
       "comment" : "e.g. Weekly usage"
     },
@@ -175,6 +178,9 @@
     "Never includes prompts, tokens, project names, files, credentials, or coding activity." : {
 
     },
+    "Next reset" : {
+
+    },
     "No providers detected" : {
 
     },
@@ -191,6 +197,15 @@
 
     },
     "Open Source Licenses…" : {
+
+    },
+    "Open UsageNow" : {
+
+    },
+    "Open UsageNow to choose providers." : {
+
+    },
+    "Open UsageNow to load usage data." : {
 
     },
     "Privacy" : {
@@ -227,6 +242,9 @@
 
     },
     "Retry refreshing %@" : {
+
+    },
+    "See what’s left of your Codex and Claude Code limits." : {
 
     },
     "See what’s left. Keep building." : {
