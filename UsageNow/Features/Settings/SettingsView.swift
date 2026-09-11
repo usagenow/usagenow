@@ -213,7 +213,7 @@ struct AboutSettingsView: View {
 
             HStack(spacing: 18) {
                 Link(destination: AppInfo.website) { Text(verbatim: "usagenow.com") }
-                Link(destination: AppInfo.github) { Text(verbatim: "github.com/usagenow") }
+                Link(destination: AppInfo.x) { Text(verbatim: "@UsageNow") }
             }
             .font(.callout)
 
