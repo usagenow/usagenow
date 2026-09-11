@@ -180,7 +180,7 @@ struct ClaudeCodeProviderTests {
 
         let snapshot = try await provider(environment(dir), client: client, limitsEnabled: true).fetchSnapshot(trigger: .automatic)
 
-        #expect(await client.status == .working)
+        #expect(await client.availability == .available)
         #expect(snapshot.windows.map(\.kind) == [.fiveHour, .weekly, .weekly])
         #expect(snapshot.window(.fiveHour)?.usage?.displayValue == 37)
         #expect(snapshot.windows.last?.scope == "Opus")
@@ -198,7 +198,7 @@ struct ClaudeCodeProviderTests {
         let now: @Sendable () -> Date = { TestDates.noon }
 
         #expect(await client.windows(trigger: .automatic, now: now) == nil)
-        #expect(await client.status == .rejected)
+        #expect(await client.availability == .staleAuthentication)
         #expect(await client.windows(trigger: .automatic, now: now) == nil)
         #expect(await credentials.reads == 1)
 
@@ -215,20 +215,56 @@ struct ClaudeCodeProviderTests {
         _ = await client.windows(trigger: .automatic, now: now)
         _ = await client.windows(trigger: .automatic, now: now)
         #expect(await credentials.reads == 1)
-        #expect(await client.status == .accessDenied)
+        #expect(await client.availability == .keychainDenied)
         #expect(await transport.requests.isEmpty)
 
         _ = await client.windows(trigger: .manual, now: now)
         #expect(await credentials.reads == 2)
 
         await client.reset()
-        #expect(await client.status == .off)
+        #expect(await client.availability == .disabled)
+    }
+
+    @Test func availabilityMapsToShortUserFacingReasons() {
+        #expect(ClaudeQuotaAvailability.available.unavailableReason == nil)
+        #expect(ClaudeQuotaAvailability.disabled.unavailableReason == nil)
+        #expect(ClaudeQuotaAvailability.staleAuthentication.unavailableReason == .signInExpired)
+        #expect(ClaudeQuotaAvailability.keychainDenied.unavailableReason == .permissionDenied)
+        #expect(ClaudeQuotaAvailability.endpointUnavailable.unavailableReason == .temporarilyUnavailable)
+        #expect(ClaudeQuotaAvailability.unsupportedResponse.unavailableReason == .temporarilyUnavailable)
+    }
+
+    @Test func snapshotCarriesTheReasonWhenLimitsAreOn() async throws {
+        let dir = try TemporaryDirectory()
+        let client = ClaudeUsageLimitsClient(credentials: StubCredentials(token: nil, denied: true), transport: StubTransport(status: 200, body: "{}"))
+        let snapshot = try await provider(environment(dir), client: client, limitsEnabled: true).fetchSnapshot(trigger: .manual)
+        #expect(snapshot.windows.isEmpty)
+        #expect(snapshot.quotaUnavailableReason == .permissionDenied)
+    }
+
+    @Test func noReasonWhileTheExperimentalSettingIsOff() async throws {
+        let dir = try TemporaryDirectory()
+        let client = ClaudeUsageLimitsClient(credentials: StubCredentials(token: nil, denied: true), transport: StubTransport(status: 200, body: "{}"))
+        let snapshot = try await provider(environment(dir), client: client, limitsEnabled: false).fetchSnapshot(trigger: .manual)
+        #expect(snapshot.quotaUnavailableReason == nil)
+    }
+
+    @Test func unsupportedResponseIsReportedAsTemporarilyUnavailable() async throws {
+        let client = ClaudeUsageLimitsClient(credentials: StubCredentials(token: "fake-token"), transport: StubTransport(status: 200, body: "[1,2]"))
+        #expect(await client.windows(trigger: .manual, now: { TestDates.noon }) == nil)
+        #expect(await client.availability == .unsupportedResponse)
+    }
+
+    @Test func serverErrorIsReportedAsEndpointUnavailable() async throws {
+        let client = ClaudeUsageLimitsClient(credentials: StubCredentials(token: "fake-token"), transport: StubTransport(status: 503, body: ""))
+        #expect(await client.windows(trigger: .manual, now: { TestDates.noon }) == nil)
+        #expect(await client.availability == .endpointUnavailable)
     }
 
     @Test func missingSignInReportsStatus() async throws {
         let client = ClaudeUsageLimitsClient(credentials: StubCredentials(token: nil), transport: StubTransport(status: 200, body: "{}"))
         #expect(await client.windows(trigger: .manual, now: { TestDates.noon }) == nil)
-        #expect(await client.status == .notSignedIn)
+        #expect(await client.availability == .staleAuthentication)
     }
 
     @Test func automaticRefreshesReuseCacheForFiveMinutes() async throws {
@@ -279,7 +315,7 @@ struct ClaudeCodeProviderTests {
 
         #expect(await client.windows(trigger: .manual, now: { TestDates.noon }) == nil)
         #expect(await transport.requests.isEmpty)
-        #expect(await client.status == .signInExpired)
+        #expect(await client.availability == .staleAuthentication)
 
         // Automatic refreshes don't read the keychain again until a manual refresh.
         _ = await client.windows(trigger: .automatic, now: { TestDates.noon.addingTimeInterval(600) })

@@ -18,6 +18,8 @@ struct ProviderSnapshot: Sendable, Equatable, Identifiable {
     var recentModel: String? = nil
     /// Quota windows actually reported by the provider — zero, one, or many.
     var windows: [UsageWindow] = []
+    /// Set when quota is missing for a reason worth explaining.
+    var quotaUnavailableReason: QuotaUnavailableReason? = nil
     var activity: LocalActivity = .unknown
     /// When this snapshot was assembled.
     var updatedAt: Date

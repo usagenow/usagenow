@@ -16,7 +16,7 @@ struct SettingsView: View {
     let providerPreferences: ProviderPreferences
     let analyticsPreferences: AnalyticsPreferences
     let launchAtLogin: LaunchAtLogin
-    let claudeLimitsStatus: ClaudeLimitsStatusModel
+    let store: UsageStore
     let retryClaudeLimits: () -> Void
     @Bindable var navigation: SettingsNavigation
 
@@ -27,7 +27,7 @@ struct SettingsView: View {
                     preferences: preferences,
                     providerPreferences: providerPreferences,
                     launchAtLogin: launchAtLogin,
-                    claudeLimitsStatus: claudeLimitsStatus,
+                    store: store,
                     retryClaudeLimits: retryClaudeLimits
                 )
             }
@@ -52,8 +52,13 @@ struct GeneralSettingsView: View {
     @Bindable var preferences: AppPreferences
     let providerPreferences: ProviderPreferences
     let launchAtLogin: LaunchAtLogin
-    let claudeLimitsStatus: ClaudeLimitsStatusModel
+    let store: UsageStore
     let retryClaudeLimits: () -> Void
+
+    /// Why Claude quota is missing right now, if it is.
+    private var claudeQuotaIssue: QuotaUnavailableReason? {
+        store.states.first { $0.provider == .claudeCode }?.snapshot?.quotaUnavailableReason
+    }
 
     var body: some View {
         Form {
@@ -105,7 +110,7 @@ struct GeneralSettingsView: View {
                     Text("Fetch Claude usage limits")
                         Text("Fetch current Claude Code subscription limits directly from Anthropic using your existing Claude Code sign-in. This uses an undocumented Anthropic endpoint and may stop working without notice.")
                     }
-                    if preferences.fetchClaudeUsageLimits, let message = claudeLimitsStatus.status.message {
+                    if preferences.fetchClaudeUsageLimits, let message = claudeQuotaIssue?.message {
                         LabeledContent {
                             Button("Try Again", action: retryClaudeLimits)
                         } label: {
@@ -229,22 +234,17 @@ struct AboutSettingsView: View {
     }
 }
 
-extension ClaudeUsageLimitsClient.Status {
-    /// Explains why limits aren't shown. `nil` when there's nothing to explain.
-    var message: String? {
+extension QuotaUnavailableReason {
+    /// One short sentence saying what to do. Providers keep the detailed
+    /// diagnosis in their logs.
+    var message: String {
         switch self {
-        case .off, .working:
-            nil
-        case .accessDenied:
-            String(localized: "UsageNow wasn’t allowed to read your Claude Code sign-in from the keychain.")
-        case .notSignedIn:
-            String(localized: "No Claude Code sign-in was found in the keychain. Sign in by running claude in Terminal.")
         case .signInExpired:
-            String(localized: "The Claude Code sign-in saved in the keychain has expired. It’s renewed when you use Claude Code in Terminal; the Claude app doesn’t update it.")
-        case .rejected:
-            String(localized: "Anthropic didn’t accept the saved Claude Code sign-in. Sign in again by running claude in Terminal.")
-        case .unavailable:
-            String(localized: "Anthropic’s usage service didn’t respond. UsageNow will try again later.")
+            String(localized: "Refresh Claude Code from Terminal to view usage limits.")
+        case .permissionDenied:
+            String(localized: "Allow UsageNow to access your Claude Code sign-in in Keychain.")
+        case .temporarilyUnavailable:
+            String(localized: "Claude usage limits are temporarily unavailable.")
         }
     }
 }
@@ -257,7 +257,7 @@ extension ClaudeUsageLimitsClient.Status {
         providerPreferences: ProviderPreferences(defaults: defaults),
         analyticsPreferences: AnalyticsPreferences(defaults: defaults),
         launchAtLogin: LaunchAtLogin(),
-        claudeLimitsStatus: ClaudeLimitsStatusModel(),
+        store: PreviewFixtures.store(codex: .normal, claude: .normal),
         retryClaudeLimits: {},
         navigation: SettingsNavigation()
     )

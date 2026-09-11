@@ -12,7 +12,6 @@ final class AppState {
     let providerPreferences: ProviderPreferences
     let analyticsPreferences: AnalyticsPreferences
     let launchAtLogin: LaunchAtLogin
-    let claudeLimitsStatus = ClaudeLimitsStatusModel()
     let settingsNavigation = SettingsNavigation()
 
     /// Deliberately never given `store` or snapshots — only which providers
@@ -154,9 +153,6 @@ final class AppState {
     private func storeDidChange() {
         let detected = detectedProviders
         Task { [telemetry] in await telemetry.providersDetected(detected) }
-        if let client = claudeLimits?.client {
-            Task { [claudeLimitsStatus] in claudeLimitsStatus.status = await client.status }
-        }
     }
 
     private func analyticsSharingChanged() {
@@ -178,13 +174,6 @@ final class AppState {
             }
         }
     }
-}
-
-/// The experimental Claude limits status, for Settings.
-@Observable
-@MainActor
-final class ClaudeLimitsStatusModel {
-    var status: ClaudeUsageLimitsClient.Status = .off
 }
 
 /// Which Settings tab is shown. Lets the popover open a specific one.

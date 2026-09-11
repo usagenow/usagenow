@@ -25,7 +25,7 @@ struct UsageNowApp: App {
                 providerPreferences: appState.providerPreferences,
                 analyticsPreferences: appState.analyticsPreferences,
                 launchAtLogin: appState.launchAtLogin,
-                claudeLimitsStatus: appState.claudeLimitsStatus,
+                store: appState.store,
                 retryClaudeLimits: { appState.retryClaudeLimits() },
                 navigation: appState.settingsNavigation
             )

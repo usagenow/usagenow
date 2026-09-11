@@ -7,6 +7,8 @@ import Synchronization
 /// - Plan: the account profile Claude Code caches in its global config.
 /// - Quota: only through the experimental `ClaudeUsageLimitsClient`, when
 ///   the user turned it on. Otherwise no windows are reported.
+///
+/// UsageNow never refreshes, modifies, or stores Claude Code credentials.
 struct ClaudeCodeProvider: UsageProvider {
     let id: ProviderID = .claudeCode
 
@@ -46,8 +48,10 @@ struct ClaudeCodeProvider: UsageProvider {
         }
 
         var limits: QuotaCache<[UsageWindow]>.Entry?
+        var availability = ClaudeQuotaAvailability.disabled
         if let limitsClient, limitsEnabled.isOn, profile.isSignedIn {
             limits = await limitsClient.windows(trigger: trigger, now: now)
+            availability = await limitsClient.availability
         }
         // A window that reset since it was fetched no longer tells current usage.
         let windows = limits?.value.filter { ($0.resetsAt ?? .distantFuture) > date } ?? []
@@ -58,6 +62,7 @@ struct ClaudeCodeProvider: UsageProvider {
             planName: profile.planName,
             recentModel: activity.activity.latestModel,
             windows: windows,
+            quotaUnavailableReason: windows.isEmpty ? availability.unavailableReason : nil,
             activity: LocalActivity(tokensToday: activity.activity.tokens, requestsToday: activity.activity.requests),
             updatedAt: date,
             limitsUpdatedAt: windows.isEmpty ? nil : limits?.fetchedAt

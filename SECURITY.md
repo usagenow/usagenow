@@ -22,7 +22,7 @@ UsageNow is local-first:
 
 - Usage data stays on your Mac. Nothing from `~/.codex` or `~/.claude` is sent to UsageNow servers.
 - UsageNow never reads Codex credentials; the official Codex app-server authenticates itself.
-- The experimental Claude usage limits feature (off by default) reads the Claude Code OAuth access token from the keychain only after you enable it. The token stays in memory, is sent only to `api.anthropic.com`, and is never logged, stored, refreshed, or modified.
+- **UsageNow never refreshes, modifies, or stores your Claude Code credentials.** The experimental Claude usage limits feature (off by default) reads the existing access token from the keychain only after you enable it. The token stays in memory, is sent only to `api.anthropic.com`, and is never logged or written anywhere.
 - Session files are read for timestamps, identifiers, model names, and token counts only. Prompts, responses, tool inputs, and code are never stored or logged.
 - Optional analytics are off by default and never include prompts, conversation or session contents, source code, project names, file paths, credentials, token or request values, quotas, models, or plans.
 

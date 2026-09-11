@@ -85,10 +85,7 @@
     "Allow UsageNow in System Settings to finish setup." : {
 
     },
-    "Anthropic didn’t accept the saved Claude Code sign-in. Sign in again by running claude in Terminal." : {
-
-    },
-    "Anthropic’s usage service didn’t respond. UsageNow will try again later." : {
+    "Allow UsageNow to access your Claude Code sign-in in Keychain." : {
 
     },
     "Appearance" : {
@@ -107,6 +104,9 @@
 
     },
     "Claude Code usage" : {
+
+    },
+    "Claude usage limits are temporarily unavailable." : {
 
     },
     "Claude usage limits — Experimental" : {
@@ -175,9 +175,6 @@
     "Never includes prompts, tokens, project names, files, credentials, or coding activity." : {
 
     },
-    "No Claude Code sign-in was found in the keychain. Sign in by running claude in Terminal." : {
-
-    },
     "No providers detected" : {
 
     },
@@ -209,6 +206,9 @@
 
     },
     "Refresh" : {
+
+    },
+    "Refresh Claude Code from Terminal to view usage limits." : {
 
     },
     "Refresh interval" : {
@@ -245,9 +245,6 @@
 
     },
     "System" : {
-
-    },
-    "The Claude Code sign-in saved in the keychain has expired. It’s renewed when you use Claude Code in Terminal; the Claude app doesn’t update it." : {
 
     },
     "The UsageNow name, logo, icon, and other brand assets are not covered by the MIT License." : {
@@ -287,9 +284,6 @@
 
     },
     "UsageNow is local-first. Your usage data stays on this Mac." : {
-
-    },
-    "UsageNow wasn’t allowed to read your Claude Code sign-in from the keychain." : {
 
     },
     "Version %@ (%@)" : {

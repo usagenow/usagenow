@@ -50,9 +50,17 @@ xcodebuild -project UsageNow.xcodeproj -scheme UsageNow test
 
 - **Codex:** limits and plan come from the official Codex CLI’s app-server (`codex app-server`, `account/rateLimits/read`), which UsageNow runs locally. The app-server authenticates itself, so UsageNow never reads Codex credentials. If it’s unavailable, UsageNow falls back to the latest limits recorded in `~/.codex/sessions` and marks them as stale.
 - **Claude Code:** activity comes from `~/.claude/projects`, and the plan from `~/.claude.json`. Only timestamps, identifiers, model names, and token counts are extracted. Prompts, responses, and code are never stored, logged, or sent anywhere.
-- **Claude usage limits (experimental, off by default):** Claude Code doesn’t store its limits locally. When you turn on **Settings › General › Fetch Claude usage limits**, UsageNow reads your Claude Code sign-in from the keychain (macOS asks for permission) and queries Anthropic’s undocumented usage endpoint directly. The token stays in memory and is only sent to Anthropic. This may stop working without notice.
+- **Claude usage limits:** experimental and off by default — see below.
 
 UsageNow honors `CODEX_HOME` and `CLAUDE_CONFIG_DIR` when they’re set.
+
+### Claude Code usage limits
+
+Claude Code does not currently expose subscription limits through a supported local API. UsageNow can optionally read the existing Claude Code access token from macOS Keychain and query Anthropic’s usage endpoint. This integration is experimental and may require launching Claude Code in Terminal periodically to refresh your session.
+
+**UsageNow never refreshes, modifies, or stores your Claude Code credentials.**
+
+Turn it on in **Settings › General › Fetch Claude usage limits**. When limits can’t be fetched, UsageNow says why in one line — the session needs refreshing, keychain access was denied, or Anthropic’s endpoint didn’t answer — and keeps showing local token, request, model, and plan data.
 
 ### Roadmap providers
 

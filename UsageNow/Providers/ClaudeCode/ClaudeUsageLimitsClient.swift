@@ -22,25 +22,12 @@ import Security
 actor ClaudeUsageLimitsClient {
     static let endpoint = URL(string: "https://api.anthropic.com/api/oauth/usage")!
 
-    /// Why limits are or aren't shown. Safe to display and log.
-    enum Status: Sendable, Equatable {
-        case off
-        case working
-        case accessDenied
-        case notSignedIn
-        /// The sign-in saved in the keychain has expired. Claude Code renews
-        /// it when it runs; UsageNow never does.
-        case signInExpired
-        case rejected
-        case unavailable
-    }
-
     enum ClientError: Error {
         case rateLimited
         case unexpectedStatus(Int)
     }
 
-    private(set) var status: Status = .off
+    private(set) var availability: ClaudeQuotaAvailability = .disabled
 
     private let credentials: any ClaudeCredentialSource
     private let transport: any HTTPTransport
@@ -70,7 +57,7 @@ actor ClaudeUsageLimitsClient {
     func reset() async {
         token = nil
         keychainNeedsManualRetry = false
-        update(.off)
+        update(.disabled)
         await cache.clear()
     }
 
@@ -89,7 +76,7 @@ actor ClaudeUsageLimitsClient {
         do {
             (data, response) = try await transport.send(request)
         } catch {
-            update(.unavailable)
+            update(.endpointUnavailable)
             throw error
         }
         Log.provider.info("Claude usage limits: HTTP \(response.statusCode, privacy: .public)")
@@ -97,25 +84,26 @@ actor ClaudeUsageLimitsClient {
         switch response.statusCode {
         case 200:
             guard let windows = ClaudeUsageLimitsParser.windows(from: data) else {
-                update(.unavailable)
+                update(.unsupportedResponse)
                 return .none
             }
-            update(.working)
+            update(.available)
             return .value(windows)
         case 401, 403:
-            // Rejected. Claude Code renews its own credential; read it again after a manual refresh.
+            // Rejected. Claude Code renews its own credential when it runs;
+            // UsageNow never does. Read the keychain again after a manual refresh.
             self.token = nil
             keychainNeedsManualRetry = true
-            update(.rejected)
+            update(.staleAuthentication)
             return .none
         case 404:
-            update(.unavailable)
+            update(.endpointUnavailable)
             return .none
         case 429:
-            update(.unavailable)
+            update(.endpointUnavailable)
             throw ClientError.rateLimited
         default:
-            update(.unavailable)
+            update(.endpointUnavailable)
             throw ClientError.unexpectedStatus(response.statusCode)
         }
     }
@@ -133,24 +121,50 @@ actor ClaudeUsageLimitsClient {
         case .found(let expired):
             let expiry = expired.expiresAt?.formatted(.iso8601) ?? "unknown"
             Log.provider.info("Claude usage limits: keychain sign-in expired at \(expiry, privacy: .public)")
-            fail(with: .signInExpired)
+            fail(with: .staleAuthentication)
         case .notFound:
-            fail(with: .notSignedIn)
+            fail(with: .staleAuthentication)
         case .accessDenied:
-            fail(with: .accessDenied)
+            fail(with: .keychainDenied)
         }
         return nil
     }
 
-    private func fail(with status: Status) {
+    private func fail(with availability: ClaudeQuotaAvailability) {
         keychainNeedsManualRetry = true
-        update(status)
+        update(availability)
     }
 
-    private func update(_ newStatus: Status) {
-        guard newStatus != status else { return }
-        status = newStatus
-        Log.provider.info("Claude usage limits: \(String(describing: newStatus), privacy: .public)")
+    private func update(_ newAvailability: ClaudeQuotaAvailability) {
+        guard newAvailability != availability else { return }
+        availability = newAvailability
+        Log.provider.info("Claude usage limits: \(String(describing: newAvailability), privacy: .public)")
+    }
+}
+
+/// Why Claude quota is or isn't available, in detail. Kept for logs and
+/// diagnosis; the UI shows the shorter `QuotaUnavailableReason`.
+enum ClaudeQuotaAvailability: Sendable, Equatable {
+    case available
+    /// The experimental setting is off, or Claude Code isn't tracked.
+    case disabled
+    /// No saved sign-in, or it expired or was rejected. Claude Code renews
+    /// it when it runs in Terminal; UsageNow never does.
+    case staleAuthentication
+    case keychainDenied
+    /// Anthropic's usage endpoint didn't answer, or answered with an error.
+    case endpointUnavailable
+    /// The endpoint answered in a shape UsageNow doesn't understand.
+    case unsupportedResponse
+
+    /// What the user is told. Several internal cases share one plain message.
+    var unavailableReason: QuotaUnavailableReason? {
+        switch self {
+        case .available, .disabled: nil
+        case .staleAuthentication: .signInExpired
+        case .keychainDenied: .permissionDenied
+        case .endpointUnavailable, .unsupportedResponse: .temporarilyUnavailable
+        }
     }
 }
 
