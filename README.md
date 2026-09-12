@@ -72,7 +72,7 @@ Claude Code does not currently expose subscription limits through a supported lo
 
 **UsageNow never modifies or stores your Claude Code credentials, and never touches your refresh token.** When the saved sign-in has expired, it asks the Claude Code CLI to renew its own credential — the same delegation used for Codex, where `codex app-server` authenticates itself — and then reads the keychain again. If the CLI isn't installed or can't renew, UsageNow says so and keeps showing local activity.
 
-Turn it on in **Settings › General › Fetch Claude usage limits**. When limits can’t be fetched, UsageNow says why in one line — the session needs refreshing, keychain access was denied, or Anthropic’s endpoint didn’t answer — and keeps showing local token, request, model, and plan data.
+Turn it on in **Settings › General › Fetch Claude usage limits**. When limits can’t be fetched, UsageNow says why in one line — the session needs refreshing, keychain access was denied, or Anthropic’s endpoint didn’t answer — and keeps showing local token, request, model, and plan data. The last limits it did read stay on screen for a day, marked stale, so a sign-in that expires overnight doesn’t leave an empty panel in the morning.
 
 ### Roadmap providers
 

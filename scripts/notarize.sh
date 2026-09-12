@@ -25,8 +25,20 @@ MESSAGE
     exit 1
 fi
 
+# The notary service accepts only .zip, .pkg and .dmg, so an app bundle is
+# submitted as a zip. The ticket is stapled to the bundle itself afterwards.
+SUBMISSION="$ARTIFACT"
+case "$ARTIFACT" in
+*.app)
+    STAGING=$(mktemp -d)
+    trap 'rm -rf "$STAGING"' EXIT
+    SUBMISSION="$STAGING/$(basename "$ARTIFACT").zip"
+    /usr/bin/ditto -c -k --keepParent "$ARTIFACT" "$SUBMISSION"
+    ;;
+esac
+
 echo "==> Submitting $(basename "$ARTIFACT") for notarization"
-xcrun notarytool submit "$ARTIFACT" --keychain-profile "$PROFILE" --wait
+xcrun notarytool submit "$SUBMISSION" --keychain-profile "$PROFILE" --wait
 
 echo "==> Stapling the ticket"
 xcrun stapler staple "$ARTIFACT"

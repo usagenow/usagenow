@@ -9,6 +9,7 @@ AI coding usage tracker for macOS. Monitor usage, limits, reset times, and token
 - **Providers settings.** Track Codex and Claude Code independently. A provider that's off is never refreshed or read from disk.
 - **Claude usage limits** (experimental, off by default). Uses your existing Claude Code sign-in. UsageNow never modifies or stores those credentials; when the saved sign-in has expired it asks the Claude Code CLI to renew its own.
 - **Appearance** — Light, Dark, or System — and menu bar display modes.
+- **Limits don't vanish.** When a provider can't be reached, the last known limits stay for a day, marked stale, instead of leaving an empty panel.
 - Usage reads as what's **left** ("58% left"), and a limit window that a provider doesn't report is never invented.
 
 ## Privacy

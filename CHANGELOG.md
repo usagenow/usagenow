@@ -20,6 +20,7 @@ All notable changes to UsageNow. This project follows [Semantic Versioning](http
 - Usage is shown as what's left ("58% left"), and bars shrink as usage grows.
 - Quota windows are whatever a provider reports — an account may have only a weekly window — and a missing window is never invented.
 - When quota can't be fetched, UsageNow says why in one line instead of a blanket message.
+- A quota that can't be read right now — an expired sign-in, a denied keychain, an endpoint that didn't answer — no longer blanks the display. The last known limits stay for a day, shown as stale, so an overnight expiry doesn't leave an empty menu bar in the morning. Only an account that genuinely has no limits clears them.
 
 ## 0.1.0
 
