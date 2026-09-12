@@ -324,6 +324,49 @@ struct ClaudeCodeProviderTests {
 
     // MARK: Letting Claude Code renew its own sign-in
 
+    @Test func lastKnownLimitsSurviveAnExpiredSignIn() async throws {
+        // Yesterday evening it worked; overnight the sign-in expired.
+        let credentials = SequencedCredentials([
+            .found(ClaudeOAuthToken(value: "fresh", expiresAt: TestDates.noon.addingTimeInterval(3_600))),
+            .found(ClaudeOAuthToken(value: "stale", expiresAt: TestDates.noon.addingTimeInterval(-60))),
+        ])
+        let clock = TestClock(TestDates.noon)
+        let client = ClaudeUsageLimitsClient(
+            credentials: credentials,
+            transport: StubTransport(status: 200, body: ClaudeUsageFixture.full),
+            minimumInterval: 0,
+            requestSignInRefresh: { false },
+            now: { clock.now }
+        )
+
+        #expect(await client.windows(trigger: .automatic, now: { clock.now })?.value.count == 3)
+
+        clock.advance(by: 9 * 3_600)
+        let morning = await client.windows(trigger: .automatic, now: { clock.now })
+        #expect(morning?.value.count == 3, "The widget should show yesterday's values as stale, not nothing")
+        #expect(morning?.fetchedAt == TestDates.noon)
+        #expect(await client.availability == .staleAuthentication)
+    }
+
+    @Test func limitsAgeOutAfterADay() async throws {
+        let credentials = SequencedCredentials([
+            .found(ClaudeOAuthToken(value: "fresh", expiresAt: TestDates.noon.addingTimeInterval(3_600))),
+            .found(ClaudeOAuthToken(value: "stale", expiresAt: TestDates.noon.addingTimeInterval(-60))),
+        ])
+        let clock = TestClock(TestDates.noon)
+        let client = ClaudeUsageLimitsClient(
+            credentials: credentials,
+            transport: StubTransport(status: 200, body: ClaudeUsageFixture.full),
+            minimumInterval: 0,
+            requestSignInRefresh: { false },
+            now: { clock.now }
+        )
+        _ = await client.windows(trigger: .automatic, now: { clock.now })
+
+        clock.advance(by: 25 * 3_600)
+        #expect(await client.windows(trigger: .automatic, now: { clock.now }) == nil)
+    }
+
     @Test func expiredSignInIsHandedBackToClaudeCode() async throws {
         // Expired at first; the CLI "renews" it and the second read succeeds.
         let credentials = SequencedCredentials([

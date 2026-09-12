@@ -44,7 +44,7 @@ struct ClaudeSignInRefresher: Sendable {
         do {
             try process.run()
         } catch {
-            Log.provider.info("Claude Code CLI couldn’t be started")
+            Log.provider.notice("Claude Code CLI couldn’t be started")
             return false
         }
 
@@ -57,7 +57,11 @@ struct ClaudeSignInRefresher: Sendable {
 
         await running.waitUntilExit()
         let succeeded = running.terminationStatus == 0
-        Log.provider.info("Asked Claude Code to refresh its sign-in: \(succeeded ? "ok" : "failed", privacy: .public)")
+        // Kept at notice level so a failed overnight renewal is still in the log.
+        Log.provider.notice("""
+            Asked Claude Code (\(executable.lastPathComponent, privacy: .public)) to renew its sign-in: \
+            exit \(running.terminationStatus, privacy: .public)
+            """)
         return succeeded
     }
 }

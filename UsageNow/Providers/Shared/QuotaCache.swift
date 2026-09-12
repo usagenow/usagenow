@@ -3,9 +3,14 @@ import Foundation
 /// The outcome of asking a quota source for data.
 enum QuotaFetchResult<Value: Sendable>: Sendable {
     case value(Value)
-    /// The source has no quota for this account — for example signed out
-    /// or credentials rejected. Clears anything cached.
+    /// This account has no quota to report — for example an API-key
+    /// account with no subscription limits. Clears anything cached.
     case none
+    /// Quota exists but couldn't be read right now: an expired sign-in,
+    /// denied keychain access, or an endpoint that didn't answer. Anything
+    /// cached stays, so the UI can show the last known values as stale
+    /// rather than showing nothing at all.
+    case unavailable
 }
 
 /// Caches a quota source's latest result and limits how often it's queried.
@@ -68,6 +73,7 @@ actor QuotaCache<Value: Sendable> {
             switch try await fetch() {
             case .value(let value): entry = Entry(value: value, fetchedAt: now())
             case .none: entry = nil
+            case .unavailable: break // Keep the last good value; it ages out after `retention`.
             }
         } catch {
             // Keep the previous value; it ages out after `retention`.

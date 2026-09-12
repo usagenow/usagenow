@@ -15,7 +15,8 @@ import Security
 ///   refreshed, or modified, and it's sent only to api.anthropic.com.
 /// - Results are cached; automatic refreshes query at most every 5 minutes,
 ///   and only one request runs at a time.
-/// - Any failure means "no limits"; local activity keeps working.
+/// - A failure never blanks the display: the last good values stay for a
+///   day, shown as stale. Local activity keeps working regardless.
 /// - After a keychain read fails (access denied, no sign-in, expired
 ///   sign-in), automatic refreshes don't read the keychain again — so macOS
 ///   doesn't keep asking. A manual refresh or re-enabling tries again.
@@ -73,7 +74,7 @@ actor ClaudeUsageLimitsClient {
     }
 
     private func fetch(now: Date) async throws -> QuotaFetchResult<[UsageWindow]> {
-        guard let token = try await validToken(at: now) else { return .none }
+        guard let token = try await validToken(at: now) else { return .unavailable }
 
         var request = URLRequest(url: Self.endpoint)
         request.httpMethod = "GET"
@@ -96,7 +97,7 @@ actor ClaudeUsageLimitsClient {
         case 200:
             guard let windows = ClaudeUsageLimitsParser.windows(from: data) else {
                 update(.unsupportedResponse)
-                return .none
+                return .unavailable
             }
             update(.available)
             return .value(windows)
@@ -106,10 +107,10 @@ actor ClaudeUsageLimitsClient {
             self.token = nil
             keychainNeedsManualRetry = true
             update(.staleAuthentication)
-            return .none
+            return .unavailable
         case 404:
             update(.endpointUnavailable)
-            return .none
+            return .unavailable
         case 429:
             update(.endpointUnavailable)
             throw ClientError.rateLimited
@@ -133,7 +134,7 @@ actor ClaudeUsageLimitsClient {
             return found
         case .found(let expired):
             let expiry = expired.expiresAt?.formatted(.iso8601) ?? "unknown"
-            Log.provider.info("Claude usage limits: keychain sign-in expired at \(expiry, privacy: .public)")
+            Log.provider.notice("Claude usage limits: keychain sign-in expired at \(expiry, privacy: .public)")
             return try await renewedToken(at: now)
         case .notFound:
             return try await renewedToken(at: now)
@@ -176,7 +177,7 @@ actor ClaudeUsageLimitsClient {
     private func update(_ newAvailability: ClaudeQuotaAvailability) {
         guard newAvailability != availability else { return }
         availability = newAvailability
-        Log.provider.info("Claude usage limits: \(String(describing: newAvailability), privacy: .public)")
+        Log.provider.notice("Claude usage limits: \(String(describing: newAvailability), privacy: .public)")
     }
 }
 
