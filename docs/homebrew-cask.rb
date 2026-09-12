@@ -8,7 +8,7 @@
 
 cask "usagenow" do
   version "0.2.0"
-  sha256 "FILL_IN_FROM_THE_FINAL_DMG"
+  sha256 "15b7ce8c26770e9d401df494aa842691b7fb242f04a0849cd3802465a734d4bc"
 
   url "https://github.com/usagenow/usagenow/releases/download/v#{version}/UsageNow-#{version}.dmg",
       verified: "github.com/usagenow/usagenow/"

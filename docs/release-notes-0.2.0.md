@@ -22,4 +22,4 @@ Download `UsageNow-0.2.0.dmg` and drag UsageNow to Applications, or `brew instal
 
 Requires macOS 15 or later. Signed with a Developer ID and notarized by Apple.
 
-**SHA-256:** `FILL_IN_FROM_THE_FINAL_DMG`
+**SHA-256:** `15b7ce8c26770e9d401df494aa842691b7fb242f04a0849cd3802465a734d4bc`
