@@ -27,13 +27,19 @@ hdiutil create -srcfolder "$STAGING" -volname "$VOLUME" -fs HFS+ \
     -format UDRW -ov "$TEMP_DMG" -quiet
 
 echo "==> Arranging the Finder window"
-# Finder ignores volumes mounted with -nobrowse, so mount it normally.
-hdiutil attach "$TEMP_DMG" -quiet
-MOUNT_DIR="/Volumes/$VOLUME"
-for _ in 1 2 3 4 5; do [ -d "$MOUNT_DIR" ] && break; sleep 1; done
+# Finder ignores volumes mounted with -nobrowse, so mount it normally. macOS
+# renames a volume whose name is already taken ("UsageNow 0.2.0 1"), so read
+# the mount point back instead of assuming it.
+ATTACH_PLIST=$(mktemp)
+trap 'rm -f "$ATTACH_PLIST"' EXIT
+hdiutil attach "$TEMP_DMG" -plist > "$ATTACH_PLIST"
+MOUNT_DIR=$(/usr/libexec/PlistBuddy -c "Print :system-entities" "$ATTACH_PLIST" |
+    sed -n 's/^ *mount-point = //p' | head -1)
+[ -d "$MOUNT_DIR" ] || { echo "error: the image didn't mount" >&2; exit 1; }
+MOUNTED_VOLUME=$(basename "$MOUNT_DIR")
 osascript <<APPLESCRIPT || echo "warning: couldn't style the window (needs permission to control Finder); the image is still valid" >&2
 tell application "Finder"
-    tell disk "$VOLUME"
+    tell disk "$MOUNTED_VOLUME"
         open
         set current view of container window to icon view
         set toolbar visible of container window to false
@@ -55,7 +61,12 @@ APPLESCRIPT
 # Hide the helpers so the window shows only the app and the shortcut.
 chflags hidden "$MOUNT_DIR/.background" 2>/dev/null || true
 sync
-hdiutil detach "$MOUNT_DIR" -quiet
+# Finder can still hold the volume for a moment after closing the window.
+for attempt in 1 2 3 4 5; do
+    hdiutil detach "$MOUNT_DIR" -quiet && break
+    [ "$attempt" = 5 ] && { echo "error: couldn't unmount $MOUNT_DIR" >&2; exit 1; }
+    sleep 2
+done
 
 echo "==> Compressing"
 hdiutil convert "$TEMP_DMG" -format UDZO -imagekey zlib-level=9 -o "$DMG" -quiet
