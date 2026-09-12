@@ -48,7 +48,7 @@ final class TelemetryReporter {
         let reportedVersion = defaults.string(forKey: Key.lastReportedVersion)
         defaults.set(version, forKey: Key.lastReportedVersion)
         switch reportedVersion {
-        case nil: await client.send(.install)
+        case nil: await client.send(.firstLaunch)
         case let reported? where reported != version: await client.send(.appUpdated)
         default: break
         }

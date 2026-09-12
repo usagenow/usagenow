@@ -82,6 +82,9 @@
     "5-hour" : {
 
     },
+    "AI coding usage tracker for macOS" : {
+
+    },
     "About" : {
 
     },
@@ -113,6 +116,9 @@
 
     },
     "Claude usage limits — Experimental" : {
+
+    },
+    "Codex and Claude Code usage at a glance." : {
 
     },
     "Codex usage" : {
@@ -242,12 +248,6 @@
 
     },
     "Retry refreshing %@" : {
-
-    },
-    "See what’s left of your Codex and Claude Code limits." : {
-
-    },
-    "See what’s left. Keep building." : {
 
     },
     "Settings…" : {

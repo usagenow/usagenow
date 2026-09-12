@@ -5,5 +5,8 @@
 	<!-- Merged with the generated Info.plist. Everything else comes from build settings. -->
 	<key>UsageNowAppGroupIdentifier</key>
 	<string>$(USAGENOW_APP_GROUP)</string>
+	<!-- Empty unless a release sets USAGENOW_TELEMETRY_ENDPOINT; empty means telemetry is off. -->
+	<key>UsageNowTelemetryEndpoint</key>
+	<string>$(USAGENOW_TELEMETRY_ENDPOINT)</string>
 </dict>
 </plist>

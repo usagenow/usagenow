@@ -23,7 +23,7 @@ struct UsageNowWidget: Widget {
             UsageNowWidgetEntryView(entry: entry)
         }
         .configurationDisplayName(Text(verbatim: AppInfo.name))
-        .description(Text("See what’s left of your Codex and Claude Code limits."))
+        .description(Text("Codex and Claude Code usage at a glance."))
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }

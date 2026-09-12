@@ -8,18 +8,38 @@ struct TelemetryConfiguration: Sendable, Equatable {
 
     static let disabled = TelemetryConfiguration(endpoint: nil)
 
-    /// No production endpoint exists yet, so release builds send nothing.
-    /// Debug builds can target a local server for development:
-    /// `-UsageNowTelemetryEndpoint http://localhost:8787/v1/events`
-    static func current(defaults: UserDefaults = .standard) -> TelemetryConfiguration {
+    /// The endpoint the build was configured with, from the
+    /// `USAGENOW_TELEMETRY_ENDPOINT` build setting. It's empty by default,
+    /// so a release built today sends nothing at all rather than pointing
+    /// at a placeholder.
+    ///
+    /// Debug builds can additionally target a local server without
+    /// rebuilding: `-UsageNowTelemetryEndpoint http://localhost:8787/v1/events`.
+    /// That override never applies to release builds.
+    static func current(
+        bundle: Bundle = .main,
+        defaults: UserDefaults = .standard
+    ) -> TelemetryConfiguration {
         #if DEBUG
-        if let value = defaults.string(forKey: "UsageNowTelemetryEndpoint"),
-           let url = URL(string: value),
-           url.scheme == "http" || url.scheme == "https" {
-            return TelemetryConfiguration(endpoint: url)
+        if let override = endpoint(from: defaults.string(forKey: "UsageNowTelemetryEndpoint")) {
+            return TelemetryConfiguration(endpoint: override)
         }
         #endif
-        return .disabled
+        return TelemetryConfiguration(
+            endpoint: endpoint(from: bundle.object(forInfoDictionaryKey: "UsageNowTelemetryEndpoint") as? String)
+        )
+    }
+
+    /// Accepts only an absolute https URL. Anything else disables telemetry.
+    static func endpoint(from value: String?) -> URL? {
+        guard let value, !value.isEmpty, let url = URL(string: value) else { return nil }
+        #if DEBUG
+        let allowedSchemes = ["https", "http"]
+        #else
+        let allowedSchemes = ["https"]
+        #endif
+        guard let scheme = url.scheme, allowedSchemes.contains(scheme), url.host != nil else { return nil }
+        return url
     }
 }
 

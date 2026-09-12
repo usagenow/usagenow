@@ -213,7 +213,7 @@ struct AboutSettingsView: View {
                     .textSelection(.enabled)
             }
 
-            Text(AppInfo.tagline)
+            Text(AppInfo.summary)
                 .foregroundStyle(.secondary)
 
             HStack(spacing: 18) {

@@ -2,15 +2,27 @@
 
 # UsageNow
 
-**See what’s left. Keep building.**
+**AI coding usage tracker for macOS.** Monitor usage, limits, reset times, and token activity across Codex and Claude Code, from the menu bar.
 
-A native macOS menu bar app for tracking Codex and Claude Code usage, limits, reset times, and token activity.
+*See what's left. Keep building.*
 
-Website: [usagenow.com](https://usagenow.com)
+[usagenow.com](https://usagenow.com) · [Documentation](https://docs.usagenow.com) · [Download](https://usagenow.com/download)
 
-## Current status
+## Install
 
-Early development. UsageNow reads real Codex and Claude Code data from your Mac. Which data is available depends on the tool:
+Download **UsageNow-0.2.0.dmg** from [usagenow.com/download](https://usagenow.com/download) or the [releases page](https://github.com/usagenow/usagenow/releases), then drag UsageNow to Applications.
+
+With Homebrew:
+
+```sh
+brew install --cask usagenow
+```
+
+Requires macOS 15 or later. The app is signed with a Developer ID and notarized by Apple.
+
+## What it reads
+
+UsageNow reads real Codex and Claude Code data from your Mac. Which data is available depends on the tool:
 
 | | Codex | Claude Code |
 |---|---|---|
@@ -33,12 +45,9 @@ Token and request counts are **local activity** observed in session files on thi
 - **Open source** under the MIT License.
 - **No accounts required.**
 
-## Requirements
-
-- macOS 15 or later
-- Xcode 26 or later to build
-
 ## Building
+
+Requires macOS 15 or later and Xcode 26 or later.
 
 Clone the repository, open `UsageNow.xcodeproj`, and run the **UsageNow** scheme. The UsageNow symbol appears in the menu bar; click it to open the popover.
 

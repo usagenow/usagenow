@@ -86,9 +86,46 @@ struct NetworkTelemetryClientTests {
         #expect(UUID(uuidString: json["installation_id"] ?? "") != nil)
     }
 
+    /// The payload is the only thing that leaves the Mac, so its shape is
+    /// pinned: no future change may add a field without failing this test.
+    @Test func everyEventSendsTheSameSafeFields() async throws {
+        for event in TelemetryEvent.allCases {
+            let transport = StubTransport(status: 204, body: "")
+            await client(endpoint: endpoint, enabled: true, transport: transport).send(event)
+            let body = try #require(await transport.requests.first?.httpBody)
+            let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: String])
+            #expect(Set(json.keys) == ["event", "installation_id", "app_version", "build", "macos_version", "architecture", "timestamp"])
+            #expect(json["event"] == event.rawValue)
+        }
+    }
+
+    @Test func eventNamesAreStable() {
+        #expect(Set(TelemetryEvent.allCases.map(\.rawValue)) == [
+            "first_launch", "app_active", "app_updated", "codex_detected", "claude_detected",
+        ])
+    }
+
+    @Test(arguments: [
+        "https://telemetry.example.invalid/v1/events",
+        "",
+        "not a url",
+        "ftp://telemetry.example.invalid/v1/events",
+        "/v1/events",
+    ])
+    func onlyAbsoluteWebEndpointsAreAccepted(value: String) {
+        let url = TelemetryConfiguration.endpoint(from: value)
+        #expect((url != nil) == value.hasPrefix("https://"))
+    }
+
+    @Test func noEndpointIsConfiguredByDefault() {
+        // A release built from this repository sends nothing until an
+        // endpoint is set through USAGENOW_TELEMETRY_ENDPOINT.
+        #expect(TelemetryConfiguration.endpoint(from: nil) == nil)
+    }
+
     @Test func failuresAreSilent() async {
         let transport = StubTransport(status: 500, body: "")
-        await client(endpoint: endpoint, enabled: true, transport: transport).send(.install)
+        await client(endpoint: endpoint, enabled: true, transport: transport).send(.firstLaunch)
         #expect(await transport.requests.count == 1)
     }
 }
@@ -139,11 +176,11 @@ struct TelemetryReporterTests {
         let (first, _) = reporter(client: client, defaults: defaults, sharing: true)
         await first.appDidBecomeActive()
         await first.appDidBecomeActive() // same day
-        #expect(await client.events == [.install, .appActive])
+        #expect(await client.events == [.firstLaunch, .appActive])
 
         let (updated, _) = reporter(client: client, defaults: defaults, sharing: true, version: "0.3.0", now: TestDates.noon.addingTimeInterval(86_400))
         await updated.appDidBecomeActive()
-        #expect(await client.events == [.install, .appActive, .appUpdated, .appActive])
+        #expect(await client.events == [.firstLaunch, .appActive, .appUpdated, .appActive])
     }
 
     @Test func providersAreReportedOnce() async {
@@ -170,7 +207,7 @@ struct TelemetryReporterTests {
 
         preferences.isSharingEnabled = true
         await reporter.sharingDidChange(detectedProviders: [.codex])
-        #expect(await client.events == [.install, .appActive, .install, .appActive, .codexDetected])
+        #expect(await client.events == [.firstLaunch, .appActive, .firstLaunch, .appActive, .codexDetected])
     }
 }
 

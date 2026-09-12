@@ -17,9 +17,13 @@ protocol TelemetryClient: Sendable {
 
 /// Every event UsageNow may report. Adding one is a privacy decision —
 /// review it as one.
+/// Events are a closed set with no payload of their own, so no future
+/// change can attach provider data to one. Events for features that don't
+/// exist yet (`widget_enabled`, `cli_used`) are deliberately absent — a
+/// case is added only when something real reports it.
 enum TelemetryEvent: String, Sendable, CaseIterable {
     /// First report from this installation.
-    case install
+    case firstLaunch = "first_launch"
     /// The app was used on a given day. At most once per day.
     case appActive = "app_active"
     /// First report after the app version changed.
