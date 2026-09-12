@@ -18,7 +18,7 @@ Everything stays on your Mac. Optional anonymous analytics are off by default an
 
 ## Install
 
-Download `UsageNow-0.2.0.dmg` and drag UsageNow to Applications, or `brew install --cask usagenow`.
+Download `UsageNow-0.2.0.dmg` below and drag UsageNow to Applications.
 
 Requires macOS 15 or later. Signed with a Developer ID and notarized by Apple.
 

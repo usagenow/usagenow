@@ -6,17 +6,13 @@
 
 *See what's left. Keep building.*
 
-[usagenow.com](https://usagenow.com) · [Documentation](https://docs.usagenow.com) · [Download](https://usagenow.com/download)
+[usagenow.com](https://usagenow.com) · [Documentation](https://docs.usagenow.com) · [Download](https://github.com/usagenow/usagenow/releases/latest)
 
 ## Install
 
-Download **UsageNow-0.2.0.dmg** from [usagenow.com/download](https://usagenow.com/download) or the [releases page](https://github.com/usagenow/usagenow/releases), then drag UsageNow to Applications.
+Download **UsageNow-0.2.0.dmg** from [usagenow.com](https://usagenow.com) or the [releases page](https://github.com/usagenow/usagenow/releases), then drag UsageNow to Applications.
 
-With Homebrew:
-
-```sh
-brew install --cask usagenow
-```
+A Homebrew cask (`brew install --cask usagenow`) is being submitted and will be listed here once it's accepted.
 
 Requires macOS 15 or later. The app is signed with a Developer ID and notarized by Apple.
 
