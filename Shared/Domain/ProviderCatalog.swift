@@ -70,8 +70,8 @@ enum ProviderCatalog {
         ProviderDefinition(
             id: .gemini,
             displayName: "Gemini CLI",
-            summary: nil,
-            availability: .comingSoon,
+            summary: "Track Gemini CLI activity by model.",
+            availability: .available,
             logoAssetName: "GeminiLogo",
             symbolName: "sparkle"
         ),

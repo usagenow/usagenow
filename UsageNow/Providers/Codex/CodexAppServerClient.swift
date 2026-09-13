@@ -10,9 +10,22 @@ import Foundation
 struct CodexAppServerClient: Sendable {
     enum Outcome: Sendable, Equatable {
         case rateLimits(CodexRateLimitSnapshot)
+        /// Signed in with ChatGPT, but the app-server returned no rate limits —
+        /// for example an error for this plan. The plan is still known, and
+        /// limits recorded in session files remain usable.
+        case signedInWithoutRateLimits(planType: String?)
         case notSignedIn
         /// Signed in with an API key or another provider: no subscription limits apply.
         case noSubscriptionLimits
+
+        /// The plan the account reports, when rate limits didn't carry one.
+        var accountPlanType: String? {
+            switch self {
+            case .rateLimits(let snapshot): snapshot.planType
+            case .signedInWithoutRateLimits(let planType): planType
+            case .notSignedIn, .noSubscriptionLimits: nil
+            }
+        }
     }
 
     enum ClientError: Error, Equatable {
@@ -72,9 +85,19 @@ struct CodexAppServerClient: Sendable {
                 return .noSubscriptionLimits
             }
 
-            let limits = try await session.request(3, method: "account/rateLimits/read", params: nil)
-            let result = try JSONDecoder().decode(CodexAppServerRateLimitsResult.self, from: limits)
-            return .rateLimits(result.snapshot(capturedAt: now()))
+            let planType = accountResult.account?.planType
+            let limits: Data
+            do {
+                limits = try await session.request(3, method: "account/rateLimits/read", params: nil)
+            } catch ClientError.rpcError {
+                return .signedInWithoutRateLimits(planType: planType)
+            }
+            guard let result = try? JSONDecoder().decode(CodexAppServerRateLimitsResult.self, from: limits) else {
+                return .signedInWithoutRateLimits(planType: planType)
+            }
+            var snapshot = result.snapshot(capturedAt: now())
+            snapshot.planType = snapshot.planType ?? planType
+            return .rateLimits(snapshot)
         } catch let error as ClientError {
             throw error
         } catch is DecodingError {
@@ -88,6 +111,8 @@ struct CodexAppServerClient: Sendable {
     private struct AccountResult: Decodable {
         struct Account: Decodable {
             var type: String?
+            /// Present for ChatGPT accounts, e.g. "team".
+            var planType: String?
         }
 
         var account: Account?

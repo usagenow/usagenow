@@ -268,7 +268,7 @@ struct CodexProviderTests {
 
     @Test(arguments: zip(
         ["plus", "pro", "prolite", "team", "free", "PLUS", "enterprise_cbp_usage_based", "unknown", ""],
-        ["Plus", "Pro", "Pro Lite", "Team", "Free", "Plus", nil, nil, nil] as [String?]
+        ["Plus", "Pro", "Pro Lite", "Team", "Free", "Plus", "Enterprise", nil, nil] as [String?]
     ))
     func planNames(planType: String, expected: String?) {
         #expect(CodexPlan.displayName(for: planType) == expected)
@@ -278,4 +278,58 @@ struct CodexProviderTests {
 actor CallCounter {
     private(set) var count = 0
     func increment() { count += 1 }
+}
+
+extension CodexProviderTests {
+    // MARK: Models and plans (0.3.0)
+
+    @Test func responsesAreAttributedToTheirTurnsModel() async throws {
+        let dir = try TemporaryDirectory()
+        try dir.writeJSONL("sessions/2026/09/11/rollout-models.jsonl", lines: [
+            CodexFixture.turnContext(noon.addingTimeInterval(-600), model: "gpt-example-large"),
+            CodexFixture.usageRecord(noon.addingTimeInterval(-590), responseID: "r1", total: 5_000),
+            CodexFixture.usageRecord(noon.addingTimeInterval(-580), responseID: "r2", total: 3_000),
+            CodexFixture.turnContext(noon.addingTimeInterval(-300), model: "gpt-example-mini"),
+            CodexFixture.usageRecord(noon.addingTimeInterval(-290), responseID: "r3", total: 1_000),
+        ], modified: noon)
+
+        let snapshot = try await provider(environment(dir, executable: false)).fetchSnapshot(trigger: .automatic)
+        #expect(snapshot.modelActivity.map(\.modelID) == ["gpt-example-large", "gpt-example-mini"])
+        #expect(snapshot.modelActivity.first?.totalTokens == 8_000)
+        #expect(snapshot.modelActivity.first?.requests == 2)
+        #expect(snapshot.modelActivity.first?.outputTokens == 200)
+        #expect(snapshot.recentModel == "gpt-example-mini")
+    }
+
+    @Test func planComesFromTheAccountWhenRateLimitsAreMissing() async throws {
+        let dir = try TemporaryDirectory()
+        let snapshot = try await provider(environment(dir), appServer: { _ in .signedInWithoutRateLimits(planType: "team") }).fetchSnapshot(trigger: .automatic)
+        #expect(snapshot.status == .available)
+        #expect(snapshot.planName == "Team")
+        #expect(snapshot.windows.isEmpty, "No limits are estimated for a Team account without them")
+    }
+
+    @Test func teamWithoutServerLimitsStillUsesRecordedLimits() async throws {
+        let dir = try TemporaryDirectory()
+        let limits = CodexFixture.limits(primaryPercent: 30, primaryMinutes: 300, resetsAt: noon.addingTimeInterval(3_600), plan: "team")
+        try dir.writeJSONL("sessions/2026/09/11/rollout-team.jsonl", lines: [
+            CodexFixture.rateLimitsOnly(noon.addingTimeInterval(-60), limits: limits),
+        ], modified: noon)
+
+        let snapshot = try await provider(environment(dir), appServer: { _ in .signedInWithoutRateLimits(planType: "team") }).fetchSnapshot(trigger: .automatic)
+        #expect(snapshot.window(.fiveHour)?.usage?.displayValue == 30)
+        #expect(snapshot.planName == "Team")
+    }
+
+    @Test(arguments: [
+        ("business", "Business"),
+        ("self_serve_business_usage_based", "Business"),
+        ("self_serve_business_prolite", "Business"),
+        ("edu_plus", "Edu Plus"),
+        ("edu_pro", "Edu Pro"),
+        ("ent26", nil),
+    ] as [(String, String?)])
+    func billingVariantsOfNamedPlans(planType: String, expected: String?) {
+        #expect(CodexPlan.displayName(for: planType) == expected)
+    }
 }

@@ -67,10 +67,11 @@ struct CodexProvider: UsageProvider {
         return ProviderSnapshot(
             provider: .codex,
             status: .available,
-            planName: CodexPlan.displayName(for: limits?.planType),
+            planName: CodexPlan.displayName(for: limits?.planType ?? server?.value.accountPlanType),
             recentModel: activity.activity.latestModel,
             windows: limits?.usageWindows(at: date) ?? [],
             activity: LocalActivity(tokensToday: activity.activity.tokens, requestsToday: activity.activity.requests),
+            modelActivity: activity.activity.models,
             updatedAt: date,
             limitsUpdatedAt: limits?.capturedAt
         )
@@ -95,7 +96,7 @@ struct CodexProvider: UsageProvider {
             candidates.append(snapshot)
         case .noSubscriptionLimits:
             return nil
-        case .notSignedIn, nil:
+        case .signedInWithoutRateLimits, .notSignedIn, nil:
             break
         }
         if let recorded = local.latestRateLimits {

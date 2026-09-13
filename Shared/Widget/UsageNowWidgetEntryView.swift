@@ -30,7 +30,7 @@ struct UsageNowWidgetEntryView: View {
             case .noProvidersDetected:
                 WidgetMessageView(
                     title: "No providers detected",
-                    message: "Install or use Codex or Claude Code to start tracking usage."
+                    message: "Install or use Codex, Claude Code, or Gemini CLI to start tracking usage."
                 )
             case .providers(let providers):
                 if family == .systemSmall {
@@ -56,17 +56,22 @@ struct SmallUsageWidgetView: View {
 
     private let formatter = ResetTimeFormatter()
 
+    /// Two rows leave room for the next reset; three fill the widget.
+    nonisolated static let maxRows = 3
+
     var body: some View {
         VStack(alignment: .leading, spacing: WidgetLayout.contentSpacing) {
             WidgetHeader(note: staleNote)
             if providers.count == 1, let provider = providers.first {
                 single(provider)
             } else {
-                ForEach(providers) { provider in
+                ForEach(snapshot.providers(fitting: Self.maxRows)) { provider in
                     compact(provider)
                 }
                 Spacer(minLength: 0)
-                nextReset
+                if providers.count == 2 {
+                    nextReset
+                }
             }
         }
     }
@@ -93,7 +98,7 @@ struct SmallUsageWidgetView: View {
         Spacer(minLength: 0)
     }
 
-    /// Two providers: one line each.
+    /// Several providers: one line each.
     @ViewBuilder
     private func compact(_ provider: WidgetProviderSnapshot) -> some View {
         VStack(alignment: .leading, spacing: 3) {
@@ -157,10 +162,14 @@ struct SmallUsageWidgetView: View {
     }
 }
 
-/// More detail: each provider's windows side by side.
+/// More detail: each provider's windows side by side, or one row per
+/// provider when three or more don't fit as readable columns.
 struct MediumUsageWidgetView: View {
     /// Keeps the columns readable; the app shows everything.
     static let maxWindowsPerProvider = 2
+    /// Columns stay readable up to this many providers.
+    nonisolated static let maxColumns = 2
+    nonisolated static let maxRows = 4
 
     let providers: [WidgetProviderSnapshot]
     let snapshot: WidgetSnapshot
@@ -171,9 +180,17 @@ struct MediumUsageWidgetView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: WidgetLayout.contentSpacing) {
             WidgetHeader(note: staleNote)
-            HStack(alignment: .top, spacing: 16) {
-                ForEach(providers) { provider in
-                    column(provider)
+            if providers.count <= Self.maxColumns {
+                HStack(alignment: .top, spacing: 16) {
+                    ForEach(providers) { provider in
+                        column(provider)
+                    }
+                }
+            } else {
+                VStack(alignment: .leading, spacing: 9) {
+                    ForEach(snapshot.providers(fitting: Self.maxRows)) { provider in
+                        WidgetProviderRow(provider: provider, now: now)
+                    }
                 }
             }
             Spacer(minLength: 0)

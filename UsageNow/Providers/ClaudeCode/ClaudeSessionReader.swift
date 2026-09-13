@@ -66,7 +66,14 @@ enum ClaudeSessionParser {
 
         let identity = [record.message?.id, record.requestId].compactMap { $0 }
         let key = identity.isEmpty ? "\(fileKey)#\(timestamp.timeIntervalSince1970)" : identity.joined(separator: "|")
-        state.records.append(ActivityRecord(key: key, timestamp: timestamp, tokens: usage.totalTokens, model: model))
+        state.records.append(ActivityRecord(
+            key: key,
+            timestamp: timestamp,
+            tokens: usage.totalTokens,
+            model: model,
+            inputTokens: usage.inputSideTokens,
+            outputTokens: usage.output_tokens
+        ))
     }
 }
 
@@ -85,9 +92,13 @@ private struct ClaudeSessionLine: Decodable {
         var output_tokens: Int64?
 
         var totalTokens: Int64 {
-            [input_tokens, cache_creation_input_tokens, cache_read_input_tokens, output_tokens]
-                .compactMap { $0 }
-                .reduce(0, +)
+            (inputSideTokens ?? 0) + (output_tokens ?? 0)
+        }
+
+        /// Fresh input plus cache writes and reads; `nil` when none is recorded.
+        var inputSideTokens: Int64? {
+            let parts = [input_tokens, cache_creation_input_tokens, cache_read_input_tokens].compactMap { $0 }
+            return parts.isEmpty ? nil : parts.reduce(0, +)
         }
     }
 

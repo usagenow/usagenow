@@ -105,9 +105,18 @@ enum CodexSessionParser {
 
         switch record.type {
         case "token_usage_record":
-            guard timestamp >= since, let total = payload?.usage?.totalTokens else { return }
+            guard timestamp >= since, let usage = payload?.usage, let total = usage.totalTokens else { return }
             let key = payload?.response_id ?? "\(fileKey)#\(record.ordinal.map(String.init) ?? "\(timestamp.timeIntervalSince1970)")"
-            state.usageRecords.append(ActivityRecord(key: key, timestamp: timestamp, tokens: total, model: nil))
+            // A response belongs to the model of the turn it's part of, which
+            // the session records before the response.
+            state.usageRecords.append(ActivityRecord(
+                key: key,
+                timestamp: timestamp,
+                tokens: total,
+                model: payload?.model ?? state.latestModel?.model,
+                inputTokens: usage.input_tokens,
+                outputTokens: usage.output_tokens
+            ))
 
         case "turn_context":
             if let model = payload?.model, !model.isEmpty, timestamp >= (state.latestModel?.date ?? .distantPast) {
@@ -127,7 +136,7 @@ enum CodexSessionParser {
             state.lastLegacyTotal = cumulative
             guard timestamp >= since else { return }
             let key = "\(fileKey)#legacy#\(cumulative)"
-            state.legacyRecords.append(ActivityRecord(key: key, timestamp: timestamp, tokens: last, model: nil))
+            state.legacyRecords.append(ActivityRecord(key: key, timestamp: timestamp, tokens: last, model: state.latestModel?.model))
 
         default:
             return

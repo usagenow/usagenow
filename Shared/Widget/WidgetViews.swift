@@ -120,6 +120,64 @@ struct WidgetProviderName: View {
     }
 }
 
+/// One provider on one line: its tightest window, or its activity when it
+/// reports no limits. Used when several providers share a widget.
+struct WidgetProviderRow: View {
+    static let nameWidth: CGFloat = 94
+
+    let provider: WidgetProviderSnapshot
+    let now: Date
+
+    private let formatter = ResetTimeFormatter()
+
+    var body: some View {
+        HStack(alignment: .center, spacing: 10) {
+            WidgetProviderName(provider: provider.provider, font: .caption)
+                .frame(width: Self.nameWidth, alignment: .leading)
+            if let window = provider.mostRelevantWindow {
+                UsageProgressView(usage: window.usage, height: WidgetLayout.barHeight)
+                WidgetRemainingLabel(usage: window.usage, font: .caption)
+                    .fixedSize()
+                if let resetsAt = window.resetsAt {
+                    Text(verbatim: formatter.countdown(from: now, to: resetsAt))
+                        .font(.caption2)
+                        .monospacedDigit()
+                        .foregroundStyle(.tertiary)
+                        .fixedSize()
+                }
+            } else {
+                Text("Usage limits unavailable")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.85)
+                Spacer(minLength: 4)
+                if let tokens = provider.tokensToday {
+                    Text("\(UsageFormatter.tokens(tokens)) tokens today")
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                        .lineLimit(1)
+                        .fixedSize()
+                }
+            }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(verbatim: provider.displayName))
+        .accessibilityValue(accessibilityValue)
+    }
+
+    private var accessibilityValue: String {
+        guard let window = provider.mostRelevantWindow, let usage = window.usage else {
+            return String(localized: "Usage limits unavailable")
+        }
+        var parts = [String(localized: "\(UsageFormatter.remainingPercent(usage)) left", comment: "Remaining quota, e.g. 58% left")]
+        if let resetsAt = window.resetsAt {
+            parts.append(formatter.accessibleResetDescription(for: resetsAt, now: now))
+        }
+        return parts.joined(separator: ", ")
+    }
+}
+
 /// Shown when quota is missing — short, with troubleshooting left to the app.
 struct WidgetUnavailableLabel: View {
     var body: some View {

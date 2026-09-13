@@ -104,3 +104,41 @@ enum ClaudeFixture {
         #"{"type":"user","timestamp":"\#(TestDates.iso(date))","message":{"role":"user","content":"lorem \"usage\":{ ipsum"}}"#
     }
 }
+
+/// Gemini CLI session records, in the shape `ChatRecordingService` writes.
+enum GeminiFixture {
+    static func metadata(_ date: Date) -> String {
+        #"{"sessionId":"s-1","projectHash":"hash","startTime":"\#(TestDates.iso(date))","lastUpdated":"\#(TestDates.iso(date))","kind":"main"}"#
+    }
+
+    /// Contains the words the parser looks for, to prove content isn't mistaken for a response.
+    static func user(_ date: Date, id: String) -> String {
+        #"{"id":"\#(id)","timestamp":"\#(TestDates.iso(date))","type":"user","content":[{"text":"lorem \"gemini\" \"tokens\":{ ipsum"}]}"#
+    }
+
+    static func response(
+        _ date: Date,
+        id: String,
+        model: String? = "gemini-example-1",
+        input: Int = 1_000,
+        output: Int = 200,
+        cached: Int = 400,
+        thoughts: Int = 50,
+        tool: Int = 0,
+        total: Int? = 1_250,
+        includeTokens: Bool = true
+    ) -> String {
+        let modelField = model.map { #","model":"\#($0)""# } ?? ""
+        let totalField = total.map { #","total":\#($0)"# } ?? ""
+        let tokens = includeTokens ? #","tokens":{"input":\#(input),"output":\#(output),"cached":\#(cached),"thoughts":\#(thoughts),"tool":\#(tool)\#(totalField)}"# : ""
+        return #"{"id":"\#(id)","timestamp":"\#(TestDates.iso(date))","type":"gemini","content":[{"text":"lorem ipsum"}],"thoughts":[{"subject":"s","description":"d"}]\#(tokens)\#(modelField),"toolCalls":[]}"#
+    }
+
+    static func update(_ date: Date) -> String {
+        #"{"$set":{"lastUpdated":"\#(TestDates.iso(date))"}}"#
+    }
+
+    static func rewind(to id: String) -> String {
+        #"{"$rewindTo":"\#(id)"}"#
+    }
+}

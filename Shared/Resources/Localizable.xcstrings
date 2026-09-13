@@ -24,6 +24,17 @@
     "%@ tokens today" : {
 
     },
+    "%@ tokens, %@ requests" : {
+      "comment" : "Model activity, e.g. 72,400,000 tokens, 148 requests",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ tokens, %2$@ requests"
+          }
+        }
+      }
+    },
     "%@ usage" : {
       "comment" : "e.g. Weekly usage"
     },
@@ -69,6 +80,9 @@
     },
     "%lldm ago" : {
 
+    },
+    "+%lld more" : {
+      "comment" : "Models not listed, e.g. +2 more"
     },
     "15 minutes" : {
 
@@ -118,10 +132,10 @@
     "Claude usage limits — Experimental" : {
 
     },
-    "Codex and Claude Code usage at a glance." : {
+    "Codex usage" : {
 
     },
-    "Codex usage" : {
+    "Codex, Claude Code, and Gemini CLI usage at a glance." : {
 
     },
     "Coming soon" : {
@@ -145,6 +159,9 @@
     "Fetch current Claude Code subscription limits directly from Anthropic using your existing Claude Code sign-in. This uses an undocumented Anthropic endpoint and may stop working without notice." : {
 
     },
+    "Gemini CLI usage" : {
+
+    },
     "General" : {
 
     },
@@ -157,7 +174,7 @@
     "Icon only" : {
 
     },
-    "Install or use Codex or Claude Code to start tracking usage." : {
+    "Install or use Codex, Claude Code, or Gemini CLI to start tracking usage." : {
 
     },
     "Just now" : {
@@ -173,6 +190,9 @@
 
     },
     "Menu Bar" : {
+
+    },
+    "Models today" : {
 
     },
     "Most critical usage" : {
@@ -275,6 +295,9 @@
 
     },
     "Track Codex usage and limits." : {
+
+    },
+    "Track Gemini CLI activity by model." : {
 
     },
     "Try Again" : {

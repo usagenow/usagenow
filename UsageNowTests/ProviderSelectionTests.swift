@@ -11,19 +11,19 @@ struct ProviderPreferencesTests {
         return defaults
     }
 
-    @Test func bothSupportedProvidersAreEnabledByDefault() {
+    @Test func everySupportedProviderIsEnabledByDefault() {
         let preferences = ProviderPreferences(defaults: makeDefaults())
-        #expect(preferences.enabledProviders == [.codex, .claudeCode])
+        #expect(preferences.enabledProviders == [.codex, .claudeCode, .gemini])
     }
 
     @Test func choicesPersist() {
         let defaults = makeDefaults()
         let preferences = ProviderPreferences(defaults: defaults)
         preferences.setEnabled(false, for: .codex)
-        #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.claudeCode])
+        #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.claudeCode, .gemini])
 
         preferences.setEnabled(true, for: .codex)
-        #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.codex, .claudeCode])
+        #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.codex, .claudeCode, .gemini])
     }
 
     @Test func turningEverythingOffPersists() {
@@ -31,6 +31,7 @@ struct ProviderPreferencesTests {
         let preferences = ProviderPreferences(defaults: defaults)
         preferences.setEnabled(false, for: .codex)
         preferences.setEnabled(false, for: .claudeCode)
+        preferences.setEnabled(false, for: .gemini)
         #expect(ProviderPreferences(defaults: defaults).enabledProviders.isEmpty)
     }
 
@@ -44,19 +45,34 @@ struct ProviderPreferencesTests {
 
     @Test func storedRoadmapOrUnknownIdentifiersAreIgnored() {
         let defaults = makeDefaults()
-        defaults.set(["codex", "gemini", "somethingElse"], forKey: "enabledProviders")
+        defaults.set(["codex", "deepseek", "somethingElse"], forKey: "enabledProviders")
+        defaults.set(["claudeCode", "codex", "gemini"], forKey: "knownProviders")
         #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.codex])
+    }
+
+    @Test func aProviderAddedInAnUpdateStartsOnOnce() {
+        // A 0.2.x user who turned Claude Code off; 0.2.x never recorded known providers.
+        let defaults = makeDefaults()
+        defaults.set(["codex"], forKey: "enabledProviders")
+
+        let upgraded = ProviderPreferences(defaults: defaults)
+        #expect(upgraded.enabledProviders == [.codex, .gemini], "Gemini CLI starts on; Claude Code stays off")
+
+        upgraded.setEnabled(false, for: .gemini)
+        #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.codex], "Turning it off sticks")
     }
 }
 
 struct ProviderCatalogTests {
-    @Test func onlyCodexAndClaudeAreAvailable() {
-        #expect(ProviderCatalog.availableIDs == [.codex, .claudeCode])
-        #expect(ProviderCatalog.comingSoon.map(\.id) == [.gemini, .deepseek, .qwen])
+    @Test func codexClaudeAndGeminiAreAvailable() {
+        #expect(ProviderCatalog.availableIDs == [.codex, .claudeCode, .gemini])
+        #expect(ProviderCatalog.comingSoon.map(\.id) == [.deepseek, .qwen])
     }
 
-    @Test func geminiLeadsTheRoadmap() {
-        #expect(ProviderCatalog.comingSoon.first?.displayName == "Gemini CLI")
+    @Test func geminiIsARealProvider() {
+        #expect(ProviderID.gemini.isAvailable)
+        #expect(ProviderID.gemini.rawValue == "gemini")
+        #expect(ProviderID.gemini.displayName == "Gemini CLI")
     }
 
     @Test func everyProviderHasMetadata() {
@@ -76,7 +92,8 @@ struct ProviderCatalogTests {
     }
 
     @Test func menuBarModesFollowEnabledProviders() {
-        #expect(MenuBarDisplayMode.available(for: [.codex, .claudeCode]) == MenuBarDisplayMode.allCases)
+        #expect(MenuBarDisplayMode.available(for: [.codex, .claudeCode, .gemini]) == MenuBarDisplayMode.allCases)
+        #expect(MenuBarDisplayMode.available(for: [.gemini]) == [.iconOnly, .mostCriticalPercentage, .geminiPercentage])
         #expect(MenuBarDisplayMode.available(for: [.codex]) == [.iconOnly, .mostCriticalPercentage, .codexPercentage])
         #expect(MenuBarDisplayMode.available(for: [.claudeCode]) == [.iconOnly, .mostCriticalPercentage, .claudePercentage])
         #expect(MenuBarDisplayMode.available(for: []) == [.iconOnly, .mostCriticalPercentage])

@@ -88,15 +88,18 @@ final class AppState {
     static func makeProviders(defaults: UserDefaults, claudeLimits: ClaudeLimitsControl?) -> [any UsageProvider] {
         let codexScenario = defaults.string(forKey: "UsageNowMockCodex").flatMap(MockScenario.init(rawValue:))
         let claudeScenario = defaults.string(forKey: "UsageNowMockClaude").flatMap(MockScenario.init(rawValue:))
-        if codexScenario != nil || claudeScenario != nil {
+        let geminiScenario = defaults.string(forKey: "UsageNowMockGemini").flatMap(MockScenario.init(rawValue:))
+        if codexScenario != nil || claudeScenario != nil || geminiScenario != nil {
             return [
                 MockCodexProvider(scenario: codexScenario ?? .normal),
                 MockClaudeProvider(scenario: claudeScenario ?? .normal),
+                MockGeminiProvider(scenario: geminiScenario ?? .normal),
             ]
         }
         return [
             CodexProvider(),
             ClaudeCodeProvider(limitsClient: claudeLimits?.client, limitsEnabled: claudeLimits?.isEnabled ?? FeatureSwitch(false)),
+            GeminiProvider(),
         ]
     }
 

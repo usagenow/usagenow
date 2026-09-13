@@ -21,6 +21,9 @@ struct ProviderSnapshot: Sendable, Equatable, Identifiable {
     /// Set when quota is missing for a reason worth explaining.
     var quotaUnavailableReason: QuotaUnavailableReason? = nil
     var activity: LocalActivity = .unknown
+    /// Today's activity per model, most active first. Independent of
+    /// `windows`: account limits aren't split by model.
+    var modelActivity: [ModelActivity] = []
     /// When this snapshot was assembled.
     var updatedAt: Date
     /// When the quota windows were captured, if earlier than `updatedAt` —
@@ -35,7 +38,7 @@ struct ProviderSnapshot: Sendable, Equatable, Identifiable {
         if windows.contains(where: { $0.resetsAt != nil }) { capabilities.insert(.resetTimes) }
         if activity.tokensToday != nil { capabilities.insert(.tokenActivity) }
         if activity.requestsToday != nil { capabilities.insert(.requestActivity) }
-        if recentModel != nil { capabilities.insert(.modelActivity) }
+        if recentModel != nil || !modelActivity.isEmpty { capabilities.insert(.modelActivity) }
         if planName != nil { capabilities.insert(.planInformation) }
         return capabilities
     }

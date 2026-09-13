@@ -64,6 +64,7 @@ struct ClaudeCodeProvider: UsageProvider {
             windows: windows,
             quotaUnavailableReason: windows.isEmpty ? availability.unavailableReason : nil,
             activity: LocalActivity(tokensToday: activity.activity.tokens, requestsToday: activity.activity.requests),
+            modelActivity: activity.activity.models,
             updatedAt: date,
             limitsUpdatedAt: windows.isEmpty ? nil : limits?.fetchedAt
         )

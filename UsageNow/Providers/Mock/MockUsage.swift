@@ -29,8 +29,12 @@ struct MockUsageValues: Sendable {
 /// Fixed characteristics of a mocked provider.
 struct MockProfile: Sendable {
     var provider: ProviderID
-    var planName: String
+    var planName: String?
     var model: String
+    /// A second model that takes a smaller share of the activity.
+    var secondaryModel: String? = nil
+    /// `false` for providers that report activity but no usage limits.
+    var reportsLimits = true
     /// Time from the reference date until the first 5-hour reset.
     var firstFiveHourReset: TimeInterval
     /// Weekday (1 = Sunday), hour and minute of the weekly reset.
@@ -60,6 +64,7 @@ struct MockSnapshotFactory: Sendable {
                 planName: profile.planName,
                 recentModel: profile.model,
                 activity: LocalActivity(tokensToday: 4_200_000, requestsToday: 18),
+                modelActivity: modelActivity(tokens: 4_200_000, requests: 18, now: now),
                 updatedAt: now
             )
         case .failing:
@@ -71,7 +76,7 @@ struct MockSnapshotFactory: Sendable {
                 status: .available,
                 planName: profile.planName,
                 recentModel: profile.model,
-                windows: [
+                windows: !profile.reportsLimits ? [] : [
                     UsageWindow(
                         kind: .fiveHour,
                         usage: UsagePercentage(percent: values.fiveHourPercent),
@@ -84,9 +89,23 @@ struct MockSnapshotFactory: Sendable {
                     ),
                 ],
                 activity: LocalActivity(tokensToday: values.tokensToday, requestsToday: values.requestsToday),
+                modelActivity: modelActivity(tokens: values.tokensToday, requests: values.requestsToday, now: now),
                 updatedAt: now
             )
         }
+    }
+
+    /// Splits activity between the profile's models, roughly four to one.
+    func modelActivity(tokens: Int64, requests: Int64, now: Date) -> [ModelActivity] {
+        guard let secondary = profile.secondaryModel else {
+            return [ModelActivity(modelID: profile.model, totalTokens: tokens, requests: requests, lastUsedAt: now)]
+        }
+        let secondaryTokens = tokens / 5
+        let secondaryRequests = requests / 5
+        return [
+            ModelActivity(modelID: profile.model, totalTokens: tokens - secondaryTokens, requests: requests - secondaryRequests, lastUsedAt: now),
+            ModelActivity(modelID: secondary, totalTokens: secondaryTokens, requests: secondaryRequests, lastUsedAt: now.addingTimeInterval(-40 * 60)),
+        ].sortedByActivity()
     }
 
     /// The first reset after `now` in a rolling 5-hour cycle anchored at the reference date.

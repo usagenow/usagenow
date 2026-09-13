@@ -39,6 +39,7 @@ struct ProviderUsageView: View {
                     UsageWindowsView(windows: snapshot.windows, now: now)
                 }
                 ProviderActivityView(activity: snapshot.activity)
+                ModelActivityView(models: snapshot.modelActivity)
             case .notAuthenticated:
                 StatusMessage(text: String(localized: "Sign in to \(state.provider.displayName) to view usage"))
             case .unavailable:
@@ -157,6 +158,62 @@ private struct ProviderActivityView: View {
             }
             .padding(.top, 2)
         }
+    }
+}
+
+/// Today's activity per model, most active first. Activity only — account
+/// limits apply to the account, so no row shows a percentage.
+///
+/// Hidden when a single model was used: the header already names it and the
+/// totals above are its totals.
+struct ModelActivityView: View {
+    /// Keeps the popover compact; the rest are summarized in one line.
+    nonisolated static let maxRows = 3
+
+    let models: [ModelActivity]
+
+    var body: some View {
+        if models.count > 1 {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Models today")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .accessibilityAddTraits(.isHeader)
+                ForEach(models.prefix(Self.maxRows)) { model in
+                    row(model)
+                }
+                if models.count > Self.maxRows {
+                    let hidden = models.count - Self.maxRows
+                    Text("+\(hidden) more", comment: "Models not listed, e.g. +2 more")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                }
+            }
+            .padding(.top, 2)
+        }
+    }
+
+    private func row(_ model: ModelActivity) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
+            Text(verbatim: model.displayName)
+                .lineLimit(1)
+                .truncationMode(.tail)
+                .help(model.modelID)
+            Spacer(minLength: 8)
+            Text(verbatim: UsageFormatter.tokens(model.totalTokens))
+                .monospacedDigit()
+            Text(verbatim: UsageFormatter.count(model.requests))
+                .monospacedDigit()
+                .foregroundStyle(.secondary)
+                .frame(minWidth: 28, alignment: .trailing)
+        }
+        .font(.subheadline)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(verbatim: model.displayName))
+        .accessibilityValue(Text(
+            "\(UsageFormatter.count(model.totalTokens)) tokens, \(UsageFormatter.count(model.requests)) requests",
+            comment: "Model activity, e.g. 72,400,000 tokens, 148 requests"
+        ))
     }
 }
 

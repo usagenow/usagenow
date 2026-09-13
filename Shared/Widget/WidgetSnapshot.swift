@@ -40,6 +40,26 @@ struct WidgetSnapshot: Codable, Sendable, Equatable {
             .min { $0.1 < $1.1 }
     }
 
+    /// At most `limit` providers for a widget that can't fit them all.
+    ///
+    /// When everything fits, the order stays as configured so rows don't
+    /// jump between refreshes. Otherwise providers closest to exhausting a
+    /// limit win, then providers without limits, in their usual order.
+    func providers(fitting limit: Int) -> [WidgetProviderSnapshot] {
+        guard providers.count > limit else { return providers }
+        let chosen = providers.enumerated()
+            .sorted { lhs, rhs in
+                switch (lhs.element.mostRelevantWindow?.usage, rhs.element.mostRelevantWindow?.usage) {
+                case let (left?, right?) where left != right: return left > right
+                case (.some, nil): return true
+                case (nil, .some): return false
+                default: return lhs.offset < rhs.offset
+                }
+            }
+            .prefix(limit)
+        return chosen.sorted { $0.offset < $1.offset }.map(\.element)
+    }
+
     func isStale(at date: Date, threshold: TimeInterval = 10 * 60) -> Bool {
         date.timeIntervalSince(generatedAt) > threshold
     }

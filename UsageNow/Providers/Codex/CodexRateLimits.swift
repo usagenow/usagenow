@@ -39,17 +39,24 @@ enum CodexPlan {
     /// Display name for a Codex `planType`. Unknown or ambiguous values
     /// return `nil` so no badge is shown.
     static func displayName(for planType: String?) -> String? {
-        switch planType?.lowercased() {
-        case "free": "Free"
-        case "go": "Go"
-        case "plus": "Plus"
-        case "pro": "Pro"
-        case "prolite": "Pro Lite"
-        case "team": "Team"
-        case "business": "Business"
-        case "enterprise": "Enterprise"
-        case "edu": "Edu"
-        default: nil
+        guard let planType = planType?.lowercased() else { return nil }
+        switch planType {
+        case "free": return "Free"
+        case "go": return "Go"
+        case "plus": return "Plus"
+        case "pro": return "Pro"
+        case "prolite": return "Pro Lite"
+        case "team": return "Team"
+        case "business": return "Business"
+        case "enterprise": return "Enterprise"
+        case "edu": return "Edu"
+        case "edu_plus": return "Edu Plus"
+        case "edu_pro": return "Edu Pro"
+        default:
+            // Billing variants of a named plan, e.g. "self_serve_business_usage_based".
+            if planType.hasPrefix("self_serve_business_") { return "Business" }
+            if planType.hasPrefix("enterprise_") { return "Enterprise" }
+            return nil
         }
     }
 }

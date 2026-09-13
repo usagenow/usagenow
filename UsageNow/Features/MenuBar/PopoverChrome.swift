@@ -106,7 +106,7 @@ struct EmptyStateView: View {
                 .accessibilityHidden(true)
             Text("No providers detected")
                 .font(.headline)
-            Text("Install or use Codex or Claude Code to start tracking usage.")
+            Text("Install or use Codex, Claude Code, or Gemini CLI to start tracking usage.")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)

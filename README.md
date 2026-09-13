@@ -2,7 +2,7 @@
 
 # UsageNow
 
-**AI coding usage tracker for macOS.** Monitor usage, limits, reset times, and token activity across Codex and Claude Code, from the menu bar.
+**AI coding usage tracker for macOS.** Monitor usage, limits, reset times, and token activity across Codex, Claude Code, and Gemini CLI, from the menu bar.
 
 *See what's left. Keep building.*
 
@@ -18,24 +18,27 @@ Requires macOS 15 or later. The app is signed with a Developer ID and notarized 
 
 ## What it reads
 
-UsageNow reads real Codex and Claude Code data from your Mac. Which data is available depends on the tool:
+UsageNow reads real Codex, Claude Code, and Gemini CLI data from your Mac. Which data is available depends on the tool:
 
-| | Codex | Claude Code |
-|---|---|---|
-| Usage limits and reset times | ✓ from the official `codex app-server` | ✓ through an experimental, opt-in source (see below) |
-| Plan | ✓ | ✓ from Claude Code’s cached account profile |
-| Tokens and requests today | ✓ from local session files | ✓ from local session files |
-| Most recent model | ✓ | ✓ |
+| | Codex | Claude Code | Gemini CLI |
+|---|---|---|---|
+| Usage limits and reset times | ✓ from the official `codex app-server` | ✓ through an experimental, opt-in source (see below) | — not exposed locally |
+| Plan | ✓, including Team, Business, and Enterprise | ✓ from Claude Code’s cached account profile, including a Team seat | — |
+| Tokens and requests today | ✓ from local session files | ✓ from local session files | ✓ from local session recordings |
+| Activity by model | ✓ | ✓ | ✓ |
 
 Limit windows are whatever the provider reports. An account may have only a weekly limit, for example, and UsageNow never invents a missing window or shows a fake 0%.
+
+**Account limits aren’t model limits.** A 5-hour or weekly window belongs to your account. The **Models today** list shows how today’s activity split across models — tokens and requests — and never a percentage, because no provider reports limits per model.
 
 Token and request counts are **local activity** observed in session files on this Mac. They include cached input and don’t necessarily match billing or quota consumption.
 
 ## Highlights
 
 - **macOS native.** SwiftUI and `MenuBarExtra`. Lives in the menu bar, not the Dock.
-- **Codex + Claude Code** side by side: usage limits, reset times, and daily token and request activity.
-- **Pick your providers.** Turn Codex and Claude Code on or off in Settings › Providers. A provider that’s off is never refreshed and never read from disk.
+- **Codex, Claude Code, and Gemini CLI** side by side: usage limits and reset times where the tool reports them, and daily token and request activity.
+- **Activity by model.** See which models today’s tokens and requests went to — any model, including ones released after this version.
+- **Pick your providers.** Turn each one on or off in Settings › Providers. A provider that’s off is never refreshed and never read from disk.
 - **Desktop widget.** Small and medium widgets showing what’s left at a glance.
 - **Local-first.** Your usage data stays on your Mac.
 - **Open source** under the MIT License.
@@ -59,8 +62,15 @@ xcodebuild -project UsageNow.xcodeproj -scheme UsageNow test
 - **Codex:** limits and plan come from the official Codex CLI’s app-server (`codex app-server`, `account/rateLimits/read`), which UsageNow runs locally. The app-server authenticates itself, so UsageNow never reads Codex credentials. If it’s unavailable, UsageNow falls back to the latest limits recorded in `~/.codex/sessions` and marks them as stale.
 - **Claude Code:** activity comes from `~/.claude/projects`, and the plan from `~/.claude.json`. Only timestamps, identifiers, model names, and token counts are extracted. Prompts, responses, and code are never stored, logged, or sent anywhere.
 - **Claude usage limits:** experimental and off by default — see below.
+- **Gemini CLI:** activity comes from the session recordings Gemini CLI writes to `~/.gemini/tmp/<project>/chats/`. Only message identifiers, timestamps, model names, and token counts are extracted; prompts, responses, thoughts, and tool calls are never decoded. See below.
 
 UsageNow honors `CODEX_HOME` and `CLAUDE_CONFIG_DIR` when they’re set.
+
+### Team plans
+
+UsageNow shows the plan of the account signed in on this Mac, and only that account’s own usage. For Claude Team and Enterprise it adds the seat — for example **Team · Premium** — from Claude Code’s cached profile; for Codex it reads the plan the app-server reports, even when rate limits aren’t available. Limits appear exactly when the provider returns them for your session; when it doesn’t, UsageNow says so and keeps showing activity, without estimating anything. It never asks for organization or admin credentials and never shows other members’ usage.
+
+Team support is built from the fields these tools document and cache, and hasn’t yet been checked against a live Team account. If your plan shows incorrectly, please open an issue with the plan label you expected.
 
 ### Claude Code usage limits
 
@@ -73,19 +83,29 @@ Claude Code does not currently expose subscription limits through a supported lo
 Claude Code’s saved sign-in lasts a few hours and is renewed only when Claude Code itself runs. UsageNow picks up a renewed sign-in on its own: while the saved one is unusable, it checks only when the keychain item last changed — which reads no secret and never shows a prompt — and reads the token again once Claude Code has saved a new one. After you use `claude` anywhere, limits come back on the next refresh, with no **Try Again**. When the sign-in has just expired, UsageNow also runs the CLI’s read-only `claude auth status` once, and never sends a prompt through it.
 
 Turn it on in **Settings › General › Fetch Claude usage limits**. When limits can’t be fetched, UsageNow says why in one line — the session needs refreshing, keychain access was denied, or Anthropic’s endpoint didn’t answer — and keeps showing local token, request, model, and plan data. The last limits it did read stay on screen for a day, marked stale, even across quitting or updating the app, so a sign-in that expires overnight doesn’t leave an empty panel in the morning.
+
+### Gemini CLI
+
+UsageNow detects Gemini CLI from its data folder, `~/.gemini`, or an installed `gemini` executable. It reads one setting — which sign-in method is configured — and checks only whether a saved Google sign-in exists. It never opens credential files and never talks to Google.
+
+Gemini CLI doesn’t record usage limits locally, and its quota service needs the Google sign-in, so **UsageNow shows no limits for Gemini CLI** — the card says limits are unavailable and shows today’s tokens, requests, and models. The “Gemini CLI usage” menu bar mode shows the icon until a limit exists.
+
+Google no longer lets personal Google accounts sign in to Gemini CLI; it still works with a Gemini API key, Vertex AI, or Gemini Code Assist Standard and Enterprise.
+
 ### Roadmap providers
 
-Gemini CLI, DeepSeek, and Qwen are listed in Settings › Providers as **Coming soon**. They’re labels only: no integration, no credentials, and no network or file access.
+DeepSeek and Qwen are listed in Settings › Providers as **Coming soon**. They’re labels only: no integration, no credentials, and no network or file access.
 
 ## Desktop widget
 
 UsageNow ships a WidgetKit extension with small and medium sizes.
 
 - **Small** is a glance: each enabled provider’s tightest window — the one with the least left — plus the next reset. With a single provider it expands to show the window name and reset time.
-- **Medium** gives each provider a column with its windows, remaining percentage, and reset times.
+- **Medium** gives each provider a column with its windows, remaining percentage, and reset times. With three or more providers it switches to one row per provider, so each stays readable.
+- With more providers than fit, the ones closest to a limit are shown. Model details stay in the app.
 - Disabled providers never appear, quota that isn’t available reads “Usage limits unavailable”, and old data stays visible with an “Updated … ago” note. No placeholder or fabricated values.
 
-**The widget never touches providers.** It can’t read `~/.codex` or `~/.claude`, open the keychain, run `codex app-server`, or call Anthropic. The main app publishes a sanitized snapshot to a shared App Group container, and the widget only renders that. The provider and credential code isn’t compiled into the widget target at all.
+**The widget never touches providers.** It can’t read `~/.codex`, `~/.claude`, or `~/.gemini`, open the keychain, run `codex app-server`, or call Anthropic. The main app publishes a sanitized snapshot to a shared App Group container, and the widget only renders that. The provider and credential code isn’t compiled into the widget target at all.
 
 ### Signing and the widget
 
@@ -103,7 +123,7 @@ Without it, UsageNow builds ad-hoc and works normally; the widget just shows “
 Real providers run by default. For development, mock providers accept a scenario at launch: `normal`, `high`, `critical`, `unavailable`, `notInstalled`, `notAuthenticated`, `failing`, or `loading`.
 
 ```sh
-open UsageNow.app --args -UsageNowMockCodex critical -UsageNowMockClaude failing
+open UsageNow.app --args -UsageNowMockCodex critical -UsageNowMockClaude failing -UsageNowMockGemini normal
 ```
 
 The shared scheme includes these as disabled launch arguments, which you can enable under **Product › Scheme › Edit Scheme › Run › Arguments**. SwiftUI previews cover the same states without running the app.
@@ -130,7 +150,7 @@ UsageNow/
 - **Providers** turn tool-specific data into a normalized `ProviderSnapshot` with any number of usage windows and optional plan, model, and activity. Views depend only on this normalized state and hide data a provider doesn’t have.
 - **`UsageStore`** refreshes all providers concurrently. It keeps the last good data when a refresh fails and exposes loading, empty, and per-provider error states.
 - **`WidgetSnapshotWriter`** is the only path from provider data to the widget. It drops disabled and not-installed providers, copies each display field explicitly, writes atomically, and reloads timelines only when the content changed.
-- **Telemetry** is opt-in and off by default. Clients only receive a small set of events (install, daily active, updated, Codex or Claude Code detected) with the app version, macOS version, and a random installation ID. They never have access to provider data. No analytics server is configured yet, so nothing is sent.
+- **Telemetry** is opt-in and off by default. Clients only receive a small set of events (install, daily active, updated, and whether Codex, Claude Code, or Gemini CLI is installed) with the app version, macOS version, and a random installation ID. They never have access to provider data. No analytics server is configured yet, so nothing is sent.
 
 ## Contributing
 

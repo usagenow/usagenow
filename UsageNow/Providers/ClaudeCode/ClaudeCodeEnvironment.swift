@@ -41,37 +41,16 @@ struct ClaudeCodeEnvironment: Sendable, Equatable {
         )
     }
 
-    /// Well-known install locations. Apps launched from Finder don't inherit
-    /// the shell's `PATH`, so it isn't searched.
-    ///
-    /// A Mac often has more than one copy — a native install left behind
-    /// after switching to npm, or one per Node version — so the most
-    /// recently installed binary wins rather than the first one found.
+    /// Common install locations plus Claude Code's own: the local install
+    /// and native installs, which keep one binary per version.
     static func locateExecutable(homeDirectory: URL, fileManager: FileManager = .default) -> URL? {
-        var candidates = [
-            homeDirectory.appending(path: ".local/bin/claude"),
-            homeDirectory.appending(path: ".claude/local/claude"),
-            URL(filePath: "/opt/homebrew/bin/claude"),
-            URL(filePath: "/usr/local/bin/claude"),
-        ]
-        // Native installs keep one binary per version.
+        var candidates = ExecutableLocator.commonCandidates(named: "claude", homeDirectory: homeDirectory, fileManager: fileManager)
+        candidates.append(homeDirectory.appending(path: ".claude/local/claude"))
         let versions = homeDirectory.appending(path: ".local/share/claude/versions")
         if let installed = try? fileManager.contentsOfDirectory(atPath: versions.path) {
-            candidates += installed.sorted(by: >).map { versions.appending(path: $0) }
+            candidates += installed.map { versions.appending(path: $0) }
         }
-        // npm installs, including one per Node version under nvm.
-        let nodeVersions = homeDirectory.appending(path: ".nvm/versions/node")
-        if let nodes = try? fileManager.contentsOfDirectory(atPath: nodeVersions.path) {
-            candidates += nodes.sorted(by: >).map { nodeVersions.appending(path: "\($0)/bin/claude") }
-        }
-        let installed = candidates.filter { fileManager.isExecutableFile(atPath: $0.path) }
-        return installed.max { installDate(of: $0, fileManager) < installDate(of: $1, fileManager) }
-    }
-
-    /// When the binary a candidate points at was written; symlinks are followed.
-    private static func installDate(of executable: URL, _ fileManager: FileManager) -> Date {
-        let target = executable.resolvingSymlinksInPath()
-        return (try? fileManager.attributesOfItem(atPath: target.path)[.modificationDate] as? Date) ?? .distantPast
+        return ExecutableLocator.newest(among: candidates, fileManager: fileManager)
     }
 }
 
@@ -91,14 +70,22 @@ struct ClaudeAccountProfile: Sendable, Equatable {
               let account = config.oauthAccount else { return .signedOut }
         return ClaudeAccountProfile(
             isSignedIn: true,
-            planName: ClaudePlan.displayName(organizationType: account.organizationType, rateLimitTier: account.organizationRateLimitTier)
+            planName: ClaudePlan.displayName(
+                organizationType: account.organizationType,
+                rateLimitTier: account.organizationRateLimitTier,
+                seatTier: account.seatTier
+            )
         )
     }
 
     private struct GlobalConfig: Decodable {
+        /// Only plan fields. Names, email addresses, and organization or
+        /// account identifiers in the same object are never decoded.
         struct Account: Decodable {
             var organizationType: String?
             var organizationRateLimitTier: String?
+            /// The signed-in member's seat on a Team or Enterprise plan.
+            var seatTier: String?
         }
 
         var oauthAccount: Account?
@@ -106,9 +93,13 @@ struct ClaudeAccountProfile: Sendable, Equatable {
 }
 
 enum ClaudePlan {
+    /// Seat tiers shown next to a Team or Enterprise plan. Anything else
+    /// shows the plan alone rather than a guess.
+    private static let seatNames = ["standard": "Standard", "premium": "Premium"]
+
     /// Plan name from the explicit organization type Claude Code caches.
     /// Unknown values return `nil`; the plan is never inferred from models.
-    static func displayName(organizationType: String?, rateLimitTier: String?) -> String? {
+    static func displayName(organizationType: String?, rateLimitTier: String?, seatTier: String? = nil) -> String? {
         switch organizationType?.lowercased() {
         case "claude_pro":
             return "Pro"
@@ -118,11 +109,18 @@ enum ClaudePlan {
             if tier.hasSuffix("max_5x") { return "Max 5x" }
             return "Max"
         case "claude_team":
-            return "Team"
+            return withSeat("Team", seatTier)
         case "claude_enterprise":
-            return "Enterprise"
+            return withSeat("Enterprise", seatTier)
         default:
             return nil
         }
+    }
+
+    /// "Team · Premium". Accepts "premium" as well as a prefixed "team_premium".
+    private static func withSeat(_ plan: String, _ seatTier: String?) -> String {
+        guard let seat = seatTier?.lowercased().split(separator: "_").last.map(String.init),
+              let seatName = seatNames[seat] else { return plan }
+        return "\(plan) · \(seatName)"
     }
 }

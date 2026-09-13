@@ -53,12 +53,23 @@ enum WidgetPreviewFixtures {
         quotaUnavailableReason: .signInExpired
     )
 
+    /// Activity only: Gemini CLI reports no usage limits.
+    static let gemini = WidgetProviderSnapshot(
+        provider: .gemini,
+        planName: nil,
+        modelName: "gemini-example-1",
+        windows: [],
+        tokensToday: 1_200_000,
+        requestsToday: 24
+    )
+
     static func snapshot(_ providers: [WidgetProviderSnapshot], generatedAt: Date = now) -> WidgetSnapshot {
         WidgetSnapshot(generatedAt: generatedAt, state: .providers(providers))
     }
 
     static let normal = snapshot([codex, claude])
     static let critical = snapshot([codex, criticalClaude])
+    static let threeProviders = snapshot([codex, criticalClaude, gemini])
     static let codexOnly = snapshot([codex])
     static let claudeOnly = snapshot([criticalClaude])
     static let unavailableQuota = snapshot([codex, unavailableClaude])

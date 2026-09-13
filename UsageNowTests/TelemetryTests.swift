@@ -101,7 +101,7 @@ struct NetworkTelemetryClientTests {
 
     @Test func eventNamesAreStable() {
         #expect(Set(TelemetryEvent.allCases.map(\.rawValue)) == [
-            "first_launch", "app_active", "app_updated", "codex_detected", "claude_detected",
+            "first_launch", "app_active", "app_updated", "codex_detected", "claude_detected", "gemini_detected",
         ])
     }
 
@@ -190,6 +190,15 @@ struct TelemetryReporterTests {
         await reporter.providersDetected([.codex, .claudeCode])
         await reporter.providersDetected([.codex, .claudeCode])
         #expect(await client.events == [.claudeDetected, .codexDetected])
+    }
+
+    @Test func geminiIsReportedLikeTheOtherProvidersAndRoadmapEntriesAreNot() async {
+        let client = RecordingTelemetryClient()
+        let (reporter, _) = reporter(client: client, defaults: makeDefaults(), sharing: true)
+        await reporter.providersDetected([.gemini, .deepseek, .qwen])
+        await reporter.providersDetected([.gemini])
+        #expect(await client.events == [.geminiDetected])
+        #expect(TelemetryEvent.detected(.deepseek) == nil)
     }
 
     @Test func optingOutResetsIdentityAndHistory() async throws {
