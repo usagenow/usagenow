@@ -2,6 +2,14 @@
 
 All notable changes to UsageNow. This project follows [Semantic Versioning](https://semver.org).
 
+## 0.2.1
+
+### Fixed
+
+- **Claude limits come back by themselves after Claude Code renews its sign-in.** 0.2.0 stopped reading the keychain after an expired sign-in until you chose **Try Again**, so a sign-in renewed by running `claude` went unnoticed. UsageNow now watches when the keychain item last changed — reading no secret and showing no prompt — and reads the new sign-in on the next refresh.
+- **Last known Claude limits survive quitting and updating the app.** They were kept in memory only, so installing an update overnight left an empty panel in the morning. Percentages and reset times — never credentials — are now stored locally for up to a day, and removed when the setting is turned off.
+- **The newest Claude Code CLI is used.** With more than one copy installed, UsageNow could pick an old native install left behind after switching to npm.
+
 ## 0.2.0
 
 ### Added

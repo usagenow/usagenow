@@ -1,4 +1,5 @@
 import Foundation
+import Synchronization
 import Testing
 @testable import UsageNow
 
@@ -317,7 +318,7 @@ struct ClaudeCodeProviderTests {
         #expect(await transport.requests.isEmpty)
         #expect(await client.availability == .staleAuthentication)
 
-        // Automatic refreshes don't read the keychain again until a manual refresh.
+        // Automatic refreshes don't read the keychain again until the sign-in changes.
         _ = await client.windows(trigger: .automatic, now: { TestDates.noon.addingTimeInterval(600) })
         #expect(await credentials.reads == 1)
     }
@@ -365,6 +366,115 @@ struct ClaudeCodeProviderTests {
 
         clock.advance(by: 25 * 3_600)
         #expect(await client.windows(trigger: .automatic, now: { clock.now }) == nil)
+    }
+
+    @Test func aSignInClaudeCodeRenewsIsPickedUpWithoutTryAgain() async throws {
+        // This morning: the sign-in expired overnight, then `claude` ran in Terminal.
+        let clock = TestClock(TestDates.noon)
+        let credentials = SequencedCredentials(
+            [.found(ClaudeOAuthToken(value: "stale", expiresAt: TestDates.noon.addingTimeInterval(-60)))],
+            modified: TestDates.noon.addingTimeInterval(-8 * 3_600)
+        )
+        let transport = StubTransport(status: 200, body: ClaudeUsageFixture.full)
+        let client = ClaudeUsageLimitsClient(
+            credentials: credentials,
+            transport: transport,
+            minimumInterval: 0,
+            requestSignInRefresh: { false },
+            now: { clock.now }
+        )
+
+        #expect(await client.windows(trigger: .automatic, now: { clock.now }) == nil)
+        #expect(await client.availability == .staleAuthentication)
+
+        // Nothing changed: automatic refreshes don't read the secret again.
+        clock.advance(by: 5 * 60)
+        _ = await client.windows(trigger: .automatic, now: { clock.now })
+        #expect(await credentials.reads == 1)
+        #expect(await transport.requests.isEmpty)
+
+        // Claude Code saves a renewed sign-in; the next automatic refresh uses it.
+        await credentials.save(.found(ClaudeOAuthToken(value: "renewed", expiresAt: clock.now.addingTimeInterval(8 * 3_600))), at: clock.now)
+        clock.advance(by: 5 * 60)
+        let entry = await client.windows(trigger: .automatic, now: { clock.now })
+
+        #expect(entry?.value.count == 3)
+        #expect(await client.availability == .available)
+        let request = try #require(await transport.requests.first)
+        #expect(request.value(forHTTPHeaderField: "Authorization") == "Bearer renewed")
+    }
+
+    @Test func aRejectedSignInIsReadAgainOnceItChanges() async throws {
+        let credentials = SequencedCredentials([.found(ClaudeOAuthToken(value: "revoked", expiresAt: nil))], modified: TestDates.noon)
+        let transport = StubTransport(status: 401, body: ClaudeUsageFixture.full)
+        let client = ClaudeUsageLimitsClient(credentials: credentials, transport: transport, minimumInterval: 0)
+        let now: @Sendable () -> Date = { TestDates.noon }
+
+        _ = await client.windows(trigger: .automatic, now: now)
+        _ = await client.windows(trigger: .automatic, now: now)
+        #expect(await credentials.reads == 1)
+
+        await credentials.save(.found(ClaudeOAuthToken(value: "new", expiresAt: nil)), at: TestDates.noon.addingTimeInterval(60))
+        await transport.setStatus(200)
+        #expect(await client.windows(trigger: .automatic, now: now)?.value.count == 3)
+        #expect(await credentials.reads == 2)
+    }
+
+    @Test func lastKnownLimitsSurviveARelaunch() async throws {
+        let memory = MemoryQuotaStore()
+        let clock = TestClock(TestDates.noon)
+
+        let yesterday = ClaudeUsageLimitsClient(
+            credentials: StubCredentials(token: "fresh", expiresAt: TestDates.noon.addingTimeInterval(3_600)),
+            transport: StubTransport(status: 200, body: ClaudeUsageFixture.full),
+            lastKnownLimits: memory.store,
+            now: { clock.now }
+        )
+        #expect(await yesterday.windows(trigger: .automatic, now: { clock.now })?.value.count == 3)
+
+        // The app is updated overnight; the new process finds the sign-in expired.
+        clock.advance(by: 9 * 3_600)
+        let thisMorning = ClaudeUsageLimitsClient(
+            credentials: StubCredentials(token: "stale", expiresAt: TestDates.noon.addingTimeInterval(3_600)),
+            transport: StubTransport(status: 200, body: ClaudeUsageFixture.full),
+            lastKnownLimits: memory.store,
+            requestSignInRefresh: { false },
+            now: { clock.now }
+        )
+        let entry = await thisMorning.windows(trigger: .automatic, now: { clock.now })
+        #expect(entry?.value.count == 3, "A relaunch must not blank limits read before it")
+        #expect(entry?.fetchedAt == TestDates.noon)
+    }
+
+    @Test func turningLimitsOffForgetsStoredValues() async throws {
+        let memory = MemoryQuotaStore()
+        let client = ClaudeUsageLimitsClient(
+            credentials: StubCredentials(token: "fresh"),
+            transport: StubTransport(status: 200, body: ClaudeUsageFixture.full),
+            lastKnownLimits: memory.store
+        )
+        _ = await client.windows(trigger: .manual, now: { TestDates.noon })
+        #expect(memory.stored != nil)
+
+        await client.reset()
+        #expect(memory.stored == nil)
+    }
+
+    @Test func storedLimitsRoundTripThroughUserDefaults() throws {
+        let suite = "UsageNowTests.\(UUID().uuidString)"
+        let defaults = try #require(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+
+        let store = QuotaCacheStore<[UsageWindow]>.userDefaults(defaults, key: "limits")
+        let windows = try #require(ClaudeUsageLimitsParser.windows(from: Data(ClaudeUsageFixture.full.utf8)))
+        store.save(QuotaCacheEntry(value: windows, fetchedAt: TestDates.noon))
+
+        let loaded = try #require(store.load())
+        #expect(loaded.value == windows)
+        #expect(loaded.fetchedAt == TestDates.noon)
+
+        store.save(nil)
+        #expect(store.load() == nil)
     }
 
     @Test func expiredSignInIsHandedBackToClaudeCode() async throws {
@@ -463,6 +573,23 @@ struct ClaudeCodeProviderTests {
         #expect(ClaudeCodeEnvironment.locateExecutable(homeDirectory: dir.url) == binary)
     }
 
+    @Test func theMostRecentlyInstalledCLIWins() throws {
+        // An old native install left behind, and the npm install actually in use.
+        let dir = try TemporaryDirectory()
+        let fileManager = FileManager.default
+        func install(_ path: String, modified: Date) throws -> URL {
+            let binary = dir.url.appending(path: path)
+            try fileManager.createDirectory(at: binary.deletingLastPathComponent(), withIntermediateDirectories: true)
+            try Data("#!/bin/sh\n".utf8).write(to: binary)
+            try fileManager.setAttributes([.posixPermissions: 0o755, .modificationDate: modified], ofItemAtPath: binary.path)
+            return binary
+        }
+        _ = try install(".local/share/claude/versions/2.1.42", modified: TestDates.noon.addingTimeInterval(-200 * 86_400))
+        let current = try install(".nvm/versions/node/v24.13.0/bin/claude", modified: TestDates.noon)
+
+        #expect(ClaudeCodeEnvironment.locateExecutable(homeDirectory: dir.url) == current)
+    }
+
     @Test func tokenIsRedactedInDescriptions() {
         let token = ClaudeOAuthToken(value: "fake-secret", expiresAt: nil)
         #expect(!"\(token)".contains("fake-secret"))
@@ -532,15 +659,39 @@ enum ClaudeUsageFixture {
 /// Returns a different result on each read, so a renewal can be observed.
 actor SequencedCredentials: ClaudeCredentialSource {
     private var results: [ClaudeCredentialLookup]
+    private var modified: Date?
     private(set) var reads = 0
 
-    init(_ results: [ClaudeCredentialLookup]) {
+    init(_ results: [ClaudeCredentialLookup], modified: Date? = nil) {
         self.results = results
+        self.modified = modified
     }
 
     func lookup() async throws -> ClaudeCredentialLookup {
         reads += 1
         return results.count > 1 ? results.removeFirst() : results[0]
+    }
+
+    func lastModified() async -> Date? { modified }
+
+    /// What Claude Code does when it renews: saves a new sign-in.
+    func save(_ result: ClaudeCredentialLookup, at date: Date) {
+        results = [result]
+        modified = date
+    }
+}
+
+/// Stands in for user defaults, so a "relaunch" can share stored limits.
+final class MemoryQuotaStore: Sendable {
+    private let entry = Mutex<QuotaCacheEntry<[UsageWindow]>?>(nil)
+
+    var stored: QuotaCacheEntry<[UsageWindow]>? { entry.withLock { $0 } }
+
+    var store: QuotaCacheStore<[UsageWindow]> {
+        QuotaCacheStore(
+            load: { self.entry.withLock { $0 } },
+            save: { newEntry in self.entry.withLock { $0 = newEntry } }
+        )
     }
 }
 

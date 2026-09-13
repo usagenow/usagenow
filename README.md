@@ -66,10 +66,11 @@ UsageNow honors `CODEX_HOME` and `CLAUDE_CONFIG_DIR` when they’re set.
 
 Claude Code does not currently expose subscription limits through a supported local API. UsageNow can optionally read the existing Claude Code access token from macOS Keychain and query Anthropic’s usage endpoint. This integration is experimental and may require launching Claude Code in Terminal periodically to refresh your session — the Claude app keeps its own sign-in and doesn’t renew the one in your keychain.
 
-**UsageNow never modifies or stores your Claude Code credentials, and never touches your refresh token.** When the saved sign-in has expired, it asks the Claude Code CLI to renew its own credential — the same delegation used for Codex, where `codex app-server` authenticates itself — and then reads the keychain again. If the CLI isn't installed or can't renew, UsageNow says so and keeps showing local activity.
+**UsageNow never modifies or stores your Claude Code credentials, and never touches your refresh token.**
 
-Turn it on in **Settings › General › Fetch Claude usage limits**. When limits can’t be fetched, UsageNow says why in one line — the session needs refreshing, keychain access was denied, or Anthropic’s endpoint didn’t answer — and keeps showing local token, request, model, and plan data. The last limits it did read stay on screen for a day, marked stale, so a sign-in that expires overnight doesn’t leave an empty panel in the morning.
+Claude Code’s saved sign-in lasts a few hours and is renewed only when Claude Code itself runs. UsageNow picks up a renewed sign-in on its own: while the saved one is unusable, it checks only when the keychain item last changed — which reads no secret and never shows a prompt — and reads the token again once Claude Code has saved a new one. After you use `claude` anywhere, limits come back on the next refresh, with no **Try Again**. When the sign-in has just expired, UsageNow also runs the CLI’s read-only `claude auth status` once, and never sends a prompt through it.
 
+Turn it on in **Settings › General › Fetch Claude usage limits**. When limits can’t be fetched, UsageNow says why in one line — the session needs refreshing, keychain access was denied, or Anthropic’s endpoint didn’t answer — and keeps showing local token, request, model, and plan data. The last limits it did read stay on screen for a day, marked stale, even across quitting or updating the app, so a sign-in that expires overnight doesn’t leave an empty panel in the morning.
 ### Roadmap providers
 
 Gemini CLI, DeepSeek, and Qwen are listed in Settings › Providers as **Coming soon**. They’re labels only: no integration, no credentials, and no network or file access.

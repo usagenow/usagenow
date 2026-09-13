@@ -68,7 +68,11 @@ final class AppState {
         }
         let claudeLimits = ClaudeLimitsControl(
             isEnabled: FeatureSwitch(false),
-            client: ClaudeUsageLimitsClient(requestSignInRefresh: refreshSignIn)
+            client: ClaudeUsageLimitsClient(
+                // Percentages and reset times only, so a relaunch doesn't blank them.
+                lastKnownLimits: .userDefaults(defaults, key: "experimental.claudeLastKnownLimits"),
+                requestSignInRefresh: refreshSignIn
+            )
         )
         return AppState(
             providers: makeProviders(defaults: defaults, claudeLimits: claudeLimits),

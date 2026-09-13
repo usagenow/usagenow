@@ -43,6 +43,10 @@ struct ClaudeCodeEnvironment: Sendable, Equatable {
 
     /// Well-known install locations. Apps launched from Finder don't inherit
     /// the shell's `PATH`, so it isn't searched.
+    ///
+    /// A Mac often has more than one copy — a native install left behind
+    /// after switching to npm, or one per Node version — so the most
+    /// recently installed binary wins rather than the first one found.
     static func locateExecutable(homeDirectory: URL, fileManager: FileManager = .default) -> URL? {
         var candidates = [
             homeDirectory.appending(path: ".local/bin/claude"),
@@ -60,7 +64,14 @@ struct ClaudeCodeEnvironment: Sendable, Equatable {
         if let nodes = try? fileManager.contentsOfDirectory(atPath: nodeVersions.path) {
             candidates += nodes.sorted(by: >).map { nodeVersions.appending(path: "\($0)/bin/claude") }
         }
-        return candidates.first { fileManager.isExecutableFile(atPath: $0.path) }
+        let installed = candidates.filter { fileManager.isExecutableFile(atPath: $0.path) }
+        return installed.max { installDate(of: $0, fileManager) < installDate(of: $1, fileManager) }
+    }
+
+    /// When the binary a candidate points at was written; symlinks are followed.
+    private static func installDate(of executable: URL, _ fileManager: FileManager) -> Date {
+        let target = executable.resolvingSymlinksInPath()
+        return (try? fileManager.attributesOfItem(atPath: target.path)[.modificationDate] as? Date) ?? .distantPast
     }
 }
 

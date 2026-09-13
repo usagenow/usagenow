@@ -16,16 +16,31 @@ import Security
 /// - Results are cached; automatic refreshes query at most every 5 minutes,
 ///   and only one request runs at a time.
 /// - A failure never blanks the display: the last good values stay for a
-///   day, shown as stale. Local activity keeps working regardless.
-/// - After a keychain read fails (access denied, no sign-in, expired
-///   sign-in), automatic refreshes don't read the keychain again — so macOS
-///   doesn't keep asking. A manual refresh or re-enabling tries again.
+///   day, shown as stale — across relaunches too, when a store is given.
+///   Local activity keeps working regardless.
+/// - An expired, missing, or rejected sign-in isn't read again until it
+///   changes. Its modification date is read without the secret, so waiting
+///   never shows a keychain prompt, and a sign-in Claude Code renews is
+///   picked up on the next automatic refresh.
+/// - After keychain access is denied, only a manual refresh or re-enabling
+///   asks again, so macOS doesn't keep prompting.
 actor ClaudeUsageLimitsClient {
     static let endpoint = URL(string: "https://api.anthropic.com/api/oauth/usage")!
 
     enum ClientError: Error {
         case rateLimited
         case unexpectedStatus(Int)
+    }
+
+    /// Why the keychain isn't read during automatic refreshes right now.
+    private enum KeychainHold: Equatable {
+        /// Read it whenever a token is needed.
+        case none
+        /// Access was denied; only a manual refresh asks again.
+        case denied
+        /// The saved sign-in was unusable. Reading it again would give the
+        /// same answer, so wait until its modification date changes.
+        case untilChanged(since: Date?)
     }
 
     private(set) var availability: ClaudeQuotaAvailability = .disabled
@@ -39,19 +54,20 @@ actor ClaudeUsageLimitsClient {
     private let now: @Sendable () -> Date
     private var token: ClaudeOAuthToken?
     private var lastSignInRefresh: Date?
-    private var keychainNeedsManualRetry = false
+    private var keychainHold = KeychainHold.none
 
     init(
         credentials: any ClaudeCredentialSource = KeychainClaudeCredentialSource(),
         transport: any HTTPTransport = URLSessionTransport.ephemeral(timeout: 10),
         minimumInterval: TimeInterval = 5 * 60,
+        lastKnownLimits: QuotaCacheStore<[UsageWindow]>? = nil,
         signInRefreshInterval: TimeInterval = ClaudeSignInRefresher.minimumInterval,
         requestSignInRefresh: (@Sendable () async -> Bool)? = nil,
         now: @escaping @Sendable () -> Date = { .now }
     ) {
         self.credentials = credentials
         self.transport = transport
-        self.cache = QuotaCache(minimumInterval: minimumInterval, retention: 24 * 60 * 60)
+        self.cache = QuotaCache(minimumInterval: minimumInterval, retention: 24 * 60 * 60, store: lastKnownLimits)
         self.requestSignInRefresh = requestSignInRefresh
         self.refreshInterval = signInRefreshInterval
         self.now = now
@@ -59,7 +75,7 @@ actor ClaudeUsageLimitsClient {
 
     /// Cached or freshly fetched windows, or `nil` when unavailable.
     func windows(trigger: RefreshTrigger, now: @escaping @Sendable () -> Date) async -> QuotaCache<[UsageWindow]>.Entry? {
-        if trigger == .manual { keychainNeedsManualRetry = false }
+        if trigger == .manual { keychainHold = .none }
         return await cache.value(trigger: trigger, now: now) { [self] in
             try await self.fetch(now: now())
         }
@@ -68,7 +84,7 @@ actor ClaudeUsageLimitsClient {
     /// Forgets the token, cached limits, and status, e.g. when the feature is turned off.
     func reset() async {
         token = nil
-        keychainNeedsManualRetry = false
+        keychainHold = .none
         update(.disabled)
         await cache.clear()
     }
@@ -103,10 +119,9 @@ actor ClaudeUsageLimitsClient {
             return .value(windows)
         case 401, 403:
             // Rejected. Claude Code renews its own credential when it runs;
-            // UsageNow never does. Read the keychain again after a manual refresh.
+            // UsageNow never does. Wait for the saved sign-in to change.
             self.token = nil
-            keychainNeedsManualRetry = true
-            update(.staleAuthentication)
+            await waitForNewSignIn()
             return .unavailable
         case 404:
             update(.endpointUnavailable)
@@ -126,7 +141,17 @@ actor ClaudeUsageLimitsClient {
     private func validToken(at now: Date) async throws -> ClaudeOAuthToken? {
         if let cached = token, !cached.isExpired(at: now) { return cached }
         token = nil
-        guard !keychainNeedsManualRetry else { return nil }
+
+        switch keychainHold {
+        case .none:
+            break
+        case .denied:
+            return nil
+        case .untilChanged(let since):
+            guard await credentials.lastModified() != since else { return nil }
+            keychainHold = .none
+            Log.provider.notice("Claude usage limits: the Claude Code sign-in changed; reading it again")
+        }
 
         switch try await credentials.lookup() {
         case .found(let found) where !found.isExpired(at: now):
@@ -139,39 +164,34 @@ actor ClaudeUsageLimitsClient {
         case .notFound:
             return try await renewedToken(at: now)
         case .accessDenied:
-            fail(with: .keychainDenied)
+            keychainHold = .denied
+            update(.keychainDenied)
             return nil
         }
     }
 
     /// Lets Claude Code renew its credential, then reads the keychain again.
-    /// Rate-limited, and gives up quietly when the CLI isn't there or didn't help.
+    /// Rate-limited; when the CLI isn't there or didn't help, waits for the
+    /// sign-in to change instead.
     private func renewedToken(at now: Date) async throws -> ClaudeOAuthToken? {
-        guard let requestSignInRefresh else {
-            fail(with: .staleAuthentication)
-            return nil
+        let mayAsk = lastSignInRefresh.map { now.timeIntervalSince($0) >= refreshInterval } ?? true
+        if let requestSignInRefresh, mayAsk {
+            lastSignInRefresh = now
+            if await requestSignInRefresh(),
+               case .found(let renewed) = try await credentials.lookup(),
+               !renewed.isExpired(at: self.now()) {
+                token = renewed
+                return renewed
+            }
         }
-        if let lastSignInRefresh, now.timeIntervalSince(lastSignInRefresh) < refreshInterval {
-            fail(with: .staleAuthentication)
-            return nil
-        }
-        lastSignInRefresh = now
-
-        guard await requestSignInRefresh() else {
-            fail(with: .staleAuthentication)
-            return nil
-        }
-        guard case .found(let renewed) = try await credentials.lookup(), !renewed.isExpired(at: self.now()) else {
-            fail(with: .staleAuthentication)
-            return nil
-        }
-        token = renewed
-        return renewed
+        await waitForNewSignIn()
+        return nil
     }
 
-    private func fail(with availability: ClaudeQuotaAvailability) {
-        keychainNeedsManualRetry = true
-        update(availability)
+    /// Stops reading the keychain until Claude Code saves a different sign-in.
+    private func waitForNewSignIn() async {
+        keychainHold = .untilChanged(since: await credentials.lastModified())
+        update(.staleAuthentication)
     }
 
     private func update(_ newAvailability: ClaudeQuotaAvailability) {
@@ -231,6 +251,13 @@ enum ClaudeCredentialLookup: Sendable {
 
 protocol ClaudeCredentialSource: Sendable {
     func lookup() async throws -> ClaudeCredentialLookup
+    /// When the saved sign-in last changed, or `nil` when there's none or it
+    /// can't be told. Must not read the secret, so it never prompts.
+    func lastModified() async -> Date?
+}
+
+extension ClaudeCredentialSource {
+    func lastModified() async -> Date? { nil }
 }
 
 /// Reads Claude Code's OAuth credential from the login keychain with the
@@ -247,6 +274,21 @@ struct KeychainClaudeCredentialSource: ClaudeCredentialSource {
                 continuation.resume(with: Result { try Self.read() })
             }
         }
+    }
+
+    /// Reads only the item's attributes. The keychain guards an item's data,
+    /// not its attributes, so this never shows a prompt.
+    func lastModified() async -> Date? {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: Self.service,
+            kSecReturnAttributes as String: true,
+            kSecMatchLimit as String: kSecMatchLimitOne,
+        ]
+        var item: AnyObject?
+        guard SecItemCopyMatching(query as CFDictionary, &item) == errSecSuccess,
+              let attributes = item as? [String: Any] else { return nil }
+        return attributes[kSecAttrModificationDate as String] as? Date
     }
 
     private static func read() throws -> ClaudeCredentialLookup {
