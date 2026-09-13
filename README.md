@@ -66,7 +66,9 @@ UsageNow honors `CODEX_HOME` and `CLAUDE_CONFIG_DIR` when they’re set.
 
 Claude Code does not currently expose subscription limits through a supported local API. UsageNow can optionally read the existing Claude Code access token from macOS Keychain and query Anthropic’s usage endpoint. This integration is experimental and may require launching Claude Code in Terminal periodically to refresh your session — the Claude app keeps its own sign-in and doesn’t renew the one in your keychain.
 
-**UsageNow never modifies or stores your Claude Code credentials, and never touches your refresh token.**
+**UsageNow never modifies or stores your Claude Code credentials, and never uses your refresh token.**
+
+**No macOS prompt appears — turning on the setting is your consent.** Claude Code saves its sign-in with macOS’s `security` tool, and every save resets which apps may read the item, so reading it through the Keychain API would ask for your login password after each renewal, even after **Always Allow**. UsageNow reads it the way Claude Code itself does, with `/usr/bin/security find-generic-password`, which the item already trusts. The output goes through a pipe into memory; only the access token and its expiry are kept, nothing is written to disk or logged, and the token is sent only to `api.anthropic.com`.
 
 Claude Code’s saved sign-in lasts a few hours and is renewed only when Claude Code itself runs. UsageNow picks up a renewed sign-in on its own: while the saved one is unusable, it checks only when the keychain item last changed — which reads no secret and never shows a prompt — and reads the token again once Claude Code has saved a new one. After you use `claude` anywhere, limits come back on the next refresh, with no **Try Again**. When the sign-in has just expired, UsageNow also runs the CLI’s read-only `claude auth status` once, and never sends a prompt through it.
 

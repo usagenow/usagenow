@@ -260,19 +260,72 @@ extension ClaudeCredentialSource {
     func lastModified() async -> Date? { nil }
 }
 
-/// Reads Claude Code's OAuth credential from the login keychain with the
-/// Security framework. macOS asks the user to allow access the first time.
-/// Only the access token and its expiry are extracted; the refresh token
-/// is never read into a variable.
+/// Reads Claude Code's OAuth credential from the login keychain.
+///
+/// The token is read the way Claude Code reads it itself: with
+/// `/usr/bin/security find-generic-password -w`. Claude Code saves the item
+/// through that tool, and every save resets the item's per-app permissions,
+/// so reading it with the Security framework would ask for the login
+/// password again after each renewal — "Always Allow" doesn't survive one.
+/// Turning on "Fetch Claude usage limits" is the consent.
+///
+/// The output goes through a pipe straight into memory: nothing is written
+/// to disk or logged, and only the access token and its expiry are kept.
 struct KeychainClaudeCredentialSource: ClaudeCredentialSource {
     static let service = "Claude Code-credentials"
+    static let tool = URL(filePath: "/usr/bin/security")
+    /// Long enough for someone to answer a prompt, should one ever appear.
+    static let timeout: TimeInterval = 60
+
+    /// `security` exits with this when there's no such item.
+    static let itemNotFoundStatus: Int32 = 44
 
     func lookup() async throws -> ClaudeCredentialLookup {
-        // The keychain may show an access prompt; wait off the concurrency pool.
-        try await withCheckedThrowingContinuation { continuation in
+        // The tool blocks until it finishes; wait off the concurrency pool.
+        await withCheckedContinuation { continuation in
             DispatchQueue.global(qos: .userInitiated).async {
-                continuation.resume(with: Result { try Self.read() })
+                continuation.resume(returning: Self.readWithTool())
             }
+        }
+    }
+
+    private static func readWithTool() -> ClaudeCredentialLookup {
+        let process = Process()
+        process.executableURL = tool
+        process.arguments = ["find-generic-password", "-a", NSUserName(), "-s", service, "-w"]
+        process.environment = ["HOME": NSHomeDirectory(), "USER": NSUserName()]
+        let output = Pipe()
+        process.standardOutput = output
+        process.standardError = FileHandle.nullDevice
+        process.standardInput = FileHandle.nullDevice
+
+        do {
+            try process.run()
+        } catch {
+            Log.provider.notice("Claude usage limits: couldn’t run the security tool")
+            return .notFound
+        }
+        let running = TerminableProcess(process)
+        let watchdog = DispatchWorkItem { running.terminate() }
+        DispatchQueue.global().asyncAfter(deadline: .now() + timeout, execute: watchdog)
+        // Reading to the end returns when the tool exits and closes the pipe.
+        let data = output.fileHandleForReading.readDataToEndOfFile()
+        process.waitUntilExit()
+        watchdog.cancel()
+
+        return lookup(exitStatus: process.terminationStatus, output: data)
+    }
+
+    /// Interprets what `security find-generic-password -w` returned.
+    static func lookup(exitStatus: Int32, output: Data) -> ClaudeCredentialLookup {
+        switch exitStatus {
+        case 0:
+            return ClaudeCredentialParser.token(from: output).map(ClaudeCredentialLookup.found) ?? .notFound
+        case itemNotFoundStatus:
+            return .notFound
+        default:
+            Log.provider.info("Claude usage limits: the security tool exited with \(exitStatus, privacy: .public)")
+            return .accessDenied
         }
     }
 
@@ -289,29 +342,6 @@ struct KeychainClaudeCredentialSource: ClaudeCredentialSource {
         guard SecItemCopyMatching(query as CFDictionary, &item) == errSecSuccess,
               let attributes = item as? [String: Any] else { return nil }
         return attributes[kSecAttrModificationDate as String] as? Date
-    }
-
-    private static func read() throws -> ClaudeCredentialLookup {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecReturnData as String: true,
-            kSecMatchLimit as String: kSecMatchLimitOne,
-        ]
-        var item: AnyObject?
-        let status = SecItemCopyMatching(query as CFDictionary, &item)
-        switch status {
-        case errSecSuccess:
-            guard let data = item as? Data, let token = ClaudeCredentialParser.token(from: data) else { return .notFound }
-            return .found(token)
-        case errSecItemNotFound:
-            return .notFound
-        case errSecUserCanceled, errSecAuthFailed, errSecInteractionNotAllowed:
-            Log.provider.info("Claude usage limits: keychain access not granted (\(status, privacy: .public))")
-            return .accessDenied
-        default:
-            throw KeychainStore.KeychainError.unexpectedStatus(status)
-        }
     }
 }
 

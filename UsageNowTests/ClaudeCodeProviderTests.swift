@@ -636,6 +636,29 @@ struct ClaudeCodeProviderTests {
         #expect(token?.expiresAt == Date(timeIntervalSince1970: 1_789_138_800))
         #expect(ClaudeCredentialParser.token(from: Data(#"{"other":{}}"#.utf8)) == nil)
     }
+
+    @Test func interpretsTheSecurityToolsOutput() {
+        // `security -w` prints the saved JSON followed by a newline.
+        let saved = Data(#"{"claudeAiOauth":{"accessToken":"fake-access","refreshToken":"fake-refresh","expiresAt":1789138800000}}"#.utf8 + [0x0A])
+        guard case .found(let token) = KeychainClaudeCredentialSource.lookup(exitStatus: 0, output: saved) else {
+            Issue.record("A saved sign-in should be found")
+            return
+        }
+        #expect(token.value == "fake-access")
+
+        guard case .notFound = KeychainClaudeCredentialSource.lookup(exitStatus: KeychainClaudeCredentialSource.itemNotFoundStatus, output: Data()) else {
+            Issue.record("A missing item is not a denial")
+            return
+        }
+        guard case .notFound = KeychainClaudeCredentialSource.lookup(exitStatus: 0, output: Data("not json\n".utf8)) else {
+            Issue.record("Unreadable output is treated as no sign-in")
+            return
+        }
+        guard case .accessDenied = KeychainClaudeCredentialSource.lookup(exitStatus: 51, output: Data()) else {
+            Issue.record("Any other failure stops automatic reads")
+            return
+        }
+    }
 }
 
 enum ClaudeProfileFixture {

@@ -67,7 +67,7 @@ struct ClaudeSignInRefresher: Sendable {
 }
 
 /// Wraps a `Process` so a watchdog can stop it from another task.
-private final class TerminableProcess: @unchecked Sendable {
+final class TerminableProcess: @unchecked Sendable {
     private let process: Process
 
     init(_ process: Process) {
