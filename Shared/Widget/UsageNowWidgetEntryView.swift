@@ -106,7 +106,8 @@ struct SmallUsageWidgetView: View {
                 WidgetProviderName(provider: provider.provider, font: .caption)
                 Spacer(minLength: 4)
                 if provider.mostRelevantWindow != nil {
-                    WidgetRemainingLabel(usage: provider.mostRelevantWindow?.usage, font: .caption)
+                    // With three rows the name needs the room; the bar still shows the level.
+                    WidgetRemainingLabel(usage: provider.mostRelevantWindow?.usage, font: .caption, showsLevelSymbol: providers.count < 3)
                 }
             }
             if let window = provider.mostRelevantWindow {
@@ -187,7 +188,8 @@ struct MediumUsageWidgetView: View {
                     }
                 }
             } else {
-                VStack(alignment: .leading, spacing: 9) {
+                Spacer(minLength: 0)
+                VStack(alignment: .leading, spacing: 14) {
                     ForEach(snapshot.providers(fitting: Self.maxRows)) { provider in
                         WidgetProviderRow(provider: provider, now: now)
                     }

@@ -37,10 +37,12 @@ struct WidgetHeader: View {
 struct WidgetRemainingLabel: View {
     let usage: UsagePercentage?
     var font: Font = .callout
+    /// Off where space is tight; the bar's color still shows the level.
+    var showsLevelSymbol = true
 
     var body: some View {
         HStack(spacing: 3) {
-            if let usage, usage.level >= .high {
+            if showsLevelSymbol, let usage, usage.level >= .high {
                 Image(systemName: usage.level.symbolName ?? "exclamationmark.circle.fill")
                     .font(.caption2)
                     .foregroundStyle(usage.level.tint)
@@ -124,6 +126,9 @@ struct WidgetProviderName: View {
 /// reports no limits. Used when several providers share a widget.
 struct WidgetProviderRow: View {
     static let nameWidth: CGFloat = 94
+    /// Fixed trailing columns keep every row's bar the same length.
+    static let remainingWidth: CGFloat = 74
+    static let resetWidth: CGFloat = 46
 
     let provider: WidgetProviderSnapshot
     let now: Date
@@ -137,24 +142,23 @@ struct WidgetProviderRow: View {
             if let window = provider.mostRelevantWindow {
                 UsageProgressView(usage: window.usage, height: WidgetLayout.barHeight)
                 WidgetRemainingLabel(usage: window.usage, font: .caption)
-                    .fixedSize()
-                if let resetsAt = window.resetsAt {
-                    Text(verbatim: formatter.countdown(from: now, to: resetsAt))
-                        .font(.caption2)
-                        .monospacedDigit()
-                        .foregroundStyle(.tertiary)
-                        .fixedSize()
-                }
+                    .frame(width: Self.remainingWidth, alignment: .trailing)
+                Text(verbatim: window.resetsAt.map { formatter.countdown(from: now, to: $0) } ?? "")
+                    .font(.caption2)
+                    .monospacedDigit()
+                    .foregroundStyle(.tertiary)
+                    .lineLimit(1)
+                    .frame(width: Self.resetWidth, alignment: .trailing)
             } else {
-                Text("Usage limits unavailable")
+                Text("Limits unavailable", comment: "Widget row for a provider that reports no usage limits")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
-                    .minimumScaleFactor(0.85)
                 Spacer(minLength: 4)
                 if let tokens = provider.tokensToday {
-                    Text("\(UsageFormatter.tokens(tokens)) tokens today")
+                    Text("\(UsageFormatter.tokens(tokens)) tokens")
                         .font(.caption2)
+                        .monospacedDigit()
                         .foregroundStyle(.tertiary)
                         .lineLimit(1)
                         .fixedSize()

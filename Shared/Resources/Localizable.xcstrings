@@ -21,6 +21,9 @@
     "%@ plan" : {
 
     },
+    "%@ tokens" : {
+
+    },
     "%@ tokens today" : {
 
     },
@@ -185,6 +188,9 @@
     },
     "Light" : {
 
+    },
+    "Limits unavailable" : {
+      "comment" : "Widget row for a provider that reports no usage limits"
     },
     "Manual" : {
 
