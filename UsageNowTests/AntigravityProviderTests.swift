@@ -14,7 +14,6 @@ struct AntigravityProviderTests {
             home: URL(filePath: "/nonexistent/.gemini/antigravity-cli"),
             homeExists: installed,
             executable: nil,
-            projectID: "example-project-123",
             hasSavedSignIn: signedIn
         )
     }
@@ -34,8 +33,7 @@ struct AntigravityProviderTests {
             credentials: credentials,
             transport: transport ?? StubTransport(status: status, body: body),
             minimumInterval: 0,
-            lastKnownLimits: store,
-            projectID: { "example-project-123" }
+            lastKnownLimits: store
         )
     }
 
@@ -76,7 +74,7 @@ struct AntigravityProviderTests {
         #expect(snapshot.modelActivity.isEmpty, "No activity is guessed from agy's binary conversation files")
     }
 
-    @Test func requestGoesOnlyToCloudCodeWithTheProject() async throws {
+    @Test func requestGoesOnlyToCloudCodeWithoutAProject() async throws {
         let transport = StubTransport(status: 200, body: AntigravityFixture.summary)
         _ = await client(SequencedCredentials([freshToken]), transport: transport).windows(trigger: .manual, now: { TestDates.noon })
 
@@ -86,7 +84,7 @@ struct AntigravityProviderTests {
         #expect(request.httpMethod == "POST")
         #expect(request.value(forHTTPHeaderField: "Authorization") == "Bearer fake-google-token")
         let body = try JSONSerialization.jsonObject(with: try #require(request.httpBody)) as? [String: String]
-        #expect(body == ["project": "example-project-123"])
+        #expect(body == [:], "agy's cached project names its workspace, not a Cloud Code project")
     }
 
     // MARK: Sign-in lifecycle
@@ -222,12 +220,18 @@ struct AntigravityProviderTests {
         }
     }
 
-    @Test func projectIDIsReadOnlyWhenPlausible() throws {
-        let dir = try TemporaryDirectory()
-        try dir.write("cache/default_project_id.txt", text: "example-project-123\n")
-        #expect(AntigravityEnvironment.projectID(in: dir.url) == "example-project-123")
-        try dir.write("cache/default_project_id.txt", text: "not a project; rm -rf /")
-        #expect(AntigravityEnvironment.projectID(in: dir.url) == nil)
+    @Test func forbiddenIsNotTreatedAsAnExpiredSignIn() async throws {
+        let credentials = SequencedCredentials([freshToken], modified: TestDates.noon)
+        let body = #"{"error":{"code":403,"message":"Permission denied for person@example.com","status":"PERMISSION_DENIED","details":[{"reason":"SERVICE_DISABLED"}]}}"#
+        let client = client(credentials, status: 403, body: body)
+        _ = await client.windows(trigger: .automatic, now: { TestDates.noon })
+        #expect(await client.availability == .endpointUnavailable, "A new sign-in wouldn't fix a refusal")
+    }
+
+    @Test func googleErrorSummaryLeavesOutTheMessage() {
+        let body = Data(#"{"error":{"code":403,"message":"Permission denied for person@example.com","status":"PERMISSION_DENIED","details":[{"reason":"SERVICE_DISABLED"}]}}"#.utf8)
+        #expect(GoogleAPIError.summary(of: body) == "PERMISSION_DENIED/SERVICE_DISABLED")
+        #expect(GoogleAPIError.summary(of: Data("nope".utf8)) == "(no error details)")
     }
 
     @Test func messagesNameTheRightTool() {

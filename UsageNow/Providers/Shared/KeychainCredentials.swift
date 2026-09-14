@@ -134,3 +134,16 @@ enum KeychainItem {
         return attributes[kSecAttrModificationDate as String] as? Date
     }
 }
+
+/// Wraps a `Process` so a watchdog can stop it from another thread.
+final class TerminableProcess: @unchecked Sendable {
+    private let process: Process
+
+    init(_ process: Process) {
+        self.process = process
+    }
+
+    func terminate() {
+        if process.isRunning { process.terminate() }
+    }
+}

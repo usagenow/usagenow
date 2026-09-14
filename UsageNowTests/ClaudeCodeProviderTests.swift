@@ -323,7 +323,7 @@ struct ClaudeCodeProviderTests {
         #expect(await credentials.reads == 1)
     }
 
-    // MARK: Letting Claude Code renew its own sign-in
+    // MARK: Expired sign-ins and last known limits
 
     @Test func lastKnownLimitsSurviveAnExpiredSignIn() async throws {
         // Yesterday evening it worked; overnight the sign-in expired.
@@ -335,9 +335,7 @@ struct ClaudeCodeProviderTests {
         let client = ClaudeUsageLimitsClient(
             credentials: credentials,
             transport: StubTransport(status: 200, body: ClaudeUsageFixture.full),
-            minimumInterval: 0,
-            requestSignInRefresh: { false },
-            now: { clock.now }
+            minimumInterval: 0
         )
 
         #expect(await client.windows(trigger: .automatic, now: { clock.now })?.value.count == 3)
@@ -358,9 +356,7 @@ struct ClaudeCodeProviderTests {
         let client = ClaudeUsageLimitsClient(
             credentials: credentials,
             transport: StubTransport(status: 200, body: ClaudeUsageFixture.full),
-            minimumInterval: 0,
-            requestSignInRefresh: { false },
-            now: { clock.now }
+            minimumInterval: 0
         )
         _ = await client.windows(trigger: .automatic, now: { clock.now })
 
@@ -379,9 +375,7 @@ struct ClaudeCodeProviderTests {
         let client = ClaudeUsageLimitsClient(
             credentials: credentials,
             transport: transport,
-            minimumInterval: 0,
-            requestSignInRefresh: { false },
-            now: { clock.now }
+            minimumInterval: 0
         )
 
         #expect(await client.windows(trigger: .automatic, now: { clock.now }) == nil)
@@ -427,8 +421,7 @@ struct ClaudeCodeProviderTests {
         let yesterday = ClaudeUsageLimitsClient(
             credentials: StubCredentials(token: "fresh", expiresAt: TestDates.noon.addingTimeInterval(3_600)),
             transport: StubTransport(status: 200, body: ClaudeUsageFixture.full),
-            lastKnownLimits: memory.store,
-            now: { clock.now }
+            lastKnownLimits: memory.store
         )
         #expect(await yesterday.windows(trigger: .automatic, now: { clock.now })?.value.count == 3)
 
@@ -437,9 +430,7 @@ struct ClaudeCodeProviderTests {
         let thisMorning = ClaudeUsageLimitsClient(
             credentials: StubCredentials(token: "stale", expiresAt: TestDates.noon.addingTimeInterval(3_600)),
             transport: StubTransport(status: 200, body: ClaudeUsageFixture.full),
-            lastKnownLimits: memory.store,
-            requestSignInRefresh: { false },
-            now: { clock.now }
+            lastKnownLimits: memory.store
         )
         let entry = await thisMorning.windows(trigger: .automatic, now: { clock.now })
         #expect(entry?.value.count == 3, "A relaunch must not blank limits read before it")
@@ -477,87 +468,15 @@ struct ClaudeCodeProviderTests {
         #expect(store.load() == nil)
     }
 
-    @Test func expiredSignInIsHandedBackToClaudeCode() async throws {
-        // Expired at first; the CLI "renews" it and the second read succeeds.
-        let credentials = SequencedCredentials([
-            .found(OAuthAccessToken(value: "stale", expiresAt: TestDates.noon.addingTimeInterval(-60))),
-            .found(OAuthAccessToken(value: "fresh", expiresAt: TestDates.noon.addingTimeInterval(8 * 3_600))),
-        ])
-        let transport = StubTransport(status: 200, body: ClaudeUsageFixture.full)
-        let refreshes = Counter()
-        let client = ClaudeUsageLimitsClient(
-            credentials: credentials,
-            transport: transport,
-            requestSignInRefresh: { refreshes.increment(); return true },
-            now: { TestDates.noon }
-        )
-
-        let entry = await client.windows(trigger: .automatic, now: { TestDates.noon })
-        #expect(entry?.value.count == 3)
-        #expect(refreshes.value == 1)
-        #expect(await client.availability == .available)
-        let request = try #require(await transport.requests.first)
-        #expect(request.value(forHTTPHeaderField: "Authorization") == "Bearer fresh")
-    }
-
-    @Test func aValidSignInIsNeverHandedBack() async throws {
-        let refreshes = Counter()
-        let client = ClaudeUsageLimitsClient(
-            credentials: StubCredentials(token: "fake-token", expiresAt: TestDates.noon.addingTimeInterval(3_600)),
-            transport: StubTransport(status: 200, body: ClaudeUsageFixture.full),
-            requestSignInRefresh: { refreshes.increment(); return true },
-            now: { TestDates.noon }
-        )
-        _ = await client.windows(trigger: .manual, now: { TestDates.noon })
-        #expect(refreshes.value == 0, "Claude Code must not be run while the saved sign-in is still valid")
-    }
-
-    @Test func renewalIsRateLimited() async throws {
-        let credentials = StubCredentials(token: "stale", expiresAt: TestDates.noon.addingTimeInterval(-60))
-        let refreshes = Counter()
-        let clock = TestClock(TestDates.noon)
-        let client = ClaudeUsageLimitsClient(
-            credentials: credentials,
-            transport: StubTransport(status: 200, body: ClaudeUsageFixture.full),
-            minimumInterval: 0,
-            requestSignInRefresh: { refreshes.increment(); return true },
-            now: { clock.now }
-        )
-
-        _ = await client.windows(trigger: .manual, now: { clock.now })
-        _ = await client.windows(trigger: .manual, now: { clock.now })
-        #expect(refreshes.value == 1)
-        #expect(await client.availability == .staleAuthentication)
-
-        clock.advance(by: ClaudeSignInRefresher.minimumInterval + 1)
-        _ = await client.windows(trigger: .manual, now: { clock.now })
-        #expect(refreshes.value == 2)
-    }
-
-    @Test func failedRenewalReportsAStaleSignIn() async throws {
+    @Test func expiredSignInReportsAStaleSignIn() async throws {
         let transport = StubTransport(status: 200, body: ClaudeUsageFixture.full)
         let client = ClaudeUsageLimitsClient(
             credentials: StubCredentials(token: "stale", expiresAt: TestDates.noon.addingTimeInterval(-60)),
-            transport: transport,
-            requestSignInRefresh: { false },
-            now: { TestDates.noon }
+            transport: transport
         )
         #expect(await client.windows(trigger: .manual, now: { TestDates.noon }) == nil)
         #expect(await client.availability == .staleAuthentication)
         #expect(await transport.requests.isEmpty, "An expired token must never be sent")
-    }
-
-    @Test func deniedKeychainIsNotWorkedAroundByRunningTheCLI() async throws {
-        let refreshes = Counter()
-        let client = ClaudeUsageLimitsClient(
-            credentials: StubCredentials(token: nil, denied: true),
-            transport: StubTransport(status: 200, body: ClaudeUsageFixture.full),
-            requestSignInRefresh: { refreshes.increment(); return true },
-            now: { TestDates.noon }
-        )
-        _ = await client.windows(trigger: .manual, now: { TestDates.noon })
-        #expect(refreshes.value == 0)
-        #expect(await client.availability == .keychainDenied)
     }
 
     @Test func locatesTheClaudeCodeExecutable() throws {

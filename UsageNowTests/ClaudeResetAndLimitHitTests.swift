@@ -50,8 +50,7 @@ struct ClaudeResetAndLimitHitTests {
         let later = ClaudeUsageLimitsClient(
             credentials: StubCredentials(token: "stale", expiresAt: noon),
             transport: StubTransport(status: 200, body: ClaudeUsageFixture.full),
-            lastKnownLimits: memory.store,
-            requestSignInRefresh: { false }
+            lastKnownLimits: memory.store
         )
 
         let evening = noon.addingTimeInterval(6 * 3_600)

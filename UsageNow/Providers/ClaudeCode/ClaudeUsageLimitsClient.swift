@@ -1,5 +1,4 @@
 import Foundation
-import Security
 
 /// EXPERIMENTAL — off unless the user turns on "Fetch Claude usage limits".
 ///
@@ -48,29 +47,18 @@ actor ClaudeUsageLimitsClient {
     private let credentials: any CredentialSource
     private let transport: any HTTPTransport
     private let cache: QuotaCache<[UsageWindow]>
-    /// Asks Claude Code to renew its own sign-in. UsageNow never does it itself.
-    private let requestSignInRefresh: (@Sendable () async -> Bool)?
-    private let refreshInterval: TimeInterval
-    private let now: @Sendable () -> Date
     private var token: OAuthAccessToken?
-    private var lastSignInRefresh: Date?
     private var keychainHold = KeychainHold.none
 
     init(
         credentials: any CredentialSource = KeychainClaudeCredentialSource(),
         transport: any HTTPTransport = URLSessionTransport.ephemeral(timeout: 10),
         minimumInterval: TimeInterval = 5 * 60,
-        lastKnownLimits: QuotaCacheStore<[UsageWindow]>? = nil,
-        signInRefreshInterval: TimeInterval = ClaudeSignInRefresher.minimumInterval,
-        requestSignInRefresh: (@Sendable () async -> Bool)? = nil,
-        now: @escaping @Sendable () -> Date = { .now }
+        lastKnownLimits: QuotaCacheStore<[UsageWindow]>? = nil
     ) {
         self.credentials = credentials
         self.transport = transport
         self.cache = QuotaCache(minimumInterval: minimumInterval, retention: 24 * 60 * 60, store: lastKnownLimits)
-        self.requestSignInRefresh = requestSignInRefresh
-        self.refreshInterval = signInRefreshInterval
-        self.now = now
     }
 
     /// Cached or freshly fetched windows, or `nil` when unavailable.
@@ -135,9 +123,8 @@ actor ClaudeUsageLimitsClient {
         }
     }
 
-    /// The in-memory token, re-reading the keychain only when it's missing or
-    /// expired. An expired sign-in is handed back to Claude Code to renew,
-    /// then read once more.
+    /// The in-memory token, re-reading the keychain only when it's missing,
+    /// expired, or has changed since it was found unusable.
     private func validToken(at now: Date) async throws -> OAuthAccessToken? {
         if let cached = token, !cached.isExpired(at: now) { return cached }
         token = nil
@@ -160,32 +147,16 @@ actor ClaudeUsageLimitsClient {
         case .found(let expired):
             let expiry = expired.expiresAt?.formatted(.iso8601) ?? "unknown"
             Log.provider.notice("Claude usage limits: keychain sign-in expired at \(expiry, privacy: .public)")
-            return try await renewedToken(at: now)
+            await waitForNewSignIn()
+            return nil
         case .notFound:
-            return try await renewedToken(at: now)
+            await waitForNewSignIn()
+            return nil
         case .accessDenied:
             keychainHold = .denied
             update(.keychainDenied)
             return nil
         }
-    }
-
-    /// Lets Claude Code renew its credential, then reads the keychain again.
-    /// Rate-limited; when the CLI isn't there or didn't help, waits for the
-    /// sign-in to change instead.
-    private func renewedToken(at now: Date) async throws -> OAuthAccessToken? {
-        let mayAsk = lastSignInRefresh.map { now.timeIntervalSince($0) >= refreshInterval } ?? true
-        if let requestSignInRefresh, mayAsk {
-            lastSignInRefresh = now
-            if await requestSignInRefresh(),
-               case .found(let renewed) = try await credentials.lookup(),
-               !renewed.isExpired(at: self.now()) {
-                token = renewed
-                return renewed
-            }
-        }
-        await waitForNewSignIn()
-        return nil
     }
 
     /// Stops reading the keychain until Claude Code saves a different sign-in.

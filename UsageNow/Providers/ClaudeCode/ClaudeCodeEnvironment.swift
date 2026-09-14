@@ -11,7 +11,7 @@ struct ClaudeCodeEnvironment: Sendable, Equatable {
     var configDirectoryExists: Bool
     var configDirectoryIsReadable: Bool
     var globalConfigExists: Bool
-    /// The Claude Code CLI, used only to ask it to refresh its own sign-in.
+    /// The Claude Code CLI. Only its presence is used, to tell that Claude Code is installed.
     var executable: URL?
 
     var hasExecutable: Bool { executable != nil }

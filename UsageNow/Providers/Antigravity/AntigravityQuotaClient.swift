@@ -40,7 +40,6 @@ actor AntigravityQuotaClient {
     private let credentials: any CredentialSource
     private let transport: any HTTPTransport
     private let cache: QuotaCache<[UsageWindow]>
-    private let projectID: @Sendable () -> String?
     private var token: OAuthAccessToken?
     private var keychainHold = KeychainHold.none
 
@@ -48,13 +47,11 @@ actor AntigravityQuotaClient {
         credentials: any CredentialSource = KeychainAntigravityCredentialSource(),
         transport: any HTTPTransport = URLSessionTransport.ephemeral(timeout: 10),
         minimumInterval: TimeInterval = 5 * 60,
-        lastKnownLimits: QuotaCacheStore<[UsageWindow]>? = nil,
-        projectID: @escaping @Sendable () -> String? = { AntigravityEnvironment.discover().projectID }
+        lastKnownLimits: QuotaCacheStore<[UsageWindow]>? = nil
     ) {
         self.credentials = credentials
         self.transport = transport
         self.cache = QuotaCache(minimumInterval: minimumInterval, retention: 24 * 60 * 60, store: lastKnownLimits)
-        self.projectID = projectID
     }
 
     /// Cached or freshly fetched windows, or `nil` when unavailable.
@@ -82,9 +79,9 @@ actor AntigravityQuotaClient {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("UsageNow/\(AppInfo.version)", forHTTPHeaderField: "User-Agent")
-        var body: [String: String] = [:]
-        if let project = projectID() { body["project"] = project }
-        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        // No project: the one agy caches names its own workspace, not a
+        // Cloud Code project, and Google rejects the request with it.
+        request.httpBody = Data("{}".utf8)
 
         let data: Data
         let response: HTTPURLResponse
@@ -94,7 +91,10 @@ actor AntigravityQuotaClient {
             update(.endpointUnavailable)
             throw error
         }
-        Log.provider.info("Antigravity usage limits: HTTP \(response.statusCode, privacy: .public)")
+        if response.statusCode != 200 {
+            // Google's error code and reason only — never the message, which can name the account.
+            Log.provider.notice("Antigravity usage limits: HTTP \(response.statusCode, privacy: .public) \(GoogleAPIError.summary(of: data), privacy: .public)")
+        }
 
         switch response.statusCode {
         case 200:
@@ -104,12 +104,14 @@ actor AntigravityQuotaClient {
             }
             update(.available)
             return .value(windows)
-        case 401, 403:
+        case 401:
             // Rejected or expired early. `agy` renews its own sign-in; UsageNow never does.
             self.token = nil
             await waitForNewSignIn()
             return .unavailable
-        case 404:
+        case 403, 404:
+            // The sign-in is fine but the request isn't allowed or understood;
+            // a new sign-in wouldn't change that, so don't wait for one.
             update(.endpointUnavailable)
             return .unavailable
         case 429:
@@ -166,6 +168,18 @@ actor AntigravityQuotaClient {
         guard newAvailability != availability else { return }
         availability = newAvailability
         Log.provider.notice("Antigravity usage limits: \(String(describing: newAvailability), privacy: .public)")
+    }
+}
+
+/// The loggable part of a Google API error: `error.status` and the first
+/// `details[].reason`, e.g. "PERMISSION_DENIED/SERVICE_DISABLED".
+enum GoogleAPIError {
+    static func summary(of data: Data) -> String {
+        guard let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let error = object["error"] as? [String: Any] else { return "(no error details)" }
+        let status = error["status"] as? String ?? "unknown"
+        let reason = (error["details"] as? [[String: Any]])?.lazy.compactMap { $0["reason"] as? String }.first
+        return reason.map { "\(status)/\($0)" } ?? status
     }
 }
 

@@ -2,9 +2,8 @@ import Foundation
 
 /// Where Antigravity CLI (`agy`) keeps its data on this Mac.
 ///
-/// Discovery reads file metadata, the project identifier `agy` caches, and
-/// whether a saved sign-in exists — the keychain item's attributes, never
-/// its secret, so it never shows a prompt.
+/// Discovery reads file metadata and whether a saved sign-in exists — the
+/// keychain item's attributes, never its secret, so it never shows a prompt.
 struct AntigravityEnvironment: Sendable, Equatable {
     /// The keychain service `agy` saves its Google sign-in under.
     static let keychainService = "gemini"
@@ -13,8 +12,6 @@ struct AntigravityEnvironment: Sendable, Equatable {
     var home: URL
     var homeExists: Bool
     var executable: URL?
-    /// The Cloud Code project `agy` uses, from its cache. Not a credential.
-    var projectID: String?
     var hasSavedSignIn: Bool
 
     var isInstalled: Bool { homeExists || executable != nil }
@@ -31,18 +28,7 @@ struct AntigravityEnvironment: Sendable, Equatable {
                 among: ExecutableLocator.commonCandidates(named: "agy", homeDirectory: homeDirectory, fileManager: fileManager),
                 fileManager: fileManager
             ),
-            projectID: exists ? projectID(in: home) : nil,
             hasSavedSignIn: KeychainItem.modificationDate(service: keychainService) != nil
         )
-    }
-
-    /// `cache/default_project_id.txt`, when it holds a plausible project identifier.
-    static func projectID(in home: URL) -> String? {
-        guard let data = try? Data(contentsOf: home.appending(path: "cache/default_project_id.txt")),
-              data.count < 256,
-              let text = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines),
-              !text.isEmpty,
-              text.allSatisfy({ $0.isASCII && ($0.isLetter || $0.isNumber || $0 == "-" || $0 == "_" || $0 == ".") }) else { return nil }
-        return text
     }
 }

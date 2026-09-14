@@ -24,7 +24,7 @@ All notable changes to UsageNow. This project follows [Semantic Versioning](http
 - **Last known Claude limits survive quitting and updating the app.** They were kept in memory only, so installing an update overnight left an empty panel in the morning. Percentages and reset times — never credentials — are now stored locally for up to a day, and removed when the setting is turned off.
 - **A Claude window that reset after the last reading stays on screen.** It used to disappear, so an old reading showed only the weekly limit. It now shows as "5-hour —" with "Reset Mon 22:59 · not updated since", and the way to refresh stays visible.
 - **Claude limits you hit show up without a sign-in.** When Claude Code stops a request at a limit, it records which window and when it resets; UsageNow reads that from the transcript and shows the window as used up until then — also when the experimental source is off, or when you work in the Claude app, whose sign-in UsageNow can't use.
-- **The newest Claude Code CLI is used.** With more than one copy installed, UsageNow could pick an old native install left behind after switching to npm.
+- **UsageNow no longer runs `claude auth status` when the Claude sign-in expires.** 0.2.0 did, expecting the CLI to renew its sign-in; on current versions it exits successfully without renewing, so it only started a process for nothing.
 
 ## 0.2.0
 
