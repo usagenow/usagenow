@@ -10,6 +10,7 @@ enum ProviderID: String, CaseIterable, Codable, Sendable, Identifiable, Comparab
     case claudeCode
     case gemini
     case antigravity
+    case copilot
     case deepseek
     case qwen
 
@@ -79,10 +80,18 @@ enum ProviderCatalog {
         ProviderDefinition(
             id: .antigravity,
             displayName: "Antigravity",
-            summary: nil,
-            availability: .comingSoon,
+            summary: "Track Antigravity limits while Antigravity CLI runs.",
+            availability: .available,
             logoAssetName: "AntigravityLogo",
             symbolName: "circle.hexagonpath"
+        ),
+        ProviderDefinition(
+            id: .copilot,
+            displayName: "GitHub Copilot",
+            summary: nil,
+            availability: .comingSoon,
+            logoAssetName: "CopilotLogo",
+            symbolName: "chevron.left.forwardslash.chevron.right"
         ),
         ProviderDefinition(
             id: .deepseek,

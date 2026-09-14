@@ -2,7 +2,7 @@
 
 # UsageNow
 
-**AI coding usage tracker for macOS.** Monitor usage, limits, reset times, and token activity across Codex, Claude Code, and Gemini CLI, from the menu bar.
+**AI coding usage tracker for macOS.** Monitor usage, limits, reset times, and token activity across Codex, Claude Code, Gemini CLI, and Antigravity, from the menu bar.
 
 *See what's left. Keep building.*
 
@@ -18,14 +18,14 @@ Requires macOS 15 or later. The app is signed with a Developer ID and notarized 
 
 ## What it reads
 
-UsageNow reads real Codex, Claude Code, and Gemini CLI data from your Mac. Which data is available depends on the tool:
+UsageNow reads real Codex, Claude Code, Gemini CLI, and Antigravity data from your Mac. Which data is available depends on the tool:
 
-| | Codex | Claude Code | Gemini CLI |
-|---|---|---|---|
-| Usage limits and reset times | ✓ from the official `codex app-server` | ✓ experimental, opt-in (see below), plus limits Claude Code reports hitting | — not exposed locally |
-| Plan | ✓, including Team, Business, and Enterprise | ✓ including a Team seat | — |
-| Tokens and requests today | ✓ from local session files | ✓ from local session files | ✓ from local session recordings |
-| Activity by model | ✓ | ✓ | ✓ |
+| | Codex | Claude Code | Gemini CLI | Antigravity |
+|---|---|---|---|---|
+| Usage limits and reset times | ✓ from the official `codex app-server` | ✓ experimental, opt-in (see below), plus limits Claude Code reports hitting | — not exposed locally | ✓ from Antigravity CLI while it runs |
+| Plan | ✓, including Team, Business, and Enterprise | ✓ including a Team seat | — | ✓ |
+| Tokens and requests today | ✓ from local session files | ✓ from local session files | ✓ from local session recordings | — |
+| Activity by model | ✓ | ✓ | ✓ | — |
 
 Limit windows are whatever the provider reports. An account may have only a weekly limit, for example, and UsageNow never invents a missing window or shows a fake 0%.
 
@@ -38,7 +38,7 @@ Token and request counts are **local activity** observed in session files on thi
 - **macOS native.** SwiftUI and `MenuBarExtra`. Lives in the menu bar, not the Dock.
 - **Codex, Claude Code, and Gemini CLI** side by side: usage limits and reset times where the tool reports them, and daily token and request activity.
 - **Activity by model.** See which models today’s tokens and requests went to — any model, including ones released after this version.
-- **Pick your providers.** Turn each one on or off in Settings › Providers. A provider that’s off is never refreshed and never read from disk.
+- **Pick your providers, in your order.** Turn each one on or off in Settings › Providers, and drag them into the order the popover and widget should use. A provider that’s off is never refreshed and never read from disk.
 - **Desktop widget.** Small and medium widgets showing what’s left at a glance.
 - **Local-first.** Your usage data stays on your Mac.
 - **Open source** under the MIT License.
@@ -94,11 +94,19 @@ Gemini CLI doesn’t record usage limits locally, and its quota service needs th
 
 Google no longer lets personal Google accounts sign in to Gemini CLI; it still works with a Gemini API key, Vertex AI, or Gemini Code Assist Standard and Enterprise.
 
+### Antigravity
+
+Antigravity CLI (`agy`) keeps its limits in memory and shows them in its `/usage` panel. While `agy` runs, it serves its language server on a loopback port; UsageNow finds that port with `lsof` — socket metadata only — and asks `agy` itself for the same quota summary (`RetrieveUserQuotaSummary` on `127.0.0.1`). Antigravity’s limits are shared by groups of models, so each appears as its own window, such as **5-hour · Gemini** or **Weekly · Claude and GPT**.
+
+**No credentials are involved.** UsageNow never reads the Google sign-in `agy` saved, never reads other processes’ command lines or memory, and sends nothing beyond `127.0.0.1`. The loopback server uses a self-signed certificate, which UsageNow accepts for loopback addresses only.
+
+When `agy` isn’t running there’s nothing to ask: the last limits stay for a day, marked stale, with a reminder to open Antigravity CLI. There’s no token or model activity for Antigravity, because `agy` stores conversations in an undocumented binary format and UsageNow doesn’t guess at numbers.
+
+Google’s Cloud Code quota service itself answers only Antigravity’s own clients, and UsageNow won’t impersonate one, so it doesn’t call Google directly.
+
 ### Roadmap providers
 
-Antigravity, DeepSeek, and Qwen are listed in Settings › Providers as **Coming soon**. They’re labels only: no integration, no credentials, and no network or file access.
-
-Antigravity CLI (`agy`) keeps its limits only in memory, and Google’s quota service answers only Antigravity’s own clients; asked by any other app with the same sign-in, it refuses. UsageNow won’t impersonate Antigravity to get around that, so Antigravity stays on the roadmap until it offers a way to read usage.
+GitHub Copilot, DeepSeek, and Qwen are listed in Settings › Providers as **Coming soon**. They’re labels only: no integration, no credentials, and no network or file access. GitHub Copilot is planned through GitHub’s official premium request usage API, with a token you provide.
 
 ## Desktop widget
 
@@ -109,7 +117,7 @@ UsageNow ships a WidgetKit extension with small and medium sizes.
 - With more providers than fit, the ones closest to a limit are shown. Model details stay in the app.
 - Disabled providers never appear, quota that isn’t available reads “Usage limits unavailable”, and old data stays visible with an “Updated … ago” note. No placeholder or fabricated values.
 
-**The widget never touches providers.** It can’t read `~/.codex`, `~/.claude`, or `~/.gemini`, open the keychain, run `codex app-server`, or call Anthropic. The main app publishes a sanitized snapshot to a shared App Group container, and the widget only renders that. The provider and credential code isn’t compiled into the widget target at all.
+**The widget never touches providers.** It can’t read `~/.codex`, `~/.claude`, or `~/.gemini`, talk to `agy`, open the keychain, run `codex app-server`, or call Anthropic. The main app publishes a sanitized snapshot to a shared App Group container, and the widget only renders that. The provider and credential code isn’t compiled into the widget target at all.
 
 ### Signing and the widget
 
@@ -127,7 +135,7 @@ Without it, UsageNow builds ad-hoc and works normally; the widget just shows “
 Real providers run by default. For development, mock providers accept a scenario at launch: `normal`, `high`, `critical`, `unavailable`, `notInstalled`, `notAuthenticated`, `failing`, or `loading`.
 
 ```sh
-open UsageNow.app --args -UsageNowMockCodex critical -UsageNowMockClaude failing -UsageNowMockGemini normal
+open UsageNow.app --args -UsageNowMockCodex critical -UsageNowMockClaude failing -UsageNowMockGemini normal -UsageNowMockAntigravity high
 ```
 
 The shared scheme includes these as disabled launch arguments, which you can enable under **Product › Scheme › Edit Scheme › Run › Arguments**. SwiftUI previews cover the same states without running the app.
@@ -154,7 +162,7 @@ UsageNow/
 - **Providers** turn tool-specific data into a normalized `ProviderSnapshot` with any number of usage windows and optional plan, model, and activity. Views depend only on this normalized state and hide data a provider doesn’t have.
 - **`UsageStore`** refreshes all providers concurrently. It keeps the last good data when a refresh fails and exposes loading, empty, and per-provider error states.
 - **`WidgetSnapshotWriter`** is the only path from provider data to the widget. It drops disabled and not-installed providers, copies each display field explicitly, writes atomically, and reloads timelines only when the content changed.
-- **Telemetry** is opt-in and off by default. Clients only receive a small set of events (install, daily active, updated, and whether Codex, Claude Code, or Gemini CLI is installed) with the app version, macOS version, and a random installation ID. They never have access to provider data. No analytics server is configured yet, so nothing is sent.
+- **Telemetry** is opt-in and off by default. Clients only receive a small set of events (install, daily active, updated, and whether Codex, Claude Code, Gemini CLI, or Antigravity is installed) with the app version, macOS version, and a random installation ID. They never have access to provider data. No analytics server is configured yet, so nothing is sent.
 
 ## Contributing
 

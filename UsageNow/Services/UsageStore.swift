@@ -33,6 +33,7 @@ final class UsageStore {
     init(
         providers: [any UsageProvider],
         enabledProviders: Set<ProviderID> = ProviderCatalog.availableIDs,
+        order: [ProviderID] = ProviderCatalog.available.map(\.id),
         states: [ProviderState] = [],
         hasCompletedInitialLoad: Bool = false,
         lastRefreshAt: Date? = nil,
@@ -45,8 +46,26 @@ final class UsageStore {
         self.lastRefreshAt = lastRefreshAt
 
         let seeded = Dictionary(states.map { ($0.provider, $0) }, uniquingKeysWith: { _, last in last })
-        let ids = Set(providers.map(\.id)).union(seeded.keys).sorted()
+        let ids = Self.ordered(Set(providers.map(\.id)).union(seeded.keys), by: order)
         self.states = ids.map { seeded[$0] ?? ProviderState(provider: $0) }
+    }
+
+    /// Puts providers in the user's order; any not in it follow in catalog order.
+    func setProviderOrder(_ order: [ProviderID]) {
+        let ids = Self.ordered(Set(states.map(\.provider)), by: order)
+        let reordered = ids.compactMap { id in states.first { $0.provider == id } }
+        if reordered != states { states = reordered }
+    }
+
+    private static func ordered(_ ids: Set<ProviderID>, by order: [ProviderID]) -> [ProviderID] {
+        ids.sorted { lhs, rhs in
+            switch (order.firstIndex(of: lhs), order.firstIndex(of: rhs)) {
+            case let (l?, r?): l < r
+            case (.some, nil): true
+            case (nil, .some): false
+            case (nil, nil): lhs < rhs
+            }
+        }
     }
 
     var content: Content {

@@ -12,4 +12,6 @@ enum QuotaUnavailableReason: String, Sendable, Equatable, Codable {
     /// The provider's usage service didn't answer, or answered in a way
     /// UsageNow doesn't understand.
     case temporarilyUnavailable
+    /// Limits come from the provider's own tool, and it isn't running now.
+    case toolNotRunning
 }

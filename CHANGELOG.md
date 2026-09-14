@@ -9,8 +9,10 @@ All notable changes to UsageNow. This project follows [Semantic Versioning](http
 - **Gemini CLI.** The third real provider, with the same enable, refresh, menu bar, widget, and telemetry behavior as Codex and Claude Code. Activity and models come from Gemini CLI's local session recordings. Gemini CLI records no usage limits locally, so none are shown. Credential files are never opened.
 - **Activity by model.** A compact **Models today** list in each provider's section shows tokens and requests per model, most active first. It works for any model identifier, including ones released later, and never shows a percentage: account limits aren't split by model. Available for Claude Code, Codex, and Gemini CLI.
 - **Team plans.** Claude Team and Enterprise show the member's seat, such as **Team · Premium**. Codex reads the plan from `account/read`, so Team, Business, and Enterprise accounts show their plan even when rate limits aren't returned, and newer billing variants map to their plan name. Not yet verified against live Team accounts.
-- A **Gemini CLI usage** menu bar mode, which shows the icon while Gemini CLI reports no limits.
-- **Antigravity** is listed as Coming soon, with its logo. Its CLI keeps limits in memory and Google's quota service answers only Antigravity's own clients, so there's nothing UsageNow can honestly read yet.
+- **Gemini CLI usage** and **Antigravity usage** menu bar modes. Gemini CLI's shows the icon while it reports no limits.
+- **Antigravity.** Limits from Antigravity CLI itself: while `agy` runs, UsageNow finds its loopback port with `lsof` and asks it for the quota summary its `/usage` panel shows — 5-hour and weekly windows per model group, plus the plan. No credentials are read or sent, and nothing leaves `127.0.0.1`. Between runs the last limits stay for a day, marked stale.
+- **Reorder providers.** Drag providers in Settings › Providers, or use Move Up and Move Down; the popover and widget follow that order.
+- **GitHub Copilot** is listed as Coming soon.
 
 ### Changed
 

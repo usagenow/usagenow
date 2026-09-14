@@ -111,6 +111,12 @@
     "Allow UsageNow to access your Claude Code sign-in in Keychain." : {
 
     },
+    "Antigravity usage" : {
+
+    },
+    "Antigravity usage limits are temporarily unavailable." : {
+
+    },
     "Appearance" : {
 
     },
@@ -123,7 +129,7 @@
     "Choose a provider in Settings to start tracking usage." : {
 
     },
-    "Choose which services UsageNow displays and monitors." : {
+    "Choose which services UsageNow displays and monitors, and drag them into the order you want." : {
 
     },
     "Claude Code usage" : {
@@ -177,7 +183,7 @@
     "Icon only" : {
 
     },
-    "Install or use Codex, Claude Code, or Gemini CLI to start tracking usage." : {
+    "Install or use Codex, Claude Code, Gemini CLI, or Antigravity to start tracking usage." : {
 
     },
     "Just now" : {
@@ -204,6 +210,12 @@
     "Most critical usage" : {
 
     },
+    "Move Down" : {
+
+    },
+    "Move Up" : {
+
+    },
     "Nearly exhausted" : {
 
     },
@@ -217,6 +229,12 @@
 
     },
     "No providers enabled" : {
+
+    },
+    "Open %@ to update usage limits." : {
+
+    },
+    "Open Antigravity CLI to update usage limits." : {
 
     },
     "Open Login Items…" : {
@@ -298,6 +316,9 @@
 
     },
     "This build doesn’t send analytics yet." : {
+
+    },
+    "Track Antigravity limits while Antigravity CLI runs." : {
 
     },
     "Track Claude Code usage and limits." : {

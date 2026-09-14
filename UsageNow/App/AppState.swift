@@ -36,7 +36,7 @@ final class AppState {
         widgetSnapshots: WidgetSnapshotWriter = WidgetSnapshotWriter()
     ) {
         let providerPreferences = ProviderPreferences(defaults: defaults)
-        let store = UsageStore(providers: providers, enabledProviders: providerPreferences.enabledProviders)
+        let store = UsageStore(providers: providers, enabledProviders: providerPreferences.enabledProviders, order: providerPreferences.order)
         let analyticsPreferences = AnalyticsPreferences(defaults: defaults)
         let client = NetworkTelemetryClient(
             configuration: telemetryConfiguration,
@@ -81,17 +81,21 @@ final class AppState {
         let codexScenario = defaults.string(forKey: "UsageNowMockCodex").flatMap(MockScenario.init(rawValue:))
         let claudeScenario = defaults.string(forKey: "UsageNowMockClaude").flatMap(MockScenario.init(rawValue:))
         let geminiScenario = defaults.string(forKey: "UsageNowMockGemini").flatMap(MockScenario.init(rawValue:))
-        if codexScenario != nil || claudeScenario != nil || geminiScenario != nil {
+        let antigravityScenario = defaults.string(forKey: "UsageNowMockAntigravity").flatMap(MockScenario.init(rawValue:))
+        if codexScenario != nil || claudeScenario != nil || geminiScenario != nil || antigravityScenario != nil {
             return [
                 MockCodexProvider(scenario: codexScenario ?? .normal),
                 MockClaudeProvider(scenario: claudeScenario ?? .normal),
                 MockGeminiProvider(scenario: geminiScenario ?? .normal),
+                MockAntigravityProvider(scenario: antigravityScenario ?? .normal),
             ]
         }
         return [
             CodexProvider(),
             ClaudeCodeProvider(limitsClient: claudeLimits?.client, limitsEnabled: claudeLimits?.isEnabled ?? FeatureSwitch(false)),
             GeminiProvider(),
+            // Percentages and reset times only, so they survive a relaunch between agy runs.
+            AntigravityProvider(server: AgyLocalServer(lastKnownLimits: .userDefaults(defaults, key: "antigravityLastKnownLimits"))),
         ]
     }
 
@@ -105,6 +109,7 @@ final class AppState {
         observe({ [preferences] in _ = preferences.refreshInterval }, apply: { [weak self] in self?.applyRefreshInterval() })
         observe({ [preferences] in _ = preferences.fetchClaudeUsageLimits }, apply: { [weak self] in self?.applyClaudeLimitsPreference() })
         observe({ [providerPreferences] in _ = providerPreferences.enabledProviders }, apply: { [weak self] in self?.applyEnabledProviders() })
+        observe({ [providerPreferences] in _ = providerPreferences.order }, apply: { [weak self] in self?.applyProviderOrder() })
         observe({ [store] in _ = store.states }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [analyticsPreferences] in _ = analyticsPreferences.isSharingEnabled }, apply: { [weak self] in self?.analyticsSharingChanged() })
 
@@ -133,6 +138,11 @@ final class AppState {
             preferences.menuBarDisplayMode = .default
         }
         Task { [store] in await store.setEnabledProviders(enabled) }
+    }
+
+    /// The popover and widget follow the order set in Settings.
+    private func applyProviderOrder() {
+        store.setProviderOrder(providerPreferences.order)
     }
 
     /// Turning the feature on fetches right away (macOS asks for keychain

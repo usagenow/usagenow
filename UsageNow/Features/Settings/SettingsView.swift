@@ -243,12 +243,18 @@ extension QuotaUnavailableReason {
     /// One short sentence saying what to do. Providers keep the detailed
     /// diagnosis in their logs.
     func message(for provider: ProviderID) -> String {
-        // Claude Code is the only provider with a sign-in-based source today.
         switch self {
+        case .toolNotRunning where provider == .antigravity:
+            String(localized: "Open Antigravity CLI to update usage limits.")
+        case .toolNotRunning:
+            String(localized: "Open \(provider.displayName) to update usage limits.")
+        // Claude Code is the only provider with a sign-in-based source today.
         case .signInExpired:
             String(localized: "Refresh Claude Code from Terminal to view usage limits.")
         case .permissionDenied:
             String(localized: "Allow UsageNow to access your Claude Code sign-in in Keychain.")
+        case .temporarilyUnavailable where provider == .antigravity:
+            String(localized: "Antigravity usage limits are temporarily unavailable.")
         case .temporarilyUnavailable:
             String(localized: "Claude usage limits are temporarily unavailable.")
         }

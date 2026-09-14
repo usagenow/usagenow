@@ -13,17 +13,17 @@ struct ProviderPreferencesTests {
 
     @Test func everySupportedProviderIsEnabledByDefault() {
         let preferences = ProviderPreferences(defaults: makeDefaults())
-        #expect(preferences.enabledProviders == [.codex, .claudeCode, .gemini])
+        #expect(preferences.enabledProviders == [.codex, .claudeCode, .gemini, .antigravity])
     }
 
     @Test func choicesPersist() {
         let defaults = makeDefaults()
         let preferences = ProviderPreferences(defaults: defaults)
         preferences.setEnabled(false, for: .codex)
-        #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.claudeCode, .gemini])
+        #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.claudeCode, .gemini, .antigravity])
 
         preferences.setEnabled(true, for: .codex)
-        #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.codex, .claudeCode, .gemini])
+        #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.codex, .claudeCode, .gemini, .antigravity])
     }
 
     @Test func turningEverythingOffPersists() {
@@ -32,6 +32,7 @@ struct ProviderPreferencesTests {
         preferences.setEnabled(false, for: .codex)
         preferences.setEnabled(false, for: .claudeCode)
         preferences.setEnabled(false, for: .gemini)
+        preferences.setEnabled(false, for: .antigravity)
         #expect(ProviderPreferences(defaults: defaults).enabledProviders.isEmpty)
     }
 
@@ -46,7 +47,7 @@ struct ProviderPreferencesTests {
     @Test func storedRoadmapOrUnknownIdentifiersAreIgnored() {
         let defaults = makeDefaults()
         defaults.set(["codex", "deepseek", "somethingElse"], forKey: "enabledProviders")
-        defaults.set(["claudeCode", "codex", "gemini"], forKey: "knownProviders")
+        defaults.set(["antigravity", "claudeCode", "codex", "gemini"], forKey: "knownProviders")
         #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.codex])
     }
 
@@ -56,17 +57,75 @@ struct ProviderPreferencesTests {
         defaults.set(["codex"], forKey: "enabledProviders")
 
         let upgraded = ProviderPreferences(defaults: defaults)
-        #expect(upgraded.enabledProviders == [.codex, .gemini], "Gemini CLI starts on; Claude Code stays off")
+        #expect(upgraded.enabledProviders == [.codex, .gemini, .antigravity], "New providers start on; Claude Code stays off")
 
         upgraded.setEnabled(false, for: .gemini)
-        #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.codex], "Turning it off sticks")
+        #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.codex, .antigravity], "Turning it off sticks")
+    }
+}
+
+@MainActor
+struct ProviderOrderTests {
+    private func makeDefaults() -> UserDefaults {
+        let suite = "ProviderOrderTests.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suite)!
+        defaults.removePersistentDomain(forName: suite)
+        return defaults
+    }
+
+    @Test func defaultOrderIsTheCatalogs() {
+        #expect(ProviderPreferences(defaults: makeDefaults()).order == [.codex, .claudeCode, .gemini, .antigravity])
+    }
+
+    @Test func draggingOntoAnotherTakesItsPlaceAndPersists() {
+        let defaults = makeDefaults()
+        let preferences = ProviderPreferences(defaults: defaults)
+        preferences.move(.antigravity, to: .codex)
+        #expect(preferences.order == [.antigravity, .codex, .claudeCode, .gemini])
+        preferences.move(.codex, to: .gemini)
+        #expect(preferences.order == [.antigravity, .claudeCode, .gemini, .codex])
+        #expect(ProviderPreferences(defaults: defaults).order == [.antigravity, .claudeCode, .gemini, .codex])
+    }
+
+    @Test func moveUpAndDownStopAtTheEnds() {
+        let preferences = ProviderPreferences(defaults: makeDefaults())
+        preferences.move(.codex, by: -1)
+        #expect(preferences.order.first == .codex)
+        preferences.move(.codex, by: 1)
+        #expect(preferences.order == [.claudeCode, .codex, .gemini, .antigravity])
+        preferences.move(.antigravity, by: 5)
+        #expect(preferences.order.last == .antigravity)
+    }
+
+    @Test func storedOrderDropsUnknownsAndAddsNewProvidersAtTheEnd() {
+        #expect(ProviderPreferences.normalized([.gemini, .deepseek, .gemini, .codex]) == [.gemini, .codex, .claudeCode, .antigravity])
+    }
+
+    @Test func storeFollowsTheOrder() async {
+        let now = TestDates.noon
+        let store = UsageStore(
+            providers: [
+                StubProvider(.codex, .success(Fixtures.snapshot(.codex, at: now))),
+                StubProvider(.claudeCode, .success(Fixtures.snapshot(.claudeCode, at: now))),
+            ],
+            enabledProviders: [.codex, .claudeCode],
+            order: [.claudeCode, .codex]
+        )
+        await store.refresh()
+        #expect(store.snapshots.map(\.provider) == [.claudeCode, .codex])
+
+        store.setProviderOrder([.codex, .claudeCode])
+        #expect(store.snapshots.map(\.provider) == [.codex, .claudeCode])
+        let widget = WidgetSnapshotWriter.makeSnapshot(states: store.states, enabledProviders: [.codex, .claudeCode], generatedAt: now)
+        #expect(widget.providers.map(\.provider) == [.codex, .claudeCode], "The widget follows the same order")
     }
 }
 
 struct ProviderCatalogTests {
-    @Test func codexClaudeAndGeminiAreAvailable() {
-        #expect(ProviderCatalog.availableIDs == [.codex, .claudeCode, .gemini])
-        #expect(ProviderCatalog.comingSoon.map(\.id) == [.antigravity, .deepseek, .qwen])
+    @Test func availableAndComingSoonProviders() {
+        #expect(ProviderCatalog.availableIDs == [.codex, .claudeCode, .gemini, .antigravity])
+        #expect(ProviderCatalog.comingSoon.map(\.id) == [.copilot, .deepseek, .qwen])
+        #expect(ProviderID.copilot.displayName == "GitHub Copilot")
     }
 
     @Test func geminiIsARealProvider() {
@@ -92,7 +151,8 @@ struct ProviderCatalogTests {
     }
 
     @Test func menuBarModesFollowEnabledProviders() {
-        #expect(MenuBarDisplayMode.available(for: [.codex, .claudeCode, .gemini]) == MenuBarDisplayMode.allCases)
+        #expect(MenuBarDisplayMode.available(for: [.codex, .claudeCode, .gemini, .antigravity]) == MenuBarDisplayMode.allCases)
+        #expect(MenuBarDisplayMode.available(for: [.antigravity]) == [.iconOnly, .mostCriticalPercentage, .antigravityPercentage])
         #expect(MenuBarDisplayMode.available(for: [.gemini]) == [.iconOnly, .mostCriticalPercentage, .geminiPercentage])
         #expect(MenuBarDisplayMode.available(for: [.codex]) == [.iconOnly, .mostCriticalPercentage, .codexPercentage])
         #expect(MenuBarDisplayMode.available(for: [.claudeCode]) == [.iconOnly, .mostCriticalPercentage, .claudePercentage])

@@ -15,6 +15,7 @@ final class ProviderPreferences {
     /// Providers that were available when the choice was last saved, so a
     /// provider added in an update can be turned on once.
     private static let knownKey = "knownProviders"
+    private static let orderKey = "providerOrder"
     /// What was available before `knownProviders` was recorded (0.2.x).
     private static let initiallyKnown: Set<ProviderID> = [.codex, .claudeCode]
 
@@ -28,10 +29,20 @@ final class ProviderPreferences {
         }
     }
 
+    /// Every available provider, in the order the user arranged them. The
+    /// popover and widget follow it; new providers join at the end.
+    private(set) var order: [ProviderID] {
+        didSet {
+            guard order != oldValue else { return }
+            defaults.set(order.map(\.rawValue), forKey: Self.orderKey)
+        }
+    }
+
     @ObservationIgnored private let defaults: UserDefaults
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
+        order = Self.normalized(defaults.stringArray(forKey: Self.orderKey)?.compactMap(ProviderID.init(rawValue:)) ?? [])
         defer { defaults.set(ProviderCatalog.availableIDs.map(\.rawValue).sorted(), forKey: Self.knownKey) }
         guard let stored = defaults.stringArray(forKey: Self.key) else {
             enabledProviders = Self.defaultEnabled
@@ -62,6 +73,33 @@ final class ProviderPreferences {
         } else {
             enabledProviders.remove(provider)
         }
+    }
+
+    /// Moves `provider` to where `target` is, shifting the rest.
+    func move(_ provider: ProviderID, to target: ProviderID) {
+        guard provider != target,
+              let from = order.firstIndex(of: provider),
+              let to = order.firstIndex(of: target) else { return }
+        var reordered = order
+        reordered.remove(at: from)
+        reordered.insert(provider, at: to)
+        order = reordered
+    }
+
+    /// Moves `provider` one place up (negative) or down (positive).
+    func move(_ provider: ProviderID, by offset: Int) {
+        guard let from = order.firstIndex(of: provider) else { return }
+        let to = min(max(from + offset, 0), order.count - 1)
+        guard to != from else { return }
+        move(provider, to: order[to])
+    }
+
+    /// Stored order, minus providers that aren't available, plus any missing ones in catalog order.
+    static func normalized(_ stored: [ProviderID]) -> [ProviderID] {
+        var result: [ProviderID] = []
+        for id in stored where id.isAvailable && !result.contains(id) { result.append(id) }
+        for definition in ProviderCatalog.available where !result.contains(definition.id) { result.append(definition.id) }
+        return result
     }
 
     func binding(for provider: ProviderID) -> Binding<Bool> {
