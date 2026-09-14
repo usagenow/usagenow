@@ -189,8 +189,8 @@ struct AntigravityProviderTests {
         let goStyle = #"{"access_token":"a","token_type":"Bearer","refresh_token":"r","expiry":"2026-09-11T13:00:00.123456789+01:00"}"#
         let token = AntigravityTokenParser.token(from: Data(goStyle.utf8))
         #expect(token?.value == "a")
-        let expected = try? #require(SessionTimestamp.parse("2026-09-11T12:00:00Z"))
-        #expect(abs((token?.expiresAt ?? .distantPast).timeIntervalSince(expected ?? .distantFuture)) < 1, "RFC 3339 with an offset and nanoseconds")
+        let expected = SessionTimestamp.parse("2026-09-11T12:00:00Z") ?? .distantFuture
+        #expect(abs((token?.expiresAt ?? .distantPast).timeIntervalSince(expected)) < 1, "RFC 3339 with an offset and nanoseconds")
 
         let wrapped = "go-keyring-base64:" + Data(#"{"token":{"accessToken":"b","expiry_date":1789128000000}}"#.utf8).base64EncodedString()
         let unwrapped = AntigravityTokenParser.token(from: Data(wrapped.utf8))
