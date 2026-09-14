@@ -99,9 +99,6 @@
     "5-hour" : {
 
     },
-    "AI coding usage and limits at a glance." : {
-
-    },
     "AI coding usage tracker for macOS" : {
 
     },
@@ -112,15 +109,6 @@
 
     },
     "Allow UsageNow to access your Claude Code sign-in in Keychain." : {
-
-    },
-    "Antigravity usage" : {
-
-    },
-    "Antigravity usage limits are temporarily unavailable." : {
-
-    },
-    "Antigravity usage limits — Experimental" : {
 
     },
     "Appearance" : {
@@ -150,6 +138,9 @@
     "Codex usage" : {
 
     },
+    "Codex, Claude Code, and Gemini CLI usage at a glance." : {
+
+    },
     "Coming soon" : {
 
     },
@@ -165,13 +156,7 @@
     "Done" : {
 
     },
-    "Fetch Antigravity usage limits" : {
-
-    },
     "Fetch Claude usage limits" : {
-
-    },
-    "Fetch current Antigravity limits directly from Google using the sign-in Antigravity CLI saved. This uses an undocumented Google endpoint and may stop working without notice." : {
 
     },
     "Fetch current Claude Code subscription limits directly from Anthropic using your existing Claude Code sign-in. This uses an undocumented Anthropic endpoint and may stop working without notice." : {
@@ -192,7 +177,7 @@
     "Icon only" : {
 
     },
-    "Install or use Codex, Claude Code, Gemini CLI, or Antigravity to start tracking usage." : {
+    "Install or use Codex, Claude Code, or Gemini CLI to start tracking usage." : {
 
     },
     "Just now" : {
@@ -232,9 +217,6 @@
 
     },
     "No providers enabled" : {
-
-    },
-    "Open Antigravity CLI to refresh your sign-in, then check again." : {
 
     },
     "Open Login Items…" : {
@@ -318,9 +300,6 @@
     "This build doesn’t send analytics yet." : {
 
     },
-    "Track Antigravity usage limits." : {
-
-    },
     "Track Claude Code usage and limits." : {
 
     },
@@ -349,9 +328,6 @@
 
     },
     "UsageNow also checks for new usage when you open it." : {
-
-    },
-    "UsageNow couldn’t read your Antigravity sign-in from Keychain." : {
 
     },
     "UsageNow doesn’t include third-party code. Its own source code is available under the MIT License." : {

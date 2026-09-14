@@ -20,18 +20,11 @@ final class AppState {
     private let widgetSnapshots: WidgetSnapshotWriter
     private let scheduler: AutoRefreshScheduler
     private let claudeLimits: ClaudeLimitsControl?
-    private let antigravityLimits: AntigravityLimitsControl?
 
     /// The experimental Claude usage-limits source and its on/off switch.
     struct ClaudeLimitsControl: Sendable {
         let isEnabled: FeatureSwitch
         let client: ClaudeUsageLimitsClient
-    }
-
-    /// The experimental Antigravity usage-limits source and its on/off switch.
-    struct AntigravityLimitsControl: Sendable {
-        let isEnabled: FeatureSwitch
-        let client: AntigravityQuotaClient
     }
 
     init(
@@ -40,7 +33,6 @@ final class AppState {
         telemetryConfiguration: TelemetryConfiguration = .disabled,
         identity: InstallationIdentity = InstallationIdentity(),
         claudeLimits: ClaudeLimitsControl? = nil,
-        antigravityLimits: AntigravityLimitsControl? = nil,
         widgetSnapshots: WidgetSnapshotWriter = WidgetSnapshotWriter()
     ) {
         let providerPreferences = ProviderPreferences(defaults: defaults)
@@ -59,7 +51,6 @@ final class AppState {
         self.launchAtLogin = LaunchAtLogin()
         self.telemetry = TelemetryReporter(client: client, preferences: analyticsPreferences, identity: identity, defaults: defaults)
         self.claudeLimits = claudeLimits
-        self.antigravityLimits = antigravityLimits
         self.widgetSnapshots = widgetSnapshots
         self.scheduler = AutoRefreshScheduler { [weak store] in
             await store?.refresh()
@@ -75,50 +66,37 @@ final class AppState {
                 lastKnownLimits: .userDefaults(defaults, key: "experimental.claudeLastKnownLimits")
             )
         )
-        let antigravityLimits = AntigravityLimitsControl(
-            isEnabled: FeatureSwitch(false),
-            client: AntigravityQuotaClient(lastKnownLimits: .userDefaults(defaults, key: "experimental.antigravityLastKnownLimits"))
-        )
         return AppState(
-            providers: makeProviders(defaults: defaults, claudeLimits: claudeLimits, antigravityLimits: antigravityLimits),
+            providers: makeProviders(defaults: defaults, claudeLimits: claudeLimits),
             defaults: defaults,
             telemetryConfiguration: .current(defaults: defaults),
-            claudeLimits: claudeLimits,
-            antigravityLimits: antigravityLimits
+            claudeLimits: claudeLimits
         )
     }
 
     /// Real providers in production. Launch arguments such as
     /// `-UsageNowMockCodex critical` switch to mock providers with a
     /// deterministic `MockScenario` for development and QA.
-    static func makeProviders(
-        defaults: UserDefaults,
-        claudeLimits: ClaudeLimitsControl?,
-        antigravityLimits: AntigravityLimitsControl? = nil
-    ) -> [any UsageProvider] {
+    static func makeProviders(defaults: UserDefaults, claudeLimits: ClaudeLimitsControl?) -> [any UsageProvider] {
         let codexScenario = defaults.string(forKey: "UsageNowMockCodex").flatMap(MockScenario.init(rawValue:))
         let claudeScenario = defaults.string(forKey: "UsageNowMockClaude").flatMap(MockScenario.init(rawValue:))
         let geminiScenario = defaults.string(forKey: "UsageNowMockGemini").flatMap(MockScenario.init(rawValue:))
-        let antigravityScenario = defaults.string(forKey: "UsageNowMockAntigravity").flatMap(MockScenario.init(rawValue:))
-        if codexScenario != nil || claudeScenario != nil || geminiScenario != nil || antigravityScenario != nil {
+        if codexScenario != nil || claudeScenario != nil || geminiScenario != nil {
             return [
                 MockCodexProvider(scenario: codexScenario ?? .normal),
                 MockClaudeProvider(scenario: claudeScenario ?? .normal),
                 MockGeminiProvider(scenario: geminiScenario ?? .normal),
-                MockAntigravityProvider(scenario: antigravityScenario ?? .normal),
             ]
         }
         return [
             CodexProvider(),
             ClaudeCodeProvider(limitsClient: claudeLimits?.client, limitsEnabled: claudeLimits?.isEnabled ?? FeatureSwitch(false)),
             GeminiProvider(),
-            AntigravityProvider(limitsClient: antigravityLimits?.client, limitsEnabled: antigravityLimits?.isEnabled ?? FeatureSwitch(false)),
         ]
     }
 
     func start() {
         claudeLimits?.isEnabled.isOn = preferences.fetchClaudeUsageLimits
-        antigravityLimits?.isEnabled.isOn = preferences.fetchAntigravityUsageLimits
         Task { await store.refresh() }
         applyAppearance()
         applyRefreshInterval()
@@ -126,7 +104,6 @@ final class AppState {
         observe({ [preferences] in _ = preferences.appearance }, apply: { [weak self] in self?.applyAppearance() })
         observe({ [preferences] in _ = preferences.refreshInterval }, apply: { [weak self] in self?.applyRefreshInterval() })
         observe({ [preferences] in _ = preferences.fetchClaudeUsageLimits }, apply: { [weak self] in self?.applyClaudeLimitsPreference() })
-        observe({ [preferences] in _ = preferences.fetchAntigravityUsageLimits }, apply: { [weak self] in self?.applyAntigravityLimitsPreference() })
         observe({ [providerPreferences] in _ = providerPreferences.enabledProviders }, apply: { [weak self] in self?.applyEnabledProviders() })
         observe({ [store] in _ = store.states }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [analyticsPreferences] in _ = analyticsPreferences.isSharingEnabled }, apply: { [weak self] in self?.analyticsSharingChanged() })
@@ -170,31 +147,9 @@ final class AppState {
         }
     }
 
-    /// Turning the feature on fetches right away; turning it off forgets the
-    /// token and cached limits.
-    private func applyAntigravityLimitsPreference() {
-        guard let antigravityLimits, providerPreferences.isEnabled(.antigravity) else { return }
-        let isEnabled = preferences.fetchAntigravityUsageLimits
-        antigravityLimits.isEnabled.isOn = isEnabled
-        Task { [store] in
-            if !isEnabled { await antigravityLimits.client.reset() }
-            await store.refresh(only: [.antigravity], trigger: isEnabled ? .manual : .automatic)
-        }
-    }
-
-    /// Asks Antigravity for limits now, including the keychain after an earlier failure.
-    func retryAntigravityLimits() {
-        guard providerPreferences.isEnabled(.antigravity) else { return }
-        Task { [store] in await store.refresh(only: [.antigravity], trigger: .manual) }
-    }
-
     /// Asks an experimental limits source for limits now.
     func retryLimits(for provider: ProviderID) {
-        switch provider {
-        case .claudeCode: retryClaudeLimits()
-        case .antigravity: retryAntigravityLimits()
-        default: break
-        }
+        if provider == .claudeCode { retryClaudeLimits() }
     }
 
     /// Asks Claude for limits now, including the keychain after an earlier failure.

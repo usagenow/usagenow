@@ -34,8 +34,6 @@ enum TelemetryEvent: String, Sendable, CaseIterable {
     case claudeDetected = "claude_detected"
     /// Gemini CLI is installed. A yes, never anything about its usage.
     case geminiDetected = "gemini_detected"
-    /// Antigravity CLI is installed. A yes, never anything about its usage.
-    case antigravityDetected = "antigravity_detected"
 
     /// `nil` for providers with no integration yet — nothing to report.
     static func detected(_ provider: ProviderID) -> TelemetryEvent? {
@@ -43,7 +41,6 @@ enum TelemetryEvent: String, Sendable, CaseIterable {
         case .codex: .codexDetected
         case .claudeCode: .claudeDetected
         case .gemini: .geminiDetected
-        case .antigravity: .antigravityDetected
         default: nil
         }
     }

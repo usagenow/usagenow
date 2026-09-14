@@ -79,8 +79,8 @@ enum ProviderCatalog {
         ProviderDefinition(
             id: .antigravity,
             displayName: "Antigravity",
-            summary: "Track Antigravity usage limits.",
-            availability: .available,
+            summary: nil,
+            availability: .comingSoon,
             logoAssetName: "AntigravityLogo",
             symbolName: "circle.hexagonpath"
         ),

@@ -30,7 +30,7 @@ struct UsageNowWidgetEntryView: View {
             case .noProvidersDetected:
                 WidgetMessageView(
                     title: "No providers detected",
-                    message: "Install or use Codex, Claude Code, Gemini CLI, or Antigravity to start tracking usage."
+                    message: "Install or use Codex, Claude Code, or Gemini CLI to start tracking usage."
                 )
             case .providers(let providers):
                 if family == .systemSmall {

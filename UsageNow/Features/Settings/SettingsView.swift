@@ -118,21 +118,6 @@ struct GeneralSettingsView: View {
                     Text("Claude usage limits — Experimental")
                 }
             }
-
-            // Only meaningful while Antigravity is tracked at all.
-            if providerPreferences.isEnabled(.antigravity) {
-                Section {
-                    Toggle(isOn: $preferences.fetchAntigravityUsageLimits) {
-                        Text("Fetch Antigravity usage limits")
-                        Text("Fetch current Antigravity limits directly from Google using the sign-in Antigravity CLI saved. This uses an undocumented Google endpoint and may stop working without notice.")
-                    }
-                    if preferences.fetchAntigravityUsageLimits, let issue = quotaIssue(.antigravity) {
-                        retryRow(issue, provider: .antigravity)
-                    }
-                } header: {
-                    Text("Antigravity usage limits — Experimental")
-                }
-            }
         }
         .formStyle(.grouped)
         .scrollDisabled(true)
@@ -258,18 +243,13 @@ extension QuotaUnavailableReason {
     /// One short sentence saying what to do. Providers keep the detailed
     /// diagnosis in their logs.
     func message(for provider: ProviderID) -> String {
-        switch (self, provider) {
-        case (.signInExpired, .antigravity):
-            String(localized: "Open Antigravity CLI to refresh your sign-in, then check again.")
-        case (.signInExpired, _):
+        // Claude Code is the only provider with a sign-in-based source today.
+        switch self {
+        case .signInExpired:
             String(localized: "Refresh Claude Code from Terminal to view usage limits.")
-        case (.permissionDenied, .antigravity):
-            String(localized: "UsageNow couldn’t read your Antigravity sign-in from Keychain.")
-        case (.permissionDenied, _):
+        case .permissionDenied:
             String(localized: "Allow UsageNow to access your Claude Code sign-in in Keychain.")
-        case (.temporarilyUnavailable, .antigravity):
-            String(localized: "Antigravity usage limits are temporarily unavailable.")
-        case (.temporarilyUnavailable, _):
+        case .temporarilyUnavailable:
             String(localized: "Claude usage limits are temporarily unavailable.")
         }
     }

@@ -9,12 +9,12 @@ All notable changes to UsageNow. This project follows [Semantic Versioning](http
 - **Gemini CLI.** The third real provider, with the same enable, refresh, menu bar, widget, and telemetry behavior as Codex and Claude Code. Activity and models come from Gemini CLI's local session recordings. Gemini CLI records no usage limits locally, so none are shown. Credential files are never opened.
 - **Activity by model.** A compact **Models today** list in each provider's section shows tokens and requests per model, most active first. It works for any model identifier, including ones released later, and never shows a percentage: account limits aren't split by model. Available for Claude Code, Codex, and Gemini CLI.
 - **Team plans.** Claude Team and Enterprise show the member's seat, such as **Team · Premium**. Codex reads the plan from `account/read`, so Team, Business, and Enterprise accounts show their plan even when rate limits aren't returned, and newer billing variants map to their plan name. Not yet verified against live Team accounts.
-- **Antigravity (experimental limits, off by default).** Antigravity's weekly limits, one window per model group, read with the Google sign-in Antigravity CLI saved and Google's undocumented Cloud Code quota endpoint. The token stays in memory and is never refreshed or stored; limits refresh while `agy` has a current sign-in and stay for a day as stale afterwards. No token or model activity, because `agy` doesn't store it in a documented format.
-- **Gemini CLI usage** and **Antigravity usage** menu bar modes. Gemini CLI's shows the icon while it reports no limits.
+- A **Gemini CLI usage** menu bar mode, which shows the icon while Gemini CLI reports no limits.
+- **Antigravity** is listed as Coming soon, with its logo. Its CLI keeps limits in memory and Google's quota service answers only Antigravity's own clients, so there's nothing UsageNow can honestly read yet.
 
 ### Changed
 
-- The medium widget shows one row per provider when three or more are on; the small widget lists up to three. When not everything fits, providers closest to a limit win. Windows of the same length from one provider carry their scope, such as "Weekly · Gemini".
+- The medium widget shows one row per provider when three or more are on; the small widget lists up to three. When not everything fits, providers closest to a limit win. Windows of the same length from one provider carry their scope, such as "Weekly · Opus".
 - A provider added in an update starts on once, as it would for a new user. Providers you turned off stay off.
 
 ### Fixed

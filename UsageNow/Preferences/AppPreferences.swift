@@ -13,7 +13,6 @@ final class AppPreferences {
         static let menuBarDisplayMode = "menuBarDisplayMode"
         static let appearance = "appearance"
         static let fetchClaudeUsageLimits = "experimental.fetchClaudeUsageLimits"
-        static let fetchAntigravityUsageLimits = "experimental.fetchAntigravityUsageLimits"
     }
 
     var appearance: AppAppearance {
@@ -34,19 +33,12 @@ final class AppPreferences {
         didSet { defaults.set(fetchClaudeUsageLimits, forKey: Key.fetchClaudeUsageLimits) }
     }
 
-    /// Experimental: read Antigravity limits from Google's undocumented
-    /// Cloud Code quota endpoint. Off by default.
-    var fetchAntigravityUsageLimits: Bool {
-        didSet { defaults.set(fetchAntigravityUsageLimits, forKey: Key.fetchAntigravityUsageLimits) }
-    }
-
     @ObservationIgnored private let defaults: UserDefaults
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         appearance = defaults.string(forKey: Key.appearance).flatMap(AppAppearance.init(rawValue:)) ?? .default
         fetchClaudeUsageLimits = defaults.bool(forKey: Key.fetchClaudeUsageLimits)
-        fetchAntigravityUsageLimits = defaults.bool(forKey: Key.fetchAntigravityUsageLimits)
         refreshInterval = (defaults.object(forKey: Key.refreshInterval) as? Int)
             .flatMap(RefreshInterval.init(rawValue:)) ?? .default
         // Unknown identifiers fall back to the default.

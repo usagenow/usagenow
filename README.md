@@ -2,7 +2,7 @@
 
 # UsageNow
 
-**AI coding usage tracker for macOS.** Monitor usage, limits, reset times, and token activity across Codex, Claude Code, Gemini CLI, and Antigravity, from the menu bar.
+**AI coding usage tracker for macOS.** Monitor usage, limits, reset times, and token activity across Codex, Claude Code, and Gemini CLI, from the menu bar.
 
 *See what's left. Keep building.*
 
@@ -18,14 +18,14 @@ Requires macOS 15 or later. The app is signed with a Developer ID and notarized 
 
 ## What it reads
 
-UsageNow reads real Codex, Claude Code, Gemini CLI, and Antigravity data from your Mac. Which data is available depends on the tool:
+UsageNow reads real Codex, Claude Code, and Gemini CLI data from your Mac. Which data is available depends on the tool:
 
-| | Codex | Claude Code | Gemini CLI | Antigravity |
-|---|---|---|---|---|
-| Usage limits and reset times | ✓ from the official `codex app-server` | ✓ experimental, opt-in (see below) | — not exposed locally | ✓ experimental, opt-in (see below) |
-| Plan | ✓, including Team, Business, and Enterprise | ✓ including a Team seat | — | — |
-| Tokens and requests today | ✓ from local session files | ✓ from local session files | ✓ from local session recordings | — |
-| Activity by model | ✓ | ✓ | ✓ | — |
+| | Codex | Claude Code | Gemini CLI |
+|---|---|---|---|
+| Usage limits and reset times | ✓ from the official `codex app-server` | ✓ experimental, opt-in (see below), plus limits Claude Code reports hitting | — not exposed locally |
+| Plan | ✓, including Team, Business, and Enterprise | ✓ including a Team seat | — |
+| Tokens and requests today | ✓ from local session files | ✓ from local session files | ✓ from local session recordings |
+| Activity by model | ✓ | ✓ | ✓ |
 
 Limit windows are whatever the provider reports. An account may have only a weekly limit, for example, and UsageNow never invents a missing window or shows a fake 0%.
 
@@ -94,17 +94,11 @@ Gemini CLI doesn’t record usage limits locally, and its quota service needs th
 
 Google no longer lets personal Google accounts sign in to Gemini CLI; it still works with a Gemini API key, Vertex AI, or Gemini Code Assist Standard and Enterprise.
 
-### Antigravity usage limits
-
-Antigravity CLI (`agy`) shows its limits only in its interactive `/usage` panel and keeps no copy on disk. UsageNow can optionally read them the same way `agy` does: with the Google sign-in `agy` saved in macOS Keychain, from Google’s undocumented Cloud Code endpoint `v1internal:retrieveUserQuotaSummary`. Antigravity’s limits are weekly and shared by groups of models, so each group appears as its own window — for example **Weekly · Gemini** and **Weekly · Claude and GPT**. This integration is experimental and may stop working without notice.
-
-**UsageNow never refreshes, modifies, or stores the Google sign-in, and never uses its refresh token.** Turn it on in **Settings › General › Fetch Antigravity usage limits**; that is the consent, and no macOS prompt appears, because `agy` saves the sign-in through `/usr/bin/security`, which UsageNow reads it with. Only the access token and its expiry are kept, in memory, and the token is sent only to Google’s Cloud Code host.
-
-Google access tokens last about an hour, and `agy` renews its own only while it runs. So limits refresh while you use Antigravity CLI; afterwards, the last ones UsageNow read stay for a day, marked stale. UsageNow notices a renewed sign-in by the keychain item’s modification date, without reading the secret. There’s no token or model activity for Antigravity: `agy` stores conversations in an undocumented binary format, and UsageNow doesn’t guess at numbers.
-
 ### Roadmap providers
 
-DeepSeek and Qwen are listed in Settings › Providers as **Coming soon**. They’re labels only: no integration, no credentials, and no network or file access.
+Antigravity, DeepSeek, and Qwen are listed in Settings › Providers as **Coming soon**. They’re labels only: no integration, no credentials, and no network or file access.
+
+Antigravity CLI (`agy`) keeps its limits only in memory, and Google’s quota service answers only Antigravity’s own clients; asked by any other app with the same sign-in, it refuses. UsageNow won’t impersonate Antigravity to get around that, so Antigravity stays on the roadmap until it offers a way to read usage.
 
 ## Desktop widget
 
@@ -115,7 +109,7 @@ UsageNow ships a WidgetKit extension with small and medium sizes.
 - With more providers than fit, the ones closest to a limit are shown. Model details stay in the app.
 - Disabled providers never appear, quota that isn’t available reads “Usage limits unavailable”, and old data stays visible with an “Updated … ago” note. No placeholder or fabricated values.
 
-**The widget never touches providers.** It can’t read `~/.codex`, `~/.claude`, or `~/.gemini`, open the keychain, run `codex app-server`, or call Anthropic or Google. The main app publishes a sanitized snapshot to a shared App Group container, and the widget only renders that. The provider and credential code isn’t compiled into the widget target at all.
+**The widget never touches providers.** It can’t read `~/.codex`, `~/.claude`, or `~/.gemini`, open the keychain, run `codex app-server`, or call Anthropic. The main app publishes a sanitized snapshot to a shared App Group container, and the widget only renders that. The provider and credential code isn’t compiled into the widget target at all.
 
 ### Signing and the widget
 
@@ -133,7 +127,7 @@ Without it, UsageNow builds ad-hoc and works normally; the widget just shows “
 Real providers run by default. For development, mock providers accept a scenario at launch: `normal`, `high`, `critical`, `unavailable`, `notInstalled`, `notAuthenticated`, `failing`, or `loading`.
 
 ```sh
-open UsageNow.app --args -UsageNowMockCodex critical -UsageNowMockClaude failing -UsageNowMockGemini normal -UsageNowMockAntigravity high
+open UsageNow.app --args -UsageNowMockCodex critical -UsageNowMockClaude failing -UsageNowMockGemini normal
 ```
 
 The shared scheme includes these as disabled launch arguments, which you can enable under **Product › Scheme › Edit Scheme › Run › Arguments**. SwiftUI previews cover the same states without running the app.
@@ -160,7 +154,7 @@ UsageNow/
 - **Providers** turn tool-specific data into a normalized `ProviderSnapshot` with any number of usage windows and optional plan, model, and activity. Views depend only on this normalized state and hide data a provider doesn’t have.
 - **`UsageStore`** refreshes all providers concurrently. It keeps the last good data when a refresh fails and exposes loading, empty, and per-provider error states.
 - **`WidgetSnapshotWriter`** is the only path from provider data to the widget. It drops disabled and not-installed providers, copies each display field explicitly, writes atomically, and reloads timelines only when the content changed.
-- **Telemetry** is opt-in and off by default. Clients only receive a small set of events (install, daily active, updated, and whether Codex, Claude Code, Gemini CLI, or Antigravity is installed) with the app version, macOS version, and a random installation ID. They never have access to provider data. No analytics server is configured yet, so nothing is sent.
+- **Telemetry** is opt-in and off by default. Clients only receive a small set of events (install, daily active, updated, and whether Codex, Claude Code, or Gemini CLI is installed) with the app version, macOS version, and a random installation ID. They never have access to provider data. No analytics server is configured yet, so nothing is sent.
 
 ## Contributing
 
