@@ -279,6 +279,9 @@
     "Refresh interval" : {
 
     },
+    "Reset %@ · not updated since" : {
+      "comment" : "A usage window reset after UsageNow last read it, e.g. Reset Mon 22:59 · not updated since"
+    },
     "Resets %@" : {
 
     },

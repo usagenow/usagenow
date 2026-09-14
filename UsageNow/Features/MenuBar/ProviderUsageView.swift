@@ -33,10 +33,12 @@ struct ProviderUsageView: View {
         if let snapshot {
             switch snapshot.status {
             case .available:
-                if snapshot.windows.isEmpty {
-                    StatusMessage(text: snapshot.quotaUnavailableReason?.message(for: state.provider) ?? String(localized: "Usage limits unavailable"))
-                } else {
+                if !snapshot.windows.isEmpty {
                     UsageWindowsView(windows: snapshot.windows, now: now)
+                }
+                // Also under windows that are only known to have reset, so the fix stays visible.
+                if snapshot.windows.isEmpty || snapshot.quotaUnavailableReason != nil {
+                    StatusMessage(text: snapshot.quotaUnavailableReason?.message(for: state.provider) ?? String(localized: "Usage limits unavailable"))
                 }
                 ProviderActivityView(activity: snapshot.activity)
                 ModelActivityView(models: snapshot.modelActivity)

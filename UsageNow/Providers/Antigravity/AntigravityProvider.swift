@@ -41,14 +41,13 @@ struct AntigravityProvider: UsageProvider {
             limits = await limitsClient.windows(trigger: trigger, now: now)
             availability = await limitsClient.availability
         }
-        // A window that reset since it was fetched no longer tells current usage.
-        let windows = limits?.value.filter { ($0.resetsAt ?? .distantFuture) > date } ?? []
+        let windows = limits?.value.asOf(date) ?? []
 
         return ProviderSnapshot(
             provider: .antigravity,
             status: .available,
             windows: windows,
-            quotaUnavailableReason: windows.isEmpty ? availability.unavailableReason : nil,
+            quotaUnavailableReason: windows.contains { $0.usage != nil } ? nil : availability.unavailableReason,
             updatedAt: date,
             limitsUpdatedAt: windows.isEmpty ? nil : limits?.fetchedAt
         )

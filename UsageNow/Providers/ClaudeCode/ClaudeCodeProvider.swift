@@ -53,8 +53,16 @@ struct ClaudeCodeProvider: UsageProvider {
             limits = await limitsClient.windows(trigger: trigger, now: now)
             availability = await limitsClient.availability
         }
-        // A window that reset since it was fetched no longer tells current usage.
-        let windows = limits?.value.filter { ($0.resetsAt ?? .distantFuture) > date } ?? []
+        var windows = limits?.value.asOf(date) ?? []
+        var limitsDate = limits?.fetchedAt
+        // A limit Claude Code hit more recently than the last reading is newer
+        // news about that window, and needs no sign-in at all.
+        for hit in activity.limitHits where (hit.window.resetsAt ?? .distantPast) > date && hit.observedAt >= (limits?.fetchedAt ?? .distantPast) {
+            windows.removeAll { $0.id == hit.window.id }
+            windows.append(hit.window)
+            limitsDate = max(limitsDate ?? .distantPast, hit.observedAt)
+        }
+        windows = windows.sortedForDisplay()
 
         return ProviderSnapshot(
             provider: .claudeCode,
@@ -62,11 +70,11 @@ struct ClaudeCodeProvider: UsageProvider {
             planName: profile.planName,
             recentModel: activity.activity.latestModel,
             windows: windows,
-            quotaUnavailableReason: windows.isEmpty ? availability.unavailableReason : nil,
+            quotaUnavailableReason: windows.contains { $0.usage != nil && ($0.resetsAt ?? .distantFuture) > date } ? nil : availability.unavailableReason,
             activity: LocalActivity(tokensToday: activity.activity.tokens, requestsToday: activity.activity.requests),
             modelActivity: activity.activity.models,
             updatedAt: date,
-            limitsUpdatedAt: windows.isEmpty ? nil : limits?.fetchedAt
+            limitsUpdatedAt: windows.isEmpty ? nil : limitsDate
         )
     }
 }

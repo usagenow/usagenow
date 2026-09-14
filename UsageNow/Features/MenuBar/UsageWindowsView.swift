@@ -44,7 +44,11 @@ struct UsageWindowsView: View {
 
     /// "Resets in 1h 24m", prefixed with the scope when there is one ("Opus · Resets …").
     private func detailText(for window: UsageWindow) -> String? {
-        let reset = window.usage == nil ? nil : window.resetsAt.map { formatter.resetDescription(for: $0, now: now) }
+        let reset: String? = window.resetsAt.flatMap { resetsAt in
+            if window.usage != nil { return formatter.resetDescription(for: resetsAt, now: now) }
+            // Usage unknown because the window reset after the last reading.
+            return resetsAt <= now ? formatter.passedResetDescription(for: resetsAt) : nil
+        }
         switch (window.scope, reset) {
         case let (scope?, reset?): return "\(scope) · \(reset)"
         case let (scope?, nil): return scope

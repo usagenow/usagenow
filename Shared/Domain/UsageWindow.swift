@@ -67,6 +67,18 @@ extension [UsageWindow] {
             .0
     }
 
+    /// The windows as of `date`, for values read earlier. A window that has
+    /// reset since keeps its row, so the display doesn't lose it, but its
+    /// usage becomes unknown: nothing says how much of the new window is used.
+    func asOf(_ date: Date) -> [UsageWindow] {
+        map { window in
+            guard let resetsAt = window.resetsAt, resetsAt <= date else { return window }
+            var reset = window
+            reset.usage = nil
+            return reset
+        }
+    }
+
     /// Shortest windows first, then unscoped before scoped.
     func sortedForDisplay() -> [UsageWindow] {
         sorted {

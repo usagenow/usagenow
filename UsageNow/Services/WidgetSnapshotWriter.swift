@@ -62,7 +62,8 @@ final class WidgetSnapshotWriter {
             provider: snapshot.provider,
             planName: snapshot.planName,
             modelName: snapshot.recentModel,
-            windows: snapshot.windows,
+            // A window known only to have reset has nothing to show at a glance.
+            windows: snapshot.windows.filter { $0.usage != nil || ($0.resetsAt ?? .distantFuture) > snapshot.updatedAt },
             tokensToday: snapshot.activity.tokensToday,
             requestsToday: snapshot.activity.requestsToday,
             quotaUnavailableReason: snapshot.windows.isEmpty ? snapshot.quotaUnavailableReason : nil

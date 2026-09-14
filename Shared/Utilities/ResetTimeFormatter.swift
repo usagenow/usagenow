@@ -41,6 +41,11 @@ struct ResetTimeFormatter: Sendable {
         return formatter.string(from: date)
     }
 
+    /// For a window that reset after its last reading: "Reset Mon 22:59 · not updated since".
+    func passedResetDescription(for date: Date) -> String {
+        String(localized: "Reset \(weekdayTime(date)) · not updated since", comment: "A usage window reset after UsageNow last read it, e.g. Reset Mon 22:59 · not updated since")
+    }
+
     /// "Resets in 1h 24m" within a day, "Resets Mon 09:00" beyond that.
     func resetDescription(for date: Date, now: Date) -> String {
         let interval = date.timeIntervalSince(now)

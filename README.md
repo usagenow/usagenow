@@ -82,7 +82,9 @@ Claude Code does not currently expose subscription limits through a supported lo
 
 Claude Code’s saved sign-in lasts a few hours and is renewed only when Claude Code itself runs. UsageNow picks up a renewed sign-in on its own: while the saved one is unusable, it checks only when the keychain item last changed — which reads no secret and never shows a prompt — and reads the token again once Claude Code has saved a new one. After you use `claude` anywhere, limits come back on the next refresh, with no **Try Again**. When the sign-in has just expired, UsageNow also runs the CLI’s read-only `claude auth status` once, and never sends a prompt through it.
 
-Turn it on in **Settings › General › Fetch Claude usage limits**. When limits can’t be fetched, UsageNow says why in one line — the session needs refreshing, keychain access was denied, or Anthropic’s endpoint didn’t answer — and keeps showing local token, request, model, and plan data. The last limits it did read stay on screen for a day, marked stale, even across quitting or updating the app, so a sign-in that expires overnight doesn’t leave an empty panel in the morning.
+Turn it on in **Settings › General › Fetch Claude usage limits**. When limits can’t be fetched, UsageNow says why in one line — the session needs refreshing, keychain access was denied, or Anthropic’s endpoint didn’t answer — and keeps showing local token, request, model, and plan data. The last limits it did read stay on screen for a day, marked stale, even across quitting or updating the app, so a sign-in that expires overnight doesn’t leave an empty panel in the morning. A window that reset since then keeps its row without a percentage (“Reset Mon 22:59 · not updated since”), because nothing says how much of the new window is used.
+
+Independently of that setting, when Claude Code stops a request because a limit was reached, it records the window and its reset time in the session transcript. UsageNow shows that window as used up until it resets. This needs no sign-in and also works when you use Claude Code inside the Claude app, whose sign-in UsageNow can’t read.
 
 ### Gemini CLI
 

@@ -15,6 +15,8 @@ struct ClaudeSessionReader: Sendable {
     struct Result: Sendable, Equatable {
         var activity: ActivitySummary
         var hasSessionFiles: Bool
+        /// The latest limit Claude Code reported hitting, per window.
+        var limitHits: [ClaudeLimitHit] = []
     }
 
     private let cache = IncrementalFileCache<ClaudeSessionFileState>()
@@ -24,6 +26,7 @@ struct ClaudeSessionReader: Sendable {
         await cache.retain(only: Set(files.map(\.url)))
 
         var records: [ActivityRecord] = []
+        var hits: [String: ClaudeLimitHit] = [:]
         for file in files {
             let key = file.url.lastPathComponent
             do {
@@ -34,16 +37,33 @@ struct ClaudeSessionReader: Sendable {
                     fold: { line, state in ClaudeSessionParser.fold(line, into: &state, fileKey: key, since: since) }
                 )
                 records += state.records
+                for hit in state.limitHits.values where hit.observedAt >= (hits[hit.window.id]?.observedAt ?? .distantPast) {
+                    hits[hit.window.id] = hit
+                }
             } catch {
                 Log.provider.debug("Skipped an unreadable Claude Code session file")
             }
         }
-        return Result(activity: ActivitySummary(records: records, since: since), hasSessionFiles: !files.isEmpty)
+        return Result(
+            activity: ActivitySummary(records: records, since: since),
+            hasSessionFiles: !files.isEmpty,
+            limitHits: hits.values.sorted { $0.window.id < $1.window.id }
+        )
     }
 }
 
 struct ClaudeSessionFileState: Sendable {
     var records: [ActivityRecord] = []
+    var limitHits: [String: ClaudeLimitHit] = [:]
+}
+
+/// A limit Claude Code reported reaching, from the notice it records when it
+/// stops a request. It says the window is used up until it resets — nothing
+/// about usage before that — so it's credential-free but only appears at 100%.
+struct ClaudeLimitHit: Sendable, Equatable {
+    var window: UsageWindow
+    /// When Claude Code recorded it.
+    var observedAt: Date
 }
 
 enum ClaudeSessionParser {
@@ -53,7 +73,12 @@ enum ClaudeSessionParser {
     private static let syntheticModel = "<synthetic>"
     private static let decoder = JSONDecoder()
 
+    private static let quotaLimitsMarker = Data(#""quotaLimits""#.utf8)
+
     static func fold(_ line: Data, into state: inout ClaudeSessionFileState, fileKey: String, since: Date) {
+        if line.contains(quotaLimitsMarker) {
+            foldLimitHit(line, into: &state)
+        }
         guard line.contains(usageMarker), line.contains(assistantMarker),
               let record = try? decoder.decode(ClaudeSessionLine.self, from: line),
               record.type == "assistant",
@@ -75,6 +100,36 @@ enum ClaudeSessionParser {
             outputTokens: usage.output_tokens
         ))
     }
+}
+
+extension ClaudeSessionParser {
+    /// `quotaLimits` with `status: "rejected"` means the named window is used
+    /// up until `resetsAt`. Other statuses carry no usable number.
+    static func foldLimitHit(_ line: Data, into state: inout ClaudeSessionFileState) {
+        guard let record = try? JSONDecoder().decode(ClaudeQuotaLimitsLine.self, from: line),
+              let limits = record.quotaLimits,
+              limits.status == "rejected",
+              let type = limits.rateLimitType,
+              let (kind, scope) = ClaudeUsageLimitsParser.window(forKey: type),
+              let seconds = limits.resetsAt, seconds > 0,
+              let observedAt = SessionTimestamp.parse(record.timestamp) else { return }
+        let resetsAt = Date(timeIntervalSince1970: seconds > 1e12 ? seconds / 1000 : seconds)
+        let window = UsageWindow(kind: kind, scope: scope, usage: UsagePercentage(percent: 100), resetsAt: resetsAt)
+        if observedAt >= (state.limitHits[window.id]?.observedAt ?? .distantPast) {
+            state.limitHits[window.id] = ClaudeLimitHit(window: window, observedAt: observedAt)
+        }
+    }
+}
+
+private struct ClaudeQuotaLimitsLine: Decodable {
+    struct QuotaLimits: Decodable {
+        var status: String?
+        var rateLimitType: String?
+        var resetsAt: Double?
+    }
+
+    var timestamp: String?
+    var quotaLimits: QuotaLimits?
 }
 
 /// The subset of a Claude Code transcript line UsageNow reads.
