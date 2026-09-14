@@ -48,7 +48,7 @@ struct ClaudeCodeProvider: UsageProvider {
         }
 
         var limits: QuotaCache<[UsageWindow]>.Entry?
-        var availability = ClaudeQuotaAvailability.disabled
+        var availability = QuotaSourceAvailability.disabled
         if let limitsClient, limitsEnabled.isOn, profile.isSignedIn {
             limits = await limitsClient.windows(trigger: trigger, now: now)
             availability = await limitsClient.availability

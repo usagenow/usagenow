@@ -9,6 +9,7 @@ enum MenuBarDisplayMode: String, CaseIterable, Identifiable, Sendable {
     case claudePercentage
     /// Gemini CLI reports no limits today, so this shows the icon until it does.
     case geminiPercentage
+    case antigravityPercentage
 
     static let `default` = MenuBarDisplayMode.iconOnly
 
@@ -19,6 +20,7 @@ enum MenuBarDisplayMode: String, CaseIterable, Identifiable, Sendable {
         case .codexPercentage: .codex
         case .claudePercentage: .claudeCode
         case .geminiPercentage: .gemini
+        case .antigravityPercentage: .antigravity
         }
     }
 
@@ -39,6 +41,7 @@ enum MenuBarDisplayMode: String, CaseIterable, Identifiable, Sendable {
         case .codexPercentage: "Codex usage"
         case .claudePercentage: "Claude Code usage"
         case .geminiPercentage: "Gemini CLI usage"
+        case .antigravityPercentage: "Antigravity usage"
         }
     }
 
@@ -53,7 +56,7 @@ enum MenuBarDisplayMode: String, CaseIterable, Identifiable, Sendable {
             nil
         case .mostCriticalPercentage:
             UsageSummary.mostCritical(in: snapshots)?.window.usage
-        case .codexPercentage, .claudePercentage, .geminiPercentage:
+        case .codexPercentage, .claudePercentage, .geminiPercentage, .antigravityPercentage:
             UsageSummary.mostCritical(in: snapshots.filter { $0.provider == requiredProvider })?.window.usage
         }
     }

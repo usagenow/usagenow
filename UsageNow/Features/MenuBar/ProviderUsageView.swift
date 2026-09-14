@@ -34,7 +34,7 @@ struct ProviderUsageView: View {
             switch snapshot.status {
             case .available:
                 if snapshot.windows.isEmpty {
-                    StatusMessage(text: snapshot.quotaUnavailableReason?.message ?? String(localized: "Usage limits unavailable"))
+                    StatusMessage(text: snapshot.quotaUnavailableReason?.message(for: state.provider) ?? String(localized: "Usage limits unavailable"))
                 } else {
                     UsageWindowsView(windows: snapshot.windows, now: now)
                 }

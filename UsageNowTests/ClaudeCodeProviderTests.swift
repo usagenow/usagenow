@@ -227,12 +227,12 @@ struct ClaudeCodeProviderTests {
     }
 
     @Test func availabilityMapsToShortUserFacingReasons() {
-        #expect(ClaudeQuotaAvailability.available.unavailableReason == nil)
-        #expect(ClaudeQuotaAvailability.disabled.unavailableReason == nil)
-        #expect(ClaudeQuotaAvailability.staleAuthentication.unavailableReason == .signInExpired)
-        #expect(ClaudeQuotaAvailability.keychainDenied.unavailableReason == .permissionDenied)
-        #expect(ClaudeQuotaAvailability.endpointUnavailable.unavailableReason == .temporarilyUnavailable)
-        #expect(ClaudeQuotaAvailability.unsupportedResponse.unavailableReason == .temporarilyUnavailable)
+        #expect(QuotaSourceAvailability.available.unavailableReason == nil)
+        #expect(QuotaSourceAvailability.disabled.unavailableReason == nil)
+        #expect(QuotaSourceAvailability.staleAuthentication.unavailableReason == .signInExpired)
+        #expect(QuotaSourceAvailability.keychainDenied.unavailableReason == .permissionDenied)
+        #expect(QuotaSourceAvailability.endpointUnavailable.unavailableReason == .temporarilyUnavailable)
+        #expect(QuotaSourceAvailability.unsupportedResponse.unavailableReason == .temporarilyUnavailable)
     }
 
     @Test func snapshotCarriesTheReasonWhenLimitsAreOn() async throws {
@@ -328,8 +328,8 @@ struct ClaudeCodeProviderTests {
     @Test func lastKnownLimitsSurviveAnExpiredSignIn() async throws {
         // Yesterday evening it worked; overnight the sign-in expired.
         let credentials = SequencedCredentials([
-            .found(ClaudeOAuthToken(value: "fresh", expiresAt: TestDates.noon.addingTimeInterval(3_600))),
-            .found(ClaudeOAuthToken(value: "stale", expiresAt: TestDates.noon.addingTimeInterval(-60))),
+            .found(OAuthAccessToken(value: "fresh", expiresAt: TestDates.noon.addingTimeInterval(3_600))),
+            .found(OAuthAccessToken(value: "stale", expiresAt: TestDates.noon.addingTimeInterval(-60))),
         ])
         let clock = TestClock(TestDates.noon)
         let client = ClaudeUsageLimitsClient(
@@ -351,8 +351,8 @@ struct ClaudeCodeProviderTests {
 
     @Test func limitsAgeOutAfterADay() async throws {
         let credentials = SequencedCredentials([
-            .found(ClaudeOAuthToken(value: "fresh", expiresAt: TestDates.noon.addingTimeInterval(3_600))),
-            .found(ClaudeOAuthToken(value: "stale", expiresAt: TestDates.noon.addingTimeInterval(-60))),
+            .found(OAuthAccessToken(value: "fresh", expiresAt: TestDates.noon.addingTimeInterval(3_600))),
+            .found(OAuthAccessToken(value: "stale", expiresAt: TestDates.noon.addingTimeInterval(-60))),
         ])
         let clock = TestClock(TestDates.noon)
         let client = ClaudeUsageLimitsClient(
@@ -372,7 +372,7 @@ struct ClaudeCodeProviderTests {
         // This morning: the sign-in expired overnight, then `claude` ran in Terminal.
         let clock = TestClock(TestDates.noon)
         let credentials = SequencedCredentials(
-            [.found(ClaudeOAuthToken(value: "stale", expiresAt: TestDates.noon.addingTimeInterval(-60)))],
+            [.found(OAuthAccessToken(value: "stale", expiresAt: TestDates.noon.addingTimeInterval(-60)))],
             modified: TestDates.noon.addingTimeInterval(-8 * 3_600)
         )
         let transport = StubTransport(status: 200, body: ClaudeUsageFixture.full)
@@ -394,7 +394,7 @@ struct ClaudeCodeProviderTests {
         #expect(await transport.requests.isEmpty)
 
         // Claude Code saves a renewed sign-in; the next automatic refresh uses it.
-        await credentials.save(.found(ClaudeOAuthToken(value: "renewed", expiresAt: clock.now.addingTimeInterval(8 * 3_600))), at: clock.now)
+        await credentials.save(.found(OAuthAccessToken(value: "renewed", expiresAt: clock.now.addingTimeInterval(8 * 3_600))), at: clock.now)
         clock.advance(by: 5 * 60)
         let entry = await client.windows(trigger: .automatic, now: { clock.now })
 
@@ -405,7 +405,7 @@ struct ClaudeCodeProviderTests {
     }
 
     @Test func aRejectedSignInIsReadAgainOnceItChanges() async throws {
-        let credentials = SequencedCredentials([.found(ClaudeOAuthToken(value: "revoked", expiresAt: nil))], modified: TestDates.noon)
+        let credentials = SequencedCredentials([.found(OAuthAccessToken(value: "revoked", expiresAt: nil))], modified: TestDates.noon)
         let transport = StubTransport(status: 401, body: ClaudeUsageFixture.full)
         let client = ClaudeUsageLimitsClient(credentials: credentials, transport: transport, minimumInterval: 0)
         let now: @Sendable () -> Date = { TestDates.noon }
@@ -414,7 +414,7 @@ struct ClaudeCodeProviderTests {
         _ = await client.windows(trigger: .automatic, now: now)
         #expect(await credentials.reads == 1)
 
-        await credentials.save(.found(ClaudeOAuthToken(value: "new", expiresAt: nil)), at: TestDates.noon.addingTimeInterval(60))
+        await credentials.save(.found(OAuthAccessToken(value: "new", expiresAt: nil)), at: TestDates.noon.addingTimeInterval(60))
         await transport.setStatus(200)
         #expect(await client.windows(trigger: .automatic, now: now)?.value.count == 3)
         #expect(await credentials.reads == 2)
@@ -480,8 +480,8 @@ struct ClaudeCodeProviderTests {
     @Test func expiredSignInIsHandedBackToClaudeCode() async throws {
         // Expired at first; the CLI "renews" it and the second read succeeds.
         let credentials = SequencedCredentials([
-            .found(ClaudeOAuthToken(value: "stale", expiresAt: TestDates.noon.addingTimeInterval(-60))),
-            .found(ClaudeOAuthToken(value: "fresh", expiresAt: TestDates.noon.addingTimeInterval(8 * 3_600))),
+            .found(OAuthAccessToken(value: "stale", expiresAt: TestDates.noon.addingTimeInterval(-60))),
+            .found(OAuthAccessToken(value: "fresh", expiresAt: TestDates.noon.addingTimeInterval(8 * 3_600))),
         ])
         let transport = StubTransport(status: 200, body: ClaudeUsageFixture.full)
         let refreshes = Counter()
@@ -591,7 +591,7 @@ struct ClaudeCodeProviderTests {
     }
 
     @Test func tokenIsRedactedInDescriptions() {
-        let token = ClaudeOAuthToken(value: "fake-secret", expiresAt: nil)
+        let token = OAuthAccessToken(value: "fake-secret", expiresAt: nil)
         #expect(!"\(token)".contains("fake-secret"))
         #expect(!String(reflecting: token).contains("fake-secret"))
     }
@@ -680,17 +680,17 @@ enum ClaudeUsageFixture {
 }
 
 /// Returns a different result on each read, so a renewal can be observed.
-actor SequencedCredentials: ClaudeCredentialSource {
-    private var results: [ClaudeCredentialLookup]
+actor SequencedCredentials: CredentialSource {
+    private var results: [CredentialLookup]
     private var modified: Date?
     private(set) var reads = 0
 
-    init(_ results: [ClaudeCredentialLookup], modified: Date? = nil) {
+    init(_ results: [CredentialLookup], modified: Date? = nil) {
         self.results = results
         self.modified = modified
     }
 
-    func lookup() async throws -> ClaudeCredentialLookup {
+    func lookup() async throws -> CredentialLookup {
         reads += 1
         return results.count > 1 ? results.removeFirst() : results[0]
     }
@@ -698,7 +698,7 @@ actor SequencedCredentials: ClaudeCredentialSource {
     func lastModified() async -> Date? { modified }
 
     /// What Claude Code does when it renews: saves a new sign-in.
-    func save(_ result: ClaudeCredentialLookup, at date: Date) {
+    func save(_ result: CredentialLookup, at date: Date) {
         results = [result]
         modified = date
     }
@@ -718,7 +718,7 @@ final class MemoryQuotaStore: Sendable {
     }
 }
 
-actor StubCredentials: ClaudeCredentialSource {
+actor StubCredentials: CredentialSource {
     private let token: String?
     private let expiresAt: Date?
     private let denied: Bool
@@ -730,11 +730,11 @@ actor StubCredentials: ClaudeCredentialSource {
         self.denied = denied
     }
 
-    func lookup() async throws -> ClaudeCredentialLookup {
+    func lookup() async throws -> CredentialLookup {
         reads += 1
         if denied { return .accessDenied }
         guard let token else { return .notFound }
-        return .found(ClaudeOAuthToken(value: token, expiresAt: expiresAt))
+        return .found(OAuthAccessToken(value: token, expiresAt: expiresAt))
     }
 }
 

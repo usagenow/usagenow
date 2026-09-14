@@ -43,21 +43,21 @@ actor ClaudeUsageLimitsClient {
         case untilChanged(since: Date?)
     }
 
-    private(set) var availability: ClaudeQuotaAvailability = .disabled
+    private(set) var availability: QuotaSourceAvailability = .disabled
 
-    private let credentials: any ClaudeCredentialSource
+    private let credentials: any CredentialSource
     private let transport: any HTTPTransport
     private let cache: QuotaCache<[UsageWindow]>
     /// Asks Claude Code to renew its own sign-in. UsageNow never does it itself.
     private let requestSignInRefresh: (@Sendable () async -> Bool)?
     private let refreshInterval: TimeInterval
     private let now: @Sendable () -> Date
-    private var token: ClaudeOAuthToken?
+    private var token: OAuthAccessToken?
     private var lastSignInRefresh: Date?
     private var keychainHold = KeychainHold.none
 
     init(
-        credentials: any ClaudeCredentialSource = KeychainClaudeCredentialSource(),
+        credentials: any CredentialSource = KeychainClaudeCredentialSource(),
         transport: any HTTPTransport = URLSessionTransport.ephemeral(timeout: 10),
         minimumInterval: TimeInterval = 5 * 60,
         lastKnownLimits: QuotaCacheStore<[UsageWindow]>? = nil,
@@ -138,7 +138,7 @@ actor ClaudeUsageLimitsClient {
     /// The in-memory token, re-reading the keychain only when it's missing or
     /// expired. An expired sign-in is handed back to Claude Code to renew,
     /// then read once more.
-    private func validToken(at now: Date) async throws -> ClaudeOAuthToken? {
+    private func validToken(at now: Date) async throws -> OAuthAccessToken? {
         if let cached = token, !cached.isExpired(at: now) { return cached }
         token = nil
 
@@ -173,7 +173,7 @@ actor ClaudeUsageLimitsClient {
     /// Lets Claude Code renew its credential, then reads the keychain again.
     /// Rate-limited; when the CLI isn't there or didn't help, waits for the
     /// sign-in to change instead.
-    private func renewedToken(at now: Date) async throws -> ClaudeOAuthToken? {
+    private func renewedToken(at now: Date) async throws -> OAuthAccessToken? {
         let mayAsk = lastSignInRefresh.map { now.timeIntervalSince($0) >= refreshInterval } ?? true
         if let requestSignInRefresh, mayAsk {
             lastSignInRefresh = now
@@ -194,70 +194,11 @@ actor ClaudeUsageLimitsClient {
         update(.staleAuthentication)
     }
 
-    private func update(_ newAvailability: ClaudeQuotaAvailability) {
+    private func update(_ newAvailability: QuotaSourceAvailability) {
         guard newAvailability != availability else { return }
         availability = newAvailability
         Log.provider.notice("Claude usage limits: \(String(describing: newAvailability), privacy: .public)")
     }
-}
-
-/// Why Claude quota is or isn't available, in detail. Kept for logs and
-/// diagnosis; the UI shows the shorter `QuotaUnavailableReason`.
-enum ClaudeQuotaAvailability: Sendable, Equatable {
-    case available
-    /// The experimental setting is off, or Claude Code isn't tracked.
-    case disabled
-    /// No saved sign-in, or it expired or was rejected. Claude Code renews
-    /// it when it runs in Terminal; UsageNow never does.
-    case staleAuthentication
-    case keychainDenied
-    /// Anthropic's usage endpoint didn't answer, or answered with an error.
-    case endpointUnavailable
-    /// The endpoint answered in a shape UsageNow doesn't understand.
-    case unsupportedResponse
-
-    /// What the user is told. Several internal cases share one plain message.
-    var unavailableReason: QuotaUnavailableReason? {
-        switch self {
-        case .available, .disabled: nil
-        case .staleAuthentication: .signInExpired
-        case .keychainDenied: .permissionDenied
-        case .endpointUnavailable, .unsupportedResponse: .temporarilyUnavailable
-        }
-    }
-}
-
-/// An OAuth access token held in memory only.
-struct ClaudeOAuthToken: Sendable, CustomStringConvertible, CustomDebugStringConvertible {
-    let value: String
-    let expiresAt: Date?
-
-    func isExpired(at date: Date) -> Bool {
-        expiresAt.map { $0 <= date } ?? false
-    }
-
-    // Never reveal the token through string interpolation or debugging output.
-    var description: String { "ClaudeOAuthToken(<redacted>)" }
-    var debugDescription: String { description }
-}
-
-enum ClaudeCredentialLookup: Sendable {
-    case found(ClaudeOAuthToken)
-    /// No Claude Code sign-in in the keychain.
-    case notFound
-    /// The user denied access or dismissed the keychain prompt.
-    case accessDenied
-}
-
-protocol ClaudeCredentialSource: Sendable {
-    func lookup() async throws -> ClaudeCredentialLookup
-    /// When the saved sign-in last changed, or `nil` when there's none or it
-    /// can't be told. Must not read the secret, so it never prompts.
-    func lastModified() async -> Date?
-}
-
-extension ClaudeCredentialSource {
-    func lastModified() async -> Date? { nil }
 }
 
 /// Reads Claude Code's OAuth credential from the login keychain.
@@ -271,56 +212,22 @@ extension ClaudeCredentialSource {
 ///
 /// The output goes through a pipe straight into memory: nothing is written
 /// to disk or logged, and only the access token and its expiry are kept.
-struct KeychainClaudeCredentialSource: ClaudeCredentialSource {
+struct KeychainClaudeCredentialSource: CredentialSource {
     static let service = "Claude Code-credentials"
-    static let tool = URL(filePath: "/usr/bin/security")
     /// Long enough for someone to answer a prompt, should one ever appear.
     static let timeout: TimeInterval = 60
+    static let itemNotFoundStatus = SecurityTool.itemNotFoundStatus
 
-    /// `security` exits with this when there's no such item.
-    static let itemNotFoundStatus: Int32 = 44
-
-    func lookup() async throws -> ClaudeCredentialLookup {
-        // The tool blocks until it finishes; wait off the concurrency pool.
-        await withCheckedContinuation { continuation in
-            DispatchQueue.global(qos: .userInitiated).async {
-                continuation.resume(returning: Self.readWithTool())
-            }
-        }
-    }
-
-    private static func readWithTool() -> ClaudeCredentialLookup {
-        let process = Process()
-        process.executableURL = tool
-        process.arguments = ["find-generic-password", "-a", NSUserName(), "-s", service, "-w"]
-        process.environment = ["HOME": NSHomeDirectory(), "USER": NSUserName()]
-        let output = Pipe()
-        process.standardOutput = output
-        process.standardError = FileHandle.nullDevice
-        process.standardInput = FileHandle.nullDevice
-
-        do {
-            try process.run()
-        } catch {
-            Log.provider.notice("Claude usage limits: couldn’t run the security tool")
-            return .notFound
-        }
-        let running = TerminableProcess(process)
-        let watchdog = DispatchWorkItem { running.terminate() }
-        DispatchQueue.global().asyncAfter(deadline: .now() + timeout, execute: watchdog)
-        // Reading to the end returns when the tool exits and closes the pipe.
-        let data = output.fileHandleForReading.readDataToEndOfFile()
-        process.waitUntilExit()
-        watchdog.cancel()
-
-        return lookup(exitStatus: process.terminationStatus, output: data)
+    func lookup() async throws -> CredentialLookup {
+        let result = await SecurityTool.readPassword(service: Self.service, account: NSUserName(), timeout: Self.timeout)
+        return Self.lookup(exitStatus: result.exitStatus, output: result.output)
     }
 
     /// Interprets what `security find-generic-password -w` returned.
-    static func lookup(exitStatus: Int32, output: Data) -> ClaudeCredentialLookup {
+    static func lookup(exitStatus: Int32, output: Data) -> CredentialLookup {
         switch exitStatus {
         case 0:
-            return ClaudeCredentialParser.token(from: output).map(ClaudeCredentialLookup.found) ?? .notFound
+            return ClaudeCredentialParser.token(from: output).map(CredentialLookup.found) ?? .notFound
         case itemNotFoundStatus:
             return .notFound
         default:
@@ -329,31 +236,20 @@ struct KeychainClaudeCredentialSource: ClaudeCredentialSource {
         }
     }
 
-    /// Reads only the item's attributes. The keychain guards an item's data,
-    /// not its attributes, so this never shows a prompt.
     func lastModified() async -> Date? {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: Self.service,
-            kSecReturnAttributes as String: true,
-            kSecMatchLimit as String: kSecMatchLimitOne,
-        ]
-        var item: AnyObject?
-        guard SecItemCopyMatching(query as CFDictionary, &item) == errSecSuccess,
-              let attributes = item as? [String: Any] else { return nil }
-        return attributes[kSecAttrModificationDate as String] as? Date
+        KeychainItem.modificationDate(service: Self.service)
     }
 }
 
 enum ClaudeCredentialParser {
     /// Extracts `claudeAiOauth.accessToken` and `expiresAt` (epoch milliseconds).
-    static func token(from data: Data) -> ClaudeOAuthToken? {
+    static func token(from data: Data) -> OAuthAccessToken? {
         guard let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               let oauth = object["claudeAiOauth"] as? [String: Any],
               let accessToken = oauth["accessToken"] as? String,
               !accessToken.isEmpty else { return nil }
         let expiresAt = (oauth["expiresAt"] as? NSNumber).map { Date(timeIntervalSince1970: $0.doubleValue / 1000) }
-        return ClaudeOAuthToken(value: accessToken, expiresAt: expiresAt)
+        return OAuthAccessToken(value: accessToken, expiresAt: expiresAt)
     }
 }
 

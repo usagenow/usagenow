@@ -26,7 +26,7 @@ struct UsageNowApp: App {
                 analyticsPreferences: appState.analyticsPreferences,
                 launchAtLogin: appState.launchAtLogin,
                 store: appState.store,
-                retryClaudeLimits: { appState.retryClaudeLimits() },
+                retryLimits: { appState.retryLimits(for: $0) },
                 navigation: appState.settingsNavigation
             )
         }

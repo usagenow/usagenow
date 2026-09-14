@@ -17,7 +17,8 @@ struct SettingsView: View {
     let analyticsPreferences: AnalyticsPreferences
     let launchAtLogin: LaunchAtLogin
     let store: UsageStore
-    let retryClaudeLimits: () -> Void
+    /// Asks an experimental limits source to try again, keychain included.
+    let retryLimits: (ProviderID) -> Void
     @Bindable var navigation: SettingsNavigation
 
     var body: some View {
@@ -28,7 +29,7 @@ struct SettingsView: View {
                     providerPreferences: providerPreferences,
                     launchAtLogin: launchAtLogin,
                     store: store,
-                    retryClaudeLimits: retryClaudeLimits
+                    retryLimits: retryLimits
                 )
             }
             Tab("Providers", systemImage: "circle.hexagongrid", value: SettingsTab.providers) {
@@ -53,11 +54,11 @@ struct GeneralSettingsView: View {
     let providerPreferences: ProviderPreferences
     let launchAtLogin: LaunchAtLogin
     let store: UsageStore
-    let retryClaudeLimits: () -> Void
+    let retryLimits: (ProviderID) -> Void
 
-    /// Why Claude quota is missing right now, if it is.
-    private var claudeQuotaIssue: QuotaUnavailableReason? {
-        store.states.first { $0.provider == .claudeCode }?.snapshot?.quotaUnavailableReason
+    /// Why a provider's quota is missing right now, if it is.
+    private func quotaIssue(_ provider: ProviderID) -> QuotaUnavailableReason? {
+        store.states.first { $0.provider == provider }?.snapshot?.quotaUnavailableReason
     }
 
     var body: some View {
@@ -110,18 +111,26 @@ struct GeneralSettingsView: View {
                     Text("Fetch Claude usage limits")
                         Text("Fetch current Claude Code subscription limits directly from Anthropic using your existing Claude Code sign-in. This uses an undocumented Anthropic endpoint and may stop working without notice.")
                     }
-                    if preferences.fetchClaudeUsageLimits, let message = claudeQuotaIssue?.message {
-                        LabeledContent {
-                            Button("Try Again", action: retryClaudeLimits)
-                        } label: {
-                            Text(message)
-                                .font(.callout)
-                                .foregroundStyle(.secondary)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
+                    if preferences.fetchClaudeUsageLimits, let issue = quotaIssue(.claudeCode) {
+                        retryRow(issue, provider: .claudeCode)
                     }
                 } header: {
                     Text("Claude usage limits — Experimental")
+                }
+            }
+
+            // Only meaningful while Antigravity is tracked at all.
+            if providerPreferences.isEnabled(.antigravity) {
+                Section {
+                    Toggle(isOn: $preferences.fetchAntigravityUsageLimits) {
+                        Text("Fetch Antigravity usage limits")
+                        Text("Fetch current Antigravity limits directly from Google using the sign-in Antigravity CLI saved. This uses an undocumented Google endpoint and may stop working without notice.")
+                    }
+                    if preferences.fetchAntigravityUsageLimits, let issue = quotaIssue(.antigravity) {
+                        retryRow(issue, provider: .antigravity)
+                    }
+                } header: {
+                    Text("Antigravity usage limits — Experimental")
                 }
             }
         }
@@ -129,6 +138,17 @@ struct GeneralSettingsView: View {
         .scrollDisabled(true)
         .fixedSize(horizontal: false, vertical: true)
         .onAppear { launchAtLogin.refreshStatus() }
+    }
+
+    private func retryRow(_ issue: QuotaUnavailableReason, provider: ProviderID) -> some View {
+        LabeledContent {
+            Button("Try Again") { retryLimits(provider) }
+        } label: {
+            Text(issue.message(for: provider))
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
     }
 }
 
@@ -237,13 +257,19 @@ struct AboutSettingsView: View {
 extension QuotaUnavailableReason {
     /// One short sentence saying what to do. Providers keep the detailed
     /// diagnosis in their logs.
-    var message: String {
-        switch self {
-        case .signInExpired:
+    func message(for provider: ProviderID) -> String {
+        switch (self, provider) {
+        case (.signInExpired, .antigravity):
+            String(localized: "Open Antigravity CLI to refresh your sign-in, then check again.")
+        case (.signInExpired, _):
             String(localized: "Refresh Claude Code from Terminal to view usage limits.")
-        case .permissionDenied:
+        case (.permissionDenied, .antigravity):
+            String(localized: "UsageNow couldn’t read your Antigravity sign-in from Keychain.")
+        case (.permissionDenied, _):
             String(localized: "Allow UsageNow to access your Claude Code sign-in in Keychain.")
-        case .temporarilyUnavailable:
+        case (.temporarilyUnavailable, .antigravity):
+            String(localized: "Antigravity usage limits are temporarily unavailable.")
+        case (.temporarilyUnavailable, _):
             String(localized: "Claude usage limits are temporarily unavailable.")
         }
     }
@@ -258,7 +284,7 @@ extension QuotaUnavailableReason {
         analyticsPreferences: AnalyticsPreferences(defaults: defaults),
         launchAtLogin: LaunchAtLogin(),
         store: PreviewFixtures.store(codex: .normal, claude: .normal),
-        retryClaudeLimits: {},
+        retryLimits: { _ in },
         navigation: SettingsNavigation()
     )
 }

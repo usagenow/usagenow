@@ -75,9 +75,11 @@ struct WidgetWindowRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             HStack(alignment: .firstTextBaseline) {
-                Text(verbatim: window.kind.title)
+                // "Weekly · Gemini" when a provider has several windows of one length.
+                Text(verbatim: window.scope.map { "\(window.kind.title) · \($0)" } ?? window.kind.title)
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                    .lineLimit(1)
                 Spacer(minLength: 6)
                 WidgetRemainingLabel(usage: window.usage, font: .caption)
             }
