@@ -371,8 +371,8 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
 				USAGENOW_APP_ENTITLEMENTS = "";
-				USAGENOW_TELEMETRY_ENDPOINT = "";
 				USAGENOW_APP_GROUP = group.com.usagenow.UsageNow;
+				USAGENOW_TELEMETRY_ENDPOINT = "";
 				USAGENOW_WIDGET_ENTITLEMENTS = "";
 			};
 			name = Debug;
@@ -435,8 +435,8 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 6.0;
 				USAGENOW_APP_ENTITLEMENTS = "";
-				USAGENOW_TELEMETRY_ENDPOINT = "";
 				USAGENOW_APP_GROUP = group.com.usagenow.UsageNow;
+				USAGENOW_TELEMETRY_ENDPOINT = "";
 				USAGENOW_WIDGET_ENTITLEMENTS = "";
 			};
 			name = Release;
