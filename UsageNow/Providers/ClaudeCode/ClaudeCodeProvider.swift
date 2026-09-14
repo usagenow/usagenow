@@ -70,7 +70,9 @@ struct ClaudeCodeProvider: UsageProvider {
             planName: profile.planName,
             recentModel: activity.activity.latestModel,
             windows: windows,
-            quotaUnavailableReason: windows.contains { $0.usage != nil && ($0.resetsAt ?? .distantFuture) > date } ? nil : availability.unavailableReason,
+            // Say how to refresh whenever something is missing — including a window
+            // that reset since the last reading, even if another is still current.
+            quotaUnavailableReason: windows.allSatisfy({ $0.usage != nil }) && !windows.isEmpty ? nil : availability.unavailableReason,
             activity: LocalActivity(tokensToday: activity.activity.tokens, requestsToday: activity.activity.requests),
             modelActivity: activity.activity.models,
             updatedAt: date,

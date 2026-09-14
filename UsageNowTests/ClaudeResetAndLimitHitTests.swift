@@ -61,7 +61,7 @@ struct ClaudeResetAndLimitHitTests {
         #expect(snapshot.window(.weekly)?.usage != nil)
         #expect(snapshot.mostCriticalWindow?.kind == .weekly)
         #expect(snapshot.limitsUpdatedAt == noon)
-        #expect(snapshot.quotaUnavailableReason == nil, "A current weekly reading still counts")
+        #expect(snapshot.quotaUnavailableReason == .signInExpired, "The way to get the 5-hour window back stays visible")
     }
 
     @Test func reasonShowsWhenNoWindowHasCurrentUsage() async throws {
