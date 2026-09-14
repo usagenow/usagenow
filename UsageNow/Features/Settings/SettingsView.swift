@@ -245,7 +245,7 @@ extension QuotaUnavailableReason {
     func message(for provider: ProviderID) -> String {
         switch self {
         case .toolNotRunning where provider == .antigravity:
-            String(localized: "Open Antigravity CLI to update usage limits.")
+            String(localized: "Open the Antigravity app to update usage limits.")
         case .toolNotRunning:
             String(localized: "Open \(provider.displayName) to update usage limits.")
         // Claude Code is the only provider with a sign-in-based source today.

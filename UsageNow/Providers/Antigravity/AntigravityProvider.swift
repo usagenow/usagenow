@@ -2,11 +2,11 @@ import Foundation
 
 /// Real Antigravity usage.
 ///
-/// - Quota: asked of Antigravity CLI's own local server while `agy` runs
-///   (`AgyLocalServer`). Antigravity's limits are shared by groups of models,
-///   so each group's bucket becomes a scoped window. Between runs, the last
-///   limits stay for a day, marked stale.
-/// - Activity: none. `agy` stores conversations in an undocumented binary
+/// - Quota: asked of the Antigravity app's language server while the app runs
+///   (`AntigravityLocalServer`). Antigravity's limits are shared by groups of
+///   models, so each group's bucket becomes a scoped window. Between runs, the
+///   last limits stay for a day, marked stale.
+/// - Activity: none. Antigravity stores conversations in an undocumented binary
 ///   format, and UsageNow doesn't guess at token counts.
 ///
 /// No credentials are read or sent.
@@ -14,12 +14,12 @@ struct AntigravityProvider: UsageProvider {
     let id: ProviderID = .antigravity
 
     private let discover: @Sendable () -> AntigravityEnvironment
-    private let server: AgyLocalServer
+    private let server: AntigravityLocalServer
     private let now: @Sendable () -> Date
 
     init(
         discover: @escaping @Sendable () -> AntigravityEnvironment = { .discover() },
-        server: AgyLocalServer = AgyLocalServer(),
+        server: AntigravityLocalServer = AntigravityLocalServer(),
         now: @escaping @Sendable () -> Date = { .now }
     ) {
         self.discover = discover
@@ -40,7 +40,7 @@ struct AntigravityProvider: UsageProvider {
         return ProviderSnapshot(
             provider: .antigravity,
             status: .available,
-            planName: await server.tierName.map(AgyUserStatus.displayName),
+            planName: await server.tierName.map(AntigravityUserStatus.displayName),
             windows: windows,
             quotaUnavailableReason: Self.reason(reachability: reachability, hasCurrentReading: hasCurrentReading),
             updatedAt: date,
@@ -48,7 +48,7 @@ struct AntigravityProvider: UsageProvider {
         )
     }
 
-    private static func reason(reachability: AgyLocalServer.Reachability, hasCurrentReading: Bool) -> QuotaUnavailableReason? {
+    private static func reason(reachability: AntigravityLocalServer.Reachability, hasCurrentReading: Bool) -> QuotaUnavailableReason? {
         switch reachability {
         case .running: hasCurrentReading ? nil : .temporarilyUnavailable
         case .unusableAnswer: .temporarilyUnavailable

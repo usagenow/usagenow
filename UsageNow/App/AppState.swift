@@ -94,8 +94,8 @@ final class AppState {
             CodexProvider(),
             ClaudeCodeProvider(limitsClient: claudeLimits?.client, limitsEnabled: claudeLimits?.isEnabled ?? FeatureSwitch(false)),
             GeminiProvider(),
-            // Percentages and reset times only, so they survive a relaunch between agy runs.
-            AntigravityProvider(server: AgyLocalServer(lastKnownLimits: .userDefaults(defaults, key: "antigravityLastKnownLimits"))),
+            // Percentages and reset times only, so they survive a relaunch between app runs.
+            AntigravityProvider(server: AntigravityLocalServer(lastKnownLimits: .userDefaults(defaults, key: "antigravityLastKnownLimits"))),
         ]
     }
 

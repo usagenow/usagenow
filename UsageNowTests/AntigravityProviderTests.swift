@@ -12,11 +12,12 @@ struct AntigravityProviderTests {
         AntigravityEnvironment(home: URL(filePath: "/nonexistent/.gemini/antigravity-cli"), homeExists: installed, executable: nil)
     }
 
-    private func server(ports: [Int], transport: any HTTPTransport, store: QuotaCacheStore<[UsageWindow]>? = nil) -> AgyLocalServer {
-        AgyLocalServer(findPorts: { ports }, transport: transport, minimumInterval: 0, lastKnownLimits: store)
+    private func server(ports: [Int], transport: any HTTPTransport, store: QuotaCacheStore<[UsageWindow]>? = nil) -> AntigravityLocalServer {
+        let endpoints = ports.map { AntigravityEndpoint(port: $0, csrf: "test-csrf") }
+        return AntigravityLocalServer(discover: { endpoints }, transport: transport, minimumInterval: 0, lastKnownLimits: store)
     }
 
-    private func provider(_ server: AgyLocalServer, installed: Bool = true, at date: Date? = nil) -> AntigravityProvider {
+    private func provider(_ server: AntigravityLocalServer, installed: Bool = true, at date: Date? = nil) -> AntigravityProvider {
         let now = date ?? noon
         return AntigravityProvider(discover: { environment(installed: installed) }, server: server, now: { now })
     }
@@ -33,7 +34,7 @@ struct AntigravityProviderTests {
         #expect(snapshot.status == .available)
         #expect(snapshot.windows.isEmpty)
         #expect(snapshot.quotaUnavailableReason == .toolNotRunning)
-        #expect(QuotaUnavailableReason.toolNotRunning.message(for: .antigravity) == "Open Antigravity CLI to update usage limits.")
+        #expect(QuotaUnavailableReason.toolNotRunning.message(for: .antigravity) == "Open the Antigravity app to update usage limits.")
     }
 
     @Test func runningAgyGivesScopedWindowsAndTier() async throws {
@@ -53,6 +54,7 @@ struct AntigravityProviderTests {
         #expect(summary.url?.absoluteString == "https://127.0.0.1:52431/exa.language_server_pb.LanguageServerService/RetrieveUserQuotaSummary")
         #expect(summary.httpMethod == "POST")
         #expect(summary.value(forHTTPHeaderField: "Authorization") == nil, "No credentials are sent")
+        #expect(summary.value(forHTTPHeaderField: "x-codeium-csrf-token") == "test-csrf")
         #expect(summary.value(forHTTPHeaderField: "Connect-Protocol-Version") == "1")
         #expect(summary.httpBody == Data("{}".utf8))
     }
@@ -86,8 +88,26 @@ struct AntigravityProviderTests {
 
     @Test func lsofOutputYieldsOnlyLoopbackPorts() {
         let output = "p4242\nn127.0.0.1:52431\nn[::1]:52432\nn*:8080\nn192.168.1.10:9000\nn127.0.0.1:52431\nsomething else\n"
-        #expect(AgyProcessPorts.ports(fromLsofOutput: output) == [52431, 52432])
-        #expect(AgyProcessPorts.ports(fromLsofOutput: "") == [])
+        #expect(AntigravityProcessScan.ports(fromLsofOutput: output) == [52431, 52432])
+        #expect(AntigravityProcessScan.ports(fromLsofOutput: "") == [])
+    }
+
+    @Test func processScanFindsOnlyAntigravityLanguageServers() {
+        let ps = """
+        4242 /Applications/Antigravity.app/Contents/language_server --ide_name=antigravity --csrf_token=abc123 --extension_server_port=52431
+        4243 /Applications/Windsurf.app/Contents/language_server --ide_name=windsurf --csrf_token=zzz
+        4244 /usr/bin/agy
+        4245 /opt/other/language_server --app_data_dir=/Users/x/.other
+        """
+        let found = AntigravityProcessScan.candidates(psOutput: ps)
+        #expect(found.map(\.pid) == [4242])
+        #expect(AntigravityProcessScan.value(of: "--csrf_token", in: found[0].command) == "abc123")
+        #expect(AntigravityProcessScan.value(of: "--extension_server_port", in: found[0].command) == "52431")
+    }
+
+    @Test func pathMarkerAlsoIdentifiesAntigravity() {
+        let ps = "5000 /Users/x/.antigravity-ide/bin/language_server --csrf_token=tok --extension_server_port=61000"
+        #expect(AntigravityProcessScan.candidates(psOutput: ps).map(\.pid) == [5000])
     }
 
     @Test func loopbackTransportRefusesOtherHosts() async {
@@ -98,10 +118,10 @@ struct AntigravityProviderTests {
     }
 
     @Test func tierNameIsShortened() {
-        #expect(AgyUserStatus.tierName(from: Data(#"{"userStatus":{"userTier":{"name":"Antigravity Starter","id":"x"}}}"#.utf8)) == "Antigravity Starter")
-        #expect(AgyUserStatus.displayName("Antigravity Starter") == "Starter")
-        #expect(AgyUserStatus.displayName("Google AI Ultra") == "Google AI Ultra")
-        #expect(AgyUserStatus.tierName(from: Data("nope".utf8)) == nil)
+        #expect(AntigravityUserStatus.tierName(from: Data(#"{"userStatus":{"userTier":{"name":"Antigravity Starter","id":"x"}}}"#.utf8)) == "Antigravity Starter")
+        #expect(AntigravityUserStatus.displayName("Antigravity Starter") == "Starter")
+        #expect(AntigravityUserStatus.displayName("Google AI Ultra") == "Google AI Ultra")
+        #expect(AntigravityUserStatus.tierName(from: Data("nope".utf8)) == nil)
     }
 
     // MARK: Parsing
@@ -135,7 +155,7 @@ actor RoutedTransport: HTTPTransport {
     private let summaryBody: String
     private(set) var requests: [URLRequest] = []
 
-    init(failing: Set<String> = [], summaryBody: String = AgyFixture.summary) {
+    init(failing: Set<String> = [], summaryBody: String = AntigravityFixture.summary) {
         self.failing = failing
         self.summaryBody = summaryBody
     }
@@ -145,12 +165,12 @@ actor RoutedTransport: HTTPTransport {
         let url = request.url!
         let origin = "\(url.scheme!)://\(url.host()!):\(url.port!)"
         if failing.contains(origin) { throw URLError(.cannotConnectToHost) }
-        let body = url.lastPathComponent == "GetUserStatus" ? AgyFixture.userStatus : summaryBody
+        let body = url.lastPathComponent == "GetUserStatus" ? AntigravityFixture.userStatus : summaryBody
         return (Data(body.utf8), HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!)
     }
 }
 
-enum AgyFixture {
+enum AntigravityFixture {
     static let summary = #"""
     {"response": {"groups": [
       {"displayName": "Gemini Models", "buckets": [

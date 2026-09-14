@@ -22,7 +22,7 @@ UsageNow reads real Codex, Claude Code, Gemini CLI, and Antigravity data from yo
 
 | | Codex | Claude Code | Gemini CLI | Antigravity |
 |---|---|---|---|---|
-| Usage limits and reset times | ✓ from the official `codex app-server` | ✓ experimental, opt-in (see below), plus limits Claude Code reports hitting | — not exposed locally | ✓ from Antigravity CLI while it runs |
+| Usage limits and reset times | ✓ from the official `codex app-server` | ✓ experimental, opt-in (see below), plus limits Claude Code reports hitting | — not exposed locally | ✓ from the Antigravity app while it runs |
 | Plan | ✓, including Team, Business, and Enterprise | ✓ including a Team seat | — | ✓ |
 | Tokens and requests today | ✓ from local session files | ✓ from local session files | ✓ from local session recordings | — |
 | Activity by model | ✓ | ✓ | ✓ | — |
@@ -96,13 +96,11 @@ Google no longer lets personal Google accounts sign in to Gemini CLI; it still w
 
 ### Antigravity
 
-Antigravity CLI (`agy`) keeps its limits in memory and shows them in its `/usage` panel. While `agy` runs, it serves its language server on a loopback port; UsageNow finds that port with `lsof` — socket metadata only — and asks `agy` itself for the same quota summary (`RetrieveUserQuotaSummary` on `127.0.0.1`). Antigravity’s limits are shared by groups of models, so each appears as its own window, such as **5-hour · Gemini** or **Weekly · Claude and GPT**.
+The Antigravity app keeps its limits in memory and shows them in its `/usage` panel. While the app runs, it serves a language server on a loopback port and prints that port and a CSRF token in its own command line. UsageNow reads just those two arguments (via `ps`), finds the socket with `lsof`, and asks the server for the same quota summary (`RetrieveUserQuotaSummary` on `127.0.0.1`). Antigravity’s limits are shared by groups of models, so each appears as its own window, such as **5-hour · Gemini** or **Weekly · Claude and GPT**.
 
-**No credentials are involved.** UsageNow never reads the Google sign-in `agy` saved, never reads other processes’ command lines or memory, and sends nothing beyond `127.0.0.1`. The loopback server uses a self-signed certificate, which UsageNow accepts for loopback addresses only.
+**No credentials are involved.** UsageNow never reads the Google sign-in Antigravity saved, never reads any other process’s arguments or memory, and sends nothing beyond `127.0.0.1`. The loopback server uses a self-signed certificate, which UsageNow accepts for loopback addresses only.
 
-When `agy` isn’t running there’s nothing to ask: the last limits stay for a day, marked stale, with a reminder to open Antigravity CLI. There’s no token or model activity for Antigravity, because `agy` stores conversations in an undocumented binary format and UsageNow doesn’t guess at numbers.
-
-Google’s Cloud Code quota service itself answers only Antigravity’s own clients, and UsageNow won’t impersonate one, so it doesn’t call Google directly.
+When the Antigravity app isn’t running there’s nothing to ask: the last limits stay for a day, marked stale, with a reminder to open it. The Antigravity CLI (`agy`) runs a server too, but keeps its CSRF token in memory only, so UsageNow can’t read it — the app must be running. There’s no token or model activity for Antigravity, because it stores conversations in an undocumented binary format and UsageNow doesn’t guess at numbers. Google’s Cloud Code quota service itself answers only Antigravity’s own clients, and UsageNow won’t impersonate one, so it doesn’t call Google directly.
 
 ### Roadmap providers
 
@@ -117,7 +115,7 @@ UsageNow ships a WidgetKit extension with small and medium sizes.
 - With more providers than fit, the ones closest to a limit are shown. Model details stay in the app.
 - Disabled providers never appear, quota that isn’t available reads “Usage limits unavailable”, and old data stays visible with an “Updated … ago” note. No placeholder or fabricated values.
 
-**The widget never touches providers.** It can’t read `~/.codex`, `~/.claude`, or `~/.gemini`, talk to `agy`, open the keychain, run `codex app-server`, or call Anthropic. The main app publishes a sanitized snapshot to a shared App Group container, and the widget only renders that. The provider and credential code isn’t compiled into the widget target at all.
+**The widget never touches providers.** It can’t read `~/.codex`, `~/.claude`, or `~/.gemini`, reach Antigravity, open the keychain, run `codex app-server`, or call Anthropic. The main app publishes a sanitized snapshot to a shared App Group container, and the widget only renders that. The provider and credential code isn’t compiled into the widget target at all.
 
 ### Signing and the widget
 

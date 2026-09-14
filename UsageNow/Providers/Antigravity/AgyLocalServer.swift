@@ -1,43 +1,49 @@
 import Foundation
 
-/// Reads Antigravity limits from Antigravity CLI itself, while it runs.
+/// One reachable Antigravity language server: a loopback port and the CSRF
+/// token that authorizes calls to it.
+struct AntigravityEndpoint: Sendable, Equatable {
+    var port: Int
+    var csrf: String
+}
+
+/// Reads Antigravity limits from the Antigravity app's language server.
 ///
-/// `agy` serves its language server on a loopback port. Asked for
-/// `RetrieveUserQuotaSummary`, it answers with the same limits its `/usage`
-/// panel shows, fetched by `agy` with its own sign-in. UsageNow never reads
-/// that sign-in, sends no credentials of any kind, and talks only to
-/// `127.0.0.1`. When `agy` isn't running there's nothing to ask; the last
-/// limits stay for a day, marked stale.
-actor AgyLocalServer {
-    /// Protocol service path of the language server.
+/// The Antigravity app runs a `language_server` on a loopback port and prints
+/// that port and a CSRF token in its own command line. UsageNow reads just
+/// those two arguments (via `ps`), then asks the server for the same quota
+/// summary the app's `/usage` panel shows. It reads no credentials, no other
+/// arguments, and no process memory, and talks only to `127.0.0.1`.
+///
+/// The Antigravity CLI (`agy`) runs a server too, but it keeps its CSRF token
+/// in memory only, so UsageNow can't authenticate to it — the app must be
+/// running. When nothing answers, the last limits stay for a day, marked stale.
+actor AntigravityLocalServer {
     static let service = "exa.language_server_pb.LanguageServerService"
 
     enum Reachability: Sendable, Equatable {
-        /// Not checked yet.
         case unknown
-        /// No `agy` process is listening.
+        /// No Antigravity language server is answering.
         case notRunning
-        /// `agy` answered.
         case running
-        /// `agy` is listening, but its answer couldn't be used.
+        /// A server answered, but its reply couldn't be used.
         case unusableAnswer
     }
 
     private(set) var reachability = Reachability.unknown
-    /// The tier `agy` reports, e.g. "Antigravity Starter".
     private(set) var tierName: String?
 
-    private let findPorts: @Sendable () async -> [Int]
+    private let discover: @Sendable () async -> [AntigravityEndpoint]
     private let transport: any HTTPTransport
     private let cache: QuotaCache<[UsageWindow]>
 
     init(
-        findPorts: @escaping @Sendable () async -> [Int] = { await AgyProcessPorts.listening() },
+        discover: @escaping @Sendable () async -> [AntigravityEndpoint] = { AntigravityProcessScan.endpoints() },
         transport: any HTTPTransport = LoopbackTransport(),
         minimumInterval: TimeInterval = 60,
         lastKnownLimits: QuotaCacheStore<[UsageWindow]>? = nil
     ) {
-        self.findPorts = findPorts
+        self.discover = discover
         self.transport = transport
         self.cache = QuotaCache(minimumInterval: minimumInterval, retention: 24 * 60 * 60, store: lastKnownLimits)
     }
@@ -49,87 +55,108 @@ actor AgyLocalServer {
     }
 
     private func fetch() async -> QuotaFetchResult<[UsageWindow]> {
-        let ports = await findPorts()
-        guard !ports.isEmpty else {
+        let endpoints = await discover()
+        guard !endpoints.isEmpty else {
             reachability = .notRunning
             return .unavailable
         }
-        // `agy` may listen on more than one port; the language server is the one that answers.
         var answered = false
-        for port in ports {
+        for endpoint in endpoints {
             for scheme in ["https", "http"] {
-                guard let (status, data) = await call("RetrieveUserQuotaSummary", scheme: scheme, port: port) else { continue }
+                guard let (status, data) = await call("RetrieveUserQuotaSummary", endpoint: endpoint, scheme: scheme) else { continue }
                 answered = true
                 guard status == 200 else {
-                    Log.provider.notice("Antigravity usage limits: agy answered HTTP \(status, privacy: .public)")
+                    Log.provider.notice("Antigravity usage limits: language server answered HTTP \(status, privacy: .public)")
                     continue
                 }
                 guard let windows = AntigravityQuotaParser.windows(from: data) else {
-                    Log.provider.notice("Antigravity usage limits: agy's summary had an unrecognized shape")
+                    Log.provider.notice("Antigravity usage limits: the summary had an unrecognized shape")
                     continue
                 }
                 reachability = .running
-                if let (statusCode, body) = await call("GetUserStatus", scheme: scheme, port: port), statusCode == 200 {
-                    tierName = AgyUserStatus.tierName(from: body)
+                if let (statusCode, body) = await call("GetUserStatus", endpoint: endpoint, scheme: scheme), statusCode == 200 {
+                    tierName = AntigravityUserStatus.tierName(from: body)
                 }
                 return .value(windows)
             }
         }
-        // Running but not answering usefully is a different problem from not running.
         reachability = answered ? .unusableAnswer : .notRunning
         return .unavailable
     }
 
-    private func call(_ method: String, scheme: String, port: Int) async -> (Int, Data)? {
-        guard let url = URL(string: "\(scheme)://127.0.0.1:\(port)/\(Self.service)/\(method)") else { return nil }
+    private func call(_ method: String, endpoint: AntigravityEndpoint, scheme: String) async -> (Int, Data)? {
+        guard let url = URL(string: "\(scheme)://127.0.0.1:\(endpoint.port)/\(Self.service)/\(method)") else { return nil }
         var request = URLRequest(url: url, timeoutInterval: 3)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("1", forHTTPHeaderField: "Connect-Protocol-Version")
+        // Authorizes this call to the local server; never logged.
+        request.setValue(endpoint.csrf, forHTTPHeaderField: "x-codeium-csrf-token")
         request.httpBody = Data("{}".utf8)
         guard let (data, response) = try? await transport.send(request) else { return nil }
         return (response.statusCode, data)
     }
 }
 
-/// The ports a running `agy` listens on, from `lsof`.
+/// Finds the Antigravity app's language server: its CSRF token and loopback
+/// port, from its command line and listening sockets.
 ///
-/// Only socket metadata is read, and only loopback addresses count: the
-/// command lines, environment, and memory of other processes are never read.
-enum AgyProcessPorts {
-    static func listening() async -> [Int] {
-        await withCheckedContinuation { continuation in
-            DispatchQueue.global(qos: .utility).async {
-                continuation.resume(returning: run())
+/// Reads only two of its arguments — the CSRF token and the port — and only
+/// from `language_server` processes that identify themselves as Antigravity.
+/// No other process's arguments are used, and no memory is read.
+enum AntigravityProcessScan {
+    private static let csrfFlag = "--csrf_token"
+    private static let portFlag = "--extension_server_port"
+    private static let markers = ["antigravity", "antigravity-ide"]
+
+    static func endpoints() -> [AntigravityEndpoint] {
+        var results: [AntigravityEndpoint] = []
+        for candidate in candidates(psOutput: runPS()) {
+            guard let csrf = value(of: csrfFlag, in: candidate.command), !csrf.isEmpty else { continue }
+            var ports = listeningPorts(pid: candidate.pid)
+            if let declared = value(of: portFlag, in: candidate.command).flatMap({ Int($0) }), !ports.contains(declared) {
+                ports.insert(declared, at: 0)
+            }
+            for port in ports where !results.contains(where: { $0.port == port }) {
+                results.append(AntigravityEndpoint(port: port, csrf: csrf))
             }
         }
+        return results
     }
 
-    private static func run() -> [Int] {
-        guard let lsof = ["/usr/sbin/lsof", "/usr/bin/lsof"].first(where: FileManager.default.isExecutableFile) else { return [] }
-        let process = Process()
-        process.executableURL = URL(filePath: lsof)
-        // -c agy: processes named agy; -a: and; listening TCP; -Fn: names only.
-        process.arguments = ["-nP", "-a", "-c", "agy", "-iTCP", "-sTCP:LISTEN", "-Fn"]
-        let output = Pipe()
-        process.standardOutput = output
-        process.standardError = FileHandle.nullDevice
-        process.standardInput = FileHandle.nullDevice
-        do {
-            try process.run()
-        } catch {
-            return []
+    /// `language_server` processes that identify as Antigravity, PID and command.
+    static func candidates(psOutput: String) -> [(pid: Int32, command: String)] {
+        var found: [(pid: Int32, command: String)] = []
+        for rawLine in psOutput.split(whereSeparator: \.isNewline) {
+            let line = rawLine.trimmingCharacters(in: .whitespaces)
+            guard let space = line.firstIndex(where: { $0 == " " || $0 == "\t" }),
+                  let pid = Int32(line[..<space]) else { continue }
+            let command = String(line[line.index(after: space)...])
+            let lower = command.lowercased()
+            guard lower.contains("language_server") else { continue }
+            let ideName = value(of: "--ide_name", in: command)?.lowercased()
+                ?? value(of: "--override_ide_name", in: command)?.lowercased()
+                ?? value(of: "--app_data_dir", in: command)?.lowercased()
+            // Prefer the explicit ide name; otherwise fall back to the install path.
+            let matches = ideName.map { name in markers.contains { name == $0 } }
+                ?? lower.contains("antigravity")
+            if matches { found.append((pid, command)) }
         }
-        let running = TerminableProcess(process)
-        let watchdog = DispatchWorkItem { running.terminate() }
-        DispatchQueue.global().asyncAfter(deadline: .now() + 5, execute: watchdog)
-        let data = output.fileHandleForReading.readDataToEndOfFile()
-        process.waitUntilExit()
-        watchdog.cancel()
-        return ports(fromLsofOutput: String(decoding: data, as: UTF8.self))
+        return found
     }
 
-    /// Parses `lsof -Fn` lines such as `n127.0.0.1:52431` or `n[::1]:52431`.
+    /// The value of `flag` (as `flag value` or `flag=value`) in a command line.
+    static func value(of flag: String, in command: String) -> String? {
+        let parts = command.split(separator: " ", omittingEmptySubsequences: true).map(String.init)
+        let prefix = flag + "="
+        for (index, part) in parts.enumerated() {
+            if part == flag, index + 1 < parts.count { return parts[index + 1] }
+            if part.hasPrefix(prefix) { return String(part.dropFirst(prefix.count)) }
+        }
+        return nil
+    }
+
+    /// Loopback TCP ports a process listens on, from `lsof -Fn`.
     static func ports(fromLsofOutput output: String) -> [Int] {
         var ports: [Int] = []
         for line in output.split(whereSeparator: \.isNewline) where line.hasPrefix("n") {
@@ -142,9 +169,43 @@ enum AgyProcessPorts {
         }
         return ports
     }
+
+    private static func runPS() -> String {
+        Subprocess.output(executable: "/bin/ps", arguments: ["-ax", "-o", "pid=,command="])
+    }
+
+    private static func listeningPorts(pid: Int32) -> [Int] {
+        guard let lsof = ["/usr/sbin/lsof", "/usr/bin/lsof"].first(where: FileManager.default.isExecutableFile) else { return [] }
+        return ports(fromLsofOutput: Subprocess.output(executable: lsof, arguments: ["-nP", "-a", "-p", String(pid), "-iTCP", "-sTCP:LISTEN", "-Fn"]))
+    }
 }
 
-enum AgyUserStatus {
+/// Runs a read-only tool and returns its stdout, with a watchdog.
+enum Subprocess {
+    static func output(executable: String, arguments: [String], timeout: TimeInterval = 5) -> String {
+        let process = Process()
+        process.executableURL = URL(filePath: executable)
+        process.arguments = arguments
+        let pipe = Pipe()
+        process.standardOutput = pipe
+        process.standardError = FileHandle.nullDevice
+        process.standardInput = FileHandle.nullDevice
+        do {
+            try process.run()
+        } catch {
+            return ""
+        }
+        let running = TerminableProcess(process)
+        let watchdog = DispatchWorkItem { running.terminate() }
+        DispatchQueue.global().asyncAfter(deadline: .now() + timeout, execute: watchdog)
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        process.waitUntilExit()
+        watchdog.cancel()
+        return String(decoding: data, as: UTF8.self)
+    }
+}
+
+enum AntigravityUserStatus {
     /// `userStatus.userTier.name`, when present.
     static func tierName(from data: Data) -> String? {
         guard let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return nil }

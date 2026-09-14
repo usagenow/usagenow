@@ -80,7 +80,7 @@ enum ProviderCatalog {
         ProviderDefinition(
             id: .antigravity,
             displayName: "Antigravity",
-            summary: "Track Antigravity limits while Antigravity CLI runs.",
+            summary: "Track Antigravity limits while the Antigravity app runs.",
             availability: .available,
             logoAssetName: "AntigravityLogo",
             symbolName: "circle.hexagonpath"
