@@ -124,7 +124,7 @@ struct ProviderOrderTests {
 struct ProviderCatalogTests {
     @Test func availableAndComingSoonProviders() {
         #expect(ProviderCatalog.availableIDs == [.codex, .claudeCode, .gemini, .antigravity])
-        #expect(ProviderCatalog.comingSoon.map(\.id) == [.copilot, .deepseek, .qwen])
+        #expect(ProviderCatalog.comingSoon.map(\.id) == [.cursor, .copilot, .deepseek, .qwen])
         #expect(ProviderID.copilot.displayName == "GitHub Copilot")
     }
 

@@ -10,6 +10,7 @@ enum ProviderID: String, CaseIterable, Codable, Sendable, Identifiable, Comparab
     case claudeCode
     case gemini
     case antigravity
+    case cursor
     case copilot
     case deepseek
     case qwen
@@ -84,6 +85,14 @@ enum ProviderCatalog {
             availability: .available,
             logoAssetName: "AntigravityLogo",
             symbolName: "circle.hexagonpath"
+        ),
+        ProviderDefinition(
+            id: .cursor,
+            displayName: "Cursor",
+            summary: nil,
+            availability: .comingSoon,
+            logoAssetName: "CursorLogo",
+            symbolName: "cursorarrow"
         ),
         ProviderDefinition(
             id: .copilot,
