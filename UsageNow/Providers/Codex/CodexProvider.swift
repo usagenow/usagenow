@@ -70,7 +70,12 @@ struct CodexProvider: UsageProvider {
             planName: CodexPlan.displayName(for: limits?.planType ?? server?.value.accountPlanType),
             recentModel: activity.activity.latestModel,
             windows: limits?.usageWindows(at: date) ?? [],
-            activity: LocalActivity(tokensToday: activity.activity.tokens, requestsToday: activity.activity.requests),
+            activity: LocalActivity(
+                tokensToday: activity.activity.tokens,
+                requestsToday: activity.activity.requests,
+                estimatedCostToday: activity.activity.estimatedCost,
+                isCostComplete: activity.activity.isCostComplete
+            ),
             modelActivity: activity.activity.models,
             updatedAt: date,
             limitsUpdatedAt: limits?.capturedAt

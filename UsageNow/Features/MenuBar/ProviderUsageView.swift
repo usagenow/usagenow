@@ -156,6 +156,18 @@ private struct ProviderActivityView: View {
                         unit: requests == 1 ? "request" : "requests"
                     )
                 }
+                if let cost = activity.estimatedCostToday {
+                    // "≈" and "at API prices" together say this is what the
+                    // tokens would have cost, not what anyone was charged.
+                    MetricLabel(
+                        value: "≈ " + UsageFormatter.money(cost),
+                        unit: activity.isCostComplete ? "at API prices" : "at API prices, partial",
+                        spokenValue: String(localized: "about \(UsageFormatter.money(cost))")
+                    )
+                    .help(activity.isCostComplete
+                          ? Text("What today's tokens would cost at published API prices. Your subscription doesn't charge per token.")
+                          : Text("What today's tokens would cost at published API prices, for the models UsageNow has a price for. Your subscription doesn't charge per token."))
+                }
                 Spacer(minLength: 0)
             }
             .padding(.top, 2)

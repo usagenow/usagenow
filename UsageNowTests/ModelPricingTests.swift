@@ -86,4 +86,64 @@ struct ModelPricingTests {
         #expect(opus.input == 5)
         #expect(opus.output == 25)
     }
+
+    // MARK: Summaries
+
+    private func record(_ key: String, model: String, _ breakdown: TokenBreakdown?) -> ActivityRecord {
+        ActivityRecord(
+            key: key,
+            timestamp: Date(timeIntervalSince1970: 1_800_000_000),
+            tokens: breakdown?.total ?? 1_000,
+            model: model,
+            breakdown: breakdown
+        )
+    }
+
+    @Test func summaryTotalsTheCostOfEveryPricedModel() {
+        let summary = ActivitySummary(
+            records: [
+                record("a", model: "claude-opus-5", TokenBreakdown(input: 50_000, output: 15_000)),
+                record("b", model: "gpt-5-codex", TokenBreakdown(input: 1_000_000, output: 0)),
+            ],
+            since: .distantPast,
+            prices: table
+        )
+        #expect(summary.estimatedCost == Decimal(string: "1.875"))
+        #expect(summary.isCostComplete)
+        #expect(summary.models.first(where: { $0.modelID == "gpt-5-codex" })?.estimatedCost == Decimal(string: "1.25"))
+    }
+
+    /// An unpriced model must not quietly vanish from the total: the estimate
+    /// is still shown, but marked as covering only part of the activity.
+    @Test func summaryFlagsActivityItCouldNotPrice() {
+        let summary = ActivitySummary(
+            records: [
+                record("a", model: "claude-opus-5", TokenBreakdown(input: 50_000, output: 15_000)),
+                record("b", model: "some-new-model", TokenBreakdown(input: 900_000, output: 100_000)),
+            ],
+            since: .distantPast,
+            prices: table
+        )
+        #expect(summary.estimatedCost == Decimal(string: "0.625"))
+        #expect(!summary.isCostComplete)
+        #expect(summary.models.first(where: { $0.modelID == "some-new-model" })?.estimatedCost == nil)
+    }
+
+    /// Codex's older sessions record a total without a split; those tokens
+    /// can't be priced, because a cache read and fresh input differ tenfold.
+    @Test func summaryCannotPriceRecordsWithoutASplit() {
+        let summary = ActivitySummary(
+            records: [record("a", model: "claude-opus-5", nil)],
+            since: .distantPast,
+            prices: table
+        )
+        #expect(summary.estimatedCost == nil)
+        #expect(!summary.isCostComplete)
+    }
+
+    @Test func noActivityHasNoEstimateAtAll() {
+        let summary = ActivitySummary(records: [], since: .distantPast, prices: table)
+        #expect(summary.estimatedCost == nil)
+        #expect(!summary.isCostComplete)
+    }
 }

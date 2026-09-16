@@ -42,7 +42,12 @@ struct GeminiProvider: UsageProvider {
             provider: .gemini,
             status: .available,
             recentModel: result.activity.latestModel,
-            activity: LocalActivity(tokensToday: result.activity.tokens, requestsToday: result.activity.requests),
+            activity: LocalActivity(
+                tokensToday: result.activity.tokens,
+                requestsToday: result.activity.requests,
+                estimatedCostToday: result.activity.estimatedCost,
+                isCostComplete: result.activity.isCostComplete
+            ),
             modelActivity: result.activity.models,
             updatedAt: date
         )

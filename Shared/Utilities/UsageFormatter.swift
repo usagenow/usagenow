@@ -21,6 +21,21 @@ enum UsageFormatter {
         max(0, value).formatted(.number.locale(locale))
     }
 
+    /// An estimated amount in US dollars, the currency providers publish
+    /// prices in: 4.2 → "$4.20", 0.038 → "$0.004", 0 → "$0.00".
+    ///
+    /// Small amounts keep three decimals rather than rounding to "$0.00",
+    /// which would read as "nothing" when it isn't.
+    static func money(_ value: Decimal, locale: Locale = AppLocale.current) -> String {
+        let amount = max(0, value)
+        let decimals = amount > 0 && amount < Decimal(string: "0.01")! ? 3 : 2
+        return amount.formatted(
+            .currency(code: "USD")
+                .precision(.fractionLength(decimals))
+                .locale(locale)
+        )
+    }
+
     /// Percent used: "42%", using the display rounding rules of `UsagePercentage`.
     static func percent(_ usage: UsagePercentage, locale: Locale = AppLocale.current) -> String {
         percentString(usage.displayValue, locale: locale)

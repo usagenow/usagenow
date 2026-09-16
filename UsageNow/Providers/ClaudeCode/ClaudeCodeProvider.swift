@@ -73,7 +73,12 @@ struct ClaudeCodeProvider: UsageProvider {
             // Say how to refresh whenever something is missing — including a window
             // that reset since the last reading, even if another is still current.
             quotaUnavailableReason: windows.allSatisfy({ $0.usage != nil }) && !windows.isEmpty ? nil : availability.unavailableReason,
-            activity: LocalActivity(tokensToday: activity.activity.tokens, requestsToday: activity.activity.requests),
+            activity: LocalActivity(
+                tokensToday: activity.activity.tokens,
+                requestsToday: activity.activity.requests,
+                estimatedCostToday: activity.activity.estimatedCost,
+                isCostComplete: activity.activity.isCostComplete
+            ),
             modelActivity: activity.activity.models,
             updatedAt: date,
             limitsUpdatedAt: windows.isEmpty ? nil : limitsDate
