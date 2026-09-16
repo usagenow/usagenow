@@ -96,8 +96,7 @@ enum ClaudeSessionParser {
             timestamp: timestamp,
             tokens: usage.totalTokens,
             model: model,
-            inputTokens: usage.inputSideTokens,
-            outputTokens: usage.output_tokens
+            breakdown: usage.breakdown
         ))
     }
 }
@@ -154,6 +153,19 @@ private struct ClaudeSessionLine: Decodable {
         var inputSideTokens: Int64? {
             let parts = [input_tokens, cache_creation_input_tokens, cache_read_input_tokens].compactMap { $0 }
             return parts.isEmpty ? nil : parts.reduce(0, +)
+        }
+
+        /// The split Claude records, kept apart because each part is priced
+        /// differently: a cache read costs a tenth of fresh input, a cache
+        /// write a quarter more.
+        var breakdown: TokenBreakdown? {
+            guard inputSideTokens != nil || output_tokens != nil else { return nil }
+            return TokenBreakdown(
+                input: max(0, input_tokens ?? 0),
+                output: max(0, output_tokens ?? 0),
+                cacheWrite: max(0, cache_creation_input_tokens ?? 0),
+                cacheRead: max(0, cache_read_input_tokens ?? 0)
+            )
         }
     }
 

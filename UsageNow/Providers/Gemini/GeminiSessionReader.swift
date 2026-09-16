@@ -65,8 +65,7 @@ enum GeminiSessionParser {
             timestamp: timestamp,
             tokens: tokens.totalTokens,
             model: record.model,
-            inputTokens: tokens.input,
-            outputTokens: tokens.outputTokens
+            breakdown: tokens.breakdown
         )
     }
 }
@@ -90,6 +89,20 @@ private struct GeminiSessionLine: Decodable {
         var outputTokens: Int64? {
             let parts = [output, thoughts].compactMap { $0 }
             return parts.isEmpty ? nil : parts.reduce(0, +)
+        }
+
+        /// `cached` is a share of `input` rather than an addition to it, and
+        /// is billed far below fresh input, so it's kept apart. Tool tokens
+        /// are input the model was given.
+        var breakdown: TokenBreakdown? {
+            guard input != nil || output != nil else { return nil }
+            let cached = max(0, cached ?? 0)
+            let fresh = max(0, input ?? 0)
+            return TokenBreakdown(
+                input: max(0, fresh - cached) + max(0, tool ?? 0),
+                output: max(0, outputTokens ?? 0),
+                cacheRead: Swift.min(cached, fresh)
+            )
         }
     }
 

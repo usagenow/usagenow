@@ -15,6 +15,10 @@ struct ModelActivity: Sendable, Equatable, Identifiable {
     var totalTokens: Int64
     var requests: Int64
     var lastUsedAt: Date?
+    /// What this model's tokens would have cost at list prices, in USD.
+    /// `nil` when the model has no published price, or the tool recorded no
+    /// token split to price — a number is never guessed.
+    var estimatedCost: Decimal?
 
     var id: String { modelID }
 

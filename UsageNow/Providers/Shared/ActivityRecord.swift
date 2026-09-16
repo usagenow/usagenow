@@ -9,9 +9,18 @@ struct ActivityRecord: Sendable, Equatable {
     var timestamp: Date
     var tokens: Int64
     var model: String?
-    /// Input-side and output tokens, when the tool records the split.
-    var inputTokens: Int64? = nil
-    var outputTokens: Int64? = nil
+    /// Tokens split the way providers charge for them, when the tool records
+    /// the split. Needed for a cost estimate: cached tokens cost a fraction
+    /// of fresh ones, and output costs several times more.
+    var breakdown: TokenBreakdown? = nil
+
+    /// Everything billed as input: fresh tokens plus cache writes and reads.
+    var inputTokens: Int64? {
+        guard let breakdown else { return nil }
+        return breakdown.input + breakdown.cacheWrite + breakdown.cacheRead
+    }
+
+    var outputTokens: Int64? { breakdown?.output }
 }
 
 /// Local activity aggregated from session records.
@@ -23,17 +32,29 @@ struct ActivitySummary: Sendable, Equatable {
     /// Activity per model, most active first. Records without a model count
     /// toward the totals only.
     var models: [ModelActivity] = []
+    /// What this activity would have cost at list prices, in USD, summed over
+    /// the models UsageNow has a price for. `nil` when it has none of them.
+    var estimatedCost: Decimal?
+    /// False when some activity is missing from `estimatedCost`, because a
+    /// model has no published price or a tool recorded no token split.
+    var isCostComplete = true
 
     /// Sums records at or after `since`, counting each key once.
-    init(records: some Sequence<ActivityRecord>, since: Date) {
+    init(records: some Sequence<ActivityRecord>, since: Date, prices: ModelPriceTable = .bundled) {
         var seen = Set<String>()
         var byModel: [String: ModelActivity] = [:]
+        var breakdowns: [String: TokenBreakdown] = [:]
+        var unpricedTokens: Int64 = 0
+
         for record in records where record.timestamp >= since {
             guard seen.insert(record.key).inserted else { continue }
             let tokens = max(0, record.tokens)
             self.tokens += tokens
             requests += 1
-            guard let model = record.model?.trimmingCharacters(in: .whitespacesAndNewlines), !model.isEmpty else { continue }
+            guard let model = record.model?.trimmingCharacters(in: .whitespacesAndNewlines), !model.isEmpty else {
+                unpricedTokens += tokens
+                continue
+            }
 
             if record.timestamp >= (latestModelAt ?? .distantPast) {
                 latestModel = model
@@ -46,7 +67,28 @@ struct ActivitySummary: Sendable, Equatable {
             entry.outputTokens = Self.adding(record.outputTokens, to: entry.outputTokens)
             entry.lastUsedAt = Swift.max(entry.lastUsedAt ?? .distantPast, record.timestamp)
             byModel[model] = entry
+
+            if let breakdown = record.breakdown {
+                breakdowns[model] = (breakdowns[model] ?? TokenBreakdown()) + breakdown
+            } else {
+                unpricedTokens += tokens
+            }
         }
+
+        var total: Decimal?
+        for (model, var entry) in byModel {
+            guard let breakdown = breakdowns[model] else { continue }
+            entry.estimatedCost = prices.cost(of: breakdown, model: model)
+            byModel[model] = entry
+            if let cost = entry.estimatedCost {
+                total = (total ?? 0) + cost
+            } else {
+                unpricedTokens += breakdown.total
+            }
+        }
+
+        estimatedCost = total
+        isCostComplete = total != nil && unpricedTokens == 0
         models = Array(byModel.values).sortedByActivity()
     }
 

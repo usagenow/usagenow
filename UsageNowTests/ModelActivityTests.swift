@@ -16,7 +16,16 @@ struct ModelActivityTests {
         output: Int64? = nil,
         at offset: TimeInterval = -60
     ) -> ActivityRecord {
-        ActivityRecord(key: key, timestamp: noon.addingTimeInterval(offset), tokens: tokens, model: model, inputTokens: input, outputTokens: output)
+        let breakdown = (input == nil && output == nil)
+            ? nil
+            : TokenBreakdown(input: input ?? 0, output: output ?? 0)
+        return ActivityRecord(
+            key: key,
+            timestamp: noon.addingTimeInterval(offset),
+            tokens: tokens,
+            model: model,
+            breakdown: breakdown
+        )
     }
 
     // MARK: Aggregation

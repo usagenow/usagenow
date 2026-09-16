@@ -114,8 +114,7 @@ enum CodexSessionParser {
                 timestamp: timestamp,
                 tokens: total,
                 model: payload?.model ?? state.latestModel?.model,
-                inputTokens: usage.input_tokens,
-                outputTokens: usage.output_tokens
+                breakdown: usage.breakdown
             ))
 
         case "turn_context":
@@ -163,11 +162,25 @@ private struct CodexSessionLine: Decodable {
 
     struct TokenUsage: Decodable {
         var input_tokens: Int64?
+        /// Part of `input_tokens`, not an addition to it: the share served
+        /// from the prompt cache, which OpenAI bills at a tenth of the rate.
+        var cached_input_tokens: Int64?
         var output_tokens: Int64?
         var total_tokens: Int64?
 
         var totalTokens: Int64? {
             total_tokens ?? input_tokens.map { $0 + (output_tokens ?? 0) }
+        }
+
+        var breakdown: TokenBreakdown? {
+            guard input_tokens != nil || output_tokens != nil else { return nil }
+            let cached = max(0, cached_input_tokens ?? 0)
+            let input = max(0, input_tokens ?? 0)
+            return TokenBreakdown(
+                input: max(0, input - cached),
+                output: max(0, output_tokens ?? 0),
+                cacheRead: Swift.min(cached, input)
+            )
         }
     }
 
