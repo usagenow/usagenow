@@ -1,10 +1,15 @@
-# Homebrew cask for UsageNow.
+# Homebrew cask for UsageNow, kept ready for homebrew/homebrew-cask.
 #
-# Fill in the checksum only from the final notarized disk image:
+# Not submitted yet: Homebrew accepts a new cask only when the upstream
+# repository is at least 30 days old and has 30 forks, 30 watchers, or 75 stars.
+# Once usagenow/usagenow clears that, submit this file as Casks/u/usagenow.rb.
 #
-#     shasum -a 256 build/release/UsageNow-0.3.0.dmg
+# On every release, update the version and the checksum of the notarized image:
 #
-# Then submit this file to homebrew/homebrew-cask as Casks/u/usagenow.rb.
+#     shasum -a 256 build/release/UsageNow-<version>.dmg
+#
+# Verified on 2026-09-16 against the 0.3.0 release: brew style, brew audit
+# --cask --online --strict, and an install/uninstall cycle all passed.
 
 cask "usagenow" do
   version "0.3.0"
