@@ -6,13 +6,13 @@ All notable changes to UsageNow. This project follows [Semantic Versioning](http
 
 ### Added
 
-- **Gemini CLI.** The third real provider, with the same enable, refresh, menu bar, widget, and telemetry behavior as Codex and Claude Code. Activity and models come from Gemini CLI's local session recordings. Gemini CLI records no usage limits locally, so none are shown. Credential files are never opened.
+- **Gemini CLI.** A new provider, with the same enable, refresh, menu bar, widget, and telemetry behavior as Codex and Claude Code. Activity and models come from Gemini CLI's local session recordings. Gemini CLI records no usage limits locally, so none are shown. Credential files are never opened.
+- **Antigravity.** A new provider with usage limits, and the same enable, refresh, menu bar, and widget behavior. Limits from the Antigravity app itself: while it runs, UsageNow reads the loopback port and CSRF token the app prints in its command line, then asks its language server for the quota summary its `/usage` panel shows — 5-hour and weekly windows per model group, plus the plan. No credentials are read or sent, and nothing leaves `127.0.0.1`. Between runs the last limits stay for a day, marked stale. (The Antigravity CLI's own server can't be read, so the app must be running.)
 - **Activity by model.** A compact **Models today** list in each provider's section shows tokens and requests per model, most active first. It works for any model identifier, including ones released later, and never shows a percentage: account limits aren't split by model. Available for Claude Code, Codex, and Gemini CLI.
 - **Team plans.** Claude Team and Enterprise show the member's seat, such as **Team · Premium**. Codex reads the plan from `account/read`, so Team, Business, and Enterprise accounts show their plan even when rate limits aren't returned, and newer billing variants map to their plan name. Not yet verified against live Team accounts.
 - **Gemini CLI usage** and **Antigravity usage** menu bar modes. Gemini CLI's shows the icon while it reports no limits.
-- **Antigravity.** Limits from the Antigravity app itself: while it runs, UsageNow reads the loopback port and CSRF token the app prints in its command line, then asks its language server for the quota summary its `/usage` panel shows — 5-hour and weekly windows per model group, plus the plan. No credentials are read or sent, and nothing leaves `127.0.0.1`. Between runs the last limits stay for a day, marked stale. (The Antigravity CLI's own server can't be read, so the app must be running.)
 - **Reorder providers.** Drag providers in Settings › Providers, or use Move Up and Move Down; the popover and widget follow that order.
-- **GitHub Copilot** is listed as Coming soon.
+- **Cursor** and **GitHub Copilot** are listed as Coming soon.
 
 ### Changed
 

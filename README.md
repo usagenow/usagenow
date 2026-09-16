@@ -104,7 +104,7 @@ When the Antigravity app isn’t running there’s nothing to ask: the last limi
 
 ### Roadmap providers
 
-GitHub Copilot, DeepSeek, and Qwen are listed in Settings › Providers as **Coming soon**. They’re labels only: no integration, no credentials, and no network or file access. GitHub Copilot is planned through GitHub’s official premium request usage API, with a token you provide.
+Cursor, GitHub Copilot, DeepSeek, and Qwen are listed in Settings › Providers as **Coming soon**. They’re labels only: no integration, no credentials, and no network or file access. GitHub Copilot is planned through GitHub’s official premium request usage API, with a token you provide.
 
 ## Desktop widget
 
