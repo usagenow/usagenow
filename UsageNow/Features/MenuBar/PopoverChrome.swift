@@ -13,7 +13,7 @@ struct PopoverHeaderView: View {
                 .frame(height: 15)
                 .foregroundStyle(.primary)
             Spacer()
-            IconButton(title: "Refresh", systemImage: "arrow.clockwise", isSpinning: isRefreshing, action: onRefresh)
+            RefreshButton(isRefreshing: isRefreshing, action: onRefresh)
                 .keyboardShortcut("r")
             IconButton(title: "Settings…", systemImage: "gearshape", action: onOpenSettings)
                 .keyboardShortcut(",")
