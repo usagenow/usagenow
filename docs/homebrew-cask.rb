@@ -10,13 +10,12 @@ cask "usagenow" do
   version "0.3.0"
   sha256 "d036b78583a6e6aa52b5a1e726b5afcf720cd8537511c7375b0e62fc23e63bc3"
 
-  url "https://github.com/usagenow/usagenow/releases/download/v#{version}/UsageNow-#{version}.dmg",
-      verified: "github.com/usagenow/usagenow/"
+  url "https://github.com/usagenow/usagenow/releases/download/v#{version}/UsageNow-#{version}.dmg"
   name "UsageNow"
   desc "AI coding usage tracker for Codex, Claude Code, Gemini CLI, and Antigravity"
   homepage "https://usagenow.com/"
 
-  depends_on macos: ">= :sequoia"
+  depends_on macos: :sequoia
 
   app "UsageNow.app"
 
