@@ -7,12 +7,12 @@ compatibility_date = "2026-09-01"
 workers_dev = false
 routes = [{ pattern = "telemetry.usagenow.com", custom_domain = true }]
 
-# Fill database_id in from `wrangler d1 create usagenow-telemetry`.
+# Created with `wrangler d1 create usagenow-telemetry` (region EEUR).
 # The id is not a secret; it identifies the database, it doesn't open it.
 [[d1_databases]]
 binding = "DB"
 database_name = "usagenow-telemetry"
-database_id = ""
+database_id = "3550ce1f-5be2-45e6-aea7-6fd814183d04"
 
 # Daily retention pass. STATS_TOKEN is a secret and is set with
 # `wrangler secret put STATS_TOKEN`, never written in this file.
