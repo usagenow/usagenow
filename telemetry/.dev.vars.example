@@ -1,0 +1,2 @@
+# Copy to .dev.vars for `wrangler dev`. Never commit a real token.
+STATS_TOKEN=local-test-token

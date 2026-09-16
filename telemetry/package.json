@@ -1,0 +1,19 @@
+{
+  "name": "usagenow-telemetry",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Cloudflare Worker that receives UsageNow's anonymous, opt-in telemetry",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "check": "tsc --noEmit && wrangler deploy --dry-run",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260915.1",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5",
+    "wrangler": "^4.0.0"
+  }
+}

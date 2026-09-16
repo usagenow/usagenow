@@ -1,0 +1,26 @@
+name = "usagenow-telemetry"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+
+# Only the custom domain below serves this Worker, so there is no
+# workers.dev URL to find or to point an old build at by accident.
+workers_dev = false
+routes = [{ pattern = "telemetry.usagenow.com", custom_domain = true }]
+
+# Fill database_id in from `wrangler d1 create usagenow-telemetry`.
+# The id is not a secret; it identifies the database, it doesn't open it.
+[[d1_databases]]
+binding = "DB"
+database_name = "usagenow-telemetry"
+database_id = ""
+
+# Daily retention pass. STATS_TOKEN is a secret and is set with
+# `wrangler secret put STATS_TOKEN`, never written in this file.
+[triggers]
+crons = ["17 4 * * *"]
+
+[vars]
+RETENTION_DAYS = "180"
+
+[observability]
+enabled = true

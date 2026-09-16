@@ -19,11 +19,23 @@ if [ ! -f Config/Local.xcconfig ]; then
     exit 1
 fi
 
+# Where opt-in telemetry goes, if anywhere. Not a secret, and not required:
+# a build made without it sends nothing at all. It's passed as a build
+# setting rather than put in an xcconfig, where the // in a URL would start
+# a comment.
+TELEMETRY_ENDPOINT="${USAGENOW_TELEMETRY_ENDPOINT:-}"
+if [ -n "$TELEMETRY_ENDPOINT" ]; then
+    echo "==> Telemetry endpoint: $TELEMETRY_ENDPOINT"
+else
+    echo "==> No telemetry endpoint: this build sends no analytics"
+fi
+
 echo "==> Archiving Release"
 rm -rf "$ARCHIVE" "$EXPORT"
 mkdir -p "$OUTPUT"
 xcodebuild -project UsageNow.xcodeproj -scheme UsageNow -configuration Release \
-    -archivePath "$ARCHIVE" archive -quiet
+    -archivePath "$ARCHIVE" archive -quiet \
+    USAGENOW_TELEMETRY_ENDPOINT="$TELEMETRY_ENDPOINT"
 
 echo "==> Exporting Developer ID application"
 xcodebuild -exportArchive -archivePath "$ARCHIVE" \

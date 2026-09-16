@@ -160,7 +160,7 @@ UsageNow/
 - **Providers** turn tool-specific data into a normalized `ProviderSnapshot` with any number of usage windows and optional plan, model, and activity. Views depend only on this normalized state and hide data a provider doesn’t have.
 - **`UsageStore`** refreshes all providers concurrently. It keeps the last good data when a refresh fails and exposes loading, empty, and per-provider error states.
 - **`WidgetSnapshotWriter`** is the only path from provider data to the widget. It drops disabled and not-installed providers, copies each display field explicitly, writes atomically, and reloads timelines only when the content changed.
-- **Telemetry** is opt-in and off by default. Clients only receive a small set of events (install, daily active, updated, and whether Codex, Claude Code, Gemini CLI, or Antigravity is installed) with the app version, macOS version, and a random installation ID. They never have access to provider data. No analytics server is configured yet, so nothing is sent.
+- **Telemetry** is opt-in and off by default. Clients only receive a small set of events (first launch, daily active, updated, and whether Codex, Claude Code, Gemini CLI, or Antigravity is installed) with the app version, macOS version, and a random installation ID. They never have access to provider data. A build sends nothing unless it was made with `USAGENOW_TELEMETRY_ENDPOINT`, and released builds so far were not. The receiver that would accept those events is in [`telemetry/`](telemetry) — it stores the seven fields above and refuses anything else.
 
 ## Contributing
 
