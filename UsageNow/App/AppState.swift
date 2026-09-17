@@ -12,6 +12,7 @@ final class AppState {
     let providerPreferences: ProviderPreferences
     let analyticsPreferences: AnalyticsPreferences
     let launchAtLogin: LaunchAtLogin
+    let updates: UpdateController
     let settingsNavigation = SettingsNavigation()
 
     /// Deliberately never given `store` or snapshots — only which providers
@@ -49,6 +50,7 @@ final class AppState {
         self.providerPreferences = providerPreferences
         self.analyticsPreferences = analyticsPreferences
         self.launchAtLogin = LaunchAtLogin()
+        self.updates = UpdateController()
         self.telemetry = TelemetryReporter(client: client, preferences: analyticsPreferences, identity: identity, defaults: defaults)
         self.claudeLimits = claudeLimits
         self.widgetSnapshots = widgetSnapshots

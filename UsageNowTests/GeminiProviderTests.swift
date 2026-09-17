@@ -100,7 +100,12 @@ struct GeminiProviderTests {
         let snapshot = try await provider(environment(dir)).fetchSnapshot(trigger: .automatic)
 
         #expect(snapshot.status == .available)
-        #expect(snapshot.activity == LocalActivity(tokensToday: 2_610, requestsToday: 3))
+        #expect(snapshot.activity.tokensToday == 2_610)
+        #expect(snapshot.activity.requestsToday == 3)
+        // Every record here carries a token split and a model with a
+        // published price, so the estimate covers all of it.
+        #expect((snapshot.activity.estimatedCostToday ?? 0) > 0)
+        #expect(snapshot.activity.isCostComplete)
         #expect(snapshot.recentModel == "gemini-2.5-pro")
         #expect(snapshot.modelActivity.map(\.displayName) == ["Gemini 2.5 Pro", "Gemini 2.5 Flash"])
         let pro = try #require(snapshot.modelActivity.first)

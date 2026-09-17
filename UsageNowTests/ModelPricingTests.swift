@@ -141,9 +141,11 @@ struct ModelPricingTests {
         #expect(!summary.isCostComplete)
     }
 
-    @Test func noActivityHasNoEstimateAtAll() {
+    /// Nothing to price is not the same as failing to price something: an
+    /// empty day shows no estimate and no "partial" warning either.
+    @Test func noActivityHasNoEstimateAndNothingMissing() {
         let summary = ActivitySummary(records: [], since: .distantPast, prices: table)
         #expect(summary.estimatedCost == nil)
-        #expect(!summary.isCostComplete)
+        #expect(summary.isCostComplete)
     }
 }

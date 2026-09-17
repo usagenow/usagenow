@@ -25,6 +25,7 @@ struct UsageNowApp: App {
                 providerPreferences: appState.providerPreferences,
                 analyticsPreferences: appState.analyticsPreferences,
                 launchAtLogin: appState.launchAtLogin,
+                updates: appState.updates,
                 store: appState.store,
                 retryLimits: { appState.retryLimits(for: $0) },
                 navigation: appState.settingsNavigation

@@ -8,5 +8,14 @@
 	<!-- Empty unless a release sets USAGENOW_TELEMETRY_ENDPOINT; empty means telemetry is off. -->
 	<key>UsageNowTelemetryEndpoint</key>
 	<string>$(USAGENOW_TELEMETRY_ENDPOINT)</string>
+	<!-- Sparkle. The feed is public; the EdDSA public key identifies which
+	     private key may sign an update, and that private key never leaves
+	     the maintainer's keychain. Empty key means updates stay off. -->
+	<key>SUFeedURL</key>
+	<string>https://usagenow.com/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>$(USAGENOW_SPARKLE_PUBLIC_KEY)</string>
+	<key>SUEnableInstallerLauncherService</key>
+	<false/>
 </dict>
 </plist>

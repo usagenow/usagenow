@@ -36,7 +36,8 @@ struct ActivitySummary: Sendable, Equatable {
     /// the models UsageNow has a price for. `nil` when it has none of them.
     var estimatedCost: Decimal?
     /// False when some activity is missing from `estimatedCost`, because a
-    /// model has no published price or a tool recorded no token split.
+    /// model has no published price or a tool recorded no token split. True
+    /// when there was nothing to price.
     var isCostComplete = true
 
     /// Sums records at or after `since`, counting each key once.
@@ -88,7 +89,9 @@ struct ActivitySummary: Sendable, Equatable {
         }
 
         estimatedCost = total
-        isCostComplete = total != nil && unpricedTokens == 0
+        // "Complete" means nothing was left out, which is also true of a day
+        // with no activity at all — there the estimate is simply absent.
+        isCostComplete = unpricedTokens == 0
         models = Array(byModel.values).sortedByActivity()
     }
 

@@ -33,3 +33,7 @@ echo "Size:   $(du -h "$DMG" | cut -f1)"
 echo "===================================================="
 echo "Next: attach the disk image to the v$VERSION GitHub release,"
 echo "then fill the checksum into the Homebrew cask (docs/homebrew-cask.rb)."
+echo
+echo "For in-app updates, sign the release into the appcast feed:"
+echo "  cp \"$DMG\" build/release/published/"
+echo "  scripts/appcast.sh"

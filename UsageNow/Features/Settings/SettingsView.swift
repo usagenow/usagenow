@@ -16,6 +16,7 @@ struct SettingsView: View {
     let providerPreferences: ProviderPreferences
     let analyticsPreferences: AnalyticsPreferences
     let launchAtLogin: LaunchAtLogin
+    let updates: UpdateController
     let store: UsageStore
     /// Asks an experimental limits source to try again, keychain included.
     let retryLimits: (ProviderID) -> Void
@@ -28,6 +29,7 @@ struct SettingsView: View {
                     preferences: preferences,
                     providerPreferences: providerPreferences,
                     launchAtLogin: launchAtLogin,
+                    updates: updates,
                     store: store,
                     retryLimits: retryLimits
                 )
@@ -53,6 +55,7 @@ struct GeneralSettingsView: View {
     @Bindable var preferences: AppPreferences
     let providerPreferences: ProviderPreferences
     let launchAtLogin: LaunchAtLogin
+    @Bindable var updates: UpdateController
     let store: UsageStore
     let retryLimits: (ProviderID) -> Void
 
@@ -78,6 +81,31 @@ struct GeneralSettingsView: View {
                 }
                 if let message = launchAtLogin.errorMessage {
                     Text(message)
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            Section {
+                Toggle("Check for updates automatically", isOn: Binding(
+                    get: { updates.checksAutomatically },
+                    set: { updates.checksAutomatically = $0 }
+                ))
+                .disabled(!updates.isSupported)
+                LabeledContent {
+                    Button("Check Now") { updates.checkForUpdates() }
+                        .disabled(!updates.canCheckForUpdates)
+                } label: {
+                    Text(updates.lastCheckedDescription)
+                        .foregroundStyle(.secondary)
+                }
+            } footer: {
+                if !updates.isSupported {
+                    Text("This build can't update itself: it wasn't made by the release process, which is what signs an update.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                } else {
+                    Text("UsageNow installs an update only when it's signed with the UsageNow update key. Checking sends no information about you.")
                         .font(.callout)
                         .foregroundStyle(.secondary)
                 }
@@ -269,6 +297,7 @@ extension QuotaUnavailableReason {
         providerPreferences: ProviderPreferences(defaults: defaults),
         analyticsPreferences: AnalyticsPreferences(defaults: defaults),
         launchAtLogin: LaunchAtLogin(),
+        updates: UpdateController(),
         store: PreviewFixtures.store(codex: .normal, claude: .normal),
         retryLimits: { _ in },
         navigation: SettingsNavigation()
