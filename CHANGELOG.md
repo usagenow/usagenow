@@ -2,6 +2,18 @@
 
 All notable changes to UsageNow. This project follows [Semantic Versioning](https://semver.org).
 
+## 0.4.0
+
+### Added
+
+- **What today's tokens would cost.** Each provider shows an estimate beside its token and request counts — "≈ $4.20 at API prices" — of what the day's activity would have cost had it been billed through the API. Your subscription doesn't charge per token, so this is a sense of scale, not a bill. Cached tokens are priced as cached: on Claude Code most of the volume is cache reads at a tenth of the input price, so counting everything at the input rate would overstate a day sevenfold. A model with no published price isn't counted at all, and the line says the estimate is partial instead of quietly leaving it out. Prices ship with the app and are refreshed each release.
+- **Updates in the app.** UsageNow can now check for updates and install them, through Sparkle. **Settings › General** has the switch and a Check Now button. An update is installed only when it carries UsageNow's signature, and checking sends nothing about you — no identifier and no system profile. A build that wasn't made by the release process, such as one you build yourself, can't update itself at all. Coming from 0.3.0, install this version by hand once; later versions arrive on their own.
+
+### Changed
+
+- **Refresh shows progress instead of spinning.** The button is an arrow at the weight of the settings gear beside it, and while a refresh runs an arc sweeps around it.
+- **The menu bar percentage is sized to the icons around it**, rather than to the menu bar's own larger text, so it no longer stands out from its neighbours.
+
 ## 0.3.0
 
 ### Added

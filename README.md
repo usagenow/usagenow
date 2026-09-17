@@ -10,9 +10,9 @@
 
 ## Install
 
-Download **UsageNow-0.2.0.dmg** from [usagenow.com](https://usagenow.com) or the [releases page](https://github.com/usagenow/usagenow/releases), then drag UsageNow to Applications.
+Download the disk image from [usagenow.com](https://usagenow.com) or the [releases page](https://github.com/usagenow/usagenow/releases), then drag UsageNow to Applications. From 0.4.0 onwards UsageNow updates itself; see [Updates](#updates).
 
-A Homebrew cask (`brew install --cask usagenow`) is being submitted and will be listed here once it's accepted.
+A Homebrew cask is written and tested ([docs/homebrew-cask.rb](docs/homebrew-cask.rb)), but not submitted yet: Homebrew accepts a new cask only once the upstream repository is 30 days old and has 30 forks, 30 watchers, or 75 stars.
 
 Requires macOS 15 or later. The app is signed with a Developer ID and notarized by Apple.
 
@@ -38,9 +38,11 @@ Token and request counts are **local activity** observed in session files on thi
 - **macOS native.** SwiftUI and `MenuBarExtra`. Lives in the menu bar, not the Dock.
 - **Codex, Claude Code, and Gemini CLI** side by side: usage limits and reset times where the tool reports them, and daily token and request activity.
 - **Activity by model.** See which models today’s tokens and requests went to — any model, including ones released after this version.
+- **What it would have cost.** An estimate of today’s activity at published API prices, with cached tokens priced as cached. A sense of scale, never a bill.
 - **Pick your providers, in your order.** Turn each one on or off in Settings › Providers, and drag them into the order the popover and widget should use. A provider that’s off is never refreshed and never read from disk.
 - **Desktop widget.** Small and medium widgets showing what’s left at a glance.
 - **Local-first.** Your usage data stays on your Mac.
+- **Updates itself**, and only from a signed release.
 - **Open source** under the MIT License.
 - **No accounts required.**
 
@@ -105,6 +107,16 @@ When the Antigravity app isn’t running there’s nothing to ask: the last limi
 ### Roadmap providers
 
 Cursor, GitHub Copilot, DeepSeek, and Qwen are listed in Settings › Providers as **Coming soon**. They’re labels only: no integration, no credentials, and no network or file access. GitHub Copilot is planned through GitHub’s official premium request usage API, with a token you provide.
+
+## Updates
+
+UsageNow updates itself with [Sparkle](https://sparkle-project.org). **Settings › General** holds the switch and a Check Now button.
+
+An update is installed only if it is signed with the private half of the EdDSA key whose public half is in the app’s `Info.plist`. That private key lives in the maintainer’s keychain and is in no build, no script, and no part of this repository, so nothing published here can produce an update UsageNow will accept. A build without the public key — anything not made by the release process, including a build you make yourself — doesn’t start the updater at all.
+
+A check asks `usagenow.com` for the feed and nothing more: Sparkle’s system profiling is off, so no identifier, version history, or hardware information is sent.
+
+Releases are signed into the feed with `scripts/appcast.sh`, which refuses to publish a feed where two releases share a build number — Sparkle compares those, and the update would silently never appear.
 
 ## Desktop widget
 

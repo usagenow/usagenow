@@ -51,7 +51,7 @@ echo "==> Signing $count disk image(s) from $IMAGES"
 "$GENERATE" \
     --download-url-prefix "$DOWNLOAD_PREFIX" \
     --link "https://usagenow.com" \
-    --full-release-notes-url "https://docs.usagenow.com/changelog" \
+    --full-release-notes-url "https://github.com/usagenow/usagenow/blob/main/CHANGELOG.md" \
     -o "$APPCAST" \
     "$IMAGES"
 
