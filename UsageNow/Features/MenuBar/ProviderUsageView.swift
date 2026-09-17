@@ -33,15 +33,21 @@ struct ProviderUsageView: View {
         if let snapshot {
             switch snapshot.status {
             case .available:
+                if let balance = snapshot.balance {
+                    AccountBalanceView(balance: balance)
+                }
                 if !snapshot.windows.isEmpty {
                     UsageWindowsView(windows: snapshot.windows, now: now)
                 }
                 // Also under windows that are only known to have reset, so the fix stays visible.
-                if snapshot.windows.isEmpty || snapshot.quotaUnavailableReason != nil {
+                // A balance is the reading for API accounts, so its absence of windows isn't news.
+                if (snapshot.windows.isEmpty && snapshot.balance == nil) || snapshot.quotaUnavailableReason != nil {
                     StatusMessage(text: snapshot.quotaUnavailableReason?.message(for: state.provider) ?? String(localized: "Usage limits unavailable"))
                 }
                 ProviderActivityView(activity: snapshot.activity)
                 ModelActivityView(models: snapshot.modelActivity)
+            case .notAuthenticated where ProviderCatalog.definition(for: state.provider).apiKey != nil:
+                StatusMessage(text: String(localized: "\(state.provider.displayName) didn’t accept the API key. Check it in Settings › Providers."))
             case .notAuthenticated:
                 StatusMessage(text: String(localized: "Sign in to \(state.provider.displayName) to view usage"))
             case .unavailable:
@@ -178,6 +184,34 @@ private struct ProviderActivityView: View {
             }
             .padding(.top, 2)
         }
+    }
+}
+
+/// Money on an API account, as its provider reports it — never estimated.
+private struct AccountBalanceView: View {
+    let balance: AccountBalance
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 14) {
+                if let remaining = balance.remaining {
+                    MetricLabel(value: UsageFormatter.money(remaining, currency: balance.currency), unit: "left")
+                }
+                if let today = balance.spentToday {
+                    MetricLabel(value: UsageFormatter.money(today, currency: balance.currency), unit: "spent today")
+                }
+                if let month = balance.spentThisMonth {
+                    MetricLabel(value: UsageFormatter.money(month, currency: balance.currency), unit: "this month")
+                }
+                Spacer(minLength: 0)
+            }
+            if !balance.canMakeRequests {
+                Label("The balance can’t pay for more requests.", systemImage: "exclamationmark.triangle.fill")
+                    .font(.callout)
+                    .foregroundStyle(.orange)
+            }
+        }
+        .padding(.top, 2)
     }
 }
 

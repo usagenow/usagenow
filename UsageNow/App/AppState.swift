@@ -13,6 +13,8 @@ final class AppState {
     let analyticsPreferences: AnalyticsPreferences
     let launchAtLogin: LaunchAtLogin
     let updates: UpdateController
+    /// The person's API keys for providers connected with one. Keychain only.
+    let apiKeys: any APIKeyStoring
     let settingsNavigation = SettingsNavigation()
 
     /// Deliberately never given `store` or snapshots — only which providers
@@ -34,7 +36,8 @@ final class AppState {
         telemetryConfiguration: TelemetryConfiguration = .disabled,
         identity: InstallationIdentity = InstallationIdentity(),
         claudeLimits: ClaudeLimitsControl? = nil,
-        widgetSnapshots: WidgetSnapshotWriter = WidgetSnapshotWriter()
+        widgetSnapshots: WidgetSnapshotWriter = WidgetSnapshotWriter(),
+        apiKeys: any APIKeyStoring = KeychainAPIKeyStore()
     ) {
         let providerPreferences = ProviderPreferences(defaults: defaults)
         let store = UsageStore(providers: providers, enabledProviders: providerPreferences.enabledProviders, order: providerPreferences.order)
@@ -51,6 +54,7 @@ final class AppState {
         self.analyticsPreferences = analyticsPreferences
         self.launchAtLogin = LaunchAtLogin()
         self.updates = UpdateController()
+        self.apiKeys = apiKeys
         self.telemetry = TelemetryReporter(client: client, preferences: analyticsPreferences, identity: identity, defaults: defaults)
         self.claudeLimits = claudeLimits
         self.widgetSnapshots = widgetSnapshots
@@ -68,18 +72,20 @@ final class AppState {
                 lastKnownLimits: .userDefaults(defaults, key: "experimental.claudeLastKnownLimits")
             )
         )
+        let apiKeys = KeychainAPIKeyStore()
         return AppState(
-            providers: makeProviders(defaults: defaults, claudeLimits: claudeLimits),
+            providers: makeProviders(defaults: defaults, claudeLimits: claudeLimits, apiKeys: apiKeys),
             defaults: defaults,
             telemetryConfiguration: .current(defaults: defaults),
-            claudeLimits: claudeLimits
+            claudeLimits: claudeLimits,
+            apiKeys: apiKeys
         )
     }
 
     /// Real providers in production. Launch arguments such as
     /// `-UsageNowMockCodex critical` switch to mock providers with a
     /// deterministic `MockScenario` for development and QA.
-    static func makeProviders(defaults: UserDefaults, claudeLimits: ClaudeLimitsControl?) -> [any UsageProvider] {
+    static func makeProviders(defaults: UserDefaults, claudeLimits: ClaudeLimitsControl?, apiKeys: any APIKeyStoring) -> [any UsageProvider] {
         let codexScenario = defaults.string(forKey: "UsageNowMockCodex").flatMap(MockScenario.init(rawValue:))
         let claudeScenario = defaults.string(forKey: "UsageNowMockClaude").flatMap(MockScenario.init(rawValue:))
         let geminiScenario = defaults.string(forKey: "UsageNowMockGemini").flatMap(MockScenario.init(rawValue:))
@@ -100,6 +106,9 @@ final class AppState {
             AntigravityProvider(server: AntigravityLocalServer(lastKnownLimits: .userDefaults(defaults, key: "antigravityLastKnownLimits"))),
             KiroProvider(),
             WarpProvider(),
+            APIKeyProvider.deepSeek(keys: apiKeys),
+            APIKeyProvider.kimi(keys: apiKeys),
+            APIKeyProvider.openRouter(keys: apiKeys),
         ]
     }
 
@@ -138,6 +147,10 @@ final class AppState {
     /// bar showing a provider that's still enabled.
     private func applyEnabledProviders() {
         let enabled = providerPreferences.enabledProviders
+        // Turning off a provider connected with a key forgets the key.
+        for definition in ProviderCatalog.available where definition.apiKey != nil && !enabled.contains(definition.id) {
+            try? apiKeys.removeKey(for: definition.id)
+        }
         if let required = preferences.menuBarDisplayMode.requiredProvider, !enabled.contains(required) {
             preferences.menuBarDisplayMode = .default
         }
@@ -164,6 +177,17 @@ final class AppState {
     /// Asks an experimental limits source for limits now.
     func retryLimits(for provider: ProviderID) {
         if provider == .claudeCode { retryClaudeLimits() }
+    }
+
+    /// Saves or clears a provider's API key, then reads the provider with it.
+    func setAPIKey(_ key: String?, for provider: ProviderID) throws {
+        if let key, !key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            try apiKeys.setKey(key, for: provider)
+        } else {
+            try apiKeys.removeKey(for: provider)
+        }
+        guard providerPreferences.isEnabled(provider) else { return }
+        Task { [store] in await store.refresh(only: [provider], trigger: .manual) }
     }
 
     /// Asks Claude for limits now, including the keychain after an earlier failure.

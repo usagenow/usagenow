@@ -20,6 +20,8 @@ struct SettingsView: View {
     let store: UsageStore
     /// Asks an experimental limits source to try again, keychain included.
     let retryLimits: (ProviderID) -> Void
+    var hasAPIKey: (ProviderID) -> Bool = { _ in false }
+    var setAPIKey: (String?, ProviderID) throws -> Void = { _, _ in }
     @Bindable var navigation: SettingsNavigation
 
     var body: some View {
@@ -35,7 +37,7 @@ struct SettingsView: View {
                 )
             }
             Tab("Providers", systemImage: "circle.hexagongrid", value: SettingsTab.providers) {
-                ProvidersSettingsView(preferences: providerPreferences)
+                ProvidersSettingsView(preferences: providerPreferences, hasAPIKey: hasAPIKey, setAPIKey: setAPIKey)
             }
             Tab("Menu Bar", systemImage: "menubar.rectangle", value: SettingsTab.menuBar) {
                 MenuBarSettingsView(preferences: preferences, providerPreferences: providerPreferences)

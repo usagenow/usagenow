@@ -28,6 +28,8 @@ struct UsageNowApp: App {
                 updates: appState.updates,
                 store: appState.store,
                 retryLimits: { appState.retryLimits(for: $0) },
+                hasAPIKey: { appState.apiKeys.hasKey(for: $0) },
+                setAPIKey: { try appState.setAPIKey($0, for: $1) },
                 navigation: appState.settingsNavigation
             )
         }

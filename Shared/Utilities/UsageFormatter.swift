@@ -31,11 +31,11 @@ enum UsageFormatter {
     ///
     /// Small amounts keep three decimals rather than rounding to "$0.00",
     /// which would read as "nothing" when it isn't.
-    static func money(_ value: Decimal, locale: Locale = AppLocale.current) -> String {
+    static func money(_ value: Decimal, currency: String = "USD", locale: Locale = AppLocale.current) -> String {
         let amount = max(0, value)
         let decimals = amount > 0 && amount < Decimal(string: "0.01")! ? 3 : 2
         return amount.formatted(
-            .currency(code: "USD")
+            .currency(code: currency)
                 .precision(.fractionLength(decimals))
                 .locale(locale)
         )
