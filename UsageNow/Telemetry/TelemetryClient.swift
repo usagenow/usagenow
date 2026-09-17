@@ -36,6 +36,10 @@ enum TelemetryEvent: String, Sendable, CaseIterable {
     case geminiDetected = "gemini_detected"
     /// Antigravity CLI is installed. A yes, never anything about its usage.
     case antigravityDetected = "antigravity_detected"
+    /// Kiro is installed. A yes, never anything about its usage.
+    case kiroDetected = "kiro_detected"
+    /// Warp is installed. A yes, never anything about its usage.
+    case warpDetected = "warp_detected"
 
     /// `nil` for providers with no integration yet — nothing to report.
     static func detected(_ provider: ProviderID) -> TelemetryEvent? {
@@ -44,6 +48,8 @@ enum TelemetryEvent: String, Sendable, CaseIterable {
         case .claudeCode: .claudeDetected
         case .gemini: .geminiDetected
         case .antigravity: .antigravityDetected
+        case .kiro: .kiroDetected
+        case .warp: .warpDetected
         default: nil
         }
     }

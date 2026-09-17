@@ -99,6 +99,7 @@ final class AppState {
             // Percentages and reset times only, so they survive a relaunch between app runs.
             AntigravityProvider(server: AntigravityLocalServer(lastKnownLimits: .userDefaults(defaults, key: "antigravityLastKnownLimits"))),
             KiroProvider(),
+            WarpProvider(),
         ]
     }
 

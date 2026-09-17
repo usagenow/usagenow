@@ -102,6 +102,7 @@ struct NetworkTelemetryClientTests {
     @Test func eventNamesAreStable() {
         #expect(Set(TelemetryEvent.allCases.map(\.rawValue)) == [
             "first_launch", "app_active", "app_updated", "codex_detected", "claude_detected", "gemini_detected", "antigravity_detected",
+            "kiro_detected", "warp_detected",
         ])
     }
 

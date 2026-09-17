@@ -222,7 +222,7 @@ struct ModelActivityView: View {
             Spacer(minLength: 8)
             Text(verbatim: UsageFormatter.tokens(model.totalTokens))
                 .monospacedDigit()
-            Text(verbatim: UsageFormatter.count(model.requests))
+            Text(verbatim: model.isRequestCountKnown ? UsageFormatter.count(model.requests) : "")
                 .monospacedDigit()
                 .foregroundStyle(.secondary)
                 .frame(minWidth: 28, alignment: .trailing)
@@ -230,10 +230,12 @@ struct ModelActivityView: View {
         .font(.subheadline)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(verbatim: model.displayName))
-        .accessibilityValue(Text(
-            "\(UsageFormatter.count(model.totalTokens)) tokens, \(UsageFormatter.count(model.requests)) requests",
-            comment: "Model activity, e.g. 72,400,000 tokens, 148 requests"
-        ))
+        .accessibilityValue(model.isRequestCountKnown
+            ? Text(
+                "\(UsageFormatter.count(model.totalTokens)) tokens, \(UsageFormatter.count(model.requests)) requests",
+                comment: "Model activity, e.g. 72,400,000 tokens, 148 requests"
+            )
+            : Text("\(UsageFormatter.count(model.totalTokens)) tokens", comment: "Model activity without a request count"))
     }
 }
 

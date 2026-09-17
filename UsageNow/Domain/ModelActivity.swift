@@ -14,6 +14,9 @@ struct ModelActivity: Sendable, Equatable, Identifiable {
     var outputTokens: Int64?
     var totalTokens: Int64
     var requests: Int64
+    /// False when the tool reports tokens per model but not how many
+    /// requests went to each, so the row shows no count rather than a 0.
+    var isRequestCountKnown = true
     var lastUsedAt: Date?
     /// What this model's tokens would have cost at list prices, in USD.
     /// `nil` when the model has no published price, or the tool recorded no
