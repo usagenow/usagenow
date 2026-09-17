@@ -8,6 +8,9 @@ import Foundation
 enum UsageWindowKind: Sendable, Hashable, Codable {
     case fiveHour
     case weekly
+    /// A billing month, which resets on a date rather than after a fixed
+    /// length. Distinct from a rolling 30-day window, which stays `custom`.
+    case monthly
     /// A window of another length reported by an official source.
     case custom(minutes: Int)
 
@@ -24,18 +27,34 @@ enum UsageWindowKind: Sendable, Hashable, Codable {
         switch self {
         case .fiveHour: 300
         case .weekly: 10_080
+        // Nominal, for ordering against other windows only.
+        case .monthly: 43_200
         case .custom(let minutes): minutes
         }
     }
 
-    // Stored as a plain length, so the shape survives new cases.
+    private static let monthlyToken = "monthly"
+
+    // Stored as a plain length, so the shape survives new cases. A billing
+    // month has no fixed length, so it's stored by name instead.
     init(from decoder: any Decoder) throws {
-        self.init(durationMinutes: try decoder.singleValueContainer().decode(Int.self))
+        let container = try decoder.singleValueContainer()
+        if let minutes = try? container.decode(Int.self) {
+            self.init(durationMinutes: minutes)
+        } else if try container.decode(String.self) == Self.monthlyToken {
+            self = .monthly
+        } else {
+            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Unknown usage window kind"))
+        }
     }
 
     func encode(to encoder: any Encoder) throws {
         var container = encoder.singleValueContainer()
-        try container.encode(durationMinutes)
+        if self == .monthly {
+            try container.encode(Self.monthlyToken)
+        } else {
+            try container.encode(durationMinutes)
+        }
     }
 }
 
@@ -50,7 +69,7 @@ struct UsageWindow: Sendable, Equatable, Identifiable, Codable {
     /// When the window resets, or `nil` if unknown.
     var resetsAt: Date?
 
-    var id: String { "\(kind.durationMinutes)|\(scope ?? "")" }
+    var id: String { "\(kind == .monthly ? "monthly" : String(kind.durationMinutes))|\(scope ?? "")" }
 }
 
 extension [UsageWindow] {

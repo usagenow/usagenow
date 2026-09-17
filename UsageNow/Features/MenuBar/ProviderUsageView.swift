@@ -141,13 +141,19 @@ private struct ProviderActivityView: View {
     let activity: LocalActivity
 
     var body: some View {
-        if activity.tokensToday != nil || activity.requestsToday != nil {
+        if activity.tokensToday != nil || activity.requestsToday != nil || activity.creditsToday != nil {
             HStack(spacing: 14) {
                 if let tokens = activity.tokensToday {
                     MetricLabel(
                         value: UsageFormatter.tokens(tokens),
                         unit: "tokens today",
                         spokenValue: UsageFormatter.count(tokens)
+                    )
+                }
+                if let credits = activity.creditsToday {
+                    MetricLabel(
+                        value: UsageFormatter.credits(credits),
+                        unit: activity.isCreditsComplete ? "credits today" : "credits today, partial"
                     )
                 }
                 if let requests = activity.requestsToday {

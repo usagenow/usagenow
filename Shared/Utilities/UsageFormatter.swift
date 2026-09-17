@@ -21,6 +21,11 @@ enum UsageFormatter {
         max(0, value).formatted(.number.locale(locale))
     }
 
+    /// Credits as the tool meters them: 2.4669 → "2.47", 12 → "12".
+    static func credits(_ value: Decimal, locale: Locale = AppLocale.current) -> String {
+        max(0, value).formatted(.number.precision(.fractionLength(0...2)).locale(locale))
+    }
+
     /// An estimated amount in US dollars, the currency providers publish
     /// prices in: 4.2 → "$4.20", 0.038 → "$0.004", 0 → "$0.00".
     ///

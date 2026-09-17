@@ -19,8 +19,14 @@ final class ProviderPreferences {
     /// What was available before `knownProviders` was recorded (0.2.x).
     private static let initiallyKnown: Set<ProviderID> = [.codex, .claudeCode]
 
-    /// Every supported provider starts enabled.
-    static let defaultEnabled: Set<ProviderID> = ProviderCatalog.availableIDs
+    /// Every supported provider that reads the tool on this Mac starts
+    /// enabled, and stays out of sight until the tool is installed.
+    ///
+    /// Providers that need the person's own API key start off: they do
+    /// nothing until a key is added, and turning one on is the moment to ask.
+    static let defaultEnabled: Set<ProviderID> = Set(
+        ProviderCatalog.available.filter { $0.apiKey == nil }.map(\.id)
+    )
 
     private(set) var enabledProviders: Set<ProviderID> {
         didSet {
@@ -54,7 +60,7 @@ final class ProviderPreferences {
         // like it would for a new user; ones turned off stay off. It stays
         // out of sight until it's installed.
         let known = defaults.stringArray(forKey: Self.knownKey).map { Set($0.compactMap(ProviderID.init(rawValue:))) } ?? Self.initiallyKnown
-        let added = ProviderCatalog.availableIDs.subtracting(known)
+        let added = Self.defaultEnabled.subtracting(known)
         enabledProviders = chosen.union(added)
         if !added.isEmpty {
             defaults.set(enabledProviders.map(\.rawValue).sorted(), forKey: Self.key)

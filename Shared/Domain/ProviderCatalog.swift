@@ -10,9 +10,13 @@ enum ProviderID: String, CaseIterable, Codable, Sendable, Identifiable, Comparab
     case claudeCode
     case gemini
     case antigravity
+    case kiro
+    case warp
+    case deepseek
+    case kimi
+    case openrouter
     case cursor
     case copilot
-    case deepseek
     case qwen
 
     var id: String { rawValue }
@@ -46,6 +50,17 @@ struct ProviderDefinition: Sendable, Identifiable, Equatable {
     let logoAssetName: String?
     /// Neutral placeholder used when there's no official artwork.
     let symbolName: String
+    /// Set for providers read with the person's own API key: the only host
+    /// that key is ever sent to, and where to create one.
+    var apiKey: APIKeyConnection? = nil
+}
+
+/// How a provider connected with an API key talks to its service.
+struct APIKeyConnection: Sendable, Equatable {
+    /// The one host the key is sent to. Requests anywhere else are refused.
+    let host: String
+    /// The provider's page for creating a key.
+    let keysPage: URL
 }
 
 /// The single source of truth for provider metadata.
@@ -87,6 +102,49 @@ enum ProviderCatalog {
             symbolName: "circle.hexagonpath"
         ),
         ProviderDefinition(
+            id: .kiro,
+            displayName: "Kiro",
+            summary: "Track Kiro credits and monthly limits.",
+            availability: .available,
+            logoAssetName: "KiroLogo",
+            symbolName: "sparkles"
+        ),
+        ProviderDefinition(
+            id: .warp,
+            displayName: "Warp",
+            summary: "Track Warp agent requests and credits.",
+            availability: .available,
+            logoAssetName: "WarpLogo",
+            symbolName: "terminal"
+        ),
+        ProviderDefinition(
+            id: .deepseek,
+            displayName: "DeepSeek",
+            summary: "Track your DeepSeek API balance.",
+            availability: .available,
+            logoAssetName: "DeepSeekLogo",
+            symbolName: "circle.dashed",
+            apiKey: APIKeyConnection(host: "api.deepseek.com", keysPage: URL(string: "https://platform.deepseek.com/api_keys")!)
+        ),
+        ProviderDefinition(
+            id: .kimi,
+            displayName: "Kimi",
+            summary: "Track your Kimi API balance.",
+            availability: .available,
+            logoAssetName: nil,
+            symbolName: "moon",
+            apiKey: APIKeyConnection(host: "api.moonshot.ai", keysPage: URL(string: "https://platform.moonshot.ai/console/api-keys")!)
+        ),
+        ProviderDefinition(
+            id: .openrouter,
+            displayName: "OpenRouter",
+            summary: "Track OpenRouter spending and key limits.",
+            availability: .available,
+            logoAssetName: nil,
+            symbolName: "arrow.triangle.branch",
+            apiKey: APIKeyConnection(host: "openrouter.ai", keysPage: URL(string: "https://openrouter.ai/settings/keys")!)
+        ),
+        ProviderDefinition(
             id: .cursor,
             displayName: "Cursor",
             summary: nil,
@@ -101,14 +159,6 @@ enum ProviderCatalog {
             availability: .comingSoon,
             logoAssetName: "CopilotLogo",
             symbolName: "chevron.left.forwardslash.chevron.right"
-        ),
-        ProviderDefinition(
-            id: .deepseek,
-            displayName: "DeepSeek",
-            summary: nil,
-            availability: .comingSoon,
-            logoAssetName: "DeepSeekLogo",
-            symbolName: "circle.dashed"
         ),
         ProviderDefinition(
             id: .qwen,

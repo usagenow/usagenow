@@ -36,6 +36,8 @@ extension UsageWindowKind {
             String(localized: "5-hour")
         case .weekly:
             String(localized: "Weekly")
+        case .monthly:
+            String(localized: "Monthly")
         case .custom(let minutes) where minutes % (24 * 60) == 0:
             String(localized: "\(minutes / (24 * 60))-day", comment: "Usage window length, e.g. 30-day")
         case .custom(let minutes) where minutes % 60 == 0:

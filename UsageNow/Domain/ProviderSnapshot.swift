@@ -24,6 +24,9 @@ struct ProviderSnapshot: Sendable, Equatable, Identifiable {
     /// Today's activity per model, most active first. Independent of
     /// `windows`: account limits aren't split by model.
     var modelActivity: [ModelActivity] = []
+    /// Money on a prepaid API account, for providers connected with the
+    /// person's own API key. `nil` for subscription tools.
+    var balance: AccountBalance? = nil
     /// When this snapshot was assembled.
     var updatedAt: Date
     /// When the quota windows were captured, if earlier than `updatedAt` —
@@ -62,6 +65,21 @@ struct ProviderSnapshot: Sendable, Equatable, Identifiable {
     func isStale(at now: Date, threshold: TimeInterval = staleThreshold) -> Bool {
         now.timeIntervalSince(dataDate) > threshold
     }
+}
+
+/// An API account's money, exactly as the provider reports it.
+///
+/// Amounts stay in the currency the provider uses — a DeepSeek account in
+/// yuan is shown in yuan — and are never converted or estimated.
+struct AccountBalance: Sendable, Equatable {
+    /// ISO 4217 code, e.g. "USD" or "CNY".
+    var currency: String
+    /// What's left to spend, when the provider reports it.
+    var remaining: Decimal?
+    var spentToday: Decimal? = nil
+    var spentThisMonth: Decimal? = nil
+    /// False when the provider says the balance can no longer pay for requests.
+    var canMakeRequests = true
 }
 
 /// Which kinds of data a snapshot actually contains, so the UI can hide the rest.

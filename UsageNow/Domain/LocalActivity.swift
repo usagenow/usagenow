@@ -19,6 +19,12 @@ struct LocalActivity: Sendable, Equatable {
     /// False when some of today's activity is missing from the estimate, so
     /// the UI can say the number is a floor rather than the whole picture.
     var isCostComplete = true
+    /// Credits spent today, for tools that meter in credits rather than
+    /// tokens — Kiro and Warp. In the tool's own unit, never converted.
+    var creditsToday: Decimal? = nil
+    /// False when some of today's credits couldn't be attributed to today,
+    /// such as a conversation that started yesterday and continued.
+    var isCreditsComplete = true
 
     static let unknown = LocalActivity()
 }
