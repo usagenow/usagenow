@@ -47,8 +47,10 @@ struct WarpProvider: UsageProvider {
                 try reader.todaysActivity(database: environment.database, since: since)
             }.value
         } catch {
+            // Rethrown so the store keeps the last reading and offers Retry,
+            // instead of replacing today's numbers with nothing.
             Log.provider.debug("Warp's database couldn't be read")
-            return .unavailable(.warp, at: date)
+            throw error
         }
 
         return ProviderSnapshot(

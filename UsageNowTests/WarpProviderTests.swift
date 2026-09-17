@@ -145,6 +145,14 @@ struct WarpProviderTests {
         #expect(snapshot.modelActivity.count == 1)
     }
 
+    /// A locked or damaged database is a failed refresh, which keeps the last reading.
+    @Test func anUnreadableDatabaseIsAFailedRefresh() async throws {
+        let dir = try TemporaryDirectory()
+        try dir.write("warp.sqlite", text: "not a database")
+        let environment = WarpEnvironment(database: dir.url.appending(path: "warp.sqlite"), databaseExists: true, application: nil)
+        await #expect(throws: (any Error).self) { try await provider(environment).fetchSnapshot(trigger: .automatic) }
+    }
+
     @Test func installedButNeverUsedShowsAQuietDay() async throws {
         let environment = WarpEnvironment(database: URL(filePath: "/nonexistent"), databaseExists: false, application: URL(filePath: "/Applications/Warp.app"))
         let snapshot = try await provider(environment).fetchSnapshot(trigger: .automatic)
