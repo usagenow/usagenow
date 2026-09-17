@@ -8,12 +8,12 @@
 #
 #     shasum -a 256 build/release/UsageNow-<version>.dmg
 #
-# Verified on 2026-09-16 against the 0.3.0 release: brew style, brew audit
+# Verified on 2026-09-16 against the 0.3.0 release (checksum since updated for 0.4.0): brew style, brew audit
 # --cask --online --strict, and an install/uninstall cycle all passed.
 
 cask "usagenow" do
-  version "0.3.0"
-  sha256 "d036b78583a6e6aa52b5a1e726b5afcf720cd8537511c7375b0e62fc23e63bc3"
+  version "0.4.0"
+  sha256 "9802440bd739aa268f63531e313e633246ccdfde91b021a4a522acd526f687af"
 
   url "https://github.com/usagenow/usagenow/releases/download/v#{version}/UsageNow-#{version}.dmg"
   name "UsageNow"

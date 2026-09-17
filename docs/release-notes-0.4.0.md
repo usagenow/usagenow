@@ -20,4 +20,4 @@ Coming from 0.3.0 or earlier, install this one by hand — those versions have n
 
 Requires macOS 15 or later. Signed with a Developer ID and notarized by Apple.
 
-**SHA-256:** `PENDING`
+**SHA-256:** `9802440bd739aa268f63531e313e633246ccdfde91b021a4a522acd526f687af`
