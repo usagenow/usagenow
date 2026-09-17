@@ -25,6 +25,8 @@ struct WarpActivityReader: Sendable {
     }
 
     /// How Warp writes `start_ts` and `last_modified_at`: UTC, without a zone.
+    /// Checked against a live prompt: written as 10:50:50 at 15:51 local
+    /// time on a Mac five hours ahead of UTC.
     var databaseTimeZone: TimeZone = .gmt
 
     func todaysActivity(database: URL, since: Date) throws -> Result {
