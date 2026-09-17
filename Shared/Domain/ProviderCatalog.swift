@@ -131,7 +131,7 @@ enum ProviderCatalog {
             displayName: "Kimi",
             summary: "Track your Kimi API balance.",
             availability: .available,
-            logoAssetName: nil,
+            logoAssetName: "KimiLogo",
             symbolName: "moon",
             apiKey: APIKeyConnection(host: "api.moonshot.ai", keysPage: URL(string: "https://platform.moonshot.ai/console/api-keys")!)
         ),
@@ -140,7 +140,7 @@ enum ProviderCatalog {
             displayName: "OpenRouter",
             summary: "Track OpenRouter spending and key limits.",
             availability: .available,
-            logoAssetName: nil,
+            logoAssetName: "OpenRouterLogo",
             symbolName: "arrow.triangle.branch",
             apiKey: APIKeyConnection(host: "openrouter.ai", keysPage: URL(string: "https://openrouter.ai/settings/keys")!)
         ),
