@@ -20,4 +20,4 @@ Otherwise, download `UsageNow-0.5.0.dmg` below and drag UsageNow to Applications
 
 Requires macOS 15 or later. Signed with a Developer ID and notarized by Apple.
 
-**SHA-256:** `PENDING`
+**SHA-256:** `f926c692678e825bcaad6cf827b4fe8cb8ac21cedc5a397660813ffcb69932f1`
