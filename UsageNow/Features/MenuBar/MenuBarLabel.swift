@@ -12,10 +12,10 @@ struct MenuBarLabel: View {
         if let usage = preferences.menuBarDisplayMode.usage(in: store.snapshots) {
             HStack(spacing: 3) {
                 icon
-                // Percent left, matching the popover. Set a size rather than
+                // Left or used, matching the popover. Set a size rather than
                 // taking the default: the menu bar's own font is larger than
                 // the glyphs around it, so an unsized number sticks out.
-                Text(verbatim: UsageFormatter.remainingPercent(usage))
+                Text(verbatim: preferences.usageAmountStyle.percent(usage))
                     .font(.system(size: 11.5, weight: .medium))
                     .monospacedDigit()
             }

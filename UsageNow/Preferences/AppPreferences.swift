@@ -12,11 +12,17 @@ final class AppPreferences {
         static let refreshInterval = "refreshInterval"
         static let menuBarDisplayMode = "menuBarDisplayMode"
         static let appearance = "appearance"
+        static let usageAmountStyle = "usageAmountStyle"
         static let fetchClaudeUsageLimits = "experimental.fetchClaudeUsageLimits"
     }
 
     var appearance: AppAppearance {
         didSet { defaults.set(appearance.rawValue, forKey: Key.appearance) }
+    }
+
+    /// Whether limits read as what's left or what's used, everywhere.
+    var usageAmountStyle: UsageAmountStyle {
+        didSet { defaults.set(usageAmountStyle.rawValue, forKey: Key.usageAmountStyle) }
     }
 
     var refreshInterval: RefreshInterval {
@@ -38,6 +44,7 @@ final class AppPreferences {
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         appearance = defaults.string(forKey: Key.appearance).flatMap(AppAppearance.init(rawValue:)) ?? .default
+        usageAmountStyle = defaults.string(forKey: Key.usageAmountStyle).flatMap(UsageAmountStyle.init(rawValue:)) ?? .default
         fetchClaudeUsageLimits = defaults.bool(forKey: Key.fetchClaudeUsageLimits)
         refreshInterval = (defaults.object(forKey: Key.refreshInterval) as? Int)
             .flatMap(RefreshInterval.init(rawValue:)) ?? .default

@@ -7,6 +7,8 @@ struct UsageWindowsView: View {
     let windows: [UsageWindow]
     let now: Date
 
+    @Environment(\.usageAmountStyle) private var style
+
     @ScaledMetric(relativeTo: .callout) private var labelWidth: CGFloat = 48
     private let columnSpacing: CGFloat = 10
     private let formatter = ResetTimeFormatter()
@@ -59,7 +61,7 @@ struct UsageWindowsView: View {
 
     private func accessibilityValue(for window: UsageWindow) -> String {
         guard let usage = window.usage else { return String(localized: "Unavailable") }
-        var parts = [String(localized: "\(UsageFormatter.remainingPercent(usage)) left", comment: "Remaining quota, e.g. 58% left")]
+        var parts = [style.accessibilityDescription(usage)]
         if let level = usage.level.accessibilityDescription { parts.append(level) }
         if let resetsAt = window.resetsAt {
             parts.append(formatter.accessibleResetDescription(for: resetsAt, now: now))
@@ -68,9 +70,11 @@ struct UsageWindowsView: View {
     }
 }
 
-/// "58% left", with a small symbol when little is left.
+/// "58% left" or "42% used", with a small symbol when little is left.
 private struct UsagePercentLabel: View {
     let usage: UsagePercentage?
+
+    @Environment(\.usageAmountStyle) private var style
 
     @ScaledMetric(relativeTo: .callout) private var minWidth: CGFloat = 72
 
@@ -82,11 +86,11 @@ private struct UsagePercentLabel: View {
                         .font(.caption)
                         .foregroundStyle(usage.level.tint)
                 }
-                Text(verbatim: UsageFormatter.remainingPercent(usage))
+                Text(verbatim: style.percent(usage))
                     .font(.callout.weight(.semibold))
                     .monospacedDigit()
                     .contentTransition(.numericText())
-                Text("left", comment: "Follows a remaining percentage, e.g. 58% left")
+                style.unit
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             } else {

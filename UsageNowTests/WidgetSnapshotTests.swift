@@ -143,6 +143,32 @@ struct WidgetSnapshotWriterTests {
         #expect(store.read()?.providers.first?.windows.first?.usage?.displayValue == 43)
     }
 
+    /// Switching between "left" and "used" redraws the widget even when the
+    /// numbers are the same.
+    @Test func carriesTheUsageAmountStyle() throws {
+        let directory = try TemporaryDirectory()
+        let store = WidgetSnapshotStore(directory: directory.url)
+        let reloads = Counter()
+        let writer = WidgetSnapshotWriter(store: store, reloadTimelines: { reloads.increment() }, now: { self.now })
+        let states = [state(.codex, windows: [window(.weekly, used: 42)])]
+
+        writer.update(states: states, enabledProviders: [.codex], style: .remaining)
+        writer.update(states: states, enabledProviders: [.codex], style: .used)
+        #expect(reloads.value == 2)
+        #expect(store.read()?.usageAmountStyle == .used)
+    }
+
+    /// A snapshot written before the choice existed still reads, as "left".
+    @Test func olderSnapshotsHaveNoStyle() throws {
+        var snapshot = WidgetSnapshot(generatedAt: now, state: .noProvidersEnabled)
+        snapshot.usageAmountStyle = .used
+        var json = try #require(try JSONSerialization.jsonObject(with: JSONEncoder.widget.encode(snapshot)) as? [String: Any])
+        json["usageAmountStyle"] = nil
+        let data = try JSONSerialization.data(withJSONObject: json)
+        let decoded = try JSONDecoder.widget.decode(WidgetSnapshot.self, from: data)
+        #expect(decoded.usageAmountStyle == nil)
+    }
+
     @Test func missingAppGroupIsNotFatal() {
         let writer = WidgetSnapshotWriter(store: nil, reloadTimelines: { Issue.record("Must not reload without a store") }, now: { self.now })
         writer.update(states: [state(.codex, windows: [])], enabledProviders: [.codex])
@@ -207,14 +233,16 @@ struct WidgetSnapshotStoreTests {
     /// The snapshot file is the app's only channel to the widget, so its
     /// shape is pinned: nothing outside this list may ever be written.
     @Test func onlySafeFieldsAreSerialized() throws {
-        let data = try JSONEncoder.widget.encode(makeSnapshot())
+        var snapshot = makeSnapshot()
+        snapshot.usageAmountStyle = .used
+        let data = try JSONEncoder.widget.encode(snapshot)
         let json = try #require(try JSONSerialization.jsonObject(with: data) as? [String: Any])
-        #expect(Set(json.keys) == ["schemaVersion", "generatedAt", "state"])
+        #expect(Set(json.keys) == ["schemaVersion", "generatedAt", "state", "usageAmountStyle"])
 
         var keys = Set<String>()
         collectKeys(json, into: &keys)
         let allowed: Set<String> = [
-            "schemaVersion", "generatedAt", "state", "providers", "_0",
+            "schemaVersion", "generatedAt", "state", "usageAmountStyle", "providers", "_0",
             "provider", "planName", "modelName", "windows", "tokensToday", "requestsToday",
             "quotaUnavailableReason", "kind", "scope", "usage", "resetsAt",
         ]

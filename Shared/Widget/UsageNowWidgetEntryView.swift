@@ -15,6 +15,7 @@ struct UsageNowWidgetEntryView: View {
 
     var body: some View {
         content
+            .environment(\.usageAmountStyle, entry.snapshot?.usageAmountStyle ?? .default)
             .containerBackground(.background, for: .widget)
     }
 
@@ -55,6 +56,7 @@ struct SmallUsageWidgetView: View {
     let now: Date
 
     private let formatter = ResetTimeFormatter()
+    @Environment(\.usageAmountStyle) private var style
 
     /// Two rows leave room for the next reset; three fill the widget.
     nonisolated static let maxRows = 3
@@ -155,7 +157,7 @@ struct SmallUsageWidgetView: View {
         guard let window = provider.mostRelevantWindow, let usage = window.usage else {
             return String(localized: "Usage limits unavailable")
         }
-        var parts = [String(localized: "\(UsageFormatter.remainingPercent(usage)) left", comment: "Remaining quota, e.g. 58% left")]
+        var parts = [style.accessibilityDescription(usage)]
         if let resetsAt = window.resetsAt {
             parts.append(formatter.accessibleResetDescription(for: resetsAt, now: now))
         }

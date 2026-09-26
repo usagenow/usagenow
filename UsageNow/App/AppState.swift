@@ -127,6 +127,7 @@ final class AppState {
         observe({ [providerPreferences] in _ = providerPreferences.enabledProviders }, apply: { [weak self] in self?.applyEnabledProviders() })
         observe({ [providerPreferences] in _ = providerPreferences.order }, apply: { [weak self] in self?.applyProviderOrder() })
         observe({ [store] in _ = store.states }, apply: { [weak self] in self?.storeDidChange() })
+        observe({ [preferences] in _ = preferences.usageAmountStyle }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [analyticsPreferences] in _ = analyticsPreferences.isSharingEnabled }, apply: { [weak self] in self?.analyticsSharingChanged() })
 
         Task { [telemetry] in await telemetry.appDidBecomeActive() }
@@ -212,7 +213,7 @@ final class AppState {
         let detected = detectedProviders
         Task { [telemetry] in await telemetry.providersDetected(detected) }
         // The widget only ever sees what this writer publishes.
-        widgetSnapshots.update(states: store.states, enabledProviders: store.enabledProviders)
+        widgetSnapshots.update(states: store.states, enabledProviders: store.enabledProviders, style: preferences.usageAmountStyle)
     }
 
     private func analyticsSharingChanged() {

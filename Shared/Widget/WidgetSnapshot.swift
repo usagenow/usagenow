@@ -24,6 +24,9 @@ struct WidgetSnapshot: Codable, Sendable, Equatable {
     /// When the main app produced this snapshot.
     var generatedAt: Date
     var state: State
+    /// Whether limits read as left or used. Optional so a snapshot written
+    /// before the choice existed still reads, as "left".
+    var usageAmountStyle: UsageAmountStyle? = nil
 
     var providers: [WidgetProviderSnapshot] {
         if case .providers(let providers) = state { return providers }

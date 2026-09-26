@@ -1,7 +1,8 @@
 import SwiftUI
 
 /// A thin bar showing how much of a limit is left — it shrinks as usage
-/// grows. Empty when exhausted or unknown.
+/// grows — or, when limits read as used, how much is used. Empty when
+/// nothing is left to show or the usage is unknown.
 ///
 /// Hidden from accessibility: the enclosing row describes the value.
 struct UsageProgressView: View {
@@ -9,15 +10,16 @@ struct UsageProgressView: View {
     /// Thinner in the widget than in the popover.
     var height: CGFloat = 5
     @Environment(\.colorSchemeContrast) private var contrast
+    @Environment(\.usageAmountStyle) private var style
 
     var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .leading) {
                 Capsule().fill(trackStyle)
-                if let usage, usage.remainingDisplayValue > 0 {
+                if let usage, style.displayValue(usage) > 0 {
                     Capsule()
                         .fill(usage.level.tint)
-                        .frame(width: max(height, proxy.size.width * usage.remainingFraction))
+                        .frame(width: max(height, proxy.size.width * style.barFraction(usage)))
                 }
             }
         }

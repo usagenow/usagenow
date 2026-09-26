@@ -33,12 +33,14 @@ struct WidgetHeader: View {
     }
 }
 
-/// "58% left", with a warning glyph when little is left.
+/// "58% left" or "42% used", with a warning glyph when little is left.
 struct WidgetRemainingLabel: View {
     let usage: UsagePercentage?
     var font: Font = .callout
     /// Off where space is tight; the bar's color still shows the level.
     var showsLevelSymbol = true
+
+    @Environment(\.usageAmountStyle) private var style
 
     var body: some View {
         HStack(spacing: 3) {
@@ -49,10 +51,10 @@ struct WidgetRemainingLabel: View {
                     .accessibilityHidden(true)
             }
             if let usage {
-                Text(verbatim: UsageFormatter.remainingPercent(usage))
+                Text(verbatim: style.percent(usage))
                     .font(font.weight(.semibold))
                     .monospacedDigit()
-                Text("left", comment: "Follows a remaining percentage, e.g. 58% left")
+                style.unit
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } else {
@@ -71,6 +73,7 @@ struct WidgetWindowRow: View {
     var showsResetLine = true
 
     private let formatter = ResetTimeFormatter()
+    @Environment(\.usageAmountStyle) private var style
 
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
@@ -98,7 +101,7 @@ struct WidgetWindowRow: View {
 
     private var accessibilityValue: String {
         guard let usage = window.usage else { return String(localized: "Unavailable") }
-        var parts = [String(localized: "\(UsageFormatter.remainingPercent(usage)) left", comment: "Remaining quota, e.g. 58% left")]
+        var parts = [style.accessibilityDescription(usage)]
         if let resetsAt = window.resetsAt {
             parts.append(formatter.accessibleResetDescription(for: resetsAt, now: now))
         }
@@ -136,6 +139,7 @@ struct WidgetProviderRow: View {
     let now: Date
 
     private let formatter = ResetTimeFormatter()
+    @Environment(\.usageAmountStyle) private var style
 
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
@@ -176,7 +180,7 @@ struct WidgetProviderRow: View {
         guard let window = provider.mostRelevantWindow, let usage = window.usage else {
             return String(localized: "Usage limits unavailable")
         }
-        var parts = [String(localized: "\(UsageFormatter.remainingPercent(usage)) left", comment: "Remaining quota, e.g. 58% left")]
+        var parts = [style.accessibilityDescription(usage)]
         if let resetsAt = window.resetsAt {
             parts.append(formatter.accessibleResetDescription(for: resetsAt, now: now))
         }

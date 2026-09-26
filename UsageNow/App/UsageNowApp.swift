@@ -13,6 +13,7 @@ struct UsageNowApp: App {
     var body: some Scene {
         MenuBarExtra {
             MenuBarContentView(store: appState.store, navigation: appState.settingsNavigation)
+                .environment(\.usageAmountStyle, appState.preferences.usageAmountStyle)
                 .onPopoverOpen { appState.popoverDidOpen() }
         } label: {
             MenuBarLabel(preferences: appState.preferences, store: appState.store)

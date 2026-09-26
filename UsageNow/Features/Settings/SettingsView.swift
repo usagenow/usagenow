@@ -123,6 +123,19 @@ struct GeneralSettingsView: View {
             }
 
             Section {
+                Picker("Show limits as", selection: $preferences.usageAmountStyle) {
+                    ForEach(UsageAmountStyle.allCases, id: \.self) { style in
+                        Text(style.title).tag(style)
+                    }
+                }
+                .pickerStyle(.segmented)
+            } footer: {
+                Text("Applies to the popover, the menu bar, and the widget.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+
+            Section {
                 Picker("Refresh interval", selection: $preferences.refreshInterval) {
                     ForEach(RefreshInterval.allCases) { interval in
                         Text(interval.title).tag(interval)
