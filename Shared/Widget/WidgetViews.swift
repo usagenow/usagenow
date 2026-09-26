@@ -161,8 +161,8 @@ struct WidgetProviderRow: View {
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
                 Spacer(minLength: 4)
-                if let tokens = provider.tokensToday {
-                    Text("\(UsageFormatter.tokens(tokens)) tokens")
+                if let activity = provider.activityText(short: true) {
+                    Text(verbatim: activity)
                         .font(.caption2)
                         .monospacedDigit()
                         .foregroundStyle(.tertiary)

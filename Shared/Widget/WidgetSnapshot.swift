@@ -80,6 +80,9 @@ struct WidgetProviderSnapshot: Codable, Sendable, Equatable, Identifiable {
     /// Local activity totals for today.
     var tokensToday: Int64?
     var requestsToday: Int64?
+    /// Credits spent today, for tools that meter in credits (Kiro, Warp,
+    /// Qoder). Optional, so snapshots from earlier versions still read.
+    var creditsToday: Decimal? = nil
     /// Why quota is missing, when that's worth showing.
     var quotaUnavailableReason: QuotaUnavailableReason?
 
@@ -90,4 +93,21 @@ struct WidgetProviderSnapshot: Codable, Sendable, Equatable, Identifiable {
 
     /// The window to show when there's only room for one.
     var mostRelevantWindow: UsageWindow? { windows.mostRelevant }
+
+    /// Today's activity in the tool's own meter, for a provider with no
+    /// limits to show: tokens where it records them, credits otherwise.
+    /// "12.8M tokens today", or "12.8M tokens" when `short`.
+    func activityText(short: Bool = false) -> String? {
+        if let tokens = tokensToday {
+            return short
+                ? String(localized: "\(UsageFormatter.tokens(tokens)) tokens", comment: "Widget activity, e.g. 12.8M tokens")
+                : String(localized: "\(UsageFormatter.tokens(tokens)) tokens today", comment: "Widget activity, e.g. 12.8M tokens today")
+        }
+        if let credits = creditsToday {
+            return short
+                ? String(localized: "\(UsageFormatter.credits(credits)) credits", comment: "Widget activity, e.g. 2.23 credits")
+                : String(localized: "\(UsageFormatter.credits(credits)) credits today", comment: "Widget activity, e.g. 2.23 credits today")
+        }
+        return nil
+    }
 }

@@ -67,6 +67,7 @@ final class WidgetSnapshotWriter {
             windows: snapshot.windows.filter { $0.usage != nil || ($0.resetsAt ?? .distantFuture) > snapshot.updatedAt },
             tokensToday: snapshot.activity.tokensToday,
             requestsToday: snapshot.activity.requestsToday,
+            creditsToday: snapshot.activity.creditsToday,
             quotaUnavailableReason: snapshot.windows.isEmpty ? snapshot.quotaUnavailableReason : nil
         )
     }

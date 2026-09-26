@@ -31,7 +31,7 @@ struct UsageNowWidgetEntryView: View {
             case .noProvidersDetected:
                 WidgetMessageView(
                     title: "No providers detected",
-                    message: "Install or use Codex, Claude Code, Gemini CLI, or Antigravity to start tracking usage."
+                    message: "Install or use a supported AI coding tool to start tracking usage."
                 )
             case .providers(let providers):
                 if family == .systemSmall {
@@ -141,8 +141,8 @@ struct SmallUsageWidgetView: View {
 
     @ViewBuilder
     private func activity(_ provider: WidgetProviderSnapshot) -> some View {
-        if let tokens = provider.tokensToday {
-            Text("\(UsageFormatter.tokens(tokens)) tokens today")
+        if let activity = provider.activityText() {
+            Text(verbatim: activity)
                 .font(.caption2)
                 .foregroundStyle(.secondary)
         }
@@ -207,8 +207,8 @@ struct MediumUsageWidgetView: View {
             let windows = Array(provider.windows.sortedForDisplay().prefix(Self.maxWindowsPerProvider))
             if windows.isEmpty {
                 WidgetUnavailableLabel()
-                if let tokens = provider.tokensToday {
-                    Text("\(UsageFormatter.tokens(tokens)) tokens today")
+                if let activity = provider.activityText() {
+                    Text(verbatim: activity)
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                 }

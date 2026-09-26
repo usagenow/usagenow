@@ -158,6 +158,21 @@ struct WidgetSnapshotWriterTests {
         #expect(store.read()?.usageAmountStyle == .used)
     }
 
+    /// Tools that meter in credits show them where there are no limits.
+    @Test func carriesCreditsForProvidersWithoutTokens() {
+        var qoder = ProviderState(provider: .qoder)
+        qoder.snapshot = ProviderSnapshot(
+            provider: .qoder,
+            status: .available,
+            activity: LocalActivity(requestsToday: 7, creditsToday: Decimal(string: "2.2325")),
+            updatedAt: now
+        )
+        let snapshot = WidgetSnapshotWriter.makeSnapshot(states: [qoder], enabledProviders: [.qoder], generatedAt: now)
+        let provider = snapshot.providers.first
+        #expect(provider?.creditsToday == Decimal(string: "2.2325"))
+        #expect(provider?.activityText(short: true)?.contains("credits") == true)
+    }
+
     /// A snapshot written before the choice existed still reads, as "left".
     @Test func olderSnapshotsHaveNoStyle() throws {
         var snapshot = WidgetSnapshot(generatedAt: now, state: .noProvidersEnabled)
@@ -243,7 +258,7 @@ struct WidgetSnapshotStoreTests {
         collectKeys(json, into: &keys)
         let allowed: Set<String> = [
             "schemaVersion", "generatedAt", "state", "usageAmountStyle", "providers", "_0",
-            "provider", "planName", "modelName", "windows", "tokensToday", "requestsToday",
+            "provider", "planName", "modelName", "windows", "tokensToday", "requestsToday", "creditsToday",
             "quotaUnavailableReason", "kind", "scope", "usage", "resetsAt",
         ]
         #expect(keys.subtracting(allowed).isEmpty, "Unexpected fields: \(keys.subtracting(allowed))")
