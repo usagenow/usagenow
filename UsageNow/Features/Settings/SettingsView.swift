@@ -46,10 +46,27 @@ struct SettingsView: View {
                 PrivacySettingsView(analyticsPreferences: analyticsPreferences)
             }
             Tab("About", systemImage: "info.circle", value: SettingsTab.about) {
-                AboutSettingsView()
+                AboutSettingsView(makeReport: makeReport)
             }
         }
         .frame(width: Self.width)
+    }
+
+    private func makeReport() -> String {
+        DiagnosticReport.make(
+            states: store.states,
+            order: providerPreferences.order,
+            enabled: providerPreferences.enabledProviders,
+            hasAPIKey: hasAPIKey,
+            settings: DiagnosticReport.Settings(
+                appearance: preferences.appearance.rawValue,
+                usageAmountStyle: preferences.usageAmountStyle.rawValue,
+                showsActivityHistory: preferences.showsActivityHistory,
+                refreshInterval: "\(preferences.refreshInterval.rawValue)s",
+                menuBarDisplayMode: preferences.menuBarDisplayMode.rawValue,
+                fetchClaudeUsageLimits: preferences.fetchClaudeUsageLimits
+            )
+        )
     }
 }
 
@@ -249,8 +266,17 @@ struct PrivacySettingsView: View {
     }
 }
 
+/// A report built when the sheet opens, so it describes that moment.
+struct ReportDraft: Identifiable {
+    let id = UUID()
+    let text: String
+}
+
 struct AboutSettingsView: View {
+    var makeReport: () -> String = { "" }
+
     @State private var isShowingLicenses = false
+    @State private var report: ReportDraft?
 
     var body: some View {
         VStack(spacing: 14) {
@@ -277,14 +303,20 @@ struct AboutSettingsView: View {
             }
             .font(.callout)
 
-            Button("Open Source Licenses…") { isShowingLicenses = true }
-                .controlSize(.small)
+            HStack(spacing: 10) {
+                Button("Open Source Licenses…") { isShowingLicenses = true }
+                Button("Report a Problem…") { report = ReportDraft(text: makeReport()) }
+            }
+            .controlSize(.small)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 28)
         .padding(.horizontal, 24)
         .sheet(isPresented: $isShowingLicenses) {
             LicensesView()
+        }
+        .sheet(item: $report) { draft in
+            ReportProblemView(report: draft.text)
         }
     }
 }
