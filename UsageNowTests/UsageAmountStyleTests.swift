@@ -31,6 +31,14 @@ struct UsageAmountStyleTests {
     }
 
     @MainActor
+    @Test func chartsAreShownUntilTurnedOff() {
+        let defaults = UserDefaults(suiteName: "charts-\(UUID())")!
+        #expect(AppPreferences(defaults: defaults).showsActivityHistory)
+        AppPreferences(defaults: defaults).showsActivityHistory = false
+        #expect(!AppPreferences(defaults: defaults).showsActivityHistory)
+    }
+
+    @MainActor
     @Test func thePreferencePersistsAndDefaultsToLeft() {
         let defaults = UserDefaults(suiteName: "style-\(UUID())")!
         #expect(AppPreferences(defaults: defaults).usageAmountStyle == .remaining)

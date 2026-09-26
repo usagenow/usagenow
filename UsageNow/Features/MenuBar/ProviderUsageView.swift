@@ -8,6 +8,7 @@ struct ProviderUsageView: View {
     let onRetry: () -> Void
 
     private let formatter = ResetTimeFormatter()
+    @Environment(\.showsActivityHistory) private var showsActivityHistory
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -45,7 +46,7 @@ struct ProviderUsageView: View {
                     StatusMessage(text: snapshot.quotaUnavailableReason?.message(for: state.provider) ?? String(localized: "Usage limits unavailable"))
                 }
                 ProviderActivityView(activity: snapshot.activity)
-                if let history = snapshot.activity.history {
+                if showsActivityHistory, let history = snapshot.activity.history {
                     ActivityHistoryView(history: history)
                 }
                 ModelActivityView(models: snapshot.modelActivity)

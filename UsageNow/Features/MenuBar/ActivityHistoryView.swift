@@ -175,6 +175,11 @@ struct ActivityHistoryView: View {
     }
 }
 
+extension EnvironmentValues {
+    /// Whether the popover shows the 30-day chart. Set from Settings.
+    @Entry var showsActivityHistory = true
+}
+
 #if DEBUG
 #Preview("Tokens") {
     ActivityHistoryView(history: PreviewFixtures.history(.tokens))

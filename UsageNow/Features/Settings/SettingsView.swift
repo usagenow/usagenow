@@ -136,6 +136,13 @@ struct GeneralSettingsView: View {
             }
 
             Section {
+                Toggle(isOn: $preferences.showsActivityHistory) {
+                    Text("Show the last 30 days")
+                    Text("A chart of daily activity under each provider in the menu bar window. Turn it off to keep the window short.")
+                }
+            }
+
+            Section {
                 Picker("Refresh interval", selection: $preferences.refreshInterval) {
                     ForEach(RefreshInterval.allCases) { interval in
                         Text(interval.title).tag(interval)

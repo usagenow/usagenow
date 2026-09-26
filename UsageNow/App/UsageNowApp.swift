@@ -14,6 +14,7 @@ struct UsageNowApp: App {
         MenuBarExtra {
             MenuBarContentView(store: appState.store, navigation: appState.settingsNavigation)
                 .environment(\.usageAmountStyle, appState.preferences.usageAmountStyle)
+                .environment(\.showsActivityHistory, appState.preferences.showsActivityHistory)
                 .onPopoverOpen { appState.popoverDidOpen() }
         } label: {
             MenuBarLabel(preferences: appState.preferences, store: appState.store)

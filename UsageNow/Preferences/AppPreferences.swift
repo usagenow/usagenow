@@ -13,6 +13,7 @@ final class AppPreferences {
         static let menuBarDisplayMode = "menuBarDisplayMode"
         static let appearance = "appearance"
         static let usageAmountStyle = "usageAmountStyle"
+        static let showsActivityHistory = "showsActivityHistory"
         static let fetchClaudeUsageLimits = "experimental.fetchClaudeUsageLimits"
     }
 
@@ -23,6 +24,12 @@ final class AppPreferences {
     /// Whether limits read as what's left or what's used, everywhere.
     var usageAmountStyle: UsageAmountStyle {
         didSet { defaults.set(usageAmountStyle.rawValue, forKey: Key.usageAmountStyle) }
+    }
+
+    /// The 30-day chart under each provider in the popover. On by default;
+    /// off keeps the popover compact with many providers.
+    var showsActivityHistory: Bool {
+        didSet { defaults.set(showsActivityHistory, forKey: Key.showsActivityHistory) }
     }
 
     var refreshInterval: RefreshInterval {
@@ -45,6 +52,7 @@ final class AppPreferences {
         self.defaults = defaults
         appearance = defaults.string(forKey: Key.appearance).flatMap(AppAppearance.init(rawValue:)) ?? .default
         usageAmountStyle = defaults.string(forKey: Key.usageAmountStyle).flatMap(UsageAmountStyle.init(rawValue:)) ?? .default
+        showsActivityHistory = defaults.object(forKey: Key.showsActivityHistory) as? Bool ?? true
         fetchClaudeUsageLimits = defaults.bool(forKey: Key.fetchClaudeUsageLimits)
         refreshInterval = (defaults.object(forKey: Key.refreshInterval) as? Int)
             .flatMap(RefreshInterval.init(rawValue:)) ?? .default
