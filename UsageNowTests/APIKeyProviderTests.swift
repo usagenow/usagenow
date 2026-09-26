@@ -54,6 +54,7 @@ struct APIKeyClientTests {
         #expect(ProviderCatalog.definition(for: .deepseek).apiKey?.host == "api.deepseek.com")
         #expect(ProviderCatalog.definition(for: .kimi).apiKey?.host == "api.moonshot.ai")
         #expect(ProviderCatalog.definition(for: .openrouter).apiKey?.host == "openrouter.ai")
+        #expect(ProviderCatalog.definition(for: .ollama).apiKey?.host == "ollama.com")
         // Tools read on this Mac never take a key.
         for id in [ProviderID.codex, .claudeCode, .gemini, .antigravity, .kiro, .warp, .opencode, .qoder] {
             #expect(ProviderCatalog.definition(for: id).apiKey == nil)
@@ -106,6 +107,29 @@ struct APIKeyResponseParsingTests {
         #expect(reading.balance?.canMakeRequests == true)
     }
 
+    @Test func ollamaReadsSessionAndWeeklyFractions() throws {
+        let body = #"{"activity":{"cost":"12.34","period":{"type":"last_4_weeks"}},"limits":{"session":{"usage":0.352,"models":[{"name":"glm-5.3-flash","request_count":458}]},"weekly":{"usage":0.215,"models":{"glm-5.3-flash":{"request_count":458}}}}}"#
+        let reading = try OllamaCloudUsage.parse(Data(body.utf8))
+        #expect(reading.windows.map(\.kind) == [.fiveHour, .weekly])
+        #expect(reading.windows.map { ($0.usage?.value ?? 0).rounded() } == [35, 22])
+        #expect(reading.windows.allSatisfy { $0.resetsAt == nil }, "Ollama gives no reset time, so none is invented")
+        #expect(reading.balance == nil)
+    }
+
+    /// Newer plans have no session window.
+    @Test func ollamaWithOnlyAWeeklyWindow() throws {
+        let reading = try OllamaCloudUsage.parse(Data(#"{"limits":{"weekly":{"usage":1.4}}}"#.utf8))
+        #expect(reading.windows.map(\.kind) == [.weekly])
+        #expect(reading.windows.first?.usage?.value == 100)
+    }
+
+    /// If Ollama changes the answer, limits read as unavailable rather than wrong.
+    @Test func ollamaWithoutLimitsShowsNone() throws {
+        #expect(try OllamaCloudUsage.parse(Data(#"{"quota":{"used":3}}"#.utf8)).windows.isEmpty)
+        #expect(try OllamaCloudUsage.parse(Data(#"{"limits":{"session":{"usage":"35%"}}}"#.utf8)).windows.isEmpty)
+        #expect(throws: APIKeyClient.Failure.unreadableResponse) { try OllamaCloudUsage.parse(Data("<html>".utf8)) }
+    }
+
     @Test func unreadableAnswersThrow() {
         for body in ["", "{}", #"{"balance_infos":[]}"#, "not json"] {
             #expect(throws: APIKeyClient.Failure.unreadableResponse) { try DeepSeekBalance.parse(Data(body.utf8)) }
@@ -136,6 +160,15 @@ struct APIKeyProviderTests {
         let snapshot = try await APIKeyProvider.kimi(keys: MemoryKeys([.kimi: "sk-revoked"]), transport: StubTransport(status: 401, body: ""))
             .fetchSnapshot(trigger: .automatic)
         #expect(snapshot.status == .notAuthenticated)
+    }
+
+    @Test func ollamaIsOnlyEverAskedAtOllamaDotCom() async throws {
+        let transport = StubTransport(status: 200, body: #"{"limits":{"weekly":{"usage":0.5}}}"#)
+        let snapshot = try await APIKeyProvider.ollama(keys: MemoryKeys([.ollama: "ok-key"]), transport: transport).fetchSnapshot(trigger: .automatic)
+        #expect(snapshot.windows.first?.usage?.value == 50)
+        let request = try #require(await transport.requests.first)
+        #expect(request.url?.absoluteString == "https://ollama.com/api/usage")
+        #expect(ProviderCatalog.definition(for: .ollama).isExperimental)
     }
 
     /// The store keeps the last reading and reports the failed refresh.

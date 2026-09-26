@@ -111,6 +111,7 @@ final class AppState {
             APIKeyProvider.deepSeek(keys: apiKeys),
             APIKeyProvider.kimi(keys: apiKeys),
             APIKeyProvider.openRouter(keys: apiKeys),
+            APIKeyProvider.ollama(keys: apiKeys),
         ]
     }
 

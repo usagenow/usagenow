@@ -68,6 +68,13 @@ struct APIKeyProvider: UsageProvider {
             try OpenRouterKey.parse(try await client.get("/api/v1/key", key: key))
         }
     }
+
+    /// Experimental: Ollama doesn't document this endpoint.
+    static func ollama(keys: any APIKeyStoring, transport: (any HTTPTransport)? = nil) -> APIKeyProvider {
+        APIKeyProvider(id: .ollama, keys: keys, transport: transport) { client, key in
+            try OllamaCloudUsage.parse(try await client.get("/api/usage", key: key))
+        }
+    }
 }
 
 /// Exact decimals from JSON numbers or strings, without binary rounding noise.
@@ -197,5 +204,57 @@ enum OpenRouterKey {
         }
 
         var data: Key?
+    }
+}
+
+/// `GET ollama.com/api/usage` — Ollama Cloud's session and weekly limits for
+/// the account a Cloud API key belongs to.
+///
+/// EXPERIMENTAL: the endpoint isn't documented. Each limit is a used
+/// fraction from 0 to 1; no reset time is given, so none is shown. Plans
+/// started after August 2026 may have no session window, and then only the
+/// weekly one appears.
+///
+/// Only the two fractions are read. The per-model request counts and the
+/// activity summary beside them aren't decoded — their shape has changed
+/// before. An answer that no longer carries the limits shows them as
+/// unavailable instead of guessing.
+enum OllamaCloudUsage {
+    private struct Body: Decodable {
+        struct Limit: Decodable {
+            var usage: Double?
+
+            /// A value that isn't a number reads as unknown, not as a failure
+            /// of the whole answer.
+            init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                usage = try? container.decode(Double.self, forKey: .usage)
+            }
+
+            private enum CodingKeys: String, CodingKey {
+                case usage
+            }
+        }
+
+        struct Limits: Decodable {
+            var session: Limit?
+            var weekly: Limit?
+        }
+
+        var limits: Limits?
+    }
+
+    static func parse(_ data: Data) throws -> APIKeyReading {
+        guard let body = try? JSONDecoder().decode(Body.self, from: data) else {
+            throw APIKeyClient.Failure.unreadableResponse
+        }
+        let windows: [UsageWindow] = [
+            (UsageWindowKind.fiveHour, body.limits?.session?.usage),
+            (UsageWindowKind.weekly, body.limits?.weekly?.usage),
+        ].compactMap { kind, fraction in
+            guard let usage = fraction.flatMap(UsagePercentage.init(fraction:)) else { return nil }
+            return UsageWindow(kind: kind, usage: usage, resetsAt: nil)
+        }
+        return APIKeyReading(windows: windows)
     }
 }

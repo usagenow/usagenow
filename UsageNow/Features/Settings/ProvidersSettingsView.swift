@@ -145,6 +145,9 @@ private struct APIKeySheet: View {
                 if let host = definition.apiKey?.host {
                     Text("UsageNow uses this key only to read your usage from \(host). It stays in the Keychain on this Mac, is never sent anywhere else, and is deleted when you turn \(definition.displayName) off.")
                 }
+                if definition.isExperimental {
+                    Text("Experimental: \(definition.displayName) doesn’t document how to read usage, so this may stop working without notice. If it does, UsageNow shows limits as unavailable rather than guessing.")
+                }
                 Text("API keys can usually spend money, not just read it. If \(definition.displayName) lets you, create a separate key for UsageNow.")
                     .foregroundStyle(.orange)
                 if let page = definition.apiKey?.keysPage {
@@ -192,7 +195,17 @@ private struct ProviderRowLabel: View {
         HStack(spacing: 8) {
             ProviderLogoTile(provider: definition.id)
             VStack(alignment: .leading, spacing: 1) {
-                Text(verbatim: definition.displayName)
+                HStack(spacing: 6) {
+                    Text(verbatim: definition.displayName)
+                    if definition.isExperimental {
+                        Text("Experimental")
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(.secondary)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 1)
+                            .background(Palette.badgeFill, in: .capsule)
+                    }
+                }
                 if let summary = definition.summary {
                     Text(summary)
                         .font(.callout)

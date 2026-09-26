@@ -17,6 +17,7 @@ enum ProviderID: String, CaseIterable, Codable, Sendable, Identifiable, Comparab
     case deepseek
     case kimi
     case openrouter
+    case ollama
     case cursor
     case copilot
     case qwen
@@ -55,6 +56,9 @@ struct ProviderDefinition: Sendable, Identifiable, Equatable {
     /// Set for providers read with the person's own API key: the only host
     /// that key is ever sent to, and where to create one.
     var apiKey: APIKeyConnection? = nil
+    /// Read from a source the service doesn't document, so it may stop
+    /// working without notice. Labeled as such wherever it's offered.
+    var isExperimental = false
 }
 
 /// How a provider connected with an API key talks to its service.
@@ -161,6 +165,16 @@ enum ProviderCatalog {
             logoAssetName: "OpenRouterLogo",
             symbolName: "arrow.triangle.branch",
             apiKey: APIKeyConnection(host: "openrouter.ai", keysPage: URL(string: "https://openrouter.ai/settings/keys")!)
+        ),
+        ProviderDefinition(
+            id: .ollama,
+            displayName: "Ollama Cloud",
+            summary: "Track Ollama Cloud session and weekly limits.",
+            availability: .available,
+            logoAssetName: "OllamaLogo",
+            symbolName: "cloud",
+            apiKey: APIKeyConnection(host: "ollama.com", keysPage: URL(string: "https://ollama.com/settings/keys")!),
+            isExperimental: true
         ),
         ProviderDefinition(
             id: .cursor,
