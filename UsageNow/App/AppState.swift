@@ -107,6 +107,7 @@ final class AppState {
             KiroProvider(),
             WarpProvider(),
             OpenCodeProvider(),
+            QoderProvider(),
             APIKeyProvider.deepSeek(keys: apiKeys),
             APIKeyProvider.kimi(keys: apiKeys),
             APIKeyProvider.openRouter(keys: apiKeys),

@@ -13,6 +13,7 @@ enum ProviderID: String, CaseIterable, Codable, Sendable, Identifiable, Comparab
     case kiro
     case warp
     case opencode
+    case qoder
     case deepseek
     case kimi
     case openrouter
@@ -125,6 +126,14 @@ enum ProviderCatalog {
             availability: .available,
             logoAssetName: "OpenCodeLogo",
             symbolName: "chevron.left.forwardslash.chevron.right"
+        ),
+        ProviderDefinition(
+            id: .qoder,
+            displayName: "Qoder",
+            summary: "Track Qoder credits.",
+            availability: .available,
+            logoAssetName: "QoderLogo",
+            symbolName: "circle.dashed"
         ),
         ProviderDefinition(
             id: .deepseek,
