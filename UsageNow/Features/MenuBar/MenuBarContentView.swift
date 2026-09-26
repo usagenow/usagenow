@@ -10,6 +10,10 @@ struct MenuBarContentView: View {
     let store: UsageStore
     var navigation = SettingsNavigation()
 
+    /// The providers' natural height, measured outside the scroll view so
+    /// the popover can match it exactly while it fits on screen.
+    @State private var providersHeight: CGFloat?
+
     @Environment(\.openSettings) private var openSettings
 
     var body: some View {
@@ -31,6 +35,16 @@ struct MenuBarContentView: View {
             }
         }
         .frame(width: Self.width)
+        .background(Palette.popoverBackdrop)
+    }
+
+    /// The most the provider list may take before it scrolls: the screen's
+    /// usable height, less the header, footer, and a margin below. With many
+    /// providers and their charts, the popover would otherwise run off a
+    /// small screen.
+    private var maxProvidersHeight: CGFloat {
+        let screen = NSScreen.main?.visibleFrame.height ?? 800
+        return max(240, screen - 120)
     }
 
     @ViewBuilder
@@ -43,16 +57,23 @@ struct MenuBarContentView: View {
         case .noProvidersEnabled:
             NoProvidersEnabledView { showSettings(.providers) }
         case .providers(let states):
-            VStack(spacing: 0) {
-                ForEach(states) { state in
-                    ProviderUsageView(state: state, now: now) {
-                        Task { await store.refresh(only: [state.provider], trigger: .manual) }
-                    }
-                    if state.id != states.last?.id {
-                        Divider().padding(.horizontal, 14)
+            ScrollView(.vertical) {
+                VStack(spacing: 0) {
+                    ForEach(states) { state in
+                        ProviderUsageView(state: state, now: now) {
+                            Task { await store.refresh(only: [state.provider], trigger: .manual) }
+                        }
+                        if state.id != states.last?.id {
+                            Divider().padding(.horizontal, 14)
+                        }
                     }
                 }
+                .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { providersHeight = $0 }
             }
+            .scrollBounceBehavior(.basedOnSize)
+            // The content's own height, never the window's, decides this, so
+            // a resize can't feed back into another one.
+            .frame(height: providersHeight.map { min($0, maxProvidersHeight) })
         }
     }
 

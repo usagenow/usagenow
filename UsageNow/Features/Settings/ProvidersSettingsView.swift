@@ -12,6 +12,13 @@ struct ProvidersSettingsView: View {
     var setAPIKey: (String?, ProviderID) throws -> Void = { _, _ in }
 
     @State private var editingKeyFor: ProviderDefinition?
+
+    /// Tall enough for most of the list, short enough for a 13-inch screen
+    /// with room for the window's title and tabs.
+    static var height: CGFloat {
+        let screen = NSScreen.main?.visibleFrame.height ?? 800
+        return min(640, max(380, screen - 200))
+    }
     /// Bumped after a save or removal, so key status is read again.
     @State private var keyRevision = 0
 
@@ -31,28 +38,30 @@ struct ProvidersSettingsView: View {
                 Text("Available")
             }
 
-            Section {
-                ForEach(ProviderCatalog.comingSoon) { definition in
+            if !ProviderCatalog.comingSoon.isEmpty {
+                Section {
+                    // One row: they're labels only, and a row each made the
+                    // list taller than a laptop screen.
                     HStack(spacing: 8) {
-                        ProviderRowLabel(definition: definition)
-                        Spacer(minLength: 8)
-                        Text("Coming soon")
-                            .font(.caption.weight(.medium))
+                        HStack(spacing: -4) {
+                            ForEach(ProviderCatalog.comingSoon) { definition in
+                                ProviderLogoTile(provider: definition.id)
+                            }
+                        }
+                        Text(verbatim: ProviderCatalog.comingSoon.map(\.displayName).formatted(.list(type: .and)))
                             .foregroundStyle(.secondary)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(Palette.badgeFill, in: .capsule)
+                        Spacer(minLength: 0)
                     }
-                    .opacity(0.6)
                     .accessibilityElement(children: .combine)
+                } header: {
+                    Text("Coming soon")
                 }
-            } header: {
-                Text("Coming soon")
             }
         }
         .formStyle(.grouped)
-        .scrollDisabled(true)
-        .fixedSize(horizontal: false, vertical: true)
+        // The list outgrew a laptop screen, so this tab scrolls within a
+        // height that fits, unlike the others, which size to their content.
+        .frame(height: Self.height)
         .sheet(item: $editingKeyFor) { definition in
             APIKeySheet(definition: definition) { key in
                 try setAPIKey(key, definition.id)

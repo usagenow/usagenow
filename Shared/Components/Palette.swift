@@ -14,6 +14,11 @@ enum Palette {
 
     static let badgeFill = Color(light: .black.opacity(0.05), dark: .white.opacity(0.10))
     static let hoverFill = Color(light: .black.opacity(0.06), dark: .white.opacity(0.10))
+
+    /// Laid under the popover's content so what's behind the menu bar
+    /// window shows through less: dark windows made light-mode text hard
+    /// to read. The system material still shows at the edges of each tint.
+    static let popoverBackdrop = Color(light: .white.opacity(0.6), dark: Color(white: 0.11).opacity(0.5))
 }
 
 extension Color {
