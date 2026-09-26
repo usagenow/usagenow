@@ -5,6 +5,10 @@ struct UsageNowApp: App {
     @State private var appState: AppState
 
     init() {
+        // Writing to a pipe whose reader has exited — the Codex app-server
+        // quitting early — raises SIGPIPE, which ends the app without a word.
+        // Ignored, the write fails with an error the caller already handles.
+        signal(SIGPIPE, SIG_IGN)
         let appState = AppState.live()
         appState.start()
         _appState = State(initialValue: appState)

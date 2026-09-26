@@ -14,6 +14,7 @@ struct OpenCodeProvider: UsageProvider {
 
     private let discover: @Sendable () -> OpenCodeEnvironment
     private let reader: OpenCodeActivityReader
+    private let cache = DatabaseReadCache<OpenCodeActivityReader.Result>()
     private let now: @Sendable () -> Date
     private let calendar: Calendar
 
@@ -39,11 +40,14 @@ struct OpenCodeProvider: UsageProvider {
         }
 
         let reader = reader
+        let cache = cache
         let period = ActivityPeriod(now: date, calendar: calendar)
         let result: OpenCodeActivityReader.Result
         do {
             result = try await Task.detached(priority: .utility) {
-                try reader.activity(database: database, period: period)
+                try cache.value(database: database, period: period) {
+                    try reader.activity(database: database, period: period)
+                }
             }.value
         } catch {
             // Rethrown so the store keeps the last reading and offers Retry.

@@ -117,7 +117,14 @@ final class AppState {
 
     func start() {
         claudeLimits?.isEnabled.isOn = preferences.fetchClaudeUsageLimits
-        Task { await store.refresh() }
+        Task { [store] in
+            await store.refresh()
+            // The first refresh reads a month of session files, and the
+            // allocator keeps the freed read buffers for reuse — shown as
+            // ~170 MB more in Activity Monitor. Later refreshes read only new
+            // lines, so hand that memory back to the system now.
+            malloc_zone_pressure_relief(nil, 0)
+        }
         applyAppearance()
         applyRefreshInterval()
 

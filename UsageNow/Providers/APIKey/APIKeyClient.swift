@@ -57,10 +57,16 @@ struct APIKeyClient: Sendable {
 }
 
 /// An ephemeral session that refuses every redirect.
-final class APIKeyTransport: NSObject, HTTPTransport, URLSessionTaskDelegate, @unchecked Sendable {
+///
+/// The session is made once, in `init`: providers connected with a key all
+/// refresh at the same time through `shared`, and a lazily created session
+/// could be created by two of them at once.
+final class APIKeyTransport: HTTPTransport, Sendable {
     static let shared = APIKeyTransport()
 
-    private lazy var session: URLSession = {
+    private let session: URLSession
+
+    init() {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.timeoutIntervalForRequest = APIKeyClient.timeout
         configuration.timeoutIntervalForResource = APIKeyClient.timeout
@@ -69,15 +75,19 @@ final class APIKeyTransport: NSObject, HTTPTransport, URLSessionTaskDelegate, @u
         configuration.urlCache = nil
         configuration.urlCredentialStorage = nil
         configuration.waitsForConnectivity = false
-        return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
-    }()
+        session = URLSession(configuration: configuration, delegate: RedirectRefusal(), delegateQueue: nil)
+    }
 
     func send(_ request: URLRequest) async throws -> (Data, HTTPURLResponse) {
         let (data, response) = try await session.data(for: request)
         guard let http = response as? HTTPURLResponse else { throw URLSessionTransport.TransportError.notHTTP }
         return (data, http)
     }
+}
 
+/// Answers every redirect with "don't follow", so a key's header can't be
+/// carried to another host.
+private final class RedirectRefusal: NSObject, URLSessionTaskDelegate, Sendable {
     func urlSession(
         _ session: URLSession,
         task: URLSessionTask,
