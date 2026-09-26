@@ -1,10 +1,10 @@
 import Foundation
-import SQLite3
 
-/// Today's Warp agent activity, read from Warp's local database.
+/// Warp agent activity, read from Warp's local database.
 ///
 /// - Requests: rows in `ai_queries`, which has one per prompt with its time
-///   and outcome. Its text column is never selected.
+///   and outcome. Its text column is never selected. They're the only
+///   thing Warp times per request, so they're what the history charts.
 /// - Credits and models: `agent_conversations.conversation_data` carries a
 ///   running `conversation_usage_metadata` per conversation — credits spent
 ///   and tokens per model. Only that object is decoded; the messages beside
@@ -16,12 +16,14 @@ import SQLite3
 /// credits are marked partial instead of being overstated.
 struct WarpActivityReader: Sendable {
     struct Result: Sendable, Equatable {
+        /// Today's answered requests.
         var requests: Int64
         var credits: Decimal?
         var isCreditsComplete: Bool
         var models: [ModelActivity]
         /// The model most recently reported in a conversation active today.
         var latestModel: String?
+        var history: ActivityHistory
     }
 
     /// How Warp writes `start_ts` and `last_modified_at`: UTC, without a zone.
@@ -29,16 +31,23 @@ struct WarpActivityReader: Sendable {
     /// time on a Mac five hours ahead of UTC.
     var databaseTimeZone: TimeZone = .gmt
 
-    func todaysActivity(database: URL, since: Date) throws -> Result {
-        let connection = try WarpDatabase(url: database)
-        let sinceText = WarpDatabase.timestamp(since, in: databaseTimeZone)
+    func activity(database: URL, period: ActivityPeriod) throws -> Result {
+        let connection = try ReadOnlyDatabase(url: database)
+        let sinceText = WarpTimestamp.timestamp(period.today, in: databaseTimeZone)
+        let historyText = WarpTimestamp.timestamp(period.start, in: databaseTimeZone)
 
-        // Failed prompts never reached a model; pending ones haven't yet.
+        let answeredDates = try connection.rows(
+            "SELECT start_ts, output_status FROM ai_queries WHERE start_ts >= ?",
+            bind: [historyText]
+        ) { row in (start: row.text(0), status: row.text(1)) }
+            .filter { !Self.isUnanswered($0.status) }
+            .compactMap { $0.start.flatMap { WarpTimestamp.date(from: $0, in: databaseTimeZone) } }
+
         let queries = try connection.rows(
             "SELECT conversation_id, output_status FROM ai_queries WHERE start_ts >= ?",
             bind: [sinceText]
         ) { row in (conversation: row.text(0), status: row.text(1)) }
-        let answered = queries.filter { !["\"Failed\"", "\"Pending\"", "Failed", "Pending"].contains($0.status ?? "") }
+        let answered = queries.filter { !Self.isUnanswered($0.status) }
 
         let active = Set(queries.compactMap(\.conversation))
         var startedToday: Set<String> = []
@@ -91,8 +100,14 @@ struct WarpActivityReader: Sendable {
             credits: credits ?? (isComplete ? 0 : nil),
             isCreditsComplete: isComplete,
             models: models,
-            latestModel: latestModel
+            latestModel: latestModel,
+            history: ActivityHistory(requests: answeredDates, period: period)
         )
+    }
+
+    /// Failed prompts never reached a model; pending ones haven't yet.
+    private static func isUnanswered(_ status: String?) -> Bool {
+        ["\"Failed\"", "\"Pending\"", "Failed", "Pending"].contains(status ?? "")
     }
 
     private struct ConversationData: Decodable {
@@ -121,65 +136,17 @@ struct WarpActivityReader: Sendable {
     }
 }
 
-/// A read-only connection to Warp's database. Never writes, never migrates.
-private final class WarpDatabase {
-    enum Failure: Error {
-        case open(Int32)
-        case query(Int32)
-    }
-
-    struct Row {
-        let statement: OpaquePointer
-
-        func text(_ column: Int32) -> String? {
-            guard let bytes = sqlite3_column_text(statement, column) else { return nil }
-            return String(cString: bytes)
-        }
-
-        func data(_ column: Int32) -> Data? {
-            guard let bytes = sqlite3_column_blob(statement, column) else { return nil }
-            return Data(bytes: bytes, count: Int(sqlite3_column_bytes(statement, column)))
-        }
-    }
-
-    private var handle: OpaquePointer?
-
-    init(url: URL) throws {
-        let status = sqlite3_open_v2(url.path, &handle, SQLITE_OPEN_READONLY | SQLITE_OPEN_NOMUTEX, nil)
-        guard status == SQLITE_OK else {
-            sqlite3_close(handle)
-            throw Failure.open(status)
-        }
-        // Warp may be writing; wait briefly instead of failing the refresh.
-        sqlite3_busy_timeout(handle, 500)
-    }
-
-    deinit {
-        sqlite3_close(handle)
-    }
-
-    func rows<T>(_ sql: String, bind values: [String], map: (Row) -> T) throws -> [T] {
-        var statement: OpaquePointer?
-        let prepared = sqlite3_prepare_v2(handle, sql, -1, &statement, nil)
-        guard prepared == SQLITE_OK, let statement else { throw Failure.query(prepared) }
-        defer { sqlite3_finalize(statement) }
-
-        let transient = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
-        for (index, value) in values.enumerated() {
-            sqlite3_bind_text(statement, Int32(index + 1), value, -1, transient)
-        }
-
-        var results: [T] = []
-        while true {
-            let step = sqlite3_step(statement)
-            if step == SQLITE_ROW {
-                results.append(map(Row(statement: statement)))
-            } else if step == SQLITE_DONE {
-                return results
-            } else {
-                throw Failure.query(step)
-            }
-        }
+/// Warp's timestamp format.
+enum WarpTimestamp {
+    /// Reads Warp's format back, ignoring fractional seconds.
+    static func date(from text: String, in timeZone: TimeZone) -> Date? {
+        let fields = text.split(whereSeparator: { " -:.T".contains($0) }).prefix(6).compactMap { Int($0) }
+        guard fields.count == 6 else { return nil }
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = timeZone
+        return calendar.date(from: DateComponents(
+            year: fields[0], month: fields[1], day: fields[2], hour: fields[3], minute: fields[4], second: fields[5]
+        ))
     }
 
     /// Warp's format: "2026-09-13 15:42:01.495945". Comparing these as text

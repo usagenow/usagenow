@@ -40,11 +40,11 @@ struct WarpProvider: UsageProvider {
         }
 
         let reader = reader
-        let since = calendar.startOfDay(for: date)
+        let period = ActivityPeriod(now: date, calendar: calendar)
         let result: WarpActivityReader.Result
         do {
             result = try await Task.detached(priority: .utility) {
-                try reader.todaysActivity(database: environment.database, since: since)
+                try reader.activity(database: environment.database, period: period)
             }.value
         } catch {
             // Rethrown so the store keeps the last reading and offers Retry,
@@ -60,7 +60,8 @@ struct WarpProvider: UsageProvider {
             activity: LocalActivity(
                 requestsToday: result.requests,
                 creditsToday: result.credits,
-                isCreditsComplete: result.isCreditsComplete
+                isCreditsComplete: result.isCreditsComplete,
+                history: result.history
             ),
             modelActivity: result.models,
             updatedAt: date

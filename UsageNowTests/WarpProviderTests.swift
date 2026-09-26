@@ -63,8 +63,11 @@ struct WarpActivityReaderTests {
         try db.query("c2", at: "2026-09-17 09:05:00.000000", status: #""Failed""#)
         try db.query("c2", at: "2026-09-17 09:06:00.000000", status: #""Pending""#)
 
-        let result = try WarpActivityReader().todaysActivity(database: db.url, since: midnight)
+        let result = try WarpActivityReader().activity(database: db.url, period: ActivityPeriod(now: midnight, calendar: TestDates.utc))
         #expect(result.requests == 2)
+        // Warp writes UTC, so 23:59:59 stays on the 16th in a UTC calendar.
+        #expect(result.history.metric == .requests)
+        #expect(result.history.days.map(\.requests).suffix(2) == [1, 2])
     }
 
     @Test func countsCreditsAndModelsOfConversationsThatBeganToday() throws {
@@ -75,7 +78,7 @@ struct WarpActivityReaderTests {
         // Warp's earlier format, with one total per model.
         try db.conversation("new2", modified: "2026-09-17 11:01:00", credits: 1.25, tokens: #"[{"model_id":"Claude Sonnet 4.6","total_tokens":2000}]"#)
 
-        let result = try WarpActivityReader().todaysActivity(database: db.url, since: midnight)
+        let result = try WarpActivityReader().activity(database: db.url, period: ActivityPeriod(now: midnight, calendar: TestDates.utc))
         #expect(result.credits == Decimal(string: "3.75"))
         #expect(result.isCreditsComplete)
         #expect(result.models.map(\.modelID) == ["Claude Sonnet 4.6", "GPT-5.3 Codex (high reasoning)"])
@@ -93,7 +96,7 @@ struct WarpActivityReaderTests {
         try db.query("new", at: "2026-09-17 08:00:00.000000")
         try db.conversation("new", modified: "2026-09-17 08:01:00", credits: 1)
 
-        let result = try WarpActivityReader().todaysActivity(database: db.url, since: midnight)
+        let result = try WarpActivityReader().activity(database: db.url, period: ActivityPeriod(now: midnight, calendar: TestDates.utc))
         #expect(result.credits == 1)
         #expect(!result.isCreditsComplete)
         #expect(result.models.isEmpty)
@@ -105,7 +108,7 @@ struct WarpActivityReaderTests {
         try db.query("old", at: "2026-09-10 10:00:00.000000")
         try db.conversation("old", modified: "2026-09-10 10:01:00", credits: 4)
 
-        let result = try WarpActivityReader().todaysActivity(database: db.url, since: midnight)
+        let result = try WarpActivityReader().activity(database: db.url, period: ActivityPeriod(now: midnight, calendar: TestDates.utc))
         #expect(result.requests == 0)
         #expect(result.credits == 0)
         #expect(result.isCreditsComplete)
@@ -113,7 +116,7 @@ struct WarpActivityReaderTests {
 
     @Test func aMissingDatabaseIsAnError() {
         #expect(throws: (any Error).self) {
-            try WarpActivityReader().todaysActivity(database: URL(filePath: "/nonexistent/warp.sqlite"), since: midnight)
+            try WarpActivityReader().activity(database: URL(filePath: "/nonexistent/warp.sqlite"), period: ActivityPeriod(now: midnight, calendar: TestDates.utc))
         }
     }
 }
