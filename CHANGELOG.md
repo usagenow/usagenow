@@ -2,6 +2,35 @@
 
 All notable changes to UsageNow. This project follows [Semantic Versioning](https://semver.org).
 
+## 0.6.0
+
+### Added
+
+- **The last 30 days.** Under each provider, a bar per day with the month's totals beneath: tokens, what they would have cost at API prices, and the model used most. Hover a bar to see that day. Tools that meter in credits chart credits (Kiro, Qoder), and Warp charts requests, the only thing it times per request. Days are your calendar's days, so a day with a clock change is still one bar. Turn the charts off in **Settings › General** to keep the window short.
+- **OpenCode.** Today's tokens, requests, and models, and what they would have cost, from OpenCode's local database, opened read-only. SQLite hands over only each answer's time, model, and token counts — reply text stored beside them never leaves the database. Not yet verified against a live OpenCode install.
+- **Qoder.** Credits spent today and the answers they paid for, from the transcripts Qoder's agent writes on your Mac — the amount Qoder charged, after any discount. Qoder records no tokens and names models by internal aliases, so neither is shown, and its plan's remaining credits live only in its app, so no limit is shown. Qoder's sign-in is never opened.
+- **Ollama Cloud (experimental).** Session and weekly limits for your account, with your own Cloud API key, kept like the other keys: only in your Keychain and sent only to `ollama.com`. Ollama doesn't document this, so it may stop working without notice; a changed answer shows the limits as unavailable rather than a guess. Ollama gives no reset time, so none is shown. Not yet verified against a live account.
+- **Remaining or used.** **Settings › General › Show limits as** switches every percentage — popover, menu bar, and widget — between what's left and what's used. With "Used", bars grow instead of shrinking.
+- **Credits in the widget** for Kiro, Warp, and Qoder, where there are no limits to show.
+- **Report a Problem** in **Settings › About**. It shows the whole report first — versions, screen sizes, settings, and what each provider shows — and sends nothing itself: it opens a prefilled GitHub issue or email. Names, emails, file paths, keys, and prompts are never in it.
+
+### Changed
+
+- **The menu bar window is more opaque**, so dark windows behind it no longer make light-mode text hard to read.
+- **The menu bar window never runs off the screen.** When the providers are taller than the screen, the list scrolls.
+- **Settings › Providers fits a laptop screen.** The list scrolls, and the providers still to come share one row.
+- **The cost estimate knows the newest models**, including Claude Opus 5.5 and GPT-6, and models OpenCode users often run: DeepSeek, Kimi, Grok, and Devstral. A retired model keeps its last price, so older sessions stay priced. Older Codex sessions are now priced too.
+- **Reading a month of session files is several times faster**: the first read of 1.3 GB went from 13 seconds to under 1.5.
+- **Today's numbers stay on one line** when the cost estimate is shown.
+- **Warp and OpenCode are read only when they changed.** Their databases are read again when the database or its write-ahead log changes, or a new day begins — not on every refresh.
+
+### Fixed
+
+- **Memory while reading session files.** Every chunk of a file stayed in memory until the whole file was read, so the first read of a month of sessions could peak at 1.4 GB. It now stays under 500 MB, usually around 200 MB, and the memory is handed back to the system once the read is done.
+- **UsageNow could quit without a word** if the Codex app-server exited before UsageNow finished talking to it. That's now a failed refresh, like any other.
+- **A database that couldn't be opened** — Warp's when macOS denies access, or a damaged OpenCode file — was closed twice. It's now closed once.
+- **A data race** when several providers connected with API keys refreshed at the same moment for the first time.
+
 ## 0.5.0
 
 ### Added

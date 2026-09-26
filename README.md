@@ -36,8 +36,9 @@ Token and request counts are **local activity** observed in session files on thi
 ## Highlights
 
 - **macOS native.** SwiftUI and `MenuBarExtra`. Lives in the menu bar, not the Dock.
-- **Codex, Claude Code, Gemini CLI, Antigravity, Kiro, and Warp** side by side: usage limits and reset times where the tool reports them, and daily token, credit, and request activity.
-- **DeepSeek, Kimi, and OpenRouter** balances and spending, with your own API key — kept only in your Keychain and sent only to that provider.
+- **Codex, Claude Code, Gemini CLI, Antigravity, Kiro, Warp, and OpenCode** side by side: usage limits and reset times where the tool reports them, and daily token, credit, and request activity.
+- **The last 30 days.** A bar per day under each provider, with the month's tokens, estimated cost, and top model — hover a bar for that day.
+- **DeepSeek, Kimi, and OpenRouter** balances and spending, and **Ollama Cloud** limits (experimental), with your own API key — kept only in your Keychain and sent only to that provider.
 - **Activity by model.** See which models today’s tokens and requests went to — any model, including ones released after this version.
 - **What it would have cost.** An estimate of today’s activity at published API prices, with cached tokens priced as cached. A sense of scale, never a bill.
 - **Pick your providers, in your order.** Turn each one on or off in Settings › Providers, and drag them into the order the popover and widget should use. A provider that’s off is never refreshed and never read from disk.
