@@ -26,9 +26,14 @@ from decimal import Decimal
 SOURCE = "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json"
 
 # Families UsageNow can actually see in local sessions: Claude Code, Codex,
-# Gemini CLI and Antigravity. Keys with a provider prefix ("vertex_ai/…")
-# are deliberately excluded — those are other platforms' prices.
-FAMILIES = ("claude-", "gpt-5", "gpt-4.1", "o3", "o4-", "gemini-", "codex-")
+# Gemini CLI, Antigravity and OpenCode. Keys with a provider prefix
+# ("vertex_ai/…") are other platforms' prices and are excluded, except the
+# prefixes below, which are each vendor's own API.
+FAMILIES = ("claude-", "gpt-6", "gpt-5", "gpt-4.1", "o3", "o4-", "gemini-", "codex-")
+
+# Models OpenCode users commonly run, priced by the vendor's own API. Stored
+# without the prefix, the way OpenCode records the model.
+OWN_API_PREFIXES = ("deepseek/", "moonshot/", "xai/", "mistral/")
 
 FIELDS = {
     "input": "input_cost_per_token",
@@ -61,8 +66,16 @@ def main() -> None:
     catalog = json.loads(download.stdout)
 
     models: dict[str, dict[str, str]] = {}
-    for name, entry in catalog.items():
-        if not name.startswith(FAMILIES) or "/" in name:
+    for key, entry in catalog.items():
+        name = key
+        for prefix in OWN_API_PREFIXES:
+            if key.startswith(prefix):
+                name = key.removeprefix(prefix)
+                break
+        else:
+            if not key.startswith(FAMILIES):
+                continue
+        if "/" in name:
             continue
         if entry.get("mode") not in (None, "chat", "responses"):
             continue
@@ -75,6 +88,15 @@ def main() -> None:
         }
         if "input" in prices and "output" in prices:
             models[name] = prices
+
+    # A model the catalog stops listing — usually because it was retired —
+    # keeps its last known price, so older sessions in the 30-day history
+    # stay priced.
+    destination_path = pathlib.Path(__file__).resolve().parent.parent / "Shared/Resources/ModelPrices.json"
+    if destination_path.exists():
+        previous = json.loads(destination_path.read_text()).get("models", {})
+        for name, prices in previous.items():
+            models.setdefault(name, prices)
 
     table = {
         "generated": dt.date.today().isoformat(),
