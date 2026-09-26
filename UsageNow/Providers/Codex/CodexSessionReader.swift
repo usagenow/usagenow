@@ -93,11 +93,18 @@ enum CodexSessionParser {
     private static let tokenMarker = Data(#""token_"#.utf8)
     private static let turnContextMarker = Data(#""turn_context""#.utf8)
     private static let decoder = JSONDecoder()
+    /// Conversation content and compacted history — most of a session file's
+    /// bytes, and never usage. Codex writes the record type near the start of
+    /// the line, so these are recognized there without scanning the rest.
+    private static let contentTypes = [Data(#""type":"response_item""#.utf8), Data(#""type":"compacted""#.utf8)]
+    private static let headLength = 160
 
     /// Folds one JSONL line into `state`. Malformed, unknown, or unrelated
     /// lines are ignored. Records before `since` aren't kept.
     static func fold(_ line: Data, into state: inout CodexSessionFileState, fileKey: String, since: Date) {
-        // Cheap filter: only a few record types are relevant.
+        // Cheap filters: only a few record types are relevant.
+        let head = line.prefix(headLength)
+        guard !contentTypes.contains(where: { head.contains($0) }) else { return }
         guard line.contains(tokenMarker) || line.contains(turnContextMarker) else { return }
         guard let record = try? decoder.decode(CodexSessionLine.self, from: line),
               let timestamp = SessionTimestamp.parse(record.timestamp) else { return }
