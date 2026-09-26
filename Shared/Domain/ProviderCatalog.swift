@@ -12,6 +12,7 @@ enum ProviderID: String, CaseIterable, Codable, Sendable, Identifiable, Comparab
     case antigravity
     case kiro
     case warp
+    case opencode
     case deepseek
     case kimi
     case openrouter
@@ -116,6 +117,14 @@ enum ProviderCatalog {
             availability: .available,
             logoAssetName: "WarpLogo",
             symbolName: "terminal"
+        ),
+        ProviderDefinition(
+            id: .opencode,
+            displayName: "OpenCode",
+            summary: "Track OpenCode tokens and models.",
+            availability: .available,
+            logoAssetName: "OpenCodeLogo",
+            symbolName: "chevron.left.forwardslash.chevron.right"
         ),
         ProviderDefinition(
             id: .deepseek,

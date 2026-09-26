@@ -55,7 +55,7 @@ struct APIKeyClientTests {
         #expect(ProviderCatalog.definition(for: .kimi).apiKey?.host == "api.moonshot.ai")
         #expect(ProviderCatalog.definition(for: .openrouter).apiKey?.host == "openrouter.ai")
         // Tools read on this Mac never take a key.
-        for id in [ProviderID.codex, .claudeCode, .gemini, .antigravity, .kiro, .warp] {
+        for id in [ProviderID.codex, .claudeCode, .gemini, .antigravity, .kiro, .warp, .opencode] {
             #expect(ProviderCatalog.definition(for: id).apiKey == nil)
         }
     }

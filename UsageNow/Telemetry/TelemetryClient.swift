@@ -40,6 +40,8 @@ enum TelemetryEvent: String, Sendable, CaseIterable {
     case kiroDetected = "kiro_detected"
     /// Warp is installed. A yes, never anything about its usage.
     case warpDetected = "warp_detected"
+    /// OpenCode is installed. A yes, never anything about its usage.
+    case opencodeDetected = "opencode_detected"
 
     /// `nil` for providers with no integration yet — nothing to report.
     static func detected(_ provider: ProviderID) -> TelemetryEvent? {
@@ -50,6 +52,7 @@ enum TelemetryEvent: String, Sendable, CaseIterable {
         case .antigravity: .antigravityDetected
         case .kiro: .kiroDetected
         case .warp: .warpDetected
+        case .opencode: .opencodeDetected
         default: nil
         }
     }

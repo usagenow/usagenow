@@ -106,6 +106,7 @@ final class AppState {
             AntigravityProvider(server: AntigravityLocalServer(lastKnownLimits: .userDefaults(defaults, key: "antigravityLastKnownLimits"))),
             KiroProvider(),
             WarpProvider(),
+            OpenCodeProvider(),
             APIKeyProvider.deepSeek(keys: apiKeys),
             APIKeyProvider.kimi(keys: apiKeys),
             APIKeyProvider.openRouter(keys: apiKeys),
