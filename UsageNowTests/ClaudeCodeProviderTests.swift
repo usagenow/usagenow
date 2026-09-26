@@ -156,7 +156,8 @@ struct ClaudeCodeProviderTests {
         ], modified: noon.addingTimeInterval(-2 * 86_400))
 
         let snapshot = try await provider(environment).fetchSnapshot(trigger: .automatic)
-        #expect(snapshot.activity == LocalActivity(tokensToday: 0, requestsToday: 0))
+        #expect(snapshot.activity.tokensToday == 0)
+        #expect(snapshot.activity.requestsToday == 0)
         #expect(snapshot.recentModel == nil)
     }
 

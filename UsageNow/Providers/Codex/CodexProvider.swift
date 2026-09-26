@@ -7,7 +7,8 @@ import Foundation
 ///   record rate limits after every Codex response; whichever source is
 ///   newer wins, and session records are the fallback when the app-server
 ///   is unavailable (shown as stale via `limitsUpdatedAt`).
-/// - Local activity: today's `token_usage_record` entries in session files.
+/// - Local activity: `token_usage_record` entries in session files, today
+///   and for the 30-day history.
 /// - Model: the latest `turn_context` in today's sessions.
 /// - Plan: the `planType` reported alongside rate limits.
 struct CodexProvider: UsageProvider {
@@ -48,8 +49,7 @@ struct CodexProvider: UsageProvider {
         guard environment.isInstalled else { return .notInstalled(.codex, at: date) }
         guard !environment.homeExists || environment.homeIsReadable else { return .unavailable(.codex, at: date) }
 
-        let since = calendar.startOfDay(for: date)
-        async let local = sessions.todaysActivity(roots: environment.sessionRoots, since: since)
+        async let local = sessions.activity(roots: environment.sessionRoots, period: ActivityPeriod(now: date, calendar: calendar))
         let server = await serverOutcome(environment: environment, trigger: trigger)
         let activity = await local
 
@@ -74,7 +74,8 @@ struct CodexProvider: UsageProvider {
                 tokensToday: activity.activity.tokens,
                 requestsToday: activity.activity.requests,
                 estimatedCostToday: activity.activity.estimatedCost,
-                isCostComplete: activity.activity.isCostComplete
+                isCostComplete: activity.activity.isCostComplete,
+                history: activity.history
             ),
             modelActivity: activity.activity.models,
             updatedAt: date,

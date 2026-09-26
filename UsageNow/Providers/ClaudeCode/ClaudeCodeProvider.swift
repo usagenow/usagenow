@@ -3,7 +3,7 @@ import Synchronization
 
 /// Real Claude Code usage.
 ///
-/// - Local activity and model: today's session transcripts.
+/// - Local activity and model: session transcripts from the last 30 days.
 /// - Plan: the account profile Claude Code caches in its global config.
 /// - Quota: only through the experimental `ClaudeUsageLimitsClient`, when
 ///   the user turned it on. Otherwise no windows are reported.
@@ -42,7 +42,7 @@ struct ClaudeCodeProvider: UsageProvider {
         }
 
         let profile = ClaudeAccountProfile.read(from: environment.globalConfigFile)
-        let activity = await sessions.todaysActivity(roots: environment.sessionRoots, since: calendar.startOfDay(for: date))
+        let activity = await sessions.activity(roots: environment.sessionRoots, period: ActivityPeriod(now: date, calendar: calendar))
         guard profile.isSignedIn || activity.hasSessionFiles else {
             return .notAuthenticated(.claudeCode, at: date)
         }
@@ -77,7 +77,8 @@ struct ClaudeCodeProvider: UsageProvider {
                 tokensToday: activity.activity.tokens,
                 requestsToday: activity.activity.requests,
                 estimatedCostToday: activity.activity.estimatedCost,
-                isCostComplete: activity.activity.isCostComplete
+                isCostComplete: activity.activity.isCostComplete,
+                history: activity.history
             ),
             modelActivity: activity.activity.models,
             updatedAt: date,

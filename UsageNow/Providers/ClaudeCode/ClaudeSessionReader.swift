@@ -1,6 +1,6 @@
 import Foundation
 
-/// Reads today's local activity from Claude Code session transcripts
+/// Reads local activity from Claude Code session transcripts
 /// (`~/.claude/projects/**/*.jsonl`).
 ///
 /// Only timestamps, request and message identifiers, model identifiers,
@@ -13,7 +13,9 @@ import Foundation
 /// as recorded locally; they're activity, not billing.
 struct ClaudeSessionReader: Sendable {
     struct Result: Sendable, Equatable {
+        /// Today's activity.
         var activity: ActivitySummary
+        var history: ActivityHistory
         var hasSessionFiles: Bool
         /// The latest limit Claude Code reported hitting, per window.
         var limitHits: [ClaudeLimitHit] = []
@@ -21,7 +23,8 @@ struct ClaudeSessionReader: Sendable {
 
     private let cache = IncrementalFileCache<ClaudeSessionFileState>()
 
-    func todaysActivity(roots: [URL], since: Date) async -> Result {
+    func activity(roots: [URL], period: ActivityPeriod) async -> Result {
+        let since = period.start
         let files = SessionFileFinder.jsonlFiles(in: roots, modifiedSince: since)
         await cache.retain(only: Set(files.map(\.url)))
 
@@ -45,7 +48,8 @@ struct ClaudeSessionReader: Sendable {
             }
         }
         return Result(
-            activity: ActivitySummary(records: records, since: since),
+            activity: ActivitySummary(records: records, since: period.today),
+            history: ActivityHistory(records: records, period: period),
             hasSessionFiles: !files.isEmpty,
             limitHits: hits.values.sorted { $0.window.id < $1.window.id }
         )

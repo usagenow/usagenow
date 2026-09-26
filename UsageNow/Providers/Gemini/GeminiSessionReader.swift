@@ -1,6 +1,6 @@
 import Foundation
 
-/// Reads today's local activity from Gemini CLI session recordings
+/// Reads local activity from Gemini CLI session recordings
 /// (`~/.gemini/tmp/<project>/chats/**/*.jsonl`).
 ///
 /// Only message identifiers, timestamps, model identifiers, and token counts
@@ -12,13 +12,16 @@ import Foundation
 /// than once. The last record for a message wins.
 struct GeminiSessionReader: Sendable {
     struct Result: Sendable, Equatable {
+        /// Today's activity.
         var activity: ActivitySummary
+        var history: ActivityHistory
         var hasSessionFiles: Bool
     }
 
     private let cache = IncrementalFileCache<GeminiSessionFileState>()
 
-    func todaysActivity(roots: [URL], since: Date) async -> Result {
+    func activity(roots: [URL], period: ActivityPeriod) async -> Result {
+        let since = period.start
         let files = SessionFileFinder.jsonlFiles(in: roots, modifiedSince: since)
             .filter { $0.url.pathComponents.contains("chats") }
         await cache.retain(only: Set(files.map(\.url)))
@@ -37,7 +40,11 @@ struct GeminiSessionReader: Sendable {
                 Log.provider.debug("Skipped an unreadable Gemini CLI session file")
             }
         }
-        return Result(activity: ActivitySummary(records: records, since: since), hasSessionFiles: !files.isEmpty)
+        return Result(
+            activity: ActivitySummary(records: records, since: period.today),
+            history: ActivityHistory(records: records, period: period),
+            hasSessionFiles: !files.isEmpty
+        )
     }
 }
 

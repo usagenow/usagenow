@@ -33,7 +33,7 @@ struct GeminiProvider: UsageProvider {
         guard environment.isInstalled else { return .notInstalled(.gemini, at: date) }
         guard !environment.homeExists || environment.homeIsReadable else { return .unavailable(.gemini, at: date) }
 
-        let result = await sessions.todaysActivity(roots: environment.sessionRoots, since: calendar.startOfDay(for: date))
+        let result = await sessions.activity(roots: environment.sessionRoots, period: ActivityPeriod(now: date, calendar: calendar))
         guard environment.isSignedIn || !result.activity.models.isEmpty || result.activity.requests > 0 else {
             return .notAuthenticated(.gemini, at: date)
         }
@@ -46,7 +46,8 @@ struct GeminiProvider: UsageProvider {
                 tokensToday: result.activity.tokens,
                 requestsToday: result.activity.requests,
                 estimatedCostToday: result.activity.estimatedCost,
-                isCostComplete: result.activity.isCostComplete
+                isCostComplete: result.activity.isCostComplete,
+                history: result.history
             ),
             modelActivity: result.activity.models,
             updatedAt: date

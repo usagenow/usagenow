@@ -1,6 +1,6 @@
 import Foundation
 
-/// Reads today's credits and prompt turns from Kiro's session records
+/// Reads credits and prompt turns from Kiro's session records
 /// (`~/.kiro/sessions/<workspace>/sess_<id>/messages.jsonl`).
 ///
 /// After each prompt turn Kiro appends a `usage_summary` record saying how
@@ -12,14 +12,17 @@ import Foundation
 /// list and no cost estimate for it.
 struct KiroSessionReader: Sendable {
     struct Result: Sendable, Equatable {
+        /// Today's credits and turns.
         var credits: Decimal
         var turns: Int64
+        var history: ActivityHistory
         var hasSessionFiles: Bool
     }
 
     private let cache = IncrementalFileCache<KiroSessionFileState>()
 
-    func todaysActivity(root: URL, since: Date) async -> Result {
+    func activity(root: URL, period: ActivityPeriod) async -> Result {
+        let since = period.start
         let files = SessionFileFinder.jsonlFiles(in: [root], modifiedSince: since)
             .filter { $0.url.lastPathComponent == "messages.jsonl" }
         await cache.retain(only: Set(files.map(\.url)))
@@ -40,9 +43,11 @@ struct KiroSessionReader: Sendable {
             }
         }
 
+        let today = turns.values.filter { $0.timestamp >= period.today }
         return Result(
-            credits: turns.values.reduce(Decimal.zero) { $0 + $1.credits },
-            turns: Int64(turns.count),
+            credits: today.reduce(Decimal.zero) { $0 + $1.credits },
+            turns: Int64(today.count),
+            history: ActivityHistory(credits: turns.values.map { ($0.timestamp, $0.credits) }, period: period),
             hasSessionFiles: !files.isEmpty
         )
     }

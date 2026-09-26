@@ -1,6 +1,6 @@
 import Foundation
 
-/// Reads today's local activity and the latest recorded rate limits from
+/// Reads local activity and the latest recorded rate limits from
 /// Codex session files (`sessions/**/rollout-*.jsonl`).
 ///
 /// Only token counts, model identifiers, and rate-limit fields are decoded.
@@ -8,15 +8,18 @@ import Foundation
 /// and nothing read here is stored beyond in-memory aggregates.
 struct CodexSessionReader: Sendable {
     struct Result: Sendable, Equatable {
+        /// Today's activity.
         var activity: ActivitySummary
+        var history: ActivityHistory
         var latestRateLimits: CodexRateLimitSnapshot?
         var hasSessionFiles: Bool
     }
 
     private let cache = IncrementalFileCache<CodexSessionFileState>()
 
-    /// Activity since `since` (normally the start of today), from files modified since then.
-    func todaysActivity(roots: [URL], since: Date) async -> Result {
+    /// Activity over `period`, from files modified since it began.
+    func activity(roots: [URL], period: ActivityPeriod) async -> Result {
+        let since = period.start
         let files = SessionFileFinder.jsonlFiles(in: roots, modifiedSince: since)
         await cache.retain(only: Set(files.map(\.url)))
 
@@ -36,13 +39,15 @@ struct CodexSessionReader: Sendable {
             }
         }
 
-        var activity = ActivitySummary(records: states.flatMap(\.countedRecords), since: since)
+        let records = states.flatMap(\.countedRecords)
+        var activity = ActivitySummary(records: records, since: period.today)
         if let latest = states.compactMap(\.latestModel).max(by: { $0.date < $1.date }) {
             activity.latestModel = latest.model
             activity.latestModelAt = latest.date
         }
         return Result(
             activity: activity,
+            history: ActivityHistory(records: records, period: period),
             latestRateLimits: states.compactMap(\.latestRateLimits).max { $0.capturedAt < $1.capturedAt },
             hasSessionFiles: !files.isEmpty
         )
@@ -136,13 +141,20 @@ enum CodexSessionParser {
             }
             // Token counts repeat when only rate limits changed; count each new total once.
             guard let info = payload?.info,
-                  let last = info.last_token_usage?.totalTokens,
+                  let lastUsage = info.last_token_usage,
+                  let last = lastUsage.totalTokens,
                   let cumulative = info.total_token_usage?.totalTokens,
                   cumulative != state.lastLegacyTotal else { return }
             state.lastLegacyTotal = cumulative
             guard timestamp >= since else { return }
             let key = "\(fileKey)#legacy#\(cumulative)"
-            state.legacyRecords.append(ActivityRecord(key: key, timestamp: timestamp, tokens: last, model: state.latestModel?.model))
+            state.legacyRecords.append(ActivityRecord(
+                key: key,
+                timestamp: timestamp,
+                tokens: last,
+                model: state.latestModel?.model,
+                breakdown: lastUsage.breakdown
+            ))
 
         default:
             return

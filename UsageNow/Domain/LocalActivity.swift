@@ -25,6 +25,9 @@ struct LocalActivity: Sendable, Equatable {
     /// False when some of today's credits couldn't be attributed to today,
     /// such as a conversation that started yesterday and continued.
     var isCreditsComplete = true
+    /// Day-by-day activity over the last 30 days, for the chart. `nil` when
+    /// the tool keeps no dated history UsageNow can read.
+    var history: ActivityHistory? = nil
 
     static let unknown = LocalActivity()
 }

@@ -51,7 +51,8 @@ struct CodexProviderTests {
         let dir = try TemporaryDirectory()
         let snapshot = try await provider(environment(dir, executable: false)).fetchSnapshot(trigger: .automatic)
         #expect(snapshot.status == .available)
-        #expect(snapshot.activity == LocalActivity(tokensToday: 0, requestsToday: 0))
+        #expect(snapshot.activity.tokensToday == 0)
+        #expect(snapshot.activity.requestsToday == 0)
         #expect(snapshot.windows.isEmpty)
         #expect(snapshot.planName == nil)
     }
@@ -78,6 +79,11 @@ struct CodexProviderTests {
         #expect(snapshot.activity.tokensToday == 3_500)
         #expect(snapshot.activity.requestsToday == 2)
         #expect(snapshot.recentModel == "gpt-example-1")
+
+        // Yesterday's response is left out of today, but not out of the history.
+        let history = try #require(snapshot.activity.history)
+        #expect(history.days.map(\.tokens).suffix(2) == [9_000, 3_500])
+        #expect(history.tokens == 12_500)
     }
 
     @Test func respectsLocalDayBoundary() async throws {
@@ -93,14 +99,17 @@ struct CodexProviderTests {
         #expect(snapshot.activity.requestsToday == 1)
     }
 
-    @Test func ignoresFilesNotModifiedToday() async throws {
+    /// Files are chosen by modification date before they're opened, so one
+    /// untouched since before the history began is never read.
+    @Test func ignoresFilesNotModifiedWithinTheHistory() async throws {
         let dir = try TemporaryDirectory()
         try dir.writeJSONL("sessions/rollout-old.jsonl", lines: [
             CodexFixture.usageRecord(noon, responseID: "r-1", total: 100),
-        ], modified: yesterday)
+        ], modified: noon.addingTimeInterval(-31 * 86_400))
 
         let snapshot = try await provider(environment(dir, executable: false)).fetchSnapshot(trigger: .automatic)
         #expect(snapshot.activity.tokensToday == 0)
+        #expect(snapshot.activity.history?.hasActivity == false)
     }
 
     @Test func countsForkedResponsesOnce() async throws {
@@ -155,6 +164,21 @@ struct CodexProviderTests {
         let snapshot = try await provider(environment(dir, executable: false)).fetchSnapshot(trigger: .automatic)
         #expect(snapshot.activity.tokensToday == 1_600)
         #expect(snapshot.activity.requestsToday == 2)
+    }
+
+    /// Older Codex versions record the cache split in `token_count` too, so
+    /// those sessions are priced like current ones.
+    @Test func pricesLegacyTokenCountsThatRecordASplit() async throws {
+        let dir = try TemporaryDirectory()
+        let usage = #"{"input_tokens":1000000,"cached_input_tokens":0,"output_tokens":0,"total_tokens":1000000}"#
+        try dir.writeJSONL("sessions/rollout-legacy.jsonl", lines: [
+            CodexFixture.turnContext(noon.addingTimeInterval(-400), model: "gpt-5-codex"),
+            #"{"timestamp":"\#(TestDates.iso(noon.addingTimeInterval(-300)))","type":"event_msg","payload":{"type":"token_count","info":{"total_token_usage":\#(usage),"last_token_usage":\#(usage)}}}"#,
+        ], modified: noon)
+
+        let snapshot = try await provider(environment(dir, executable: false)).fetchSnapshot(trigger: .automatic)
+        #expect(snapshot.activity.estimatedCostToday == Decimal(string: "1.25"))
+        #expect(snapshot.activity.isCostComplete)
     }
 
     // MARK: Quota

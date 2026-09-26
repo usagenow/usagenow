@@ -42,6 +42,27 @@ enum PreviewFixtures {
         )
     }
 
+    /// A month of activity in the given metric.
+    static func history(_ metric: ActivityHistory.Metric) -> ActivityHistory {
+        let now = Date.now
+        let factory = MockSnapshotFactory(
+            profile: MockProfile(provider: .claudeCode, model: "claude-opus-5", firstFiveHourReset: 3600, weeklyReset: DateComponents(weekday: 2)),
+            referenceDate: now,
+            calendar: .current
+        )
+        var history = factory.history(tokensToday: 74_800_000, requestsToday: 312, now: now)
+        guard metric != .tokens else { return history }
+        history.metric = metric
+        history.estimatedCost = nil
+        history.topModel = nil
+        for index in history.days.indices {
+            history.days[index].estimatedCost = nil
+            history.days[index].credits = metric == .credits ? Decimal(history.days[index].requests) / 8 : nil
+        }
+        history.credits = metric == .credits ? history.days.compactMap(\.credits).reduce(0, +) : nil
+        return history
+    }
+
     /// Every provider turned off in Settings.
     static func noProvidersEnabledStore() -> UsageStore {
         UsageStore(providers: [], enabledProviders: [], hasCompletedInitialLoad: true, lastRefreshAt: .now)

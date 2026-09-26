@@ -88,11 +88,52 @@ struct MockSnapshotFactory: Sendable {
                         resetsAt: nextWeeklyReset(after: now)
                     ),
                 ],
-                activity: LocalActivity(tokensToday: values.tokensToday, requestsToday: values.requestsToday),
+                activity: activity(tokensToday: values.tokensToday, requestsToday: values.requestsToday, now: now),
                 modelActivity: modelActivity(tokens: values.tokensToday, requests: values.requestsToday, now: now),
                 updatedAt: now
             )
         }
+    }
+
+    /// Today's numbers, with a month of history ending in them.
+    func activity(tokensToday: Int64, requestsToday: Int64, now: Date) -> LocalActivity {
+        let history = history(tokensToday: tokensToday, requestsToday: requestsToday, now: now)
+        return LocalActivity(
+            tokensToday: tokensToday,
+            requestsToday: requestsToday,
+            estimatedCostToday: history.days.last?.estimatedCost,
+            history: history
+        )
+    }
+
+    /// Made-up daily activity for the last 30 days: busy stretches, quiet
+    /// weekends, the same on every run. Priced at a blended rate typical of
+    /// cache-heavy agent work, well below the list price of fresh input.
+    func history(tokensToday: Int64, requestsToday: Int64, now: Date) -> ActivityHistory {
+        let period = ActivityPeriod(now: now, calendar: calendar)
+        let shape: [Double] = [
+            0.7, 0.9, 0.5, 1.1, 0.6, 0.1, 0.0, 0.8, 1.3, 0.9, 0.4, 1.0, 0.2, 0.0, 0.6,
+            0.9, 1.2, 0.7, 0.8, 0.3, 0.0, 0.1, 0.9, 1.1, 0.6, 1.0, 0.8, 0.2, 0.5, 1.0,
+        ]
+        let centsPerMillion: Int64 = 60
+        let days = period.dayStarts.enumerated().map { index, start in
+            let isToday = index == period.dayStarts.count - 1
+            let tokens = isToday ? tokensToday : Int64(Double(tokensToday) * shape[index % shape.count])
+            let requests = isToday ? requestsToday : Int64(Double(requestsToday) * shape[index % shape.count])
+            let cost = tokens > 0 ? Decimal(tokens / 1_000_000 * centsPerMillion) / 100 : nil
+            return ActivityHistory.Day(start: start, tokens: tokens, requests: requests, estimatedCost: cost)
+        }
+        let costs = days.compactMap(\.estimatedCost)
+        return ActivityHistory(
+            metric: .tokens,
+            days: days,
+            tokens: days.reduce(0) { $0 + $1.tokens },
+            requests: days.reduce(0) { $0 + $1.requests },
+            estimatedCost: costs.isEmpty ? nil : costs.reduce(0, +),
+            isCostComplete: true,
+            credits: nil,
+            topModel: profile.model
+        )
     }
 
     /// Splits activity between the profile's models, roughly four to one.

@@ -50,7 +50,8 @@ struct GeminiProviderTests {
         let dir = try TemporaryDirectory()
         let snapshot = try await provider(environment(dir, authType: nil, hasOAuthFile: true)).fetchSnapshot(trigger: .automatic)
         #expect(snapshot.status == .available)
-        #expect(snapshot.activity == LocalActivity(tokensToday: 0, requestsToday: 0))
+        #expect(snapshot.activity.tokensToday == 0)
+        #expect(snapshot.activity.requestsToday == 0)
         #expect(snapshot.modelActivity.isEmpty)
     }
 

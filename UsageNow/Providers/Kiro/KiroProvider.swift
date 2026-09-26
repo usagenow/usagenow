@@ -40,7 +40,7 @@ struct KiroProvider: UsageProvider {
         let windows = limits.map { [$0.window].asOf(date) } ?? []
         let hasCurrentReading = windows.contains { $0.usage != nil }
 
-        let activity = await sessions.todaysActivity(root: environment.sessionsRoot, since: calendar.startOfDay(for: date))
+        let activity = await sessions.activity(root: environment.sessionsRoot, period: ActivityPeriod(now: date, calendar: calendar))
 
         return ProviderSnapshot(
             provider: .kiro,
@@ -50,7 +50,8 @@ struct KiroProvider: UsageProvider {
             quotaUnavailableReason: hasCurrentReading ? nil : .toolNotRunning,
             activity: LocalActivity(
                 requestsToday: activity.turns,
-                creditsToday: activity.credits
+                creditsToday: activity.credits,
+                history: activity.history
             ),
             updatedAt: date,
             limitsUpdatedAt: limits?.observedAt

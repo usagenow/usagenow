@@ -145,7 +145,7 @@ struct KiroSessionReaderTests {
             KiroFixture.usageSummary(id: "u3", at: noon.addingTimeInterval(-500), credits: [0.5]),
         ], modified: noon)
 
-        let result = await KiroSessionReader().todaysActivity(root: dir.url.appending(path: "sessions"), since: since)
+        let result = await KiroSessionReader().activity(root: dir.url.appending(path: "sessions"), period: ActivityPeriod(now: since, calendar: TestDates.utc))
         #expect(result.credits == 4)
         #expect(result.turns == 3)
     }
@@ -161,9 +161,11 @@ struct KiroSessionReaderTests {
         // A copied session repeats the same record.
         _ = try dir.writeJSONL("sessions/abc/sess_copy/messages.jsonl", lines: [summary], modified: noon)
 
-        let result = await KiroSessionReader().todaysActivity(root: dir.url.appending(path: "sessions"), since: since)
+        let result = await KiroSessionReader().activity(root: dir.url.appending(path: "sessions"), period: ActivityPeriod(now: since, calendar: TestDates.utc))
         #expect(result.credits == 3)
         #expect(result.turns == 2)
+        // Yesterday's turn belongs to the history.
+        #expect(result.history.days.compactMap(\.credits).suffix(2) == [9, 3])
     }
 }
 

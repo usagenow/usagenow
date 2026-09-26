@@ -45,6 +45,9 @@ struct ProviderUsageView: View {
                     StatusMessage(text: snapshot.quotaUnavailableReason?.message(for: state.provider) ?? String(localized: "Usage limits unavailable"))
                 }
                 ProviderActivityView(activity: snapshot.activity)
+                if let history = snapshot.activity.history {
+                    ActivityHistoryView(history: history)
+                }
                 ModelActivityView(models: snapshot.modelActivity)
             case .notAuthenticated where ProviderCatalog.definition(for: state.provider).apiKey != nil:
                 StatusMessage(text: String(localized: "\(state.provider.displayName) didn’t accept the API key. Check it in Settings › Providers."))
@@ -148,41 +151,50 @@ private struct ProviderActivityView: View {
 
     var body: some View {
         if activity.tokensToday != nil || activity.requestsToday != nil || activity.creditsToday != nil {
-            HStack(spacing: 14) {
-                if let tokens = activity.tokensToday {
-                    MetricLabel(
-                        value: UsageFormatter.tokens(tokens),
-                        unit: "tokens today",
-                        spokenValue: UsageFormatter.count(tokens)
-                    )
-                }
-                if let credits = activity.creditsToday {
-                    MetricLabel(
-                        value: UsageFormatter.credits(credits),
-                        unit: activity.isCreditsComplete ? "credits today" : "credits today, partial"
-                    )
-                }
-                if let requests = activity.requestsToday {
-                    MetricLabel(
-                        value: UsageFormatter.count(requests),
-                        unit: requests == 1 ? "request" : "requests"
-                    )
-                }
-                if let cost = activity.estimatedCostToday {
-                    // "≈" and "at API prices" together say this is what the
-                    // tokens would have cost, not what anyone was charged.
-                    MetricLabel(
-                        value: "≈ " + UsageFormatter.money(cost),
-                        unit: activity.isCostComplete ? "at API prices" : "at API prices, partial",
-                        spokenValue: String(localized: "about \(UsageFormatter.money(cost))")
-                    )
-                    .help(activity.isCostComplete
-                          ? Text("What today's tokens would cost at published API prices. Your subscription doesn't charge per token.")
-                          : Text("What today's tokens would cost at published API prices, for the models UsageNow has a price for. Your subscription doesn't charge per token."))
-                }
-                Spacer(minLength: 0)
+            // When everything doesn't fit on one line, the cost drops its
+            // unit rather than the row wrapping; the tooltip still explains it.
+            ViewThatFits(in: .horizontal) {
+                row(showsCostUnit: true)
+                row(showsCostUnit: false)
             }
             .padding(.top, 2)
+        }
+    }
+
+    private func row(showsCostUnit: Bool) -> some View {
+        HStack(spacing: 14) {
+            if let tokens = activity.tokensToday {
+                MetricLabel(
+                    value: UsageFormatter.tokens(tokens),
+                    unit: "tokens today",
+                    spokenValue: UsageFormatter.count(tokens)
+                )
+            }
+            if let credits = activity.creditsToday {
+                MetricLabel(
+                    value: UsageFormatter.credits(credits),
+                    unit: activity.isCreditsComplete ? "credits today" : "credits today, partial"
+                )
+            }
+            if let requests = activity.requestsToday {
+                MetricLabel(
+                    value: UsageFormatter.count(requests),
+                    unit: requests == 1 ? "request" : "requests"
+                )
+            }
+            if let cost = activity.estimatedCostToday {
+                // "≈" and "at API prices" together say this is what the
+                // tokens would have cost, not what anyone was charged.
+                MetricLabel(
+                    value: "≈ " + UsageFormatter.money(cost) + (showsCostUnit || activity.isCostComplete ? "" : "+"),
+                    unit: showsCostUnit ? (activity.isCostComplete ? "at API prices" : "at API prices, partial") : nil,
+                    spokenValue: String(localized: "about \(UsageFormatter.money(cost))")
+                )
+                .help(activity.isCostComplete
+                      ? Text("What today's tokens would cost at published API prices. Your subscription doesn't charge per token.")
+                      : Text("What today's tokens would cost at published API prices, for the models UsageNow has a price for. Your subscription doesn't charge per token."))
+            }
+            Spacer(minLength: 0)
         }
     }
 }
@@ -275,7 +287,7 @@ struct ModelActivityView: View {
 
 private struct MetricLabel: View {
     let value: String
-    let unit: LocalizedStringKey
+    let unit: LocalizedStringKey?
     var spokenValue: String?
 
     var body: some View {
@@ -284,12 +296,15 @@ private struct MetricLabel: View {
                 .font(.callout.weight(.medium))
                 .monospacedDigit()
                 .contentTransition(.numericText())
-            Text(unit)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+            if let unit {
+                Text(unit)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
         }
+        .fixedSize()
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(unit))
+        .accessibilityLabel(unit.map { Text($0) } ?? Text("Estimated cost at API prices"))
         .accessibilityValue(spokenValue ?? value)
     }
 }
