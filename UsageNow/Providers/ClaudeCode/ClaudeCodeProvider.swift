@@ -70,9 +70,7 @@ struct ClaudeCodeProvider: UsageProvider {
             planName: profile.planName,
             recentModel: activity.activity.latestModel,
             windows: windows,
-            // Say how to refresh whenever something is missing — including a window
-            // that reset since the last reading, even if another is still current.
-            quotaUnavailableReason: windows.allSatisfy({ $0.usage != nil }) && !windows.isEmpty ? nil : availability.unavailableReason,
+            quotaUnavailableReason: Self.reasonToShow(availability.unavailableReason, windows: windows, limitsDate: limitsDate, now: date),
             activity: LocalActivity(
                 tokensToday: activity.activity.tokens,
                 requestsToday: activity.activity.requests,
@@ -84,6 +82,29 @@ struct ClaudeCodeProvider: UsageProvider {
             updatedAt: date,
             limitsUpdatedAt: windows.isEmpty ? nil : limitsDate
         )
+    }
+}
+
+extension ClaudeCodeProvider {
+    /// When to say how to refresh the limits.
+    ///
+    /// Whenever something is missing — including a window that reset since
+    /// the last reading, even if another is still current. And when the
+    /// person has to act — an expired sign-in or a Keychain refusal — even
+    /// beside last known values: otherwise hour-old percentages pass for
+    /// current ones. A passing outage is mentioned only once the values it
+    /// left behind are stale, so one failed request doesn't flash a notice.
+    static func reasonToShow(_ reason: QuotaUnavailableReason?, windows: [UsageWindow], limitsDate: Date?, now: Date) -> QuotaUnavailableReason? {
+        guard let reason else { return nil }
+        let isComplete = !windows.isEmpty && windows.allSatisfy { $0.usage != nil }
+        guard isComplete else { return reason }
+        switch reason {
+        case .signInExpired, .permissionDenied:
+            return reason
+        case .temporarilyUnavailable, .toolNotRunning:
+            let age = now.timeIntervalSince(limitsDate ?? .distantPast)
+            return age > ProviderSnapshot.staleThreshold ? reason : nil
+        }
     }
 }
 

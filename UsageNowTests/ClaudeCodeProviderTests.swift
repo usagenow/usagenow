@@ -348,6 +348,41 @@ struct ClaudeCodeProviderTests {
         #expect(await client.availability == .staleAuthentication)
     }
 
+    /// Last known values stay on screen after the sign-in expires, and the
+    /// fix is shown beside them, so they aren't read as current.
+    @Test func staleLimitsSayHowToRefresh() async throws {
+        let dir = try TemporaryDirectory()
+        let environment = try environment(dir)
+        let credentials = SequencedCredentials([
+            .found(OAuthAccessToken(value: "fresh", expiresAt: noon.addingTimeInterval(3_600))),
+            .found(OAuthAccessToken(value: "stale", expiresAt: noon.addingTimeInterval(-60))),
+        ])
+        let client = ClaudeUsageLimitsClient(
+            credentials: credentials,
+            transport: StubTransport(status: 200, body: ClaudeUsageFixture.full),
+            minimumInterval: 0
+        )
+
+        let fresh = try await provider(environment, client: client, limitsEnabled: true).fetchSnapshot(trigger: .automatic)
+        #expect(!fresh.windows.isEmpty)
+        #expect(fresh.quotaUnavailableReason == nil)
+
+        let later = noon.addingTimeInterval(3_600)
+        let stale = try await provider(environment, client: client, limitsEnabled: true, now: later).fetchSnapshot(trigger: .automatic)
+        #expect(!stale.windows.isEmpty, "The last known values stay")
+        #expect(stale.limitsUpdatedAt == noon)
+        #expect(stale.quotaUnavailableReason == .signInExpired)
+    }
+
+    @Test func aPassingOutageIsMentionedOnlyOnceValuesAreStale() {
+        let windows = [UsageWindow(kind: .fiveHour, usage: UsagePercentage(percent: 40), resetsAt: noon.addingTimeInterval(3_600))]
+        #expect(ClaudeCodeProvider.reasonToShow(.temporarilyUnavailable, windows: windows, limitsDate: noon.addingTimeInterval(-120), now: noon) == nil)
+        #expect(ClaudeCodeProvider.reasonToShow(.temporarilyUnavailable, windows: windows, limitsDate: noon.addingTimeInterval(-3_600), now: noon) == .temporarilyUnavailable)
+        #expect(ClaudeCodeProvider.reasonToShow(.permissionDenied, windows: windows, limitsDate: noon, now: noon) == .permissionDenied)
+        #expect(ClaudeCodeProvider.reasonToShow(nil, windows: [], limitsDate: nil, now: noon) == nil)
+        #expect(ClaudeCodeProvider.reasonToShow(.signInExpired, windows: [], limitsDate: nil, now: noon) == .signInExpired)
+    }
+
     @Test func limitsAgeOutAfterADay() async throws {
         let credentials = SequencedCredentials([
             .found(OAuthAccessToken(value: "fresh", expiresAt: TestDates.noon.addingTimeInterval(3_600))),
