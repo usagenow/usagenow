@@ -111,3 +111,64 @@ struct WidgetProviderSnapshot: Codable, Sendable, Equatable, Identifiable {
         return nil
     }
 }
+
+// MARK: Reading snapshots from another version
+
+/// The app and its widget can briefly be different versions — during an
+/// update, or with a development build running beside a release. A
+/// snapshot from a newer app may name a provider, a kind of window, or a
+/// reason this widget doesn't know. Those are left out, rather than failing
+/// the whole snapshot and showing "Open UsageNow".
+extension WidgetSnapshot.State {
+    private enum CodingKeys: String, CodingKey {
+        case providers, noProvidersEnabled, noProvidersDetected
+    }
+
+    private enum ProvidersKeys: String, CodingKey {
+        case _0
+    }
+
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        if container.contains(.providers) {
+            let payload = try container.nestedContainer(keyedBy: ProvidersKeys.self, forKey: .providers)
+            let providers = try payload.decode([Skippable<WidgetProviderSnapshot>].self, forKey: ._0)
+            self = .providers(providers.compactMap(\.value))
+        } else if container.contains(.noProvidersEnabled) {
+            self = .noProvidersEnabled
+        } else if container.contains(.noProvidersDetected) {
+            self = .noProvidersDetected
+        } else {
+            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Unknown widget state"))
+        }
+    }
+}
+
+extension WidgetProviderSnapshot {
+    private enum CodingKeys: String, CodingKey {
+        case provider, planName, modelName, windows, tokensToday, requestsToday, creditsToday, quotaUnavailableReason
+    }
+
+    /// An unknown provider fails, so the list can skip it; an unknown window
+    /// or reason is dropped, and the rest of the provider still shows.
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        provider = try container.decode(ProviderID.self, forKey: .provider)
+        planName = try container.decodeIfPresent(String.self, forKey: .planName)
+        modelName = try container.decodeIfPresent(String.self, forKey: .modelName)
+        windows = (try container.decodeIfPresent([Skippable<UsageWindow>].self, forKey: .windows) ?? []).compactMap(\.value)
+        tokensToday = try container.decodeIfPresent(Int64.self, forKey: .tokensToday)
+        requestsToday = try container.decodeIfPresent(Int64.self, forKey: .requestsToday)
+        creditsToday = try container.decodeIfPresent(Decimal.self, forKey: .creditsToday)
+        quotaUnavailableReason = try? container.decodeIfPresent(QuotaUnavailableReason.self, forKey: .quotaUnavailableReason)
+    }
+}
+
+/// Decodes a value, or nothing if this version can't read it.
+private struct Skippable<Value: Decodable>: Decodable {
+    let value: Value?
+
+    init(from decoder: any Decoder) throws {
+        value = try? Value(from: decoder)
+    }
+}

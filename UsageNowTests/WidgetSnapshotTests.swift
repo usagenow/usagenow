@@ -173,6 +173,56 @@ struct WidgetSnapshotWriterTests {
         #expect(provider?.activityText(short: true)?.contains("credits") == true)
     }
 
+    /// A newer app may name a provider, window, or reason this widget
+    /// doesn't know. Those are skipped; everything else still shows.
+    @Test func readsASnapshotFromANewerApp() throws {
+        var codex = ProviderState(provider: .codex)
+        codex.snapshot = ProviderSnapshot(
+            provider: .codex,
+            status: .available,
+            windows: [UsageWindow(kind: .weekly, usage: UsagePercentage(percent: 42), resetsAt: now.addingTimeInterval(86_400))],
+            updatedAt: now
+        )
+        let snapshot = WidgetSnapshotWriter.makeSnapshot(states: [codex], enabledProviders: [.codex], generatedAt: now)
+        var json = try #require(try JSONSerialization.jsonObject(with: JSONEncoder.widget.encode(snapshot)) as? [String: Any])
+        var state = try #require(json["state"] as? [String: Any])
+        var payload = try #require(state["providers"] as? [String: Any])
+        var providers = try #require(payload["_0"] as? [[String: Any]])
+        var known = providers[0]
+        var windows = try #require(known["windows"] as? [Any])
+        windows.append(["kind": "decade", "usage": 10])
+        known["windows"] = windows
+        known["quotaUnavailableReason"] = "somethingNew"
+        providers[0] = known
+        providers.append(["provider": "futuretool", "windows": []])
+        payload["_0"] = providers
+        state["providers"] = payload
+        json["state"] = state
+
+        let decoded = try JSONDecoder.widget.decode(WidgetSnapshot.self, from: JSONSerialization.data(withJSONObject: json))
+        #expect(decoded.providers.map(\.provider) == [.codex])
+        #expect(decoded.providers.first?.windows.map(\.kind) == [.weekly])
+        #expect(decoded.providers.first?.quotaUnavailableReason == nil)
+    }
+
+    /// Reading got more forgiving; writing didn't change, so an older widget
+    /// still reads what this app writes.
+    @Test func theWrittenShapeIsUnchanged() throws {
+        var codex = ProviderState(provider: .codex)
+        codex.snapshot = ProviderSnapshot(provider: .codex, status: .available, updatedAt: now)
+        let snapshot = WidgetSnapshotWriter.makeSnapshot(states: [codex], enabledProviders: [.codex], generatedAt: now)
+        let json = try #require(try JSONSerialization.jsonObject(with: JSONEncoder.widget.encode(snapshot)) as? [String: Any])
+        let state = try #require(json["state"] as? [String: Any])
+        let payload = try #require(state["providers"] as? [String: Any])
+        #expect(Set(payload.keys) == ["_0"])
+        #expect(try JSONDecoder.widget.decode(WidgetSnapshot.self, from: JSONEncoder.widget.encode(snapshot)) == snapshot)
+
+        for empty in [WidgetSnapshot.State.noProvidersEnabled, .noProvidersDetected] {
+            let other = WidgetSnapshot(generatedAt: now, state: empty)
+            #expect(try JSONDecoder.widget.decode(WidgetSnapshot.self, from: JSONEncoder.widget.encode(other)) == other)
+        }
+    }
+
     /// A snapshot written before the choice existed still reads, as "left".
     @Test func olderSnapshotsHaveNoStyle() throws {
         var snapshot = WidgetSnapshot(generatedAt: now, state: .noProvidersEnabled)
