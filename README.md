@@ -2,7 +2,7 @@
 
 # UsageNow
 
-**AI coding usage tracker for macOS.** Monitor usage, limits, reset times, and token activity across Codex, Claude Code, Gemini CLI, and Antigravity, from the menu bar.
+**AI coding usage tracker for macOS.** Monitor usage, limits, reset times, and activity across Codex, Claude Code, Gemini CLI, Antigravity, Kiro, Warp, OpenCode, and Qoder — plus DeepSeek, Kimi, OpenRouter, and Ollama Cloud — from the menu bar.
 
 *See what's left. Keep building.*
 
@@ -18,31 +18,39 @@ Requires macOS 15 or later. The app is signed with a Developer ID and notarized 
 
 ## What it reads
 
-UsageNow reads real Codex, Claude Code, Gemini CLI, and Antigravity data from your Mac. Which data is available depends on the tool:
+UsageNow reads what each tool already keeps on your Mac, and — only for services you connect with your own API key — that service's official API. Which data is available depends on the tool:
 
-| | Codex | Claude Code | Gemini CLI | Antigravity |
-|---|---|---|---|---|
-| Usage limits and reset times | ✓ from the official `codex app-server` | ✓ experimental, opt-in (see below), plus limits Claude Code reports hitting | — not exposed locally | ✓ from the Antigravity app while it runs |
-| Plan | ✓, including Team, Business, and Enterprise | ✓ including a Team seat | — | ✓ |
-| Tokens and requests today | ✓ from local session files | ✓ from local session files | ✓ from local session recordings | — |
-| Activity by model | ✓ | ✓ | ✓ | — |
+| Provider | Usage limits and resets | Activity | Where it comes from |
+|---|---|---|---|
+| Codex | ✓ from the official `codex app-server` | tokens, requests, models, cost, 30 days | the app-server; `~/.codex/sessions` |
+| Claude Code | ✓ experimental, opt-in (see below), plus limits Claude Code reports hitting | tokens, requests, models, cost, 30 days | `~/.claude/projects`, `~/.claude.json` |
+| Gemini CLI | — not exposed locally | tokens, requests, models, cost, 30 days | `~/.gemini/tmp` |
+| Antigravity | ✓ while the Antigravity app runs | — | the app's own server on `127.0.0.1` |
+| Kiro | ✓ monthly credits | credits and prompts, 30 days | Kiro's own log; `~/.kiro/sessions` |
+| Warp | — | requests, credits, models; requests over 30 days | Warp's database, read-only |
+| OpenCode | — | tokens, requests, models, cost, 30 days | OpenCode's database, read-only |
+| Qoder | — | credits and requests, 30 days | `~/.qoder/projects` |
+| DeepSeek, Kimi, OpenRouter | balance and spending; OpenRouter's key limit | — | the official API, with your key |
+| Ollama Cloud | ✓ session and weekly, experimental | — | `ollama.com`, with your key |
 
-Limit windows are whatever the provider reports. An account may have only a weekly limit, for example, and UsageNow never invents a missing window or shows a fake 0%.
+Plans appear when the tool states them — for Codex including Team, Business, and Enterprise, and for Claude a Team seat. Limit windows are whatever the provider reports. An account may have only a weekly limit, for example, and UsageNow never invents a missing window or shows a fake 0%.
 
 **Account limits aren’t model limits.** A 5-hour or weekly window belongs to your account. The **Models today** list shows how today’s activity split across models — tokens and requests — and never a percentage, because no provider reports limits per model.
 
-Token and request counts are **local activity** observed in session files on this Mac. They include cached input and don’t necessarily match billing or quota consumption.
+Token, credit, and request counts are **local activity** observed in files on this Mac. They include cached input and don’t necessarily match billing or quota consumption.
 
 ## Highlights
 
 - **macOS native.** SwiftUI and `MenuBarExtra`. Lives in the menu bar, not the Dock.
-- **Codex, Claude Code, Gemini CLI, Antigravity, Kiro, Warp, and OpenCode** side by side: usage limits and reset times where the tool reports them, and daily token, credit, and request activity.
+- **Codex, Claude Code, Gemini CLI, Antigravity, Kiro, Warp, OpenCode, and Qoder** side by side: usage limits and reset times where the tool reports them, and daily token, credit, and request activity.
 - **The last 30 days.** A bar per day under each provider, with the month's tokens, estimated cost, and top model — hover a bar for that day.
 - **DeepSeek, Kimi, and OpenRouter** balances and spending, and **Ollama Cloud** limits (experimental), with your own API key — kept only in your Keychain and sent only to that provider.
 - **Activity by model.** See which models today’s tokens and requests went to — any model, including ones released after this version.
 - **What it would have cost.** An estimate of today’s activity at published API prices, with cached tokens priced as cached. A sense of scale, never a bill.
 - **Pick your providers, in your order.** Turn each one on or off in Settings › Providers, and drag them into the order the popover and widget should use. A provider that’s off is never refreshed and never read from disk.
-- **Desktop widget.** Small and medium widgets showing what’s left at a glance.
+- **Left or used.** Every percentage — popover, menu bar, and widget — reads as what's left or what's used, your choice.
+- **Desktop widget.** Small and medium widgets showing what’s left at a glance, with credits for tools that meter in credits.
+- **Report a Problem.** Shows you the whole diagnostic report first — versions, screens, settings, what each provider shows, never names, paths, keys, or prompts — and opens a prefilled GitHub issue or email.
 - **Local-first.** Your usage data stays on your Mac.
 - **Updates itself**, and only from a signed release.
 - **Open source** under the MIT License.
@@ -63,10 +71,17 @@ xcodebuild -project UsageNow.xcodeproj -scheme UsageNow test
 
 ### Data sources
 
-- **Codex:** limits and plan come from the official Codex CLI’s app-server (`codex app-server`, `account/rateLimits/read`), which UsageNow runs locally. The app-server authenticates itself, so UsageNow never reads Codex credentials. If it’s unavailable, UsageNow falls back to the latest limits recorded in `~/.codex/sessions` and marks them as stale.
+- **Codex:** limits and plan come from the official Codex CLI’s app-server (`codex app-server`, `account/rateLimits/read`), which UsageNow runs locally. The app-server authenticates itself, so UsageNow never reads Codex credentials. The CLI is found inside the Codex or ChatGPT app (including `Resources/codex-cli/bin`, where ChatGPT 26.9 moved it), in Homebrew, `/usr/local/bin`, `~/.local/bin`, Bun, or nvm, and last inside the Codex extension for VS Code and the editors built on it. If it’s unavailable, UsageNow falls back to the latest limits recorded in `~/.codex/sessions` and marks them as stale.
 - **Claude Code:** activity comes from `~/.claude/projects`, and the plan from `~/.claude.json`. Only timestamps, identifiers, model names, and token counts are extracted. Prompts, responses, and code are never stored, logged, or sent anywhere.
 - **Claude usage limits:** experimental and off by default — see below.
 - **Gemini CLI:** activity comes from the session recordings Gemini CLI writes to `~/.gemini/tmp/<project>/chats/`. Only message identifiers, timestamps, model names, and token counts are extracted; prompts, responses, thoughts, and tool calls are never decoded. See below.
+- **Kiro:** the plan, credit amounts, and reset date from the usage answer Kiro writes to its own log, and each prompt's credits from `~/.kiro/sessions`. UsageNow sends no request to Kiro and never reads the account identifiers on the same log lines.
+- **Warp:** request times and outcomes, per-conversation credits, and tokens per model from Warp's SQLite database, opened read-only. Prompt and reply text is never selected.
+- **OpenCode:** each answer's time, model, and token counts from `~/.local/share/opencode/opencode.db`, opened read-only. SQLite extracts only those numbers with `json_extract`, so reply text stored in the same JSON never leaves the database.
+- **Qoder:** each answer's time, request identifier, and credits from the transcripts in `~/.qoder/projects`. Prompts, replies, and tool results are never decoded, and Qoder's sign-in is never opened. Qoder zeroes token counts, so it shows credits only.
+- **API keys you add** (DeepSeek, Kimi, OpenRouter, Ollama Cloud): stored only in this Mac's Keychain, sent over HTTPS only to that provider's host, for read-only balance or usage requests. Redirects are refused, and a key is deleted when you turn its provider off. Ollama Cloud's endpoint isn't documented, so it's marked Experimental.
+
+The last 30 days are computed from the same files each time. UsageNow stores no history of its own.
 
 UsageNow honors `CODEX_HOME` and `CLAUDE_CONFIG_DIR` when they’re set.
 
@@ -86,7 +101,7 @@ Claude Code does not currently expose subscription limits through a supported lo
 
 Claude Code’s saved sign-in lasts a few hours and is renewed only when Claude Code itself runs. UsageNow picks up a renewed sign-in on its own: while the saved one is unusable, it checks only when the keychain item last changed — which reads no secret and never shows a prompt — and reads the token again once Claude Code has saved a new one. After you use `claude` in Terminal, limits come back on the next refresh, with no **Try Again**. UsageNow doesn’t run Claude Code itself.
 
-Turn it on in **Settings › General › Fetch Claude usage limits**. When limits can’t be fetched, UsageNow says why in one line — the session needs refreshing, keychain access was denied, or Anthropic’s endpoint didn’t answer — and keeps showing local token, request, model, and plan data. The last limits it did read stay on screen for a day, marked stale, even across quitting or updating the app, so a sign-in that expires overnight doesn’t leave an empty panel in the morning. A window that reset since then keeps its row without a percentage (“Reset Mon 22:59 · not updated since”), because nothing says how much of the new window is used.
+Turn it on in **Settings › General › Fetch Claude usage limits**. When limits can’t be fetched, UsageNow says why in one line — the session needs refreshing, keychain access was denied, or Anthropic’s endpoint didn’t answer — and keeps showing local token, request, model, and plan data. The last limits it did read stay on screen for a day, marked stale and with the fix beside them, even across quitting or updating the app, so a sign-in that expires overnight doesn’t leave an empty panel in the morning. A window that reset since then keeps its row without a percentage (“Reset Mon 22:59 · not updated since”), because nothing says how much of the new window is used.
 
 Independently of that setting, when Claude Code stops a request because a limit was reached, it records the window and its reset time in the session transcript. UsageNow shows that window as used up until it resets. This needs no sign-in and also works when you use Claude Code inside the Claude app, whose sign-in UsageNow can’t read.
 
@@ -108,7 +123,7 @@ When the Antigravity app isn’t running there’s nothing to ask: the last limi
 
 ### Roadmap providers
 
-Cursor, GitHub Copilot, DeepSeek, and Qwen are listed in Settings › Providers as **Coming soon**. They’re labels only: no integration, no credentials, and no network or file access. GitHub Copilot is planned through GitHub’s official premium request usage API, with a token you provide.
+Cursor, GitHub Copilot, and Qwen are listed in Settings › Providers as **Coming soon**. They’re labels only: no integration, no credentials, and no network or file access. GitHub Copilot is planned through GitHub’s official premium request usage API, with a token you provide.
 
 ## Updates
 
@@ -125,11 +140,13 @@ Releases are signed into the feed with `scripts/appcast.sh`, which refuses to pu
 UsageNow ships a WidgetKit extension with small and medium sizes.
 
 - **Small** is a glance: each enabled provider’s tightest window — the one with the least left — plus the next reset. With a single provider it expands to show the window name and reset time.
-- **Medium** gives each provider a column with its windows, remaining percentage, and reset times. With three or more providers it switches to one row per provider, so each stays readable.
+- **Medium** gives each provider a column with its windows, percentage, and reset times. With three or more providers it switches to one row per provider, so each stays readable.
 - With more providers than fit, the ones closest to a limit are shown. Model details stay in the app.
+- Percentages follow **Settings › General › Show limits as**: left by default, or used. A provider without limits shows today's tokens, or credits for Kiro, Warp, and Qoder.
 - Disabled providers never appear, quota that isn’t available reads “Usage limits unavailable”, and old data stays visible with an “Updated … ago” note. No placeholder or fabricated values.
+- A widget reads snapshots from a newer app too, skipping what it doesn't recognize, so an update never leaves it asking you to open UsageNow.
 
-**The widget never touches providers.** It can’t read `~/.codex`, `~/.claude`, or `~/.gemini`, reach Antigravity, open the keychain, run `codex app-server`, or call Anthropic. The main app publishes a sanitized snapshot to a shared App Group container, and the widget only renders that. The provider and credential code isn’t compiled into the widget target at all.
+**The widget never touches providers.** It can’t read any tool's files or databases, reach Antigravity, open the keychain, run `codex app-server`, or call any service. The main app publishes a sanitized snapshot to a shared App Group container, and the widget only renders that. The provider and credential code isn’t compiled into the widget target at all.
 
 ### Signing and the widget
 
@@ -161,8 +178,11 @@ UsageNowWidget/ The extension itself: entry point and timeline provider
 UsageNow/
   App/          Entry point and composition root (AppState)
   Domain/       Normalized models: ProviderSnapshot, UsageWindow, UsagePercentage, UsageLevel…
-  Providers/    UsageProvider protocol; Codex, Claude Code, and mock providers
-  Services/     UsageStore, auto-refresh, launch at login, keychain storage
+  Providers/    UsageProvider protocol; one folder per tool (Codex, Claude Code, Gemini,
+                Antigravity, Kiro, Warp, OpenCode, Qoder), API-key providers, mocks,
+                and shared readers (incremental JSONL, read-only SQLite)
+  Services/     UsageStore, auto-refresh, launch at login, keychain storage,
+                updates, widget snapshot, diagnostic report
   Preferences/  User preferences, provider selection, and option types
   Features/     MenuBar popover and Settings UI
   Components/   Shared views
@@ -170,7 +190,7 @@ UsageNow/
 ```
 
 - **`ProviderCatalog`** is the single source of provider metadata — identifier, display name, artwork, and whether it’s available or on the roadmap.
-- **Providers** turn tool-specific data into a normalized `ProviderSnapshot` with any number of usage windows and optional plan, model, and activity. Views depend only on this normalized state and hide data a provider doesn’t have.
+- **Providers** turn tool-specific data into a normalized `ProviderSnapshot` with any number of usage windows and optional plan, model, balance, and activity — today's totals and a 30-day `ActivityHistory`. Views depend only on this normalized state and hide data a provider doesn’t have.
 - **`UsageStore`** refreshes all providers concurrently. It keeps the last good data when a refresh fails and exposes loading, empty, and per-provider error states.
 - **`WidgetSnapshotWriter`** is the only path from provider data to the widget. It drops disabled and not-installed providers, copies each display field explicitly, writes atomically, and reloads timelines only when the content changed.
 
