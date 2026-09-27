@@ -48,7 +48,11 @@ fi
 echo "==> Signing $count disk image(s) from $IMAGES"
 # generate_appcast reads the private key from the login keychain itself; it
 # is never passed on the command line, where it would reach the shell history.
+#
+# No delta updates: only the disk images are published to the site, so a
+# delta listed in the feed would point at a file that isn't there.
 "$GENERATE" \
+    --maximum-deltas 0 \
     --download-url-prefix "$DOWNLOAD_PREFIX" \
     --link "https://usagenow.com" \
     --full-release-notes-url "https://github.com/usagenow/usagenow/blob/main/CHANGELOG.md" \
