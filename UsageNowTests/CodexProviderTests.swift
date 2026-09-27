@@ -47,6 +47,35 @@ struct CodexProviderTests {
         #expect(environment.sessionRoots.first?.lastPathComponent == "sessions")
     }
 
+    /// ChatGPT 26.9 moved its bundled CLI into Resources/codex-cli/bin.
+    /// Both layouts are searched, the app's own copy before any other.
+    @Test func findsTheCLIBundledWithTheApp() throws {
+        let dir = try TemporaryDirectory()
+        let candidates = CodexEnvironment.executableCandidates(homeDirectory: dir.url).map(\.path)
+        let old = "/Applications/ChatGPT.app/Contents/Resources/codex"
+        let moved = "/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex"
+        #expect(candidates.contains(old))
+        #expect(candidates.contains(moved))
+        let homebrew = try #require(candidates.firstIndex(of: "/opt/homebrew/bin/codex"))
+        #expect(try #require(candidates.firstIndex(of: moved)) < homebrew)
+    }
+
+    /// People who use Codex only in an editor have its CLI inside the
+    /// extension. It's the last resort, newest version first.
+    @Test func findsTheCLIBundledWithAnEditorExtension() throws {
+        let dir = try TemporaryDirectory()
+        for version in ["26.9.1", "26.10.0"] {
+            try dir.write(".vscode/extensions/openai.chatgpt-\(version)-darwin-arm64/bin/macos-aarch64/codex", text: "")
+        }
+        try dir.write(".vscode/extensions/someone.else-1.0.0/bin/macos-aarch64/codex", text: "")
+
+        let found = CodexEnvironment.editorExtensionCandidates(homeDirectory: dir.url).map { $0.pathComponents.suffix(4).joined(separator: "/") }
+        #expect(found.count == 2)
+        #expect(found.first?.hasPrefix("openai.chatgpt-26.10.0") == true)
+        let all = CodexEnvironment.executableCandidates(homeDirectory: dir.url)
+        #expect(all.last?.path.contains("openai.chatgpt-26.9.1") == true)
+    }
+
     @Test func missingSessionDirectoriesMeanNoActivity() async throws {
         let dir = try TemporaryDirectory()
         let snapshot = try await provider(environment(dir, executable: false)).fetchSnapshot(trigger: .automatic)
