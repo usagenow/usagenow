@@ -21,6 +21,9 @@ AI coding usage tracker for macOS. Usage, limits, reset times, and activity acro
 
 ## Fixed
 
+- Codex limits stopped updating with ChatGPT 26.9, which moved its bundled Codex CLI. UsageNow finds it again, and also finds the one bundled with the Codex extension for VS Code, Cursor, Windsurf, Kiro, and Qoder.
+- Stale Claude limits now say "Refresh Claude Code from Terminal" beside them, so an hour-old percentage isn't read as current.
+- The widget reads data from a newer version of the app instead of asking you to open UsageNow.
 - UsageNow could quit without a word if the Codex app-server exited early.
 - A database that couldn't be opened was closed twice.
 - A data race when several API-key providers first refreshed at once.

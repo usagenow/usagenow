@@ -26,6 +26,9 @@ All notable changes to UsageNow. This project follows [Semantic Versioning](http
 
 ### Fixed
 
+- **Codex limits stopped updating with ChatGPT 26.9**, which moved its bundled Codex CLI. UsageNow now finds it there, and also finds the CLI bundled with the Codex extension for VS Code, Cursor, Windsurf, Kiro, and Qoder. Until now, Codex showed the limits last written to a session file — sometimes days old.
+- **Stale Claude limits now say how to refresh them.** When Claude Code's sign-in has expired, the last known limits stay on screen with how old they are, and now with "Refresh Claude Code from Terminal" beside them, so an hour-old percentage isn't read as current.
+- **The widget reads data from a newer version of the app**, skipping a provider it doesn't know instead of asking you to open UsageNow.
 - **Memory while reading session files.** Every chunk of a file stayed in memory until the whole file was read, so the first read of a month of sessions could peak at 1.4 GB. It now stays under 500 MB, usually around 200 MB, and the memory is handed back to the system once the read is done.
 - **UsageNow could quit without a word** if the Codex app-server exited before UsageNow finished talking to it. That's now a failed refresh, like any other.
 - **A database that couldn't be opened** — Warp's when macOS denies access, or a damaged OpenCode file — was closed twice. It's now closed once.
