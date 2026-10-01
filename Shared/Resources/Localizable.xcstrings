@@ -12,6 +12,18 @@
         }
       }
     },
+    "%@ API key" : {
+
+    },
+    "%@ credits" : {
+      "comment" : "Widget activity, e.g. 2.23 credits\ne.g. 12.5 credits"
+    },
+    "%@ credits today" : {
+      "comment" : "Widget activity, e.g. 2.23 credits today"
+    },
+    "%@ didn’t accept the API key. Check it in Settings › Providers." : {
+
+    },
     "%@ isn’t installed" : {
 
     },
@@ -21,11 +33,14 @@
     "%@ plan" : {
 
     },
+    "%@ requests" : {
+      "comment" : "e.g. 1,204 requests"
+    },
     "%@ tokens" : {
-
+      "comment" : "Model activity without a request count\nWidget activity, e.g. 12.8M tokens\ne.g. 2.18B tokens"
     },
     "%@ tokens today" : {
-
+      "comment" : "Widget activity, e.g. 12.8M tokens today"
     },
     "%@ tokens, %@ requests" : {
       "comment" : "Model activity, e.g. 72,400,000 tokens, 148 requests",
@@ -40,6 +55,53 @@
     },
     "%@ usage" : {
       "comment" : "e.g. Weekly usage"
+    },
+    "%@ used" : {
+      "comment" : "Used quota, e.g. 42% used"
+    },
+    "%@: %@ limit has reset" : {
+      "comment" : "Notification title, e.g. Claude Code: 5-hour limit has reset",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@ limit has reset"
+          }
+        }
+      }
+    },
+    "%@: %@ limit reached" : {
+      "comment" : "Notification title, e.g. Claude Code: 5-hour limit reached",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@ limit reached"
+          }
+        }
+      }
+    },
+    "%@: %@ of the %@ limit left" : {
+      "comment" : "Notification title, e.g. Claude Code: 18% of the 5-hour limit left",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@ of the %3$@ limit left"
+          }
+        }
+      }
+    },
+    "%@: %@ of the %@ limit used" : {
+      "comment" : "Notification title, e.g. Claude Code: 82% of the 5-hour limit used",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@ of the %3$@ limit used"
+          }
+        }
+      }
     },
     "%lld-day" : {
       "comment" : "Usage window length, e.g. 30-day"
@@ -87,6 +149,9 @@
     "+%lld more" : {
       "comment" : "Models not listed, e.g. +2 more"
     },
+    "1 request" : {
+
+    },
     "15 minutes" : {
 
     },
@@ -99,16 +164,37 @@
     "5-hour" : {
 
     },
+    "A chart of daily activity under each provider in the menu bar window. Turn it off to keep the window short." : {
+
+    },
     "AI coding usage tracker for macOS" : {
 
     },
+    "API key" : {
+
+    },
+    "API key saved" : {
+
+    },
+    "API keys can usually spend money, not just read it. If %@ lets you, create a separate key for UsageNow." : {
+
+    },
     "About" : {
+
+    },
+    "Activity, last 30 days" : {
+
+    },
+    "Add API Key…" : {
 
     },
     "Allow UsageNow in System Settings to finish setup." : {
 
     },
     "Allow UsageNow to access your Claude Code sign-in in Keychain." : {
+
+    },
+    "Another app already uses this shortcut. Record a different one." : {
 
     },
     "Antigravity usage" : {
@@ -120,7 +206,19 @@
     "Appearance" : {
 
     },
+    "Applies to the popover, the menu bar, and the widget." : {
+
+    },
     "Available" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Check Now" : {
+
+    },
+    "Check for updates automatically" : {
 
     },
     "Checking usage…" : {
@@ -150,16 +248,43 @@
     "Coming soon" : {
 
     },
+    "Copied" : {
+
+    },
+    "Copy" : {
+
+    },
     "Couldn’t refresh %@" : {
 
     },
+    "Create a key on %@…" : {
+
+    },
+    "Credits" : {
+
+    },
     "Dark" : {
+
+    },
+    "Day" : {
 
     },
     "Display" : {
 
     },
     "Done" : {
+
+    },
+    "Email…" : {
+
+    },
+    "Estimated cost at API prices" : {
+
+    },
+    "Experimental" : {
+
+    },
+    "Experimental: %@ doesn’t document how to read usage, so this may stop working without notice. If it does, UsageNow shows limits as unavailable rather than guessing." : {
 
     },
     "Fetch Claude usage limits" : {
@@ -186,13 +311,31 @@
     "Install or use Codex, Claude Code, Gemini CLI, or Antigravity to start tracking usage." : {
 
     },
+    "Install or use a supported AI coding tool to start tracking usage." : {
+
+    },
     "Just now" : {
+
+    },
+    "Keyboard shortcut" : {
+
+    },
+    "Kiro usage" : {
+
+    },
+    "Last 30 days" : {
+
+    },
+    "Last checked %@" : {
 
     },
     "Launch UsageNow at login" : {
 
     },
     "Light" : {
+
+    },
+    "Limits are checked when UsageNow refreshes. Notifications come from this Mac; nothing is sent anywhere." : {
 
     },
     "Limits unavailable" : {
@@ -205,6 +348,9 @@
 
     },
     "Models today" : {
+
+    },
+    "Monthly" : {
 
     },
     "Most critical usage" : {
@@ -225,19 +371,43 @@
     "Next reset" : {
 
     },
+    "No API key yet" : {
+
+    },
+    "No activity" : {
+
+    },
     "No providers detected" : {
 
     },
     "No providers enabled" : {
 
     },
+    "None" : {
+
+    },
+    "Not checked yet" : {
+
+    },
+    "Notifications" : {
+
+    },
+    "Notifications are turned off for UsageNow in System Settings." : {
+
+    },
+    "Notify me about limits" : {
+
+    },
     "Open %@ to update usage limits." : {
 
     },
-    "Open Antigravity CLI to update usage limits." : {
+    "Open GitHub Issue…" : {
 
     },
     "Open Login Items…" : {
+
+    },
+    "Open Notification Settings…" : {
 
     },
     "Open Provider Settings" : {
@@ -258,6 +428,15 @@
     "Open UsageNow to load usage data." : {
 
     },
+    "Open the Antigravity app to update usage limits." : {
+
+    },
+    "Opens and closes UsageNow from any app." : {
+
+    },
+    "Press a shortcut…" : {
+
+    },
     "Privacy" : {
 
     },
@@ -270,6 +449,9 @@
     "Quit UsageNow" : {
 
     },
+    "Record Shortcut" : {
+
+    },
     "Refresh" : {
 
     },
@@ -277,6 +459,30 @@
 
     },
     "Refresh interval" : {
+
+    },
+    "Refreshing…" : {
+
+    },
+    "Remaining" : {
+
+    },
+    "Remove" : {
+
+    },
+    "Remove shortcut" : {
+
+    },
+    "Replace…" : {
+
+    },
+    "Report a Problem" : {
+
+    },
+    "Report a Problem…" : {
+
+    },
+    "Requests" : {
 
     },
     "Reset %@ · not updated since" : {
@@ -297,10 +503,19 @@
     "Retry refreshing %@" : {
 
     },
+    "Save" : {
+
+    },
     "Settings…" : {
 
     },
     "Share anonymous usage analytics" : {
+
+    },
+    "Show limits as" : {
+
+    },
+    "Show the last 30 days" : {
 
     },
     "Shows the icon alone when no usage limit is available." : {
@@ -315,10 +530,28 @@
     "The UsageNow name, logo, icon, and other brand assets are not covered by the MIT License." : {
 
     },
+    "The balance can’t pay for more requests." : {
+
+    },
+    "The full limit is available again." : {
+
+    },
+    "The key couldn’t be saved to the Keychain." : {
+
+    },
+    "This build can't update itself: it wasn't made by the release process, which is what signs an update." : {
+
+    },
     "This build doesn’t send analytics yet." : {
 
     },
-    "Track Antigravity limits while Antigravity CLI runs." : {
+    "This is everything the report contains: versions, screens, settings, and what each provider shows. No names, emails, file paths, keys, or prompts. Nothing is sent until you send it yourself." : {
+
+    },
+    "Tokens" : {
+
+    },
+    "Track Antigravity limits while the Antigravity app runs." : {
 
     },
     "Track Claude Code usage and limits." : {
@@ -328,6 +561,30 @@
 
     },
     "Track Gemini CLI activity by model." : {
+
+    },
+    "Track Kiro credits and monthly limits." : {
+
+    },
+    "Track Ollama Cloud session and weekly limits." : {
+
+    },
+    "Track OpenCode tokens and models." : {
+
+    },
+    "Track OpenRouter spending and key limits." : {
+
+    },
+    "Track Qoder credits." : {
+
+    },
+    "Track Warp agent requests and credits." : {
+
+    },
+    "Track your DeepSeek API balance." : {
+
+    },
+    "Track your Kimi API balance." : {
 
     },
     "Try Again" : {
@@ -342,6 +599,9 @@
     "Updated just now" : {
 
     },
+    "Updates are off in this build" : {
+
+    },
     "Usage Analytics" : {
 
     },
@@ -354,7 +614,23 @@
     "UsageNow doesn’t include third-party code. Its own source code is available under the MIT License." : {
 
     },
+    "UsageNow installs an update only when it's signed with the UsageNow update key. Checking sends no information about you." : {
+
+    },
     "UsageNow is local-first. Your usage data stays on this Mac." : {
+
+    },
+    "UsageNow uses this key only to read your usage from %@. It stays in the Keychain on this Mac, is never sent anywhere else, and is deleted when you turn %@ off." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "UsageNow uses this key only to read your usage from %1$@. It stays in the Keychain on this Mac, is never sent anywhere else, and is deleted when you turn %2$@ off."
+          }
+        }
+      }
+    },
+    "Used" : {
 
     },
     "Version %@ (%@)" : {
@@ -370,6 +646,36 @@
     "Weekly" : {
 
     },
+    "What these tokens would cost at published API prices, for the models UsageNow has a price for. Your subscription doesn't charge per token." : {
+
+    },
+    "What these tokens would cost at published API prices. Your subscription doesn't charge per token." : {
+
+    },
+    "What today's tokens would cost at published API prices, for the models UsageNow has a price for. Your subscription doesn't charge per token." : {
+
+    },
+    "What today's tokens would cost at published API prices. Your subscription doesn't charge per token." : {
+
+    },
+    "When 20% and 5% of a limit are left, and when a limit you were warned about resets." : {
+
+    },
+    "about %@" : {
+
+    },
+    "at API prices" : {
+
+    },
+    "at API prices, partial" : {
+
+    },
+    "credits today" : {
+
+    },
+    "credits today, partial" : {
+
+    },
     "left" : {
       "comment" : "Follows a remaining percentage, e.g. 58% left"
     },
@@ -379,8 +685,17 @@
     "requests" : {
 
     },
+    "spent today" : {
+
+    },
+    "this month" : {
+
+    },
     "tokens today" : {
 
+    },
+    "used" : {
+      "comment" : "Follows a used percentage, e.g. 42% used"
     }
   },
   "version" : "1.0"
