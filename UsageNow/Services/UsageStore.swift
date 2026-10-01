@@ -101,12 +101,21 @@ final class UsageStore {
         await refresh(only: newlyEnabled)
     }
 
-    /// Refreshes all providers, or only `ids`. Calls made while a refresh is
-    /// in flight wait for it instead of starting another.
+    /// Refreshes all providers, or only `ids`.
+    ///
+    /// A routine refresh of everything that arrives while another refresh is
+    /// in flight waits for it instead of starting a second one. A request
+    /// that asks for something particular — named providers, or a refresh
+    /// the person asked for — waits its turn and then runs: the refresh in
+    /// flight may have started before the provider was turned on, or before
+    /// the key or sign-in it needs was there.
     func refresh(only ids: Set<ProviderID>? = nil, trigger: RefreshTrigger = .automatic) async {
-        if let inFlightRefresh {
-            await inFlightRefresh.value
-            return
+        if let current = inFlightRefresh {
+            await current.value
+            if ids == nil, trigger == .automatic { return }
+            while let next = inFlightRefresh {
+                await next.value
+            }
         }
         let targets = providers.filter { enabledProviders.contains($0.id) && (ids?.contains($0.id) ?? true) }
         guard !targets.isEmpty else {
@@ -114,10 +123,14 @@ final class UsageStore {
             lastRefreshAt = now()
             return
         }
-        let task = Task { await performRefresh(of: targets, trigger: trigger) }
+        // The task clears itself, so whoever waited on it finds the way
+        // clear as soon as it resumes.
+        let task = Task {
+            await performRefresh(of: targets, trigger: trigger)
+            inFlightRefresh = nil
+        }
         inFlightRefresh = task
         await task.value
-        inFlightRefresh = nil
     }
 
     /// Refreshes unless the last refresh finished less than `maxAge` ago.

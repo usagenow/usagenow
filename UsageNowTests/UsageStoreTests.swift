@@ -107,6 +107,37 @@ struct UsageStoreTests {
         #expect(await provider.fetchCount == 1)
     }
 
+    /// A refresh of one provider asked for while everything is refreshing
+    /// used to be dropped: "Try Again" pressed mid-refresh did nothing.
+    @Test func aRequestForOneProviderRunsAfterTheRefreshInFlight() async {
+        let provider = StubProvider(.codex, .success(Fixtures.snapshot(.codex, at: now)), delay: .milliseconds(50))
+        let store = UsageStore(providers: [provider])
+
+        async let first: Void = store.refresh()
+        try? await Task.sleep(for: .milliseconds(10))
+        async let retry: Void = store.refresh(only: [.codex], trigger: .manual)
+        _ = await (first, retry)
+
+        #expect(await provider.fetchCount == 2)
+        #expect(await provider.lastTrigger == .manual)
+        #expect(!store.isRefreshing)
+    }
+
+    /// A provider turned on during a refresh is read once that refresh ends.
+    @Test func aProviderEnabledMidRefreshIsRead() async {
+        let codex = StubProvider(.codex, .success(Fixtures.snapshot(.codex, at: now)), delay: .milliseconds(50))
+        let claude = StubProvider(.claudeCode, .success(Fixtures.snapshot(.claudeCode, at: now)))
+        let store = UsageStore(providers: [codex, claude], enabledProviders: [.codex])
+
+        async let first: Void = store.refresh()
+        try? await Task.sleep(for: .milliseconds(10))
+        await store.setEnabledProviders([.codex, .claudeCode])
+        await first
+
+        #expect(await claude.fetchCount == 1)
+        #expect(store.states.first { $0.provider == .claudeCode }?.snapshot != nil)
+    }
+
     @Test func refreshIfNeededSkipsRecentData() async {
         let provider = StubProvider(.codex, .success(Fixtures.snapshot(.codex, at: now)))
         let clock = TestClock(now)
