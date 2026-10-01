@@ -9,6 +9,9 @@ struct MenuBarContentView: View {
 
     let store: UsageStore
     var navigation = SettingsNavigation()
+    /// Opens Settings where the environment's action can't: outside a
+    /// SwiftUI scene, in the panel the global shortcut shows.
+    var openSettingsOverride: (@MainActor () -> Void)?
 
     /// The providers' natural height, measured outside the scroll view so
     /// the popover can match it exactly while it fits on screen.
@@ -86,7 +89,7 @@ struct MenuBarContentView: View {
         // A menu bar app isn't active by default; without this the
         // Settings window would open behind other apps.
         NSApplication.shared.activate()
-        openSettings()
+        if let openSettingsOverride { openSettingsOverride() } else { openSettings() }
     }
 }
 

@@ -1,5 +1,6 @@
 import AppKit
 import Observation
+import SwiftUI
 
 /// Composition root: builds the app's long-lived services and wires them together.
 @MainActor
@@ -17,6 +18,11 @@ final class AppState {
     let apiKeys: any APIKeyStoring
     let settingsNavigation = SettingsNavigation()
     let limitNotifier: LimitNotifier
+    let hotKey = GlobalHotKey.shared
+    /// SwiftUI's action for opening Settings, handed over by the menu bar
+    /// label, which lives in a scene. The shortcut's panel doesn't.
+    var openSettings: (@MainActor () -> Void)?
+    private var shortcutPanel: ShortcutPanelController?
 
     /// Deliberately never given `store` or snapshots — only which providers
     /// are installed. See `TelemetryClient`.
@@ -131,6 +137,8 @@ final class AppState {
         applyAppearance()
         applyRefreshInterval()
         applyLimitNotifications()
+        hotKey.action = { [weak self] in self?.toggleShortcutPanel() }
+        applyPopoverShortcut()
 
         observe({ [preferences] in _ = preferences.appearance }, apply: { [weak self] in self?.applyAppearance() })
         observe({ [preferences] in _ = preferences.refreshInterval }, apply: { [weak self] in self?.applyRefreshInterval() })
@@ -140,6 +148,7 @@ final class AppState {
         observe({ [store] in _ = store.states }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.usageAmountStyle }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.notifiesAboutLimits }, apply: { [weak self] in self?.applyLimitNotifications() })
+        observe({ [preferences] in _ = preferences.popoverShortcut }, apply: { [weak self] in self?.applyPopoverShortcut() })
         observe({ [analyticsPreferences] in _ = analyticsPreferences.isSharingEnabled }, apply: { [weak self] in self?.analyticsSharingChanged() })
 
         Task { [telemetry] in await telemetry.appDidBecomeActive() }
@@ -228,6 +237,20 @@ final class AppState {
         limitNotifier.update(snapshots: store.snapshots, enabledProviders: store.enabledProviders, style: preferences.usageAmountStyle)
     }
 
+    private func toggleShortcutPanel() {
+        if shortcutPanel == nil {
+            shortcutPanel = ShortcutPanelController(
+                content: { [unowned self] in AnyView(ShortcutPanelContent(appState: self)) },
+                onOpen: { [weak self] in self?.popoverDidOpen() }
+            )
+        }
+        shortcutPanel?.toggle()
+    }
+
+    private func applyPopoverShortcut() {
+        hotKey.register(preferences.popoverShortcut)
+    }
+
     private func applyRefreshInterval() {
         scheduler.schedule(every: preferences.refreshInterval.duration)
     }
@@ -263,6 +286,22 @@ final class AppState {
                 self?.observe(read, apply: apply)
             }
         }
+    }
+}
+
+/// The menu bar window's content, for the panel the shortcut opens. Reads
+/// the same preferences, so both windows always look alike.
+private struct ShortcutPanelContent: View {
+    let appState: AppState
+
+    var body: some View {
+        MenuBarContentView(
+            store: appState.store,
+            navigation: appState.settingsNavigation,
+            openSettingsOverride: appState.openSettings
+        )
+        .environment(\.usageAmountStyle, appState.preferences.usageAmountStyle)
+        .environment(\.showsActivityHistory, appState.preferences.showsActivityHistory)
     }
 }
 

@@ -20,6 +20,7 @@ struct SettingsView: View {
     let updates: UpdateController
     let store: UsageStore
     let limitNotifier: LimitNotifier
+    var hotKey: GlobalHotKey = .shared
     /// Asks an experimental limits source to try again, keychain included.
     let retryLimits: (ProviderID) -> Void
     var hasAPIKey: (ProviderID) -> Bool = { _ in false }
@@ -42,7 +43,7 @@ struct SettingsView: View {
                 ProvidersSettingsView(preferences: providerPreferences, hasAPIKey: hasAPIKey, setAPIKey: setAPIKey)
             }
             Tab("Menu Bar", systemImage: "menubar.rectangle", value: SettingsTab.menuBar) {
-                MenuBarSettingsView(preferences: preferences, providerPreferences: providerPreferences)
+                MenuBarSettingsView(preferences: preferences, providerPreferences: providerPreferences, hotKey: hotKey)
             }
             Tab("Notifications", systemImage: "bell", value: SettingsTab.notifications) {
                 NotificationsSettingsView(preferences: preferences, notifier: limitNotifier)
@@ -70,7 +71,8 @@ struct SettingsView: View {
                 refreshInterval: "\(preferences.refreshInterval.rawValue)s",
                 menuBarDisplayMode: preferences.menuBarDisplayMode.rawValue,
                 fetchClaudeUsageLimits: preferences.fetchClaudeUsageLimits,
-                notifiesAboutLimits: preferences.notifiesAboutLimits
+                notifiesAboutLimits: preferences.notifiesAboutLimits,
+                hasPopoverShortcut: preferences.popoverShortcut != nil
             )
         )
     }
@@ -213,6 +215,7 @@ struct GeneralSettingsView: View {
 struct MenuBarSettingsView: View {
     @Bindable var preferences: AppPreferences
     let providerPreferences: ProviderPreferences
+    var hotKey: GlobalHotKey = .shared
 
     var body: some View {
         Form {
@@ -226,6 +229,23 @@ struct MenuBarSettingsView: View {
                 Text("Shows the icon alone when no usage limit is available.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
+            }
+
+            Section {
+                LabeledContent("Keyboard shortcut") {
+                    ShortcutRecorder(shortcut: $preferences.popoverShortcut)
+                }
+            } footer: {
+                // Shown only once a shortcut is set and macOS turned it down.
+                if preferences.popoverShortcut != nil, !hotKey.isRegistered {
+                    Text("Another app already uses this shortcut. Record a different one.")
+                        .font(.callout)
+                        .foregroundStyle(.orange)
+                } else {
+                    Text("Opens and closes UsageNow from any app.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
             }
         }
         .formStyle(.grouped)

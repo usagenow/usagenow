@@ -32,6 +32,7 @@ enum DiagnosticReport {
         var menuBarDisplayMode: String
         var fetchClaudeUsageLimits: Bool
         var notifiesAboutLimits = false
+        var hasPopoverShortcut = false
     }
 
     @MainActor
@@ -53,7 +54,7 @@ enum DiagnosticReport {
             "Settings: appearance \(settings.appearance), limits as \(settings.usageAmountStyle), "
                 + "30-day charts \(settings.showsActivityHistory ? "on" : "off"), refresh \(settings.refreshInterval), "
                 + "menu bar \(settings.menuBarDisplayMode), Claude limits (experimental) \(settings.fetchClaudeUsageLimits ? "on" : "off"), "
-                + "limit notifications \(settings.notifiesAboutLimits ? "on" : "off")"
+                + "limit notifications \(settings.notifiesAboutLimits ? "on" : "off"), global shortcut \(settings.hasPopoverShortcut ? "set" : "not set")"
         )
         lines.append("")
         lines.append("Providers, in popover order:")

@@ -16,6 +16,7 @@ final class AppPreferences {
         static let showsActivityHistory = "showsActivityHistory"
         static let fetchClaudeUsageLimits = "experimental.fetchClaudeUsageLimits"
         static let notifiesAboutLimits = "notifiesAboutLimits"
+        static let popoverShortcut = "popoverShortcut"
     }
 
     var appearance: AppAppearance {
@@ -52,6 +53,11 @@ final class AppPreferences {
         didSet { defaults.set(notifiesAboutLimits, forKey: Key.notifiesAboutLimits) }
     }
 
+    /// Opens the menu bar window from any app. None until the person records one.
+    var popoverShortcut: GlobalShortcut? {
+        didSet { defaults.set(popoverShortcut.flatMap { try? JSONEncoder().encode($0) }, forKey: Key.popoverShortcut) }
+    }
+
     @ObservationIgnored private let defaults: UserDefaults
 
     init(defaults: UserDefaults = .standard) {
@@ -61,6 +67,7 @@ final class AppPreferences {
         showsActivityHistory = defaults.object(forKey: Key.showsActivityHistory) as? Bool ?? true
         fetchClaudeUsageLimits = defaults.bool(forKey: Key.fetchClaudeUsageLimits)
         notifiesAboutLimits = defaults.bool(forKey: Key.notifiesAboutLimits)
+        popoverShortcut = defaults.data(forKey: Key.popoverShortcut).flatMap { try? JSONDecoder().decode(GlobalShortcut.self, from: $0) }
         refreshInterval = (defaults.object(forKey: Key.refreshInterval) as? Int)
             .flatMap(RefreshInterval.init(rawValue:)) ?? .default
         // Unknown identifiers fall back to the default.
