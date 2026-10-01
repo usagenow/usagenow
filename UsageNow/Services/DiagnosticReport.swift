@@ -31,6 +31,7 @@ enum DiagnosticReport {
         var refreshInterval: String
         var menuBarDisplayMode: String
         var fetchClaudeUsageLimits: Bool
+        var notifiesAboutLimits = false
     }
 
     @MainActor
@@ -51,7 +52,8 @@ enum DiagnosticReport {
         lines.append(
             "Settings: appearance \(settings.appearance), limits as \(settings.usageAmountStyle), "
                 + "30-day charts \(settings.showsActivityHistory ? "on" : "off"), refresh \(settings.refreshInterval), "
-                + "menu bar \(settings.menuBarDisplayMode), Claude limits (experimental) \(settings.fetchClaudeUsageLimits ? "on" : "off")"
+                + "menu bar \(settings.menuBarDisplayMode), Claude limits (experimental) \(settings.fetchClaudeUsageLimits ? "on" : "off"), "
+                + "limit notifications \(settings.notifiesAboutLimits ? "on" : "off")"
         )
         lines.append("")
         lines.append("Providers, in popover order:")

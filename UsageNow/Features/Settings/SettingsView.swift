@@ -5,6 +5,7 @@ enum SettingsTab: Hashable, Sendable {
     case general
     case providers
     case menuBar
+    case notifications
     case privacy
     case about
 }
@@ -18,6 +19,7 @@ struct SettingsView: View {
     let launchAtLogin: LaunchAtLogin
     let updates: UpdateController
     let store: UsageStore
+    let limitNotifier: LimitNotifier
     /// Asks an experimental limits source to try again, keychain included.
     let retryLimits: (ProviderID) -> Void
     var hasAPIKey: (ProviderID) -> Bool = { _ in false }
@@ -42,6 +44,9 @@ struct SettingsView: View {
             Tab("Menu Bar", systemImage: "menubar.rectangle", value: SettingsTab.menuBar) {
                 MenuBarSettingsView(preferences: preferences, providerPreferences: providerPreferences)
             }
+            Tab("Notifications", systemImage: "bell", value: SettingsTab.notifications) {
+                NotificationsSettingsView(preferences: preferences, notifier: limitNotifier)
+            }
             Tab("Privacy", systemImage: "hand.raised", value: SettingsTab.privacy) {
                 PrivacySettingsView(analyticsPreferences: analyticsPreferences)
             }
@@ -64,7 +69,8 @@ struct SettingsView: View {
                 showsActivityHistory: preferences.showsActivityHistory,
                 refreshInterval: "\(preferences.refreshInterval.rawValue)s",
                 menuBarDisplayMode: preferences.menuBarDisplayMode.rawValue,
-                fetchClaudeUsageLimits: preferences.fetchClaudeUsageLimits
+                fetchClaudeUsageLimits: preferences.fetchClaudeUsageLimits,
+                notifiesAboutLimits: preferences.notifiesAboutLimits
             )
         )
     }
@@ -228,6 +234,39 @@ struct MenuBarSettingsView: View {
     }
 }
 
+struct NotificationsSettingsView: View {
+    @Bindable var preferences: AppPreferences
+    let notifier: LimitNotifier
+
+    var body: some View {
+        Form {
+            Section {
+                Toggle(isOn: $preferences.notifiesAboutLimits) {
+                    Text("Notify me about limits")
+                    Text("When 20% and 5% of a limit are left, and when a limit you were warned about resets.")
+                }
+                if preferences.notifiesAboutLimits, notifier.permission == .denied {
+                    LabeledContent {
+                        Button("Open Notification Settings…") { notifier.openSystemSettings() }
+                    } label: {
+                        Text("Notifications are turned off for UsageNow in System Settings.")
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+            } footer: {
+                Text("Limits are checked when UsageNow refreshes. Notifications come from this Mac; nothing is sent anywhere.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .formStyle(.grouped)
+        .scrollDisabled(true)
+        .fixedSize(horizontal: false, vertical: true)
+        .task { await notifier.refreshPermission() }
+    }
+}
+
 struct PrivacySettingsView: View {
     @Bindable var analyticsPreferences: AnalyticsPreferences
 
@@ -353,6 +392,7 @@ extension QuotaUnavailableReason {
         launchAtLogin: LaunchAtLogin(),
         updates: UpdateController(),
         store: PreviewFixtures.store(codex: .normal, claude: .normal),
+        limitNotifier: LimitNotifier(defaults: defaults),
         retryLimits: { _ in },
         navigation: SettingsNavigation()
     )

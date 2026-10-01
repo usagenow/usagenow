@@ -16,6 +16,7 @@ final class AppState {
     /// The person's API keys for providers connected with one. Keychain only.
     let apiKeys: any APIKeyStoring
     let settingsNavigation = SettingsNavigation()
+    let limitNotifier: LimitNotifier
 
     /// Deliberately never given `store` or snapshots — only which providers
     /// are installed. See `TelemetryClient`.
@@ -37,7 +38,8 @@ final class AppState {
         identity: InstallationIdentity = InstallationIdentity(),
         claudeLimits: ClaudeLimitsControl? = nil,
         widgetSnapshots: WidgetSnapshotWriter = WidgetSnapshotWriter(),
-        apiKeys: any APIKeyStoring = KeychainAPIKeyStore()
+        apiKeys: any APIKeyStoring = KeychainAPIKeyStore(),
+        limitNotifier: LimitNotifier? = nil
     ) {
         let providerPreferences = ProviderPreferences(defaults: defaults)
         let store = UsageStore(providers: providers, enabledProviders: providerPreferences.enabledProviders, order: providerPreferences.order)
@@ -55,6 +57,7 @@ final class AppState {
         self.launchAtLogin = LaunchAtLogin()
         self.updates = UpdateController()
         self.apiKeys = apiKeys
+        self.limitNotifier = limitNotifier ?? LimitNotifier(defaults: defaults)
         self.telemetry = TelemetryReporter(client: client, preferences: analyticsPreferences, identity: identity, defaults: defaults)
         self.claudeLimits = claudeLimits
         self.widgetSnapshots = widgetSnapshots
@@ -127,6 +130,7 @@ final class AppState {
         }
         applyAppearance()
         applyRefreshInterval()
+        applyLimitNotifications()
 
         observe({ [preferences] in _ = preferences.appearance }, apply: { [weak self] in self?.applyAppearance() })
         observe({ [preferences] in _ = preferences.refreshInterval }, apply: { [weak self] in self?.applyRefreshInterval() })
@@ -135,6 +139,7 @@ final class AppState {
         observe({ [providerPreferences] in _ = providerPreferences.order }, apply: { [weak self] in self?.applyProviderOrder() })
         observe({ [store] in _ = store.states }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.usageAmountStyle }, apply: { [weak self] in self?.storeDidChange() })
+        observe({ [preferences] in _ = preferences.notifiesAboutLimits }, apply: { [weak self] in self?.applyLimitNotifications() })
         observe({ [analyticsPreferences] in _ = analyticsPreferences.isSharingEnabled }, apply: { [weak self] in self?.analyticsSharingChanged() })
 
         Task { [telemetry] in await telemetry.appDidBecomeActive() }
@@ -207,6 +212,22 @@ final class AppState {
         Task { [store] in await store.refresh(only: [.claudeCode], trigger: .manual) }
     }
 
+    /// Turning notifications on asks macOS for permission — once — and
+    /// looks at the limits already on screen.
+    private func applyLimitNotifications() {
+        let isEnabled = preferences.notifiesAboutLimits
+        limitNotifier.setEnabled(isEnabled)
+        guard isEnabled else { return }
+        Task { [weak self] in
+            await self?.limitNotifier.requestPermission()
+            self?.notifyAboutLimits()
+        }
+    }
+
+    private func notifyAboutLimits() {
+        limitNotifier.update(snapshots: store.snapshots, enabledProviders: store.enabledProviders, style: preferences.usageAmountStyle)
+    }
+
     private func applyRefreshInterval() {
         scheduler.schedule(every: preferences.refreshInterval.duration)
     }
@@ -221,6 +242,7 @@ final class AppState {
         Task { [telemetry] in await telemetry.providersDetected(detected) }
         // The widget only ever sees what this writer publishes.
         widgetSnapshots.update(states: store.states, enabledProviders: store.enabledProviders, style: preferences.usageAmountStyle)
+        notifyAboutLimits()
     }
 
     private func analyticsSharingChanged() {

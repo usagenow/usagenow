@@ -15,6 +15,7 @@ final class AppPreferences {
         static let usageAmountStyle = "usageAmountStyle"
         static let showsActivityHistory = "showsActivityHistory"
         static let fetchClaudeUsageLimits = "experimental.fetchClaudeUsageLimits"
+        static let notifiesAboutLimits = "notifiesAboutLimits"
     }
 
     var appearance: AppAppearance {
@@ -46,6 +47,11 @@ final class AppPreferences {
         didSet { defaults.set(fetchClaudeUsageLimits, forKey: Key.fetchClaudeUsageLimits) }
     }
 
+    /// Notifications when a limit runs low and when it resets. Off by default.
+    var notifiesAboutLimits: Bool {
+        didSet { defaults.set(notifiesAboutLimits, forKey: Key.notifiesAboutLimits) }
+    }
+
     @ObservationIgnored private let defaults: UserDefaults
 
     init(defaults: UserDefaults = .standard) {
@@ -54,6 +60,7 @@ final class AppPreferences {
         usageAmountStyle = defaults.string(forKey: Key.usageAmountStyle).flatMap(UsageAmountStyle.init(rawValue:)) ?? .default
         showsActivityHistory = defaults.object(forKey: Key.showsActivityHistory) as? Bool ?? true
         fetchClaudeUsageLimits = defaults.bool(forKey: Key.fetchClaudeUsageLimits)
+        notifiesAboutLimits = defaults.bool(forKey: Key.notifiesAboutLimits)
         refreshInterval = (defaults.object(forKey: Key.refreshInterval) as? Int)
             .flatMap(RefreshInterval.init(rawValue:)) ?? .default
         // Unknown identifiers fall back to the default.

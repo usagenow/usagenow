@@ -33,6 +33,7 @@ struct UsageNowApp: App {
                 launchAtLogin: appState.launchAtLogin,
                 updates: appState.updates,
                 store: appState.store,
+                limitNotifier: appState.limitNotifier,
                 retryLimits: { appState.retryLimits(for: $0) },
                 hasAPIKey: { appState.apiKeys.hasKey(for: $0) },
                 setAPIKey: { try appState.setAPIKey($0, for: $1) },
