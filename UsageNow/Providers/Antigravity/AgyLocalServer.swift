@@ -38,7 +38,7 @@ actor AntigravityLocalServer {
     private let cache: QuotaCache<[UsageWindow]>
 
     init(
-        discover: @escaping @Sendable () async -> [AntigravityEndpoint] = { AntigravityProcessScan.endpoints() },
+        discover: @escaping @Sendable () async -> [AntigravityEndpoint] = { await AntigravityProcessScan.endpointsInBackground() },
         transport: any HTTPTransport = LoopbackTransport(),
         minimumInterval: TimeInterval = 60,
         lastKnownLimits: QuotaCacheStore<[UsageWindow]>? = nil
@@ -108,6 +108,17 @@ enum AntigravityProcessScan {
     private static let csrfFlag = "--csrf_token"
     private static let portFlag = "--extension_server_port"
     private static let markers = ["antigravity", "antigravity-ide"]
+
+    /// `endpoints()` on a dispatch queue. Running `ps` and `lsof` blocks
+    /// until they exit, and blocking one of Swift's few concurrency threads
+    /// holds up every other provider's refresh behind it.
+    static func endpointsInBackground() async -> [AntigravityEndpoint] {
+        await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .utility).async {
+                continuation.resume(returning: endpoints())
+            }
+        }
+    }
 
     static func endpoints() -> [AntigravityEndpoint] {
         var results: [AntigravityEndpoint] = []
