@@ -24,3 +24,5 @@ Already on 0.4.0 or later? UsageNow offers this update itself — or choose **Ch
 Otherwise, download `UsageNow-0.6.1.dmg` below and drag UsageNow to Applications.
 
 Requires macOS 15 or later. Signed with a Developer ID and notarized by Apple.
+
+**SHA-256:** `71ce36ba96a6824f63dfa59465e830d8772b8533167da4e68dafc3abc47474ed`
