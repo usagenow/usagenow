@@ -49,6 +49,8 @@ Token, credit, and request counts are **local activity** observed in files on th
 - **What it would have cost.** An estimate of today’s activity at published API prices, with cached tokens priced as cached. A sense of scale, never a bill.
 - **Pick your providers, in your order.** Turn each one on or off in Settings › Providers, and drag them into the order the popover and widget should use. A provider that’s off is never refreshed and never read from disk.
 - **Left or used.** Every percentage — popover, menu bar, and widget — reads as what's left or what's used, your choice.
+- **Notifications about limits.** Optional: a notice when a limit is down to 20% and at 5%, and when a limit you were warned about resets.
+- **A keyboard shortcut of your own** to open UsageNow from any app, with no extra permissions.
 - **Desktop widget.** Small and medium widgets showing what’s left at a glance, with credits for tools that meter in credits.
 - **Report a Problem.** Shows you the whole diagnostic report first — versions, screens, settings, what each provider shows, never names, paths, keys, or prompts — and opens a prefilled GitHub issue or email.
 - **Local-first.** Your usage data stays on your Mac.

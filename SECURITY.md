@@ -35,6 +35,8 @@ UsageNow is local-first:
 - Ollama Cloud's usage endpoint isn't documented by Ollama. It's labeled Experimental, and a changed answer shows limits as unavailable rather than a guessed number.
 - Updates are installed only when signed with UsageNow's update key (Sparkle, EdDSA). Checking for updates sends no identifier and no system profile.
 - **Report a Problem** (Settings › About) shows the whole report before anything leaves the Mac, and sends nothing itself: it opens your browser or mail app with the text filled in. The report holds versions, screen sizes, settings, and each provider's status and limits. Account names and emails, file paths, keys, tokens, and prompts are never in it, and error messages are cleaned of paths, emails, and key-shaped strings before they're included.
+- **Notifications about limits** (off by default) are local: UsageNow hands macOS a title and a line of text, and nothing is sent anywhere. They hold a provider's name, a percentage, and a reset time, and are shown wherever your notification settings show them, including the Lock Screen if you allow that.
+- **The keyboard shortcut** uses the system's hot key API, which needs no Accessibility or Input Monitoring permission. macOS tells UsageNow only that its own shortcut was pressed; UsageNow never sees anything else you type.
 - Optional analytics are off by default and never include prompts, conversation or session contents, source code, project names, file paths, credentials, token or request values, quotas, reset times, models or per-model activity, plans, or Team status.
 
 Issues that break these guarantees are in scope.

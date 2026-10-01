@@ -2,6 +2,23 @@
 
 All notable changes to UsageNow. This project follows [Semantic Versioning](https://semver.org).
 
+## 0.6.1
+
+### Added
+
+- **Notifications about limits.** Turn them on in **Settings › Notifications**, and UsageNow tells you when a limit is down to 20% and again at 5% — once each, not on every refresh — and when a limit it warned you about has reset, so you know you can go on. The reset notice is scheduled with macOS when the warning goes out, so it arrives on time even if UsageNow isn't running. A limit you were never warned about resets silently. The wording follows **Show limits as**. Off by default; notifications come from this Mac, and nothing is sent anywhere.
+- **A keyboard shortcut to open UsageNow** from any app. Record your own in **Settings › Menu Bar**; there's no default, because every combination is already taken in somebody's setup. Press it again, press Escape, or click elsewhere to close. It needs no Accessibility or Input Monitoring permission: macOS tells UsageNow only that its own shortcut was pressed.
+
+### Changed
+
+- **The cost estimate knows Claude Sonnet 5.5 and GPT-6.1.**
+
+### Fixed
+
+- **"Try Again", a newly added API key, or a provider just turned on could be ignored** when pressed while a refresh was already running: the request waited for that refresh and then did nothing. It now runs as soon as the refresh ends.
+- **Antigravity no longer holds up other providers.** Finding its language server runs two system tools, and waiting for them blocked a thread the other providers' refreshes share.
+- **A very long line in a session file is skipped without being loaded.** A pasted image or a huge tool result could cost its whole size in memory just to be passed over. Lines over 16 MB — larger than any usage record — are now skipped as they're read.
+
 ## 0.6.0
 
 ### Added
