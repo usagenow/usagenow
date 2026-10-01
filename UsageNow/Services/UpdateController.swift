@@ -83,6 +83,7 @@ final class UpdateController {
 ///
 /// UsageNow has no Dock icon, so an update window would otherwise open behind
 /// whatever the person is working in, with nothing to click to find it.
+/// Sparkle calls its user driver's delegate on the main thread.
 private final class UpdateUserDriverDelegate: NSObject, SPUStandardUserDriverDelegate {
     func standardUserDriverWillHandleShowingUpdate(
         _ handleShowingUpdate: Bool,
@@ -90,10 +91,10 @@ private final class UpdateUserDriverDelegate: NSObject, SPUStandardUserDriverDel
         state: SPUUserUpdateState
     ) {
         guard handleShowingUpdate else { return }
-        NSApp.activate(ignoringOtherApps: true)
+        MainActor.assumeIsolated { NSApp.activate(ignoringOtherApps: true) }
     }
 
     func standardUserDriverWillShowModalAlert() {
-        NSApp.activate(ignoringOtherApps: true)
+        MainActor.assumeIsolated { NSApp.activate(ignoringOtherApps: true) }
     }
 }
