@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-26",
+  "generated": "2026-10-01",
   "source": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
   "unit": "USD per million tokens",
   "models": {
@@ -178,6 +178,12 @@
       "cacheRead": "0.3"
     },
     "claude-sonnet-5": {
+      "input": "2",
+      "output": "10",
+      "cacheWrite": "2.5",
+      "cacheRead": "0.2"
+    },
+    "claude-sonnet-5-5": {
       "input": "2",
       "output": "10",
       "cacheWrite": "2.5",
@@ -696,6 +702,12 @@
       "output": "10",
       "cacheWrite": "2.5",
       "cacheRead": "0.2"
+    },
+    "gpt-6.1-sol": {
+      "input": "2",
+      "output": "10",
+      "cacheWrite": "2.5",
+      "cacheRead": "0.1"
     },
     "grok-4.20": {
       "input": "1.25",
