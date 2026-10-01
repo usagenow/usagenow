@@ -28,6 +28,36 @@ struct RobustnessTests {
         #expect(consumed == 5)
     }
 
+    /// A line too long to be a usage record is skipped without being
+    /// buffered, and the lines around it are still read.
+    @Test func skipsALineTooLongToBeARecord() throws {
+        let dir = try TemporaryDirectory()
+        let huge = String(repeating: "x", count: JSONLReader.chunkSize * 3 + 5)
+        let url = try dir.writeJSONL("a.jsonl", lines: ["first", huge, "last"], modified: .now)
+
+        var lines: [String] = []
+        let consumed = try JSONLReader.forEachLine(in: url, from: 0, maxLineBytes: JSONLReader.chunkSize / 2) {
+            lines.append(String(decoding: $0, as: UTF8.self))
+        }
+        #expect(lines == ["first", "last"])
+        #expect(consumed == UInt64(try Data(contentsOf: url).count))
+    }
+
+    /// An oversized line still being written is read again next time, from
+    /// its start, rather than from somewhere in its middle.
+    @Test func leavesAnUnfinishedOversizedLineForLater() throws {
+        let dir = try TemporaryDirectory()
+        let huge = String(repeating: "x", count: JSONLReader.chunkSize * 3)
+        let url = try dir.writeJSONL("a.jsonl", lines: ["done", huge], modified: .now, trailingNewline: false)
+
+        var lines: [String] = []
+        let consumed = try JSONLReader.forEachLine(in: url, from: 0, maxLineBytes: JSONLReader.chunkSize / 2) {
+            lines.append(String(decoding: $0, as: UTF8.self))
+        }
+        #expect(lines == ["done"])
+        #expect(consumed == 5)
+    }
+
     /// Writing to a process that already exited used to raise SIGPIPE and
     /// end UsageNow on the spot. Now the write fails and the client says so.
     @Test func anAppServerThatQuitsEarlyIsAnErrorNotACrash() async throws {
