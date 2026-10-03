@@ -150,6 +150,7 @@ final class AppState {
         observe({ [providerPreferences] in _ = providerPreferences.order }, apply: { [weak self] in self?.applyProviderOrder() })
         observe({ [store] in _ = store.states }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.usageAmountStyle }, apply: { [weak self] in self?.storeDidChange() })
+        observe({ [preferences] in _ = preferences.showsActivityHistory }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.notifiesAboutLimits }, apply: { [weak self] in self?.applyLimitNotifications() })
         observe({ [preferences] in _ = preferences.popoverShortcut }, apply: { [weak self] in self?.applyPopoverShortcut() })
         observe({ [analyticsPreferences] in _ = analyticsPreferences.isSharingEnabled }, apply: { [weak self] in self?.analyticsSharingChanged() })
@@ -267,7 +268,12 @@ final class AppState {
         let detected = detectedProviders
         Task { [telemetry] in await telemetry.providersDetected(detected) }
         // The widget only ever sees what this writer publishes.
-        widgetSnapshots.update(states: store.states, enabledProviders: store.enabledProviders, style: preferences.usageAmountStyle)
+        widgetSnapshots.update(
+            states: store.states,
+            enabledProviders: store.enabledProviders,
+            style: preferences.usageAmountStyle,
+            includesRecentDays: preferences.showsActivityHistory
+        )
         notifyAboutLimits()
     }
 

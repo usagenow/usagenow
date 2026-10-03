@@ -96,6 +96,10 @@ struct SmallUsageWidgetView: View {
         } else {
             WidgetUnavailableLabel()
             activity(provider)
+            if let days = provider.recentDays {
+                Spacer(minLength: 0)
+                WidgetActivityChart(days: days, height: 22)
+            }
         }
         Spacer(minLength: 0)
     }
@@ -114,6 +118,8 @@ struct SmallUsageWidgetView: View {
             }
             if let window = provider.mostRelevantWindow {
                 UsageProgressView(usage: window.usage, height: WidgetLayout.barHeight)
+            } else if let days = provider.recentDays {
+                WidgetActivityChart(days: days, height: 10)
             } else {
                 WidgetUnavailableLabel()
             }
@@ -218,6 +224,10 @@ struct MediumUsageWidgetView: View {
                 }
             }
             Spacer(minLength: 0)
+            // Two windows fill a column; with fewer there's room for the chart.
+            if windows.count < Self.maxWindowsPerProvider, let days = provider.recentDays {
+                WidgetActivityChart(days: days)
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

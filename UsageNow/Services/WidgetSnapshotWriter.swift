@@ -27,9 +27,9 @@ final class WidgetSnapshotWriter {
 
     /// Writes the snapshot, and reloads widget timelines only when what the
     /// widget would show actually changed.
-    func update(states: [ProviderState], enabledProviders: Set<ProviderID>, style: UsageAmountStyle = .default) {
+    func update(states: [ProviderState], enabledProviders: Set<ProviderID>, style: UsageAmountStyle = .default, includesRecentDays: Bool = true) {
         guard let store else { return }
-        var snapshot = Self.makeSnapshot(states: states, enabledProviders: enabledProviders, generatedAt: now())
+        var snapshot = Self.makeSnapshot(states: states, enabledProviders: enabledProviders, generatedAt: now(), includesRecentDays: includesRecentDays)
         snapshot.usageAmountStyle = style
         guard snapshot.state != lastWritten?.state || snapshot.usageAmountStyle != lastWritten?.usageAmountStyle else { return }
 
@@ -42,13 +42,20 @@ final class WidgetSnapshotWriter {
         }
     }
 
-    static func makeSnapshot(states: [ProviderState], enabledProviders: Set<ProviderID>, generatedAt: Date) -> WidgetSnapshot {
+    /// - Parameter includesRecentDays: Follows **Show the last 30 days**, so
+    ///   turning the charts off in the app turns them off on the desktop too.
+    static func makeSnapshot(
+        states: [ProviderState],
+        enabledProviders: Set<ProviderID>,
+        generatedAt: Date,
+        includesRecentDays: Bool = true
+    ) -> WidgetSnapshot {
         guard !enabledProviders.isEmpty else {
             return WidgetSnapshot(generatedAt: generatedAt, state: .noProvidersEnabled)
         }
         let providers = states
             .filter { enabledProviders.contains($0.provider) }
-            .compactMap(makeProviderSnapshot)
+            .compactMap { makeProviderSnapshot($0, includesRecentDays: includesRecentDays) }
         return WidgetSnapshot(
             generatedAt: generatedAt,
             state: providers.isEmpty ? .noProvidersDetected : .providers(providers)
@@ -57,7 +64,7 @@ final class WidgetSnapshotWriter {
 
     /// Copies only display values. Providers that aren't installed, or that
     /// never loaded, are left out entirely.
-    private static func makeProviderSnapshot(_ state: ProviderState) -> WidgetProviderSnapshot? {
+    private static func makeProviderSnapshot(_ state: ProviderState, includesRecentDays: Bool) -> WidgetProviderSnapshot? {
         guard let snapshot = state.snapshot, snapshot.status != .notInstalled else { return nil }
         return WidgetProviderSnapshot(
             provider: snapshot.provider,
@@ -68,7 +75,18 @@ final class WidgetSnapshotWriter {
             tokensToday: snapshot.activity.tokensToday,
             requestsToday: snapshot.activity.requestsToday,
             creditsToday: snapshot.activity.creditsToday,
-            quotaUnavailableReason: snapshot.windows.isEmpty ? snapshot.quotaUnavailableReason : nil
+            quotaUnavailableReason: snapshot.windows.isEmpty ? snapshot.quotaUnavailableReason : nil,
+            recentDays: includesRecentDays ? snapshot.activity.history.flatMap(recentDays) : nil
         )
+    }
+
+    /// The last two weeks as shares of the busiest day, rounded so a small
+    /// change in today's total doesn't reload the widget. Amounts stay in
+    /// the app.
+    static func recentDays(_ history: ActivityHistory) -> [Double]? {
+        guard history.hasActivity else { return nil }
+        let values = history.days.suffix(WidgetProviderSnapshot.recentDayCount).map { history.value(of: $0) }
+        guard let peak = values.max(), peak > 0 else { return nil }
+        return values.map { ($0 / peak * 100).rounded() / 100 }
     }
 }

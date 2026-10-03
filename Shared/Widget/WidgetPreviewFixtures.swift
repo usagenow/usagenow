@@ -16,7 +16,8 @@ enum WidgetPreviewFixtures {
         modelName: "gpt-example-1",
         windows: [window(.weekly, usedPercent: 42, resetsIn: 4 * 86_400)],
         tokensToday: 12_800_000,
-        requestsToday: 47
+        requestsToday: 47,
+        recentDays: [0.4, 0.62, 0, 0, 0.55, 0.8, 0.47, 0.71, 0.3, 0, 0.66, 1, 0.58, 0.52]
     )
 
     static let claude = WidgetProviderSnapshot(
@@ -60,7 +61,8 @@ enum WidgetPreviewFixtures {
         modelName: "gemini-example-1",
         windows: [],
         tokensToday: 1_200_000,
-        requestsToday: 24
+        requestsToday: 24,
+        recentDays: [0.2, 0, 0.35, 0.5, 0, 0, 0.9, 0.4, 0.62, 0.3, 0, 0.75, 1, 0.45]
     )
 
     static func snapshot(_ providers: [WidgetProviderSnapshot], generatedAt: Date = now) -> WidgetSnapshot {
@@ -71,6 +73,8 @@ enum WidgetPreviewFixtures {
     static let critical = snapshot([codex, criticalClaude])
     static let threeProviders = snapshot([codex, criticalClaude, gemini])
     static let codexOnly = snapshot([codex])
+    static let geminiOnly = snapshot([gemini])
+    static let codexAndGemini = snapshot([codex, gemini])
     static let claudeOnly = snapshot([criticalClaude])
     static let unavailableQuota = snapshot([codex, unavailableClaude])
     static let stale = snapshot([codex, claude], generatedAt: now.addingTimeInterval(-18 * 60))

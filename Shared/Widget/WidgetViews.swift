@@ -156,11 +156,16 @@ struct WidgetProviderRow: View {
                     .lineLimit(1)
                     .frame(width: Self.resetWidth, alignment: .trailing)
             } else {
-                Text("Limits unavailable", comment: "Widget row for a provider that reports no usage limits")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-                Spacer(minLength: 4)
+                // Without limits, the recent days are the most there is to see.
+                if let days = provider.recentDays {
+                    WidgetActivityChart(days: days, height: 12)
+                } else {
+                    Text("Limits unavailable", comment: "Widget row for a provider that reports no usage limits")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                    Spacer(minLength: 4)
+                }
                 if let activity = provider.activityText(short: true) {
                     Text(verbatim: activity)
                         .font(.caption2)
@@ -185,6 +190,33 @@ struct WidgetProviderRow: View {
             parts.append(formatter.accessibleResetDescription(for: resetsAt, now: now))
         }
         return parts.joined(separator: ", ")
+    }
+}
+
+/// The last two weeks as bars, today brightest — the popover's 30-day
+/// chart, shortened to fit a widget. Shape only: amounts stay in the app.
+struct WidgetActivityChart: View {
+    let days: [Double]
+    var height: CGFloat = 16
+
+    var body: some View {
+        HStack(alignment: .bottom, spacing: 1.5) {
+            ForEach(Array(days.enumerated()), id: \.offset) { index, value in
+                RoundedRectangle(cornerRadius: 1, style: .continuous)
+                    .fill(fill(value: value, isToday: index == days.count - 1))
+                    .frame(maxWidth: .infinity)
+                    // An idle day stays a thin mark, so the gap reads as a day.
+                    .frame(height: value > 0 ? max(height * value, 2.5) : 1)
+            }
+        }
+        .frame(height: height, alignment: .bottom)
+        .accessibilityElement()
+        .accessibilityLabel(Text("Activity, last 14 days"))
+    }
+
+    private func fill(value: Double, isToday: Bool) -> Color {
+        guard value > 0 else { return Palette.track }
+        return isToday ? Color.accentColor : Color.accentColor.opacity(0.45)
     }
 }
 

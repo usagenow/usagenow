@@ -295,6 +295,30 @@ struct WidgetSnapshotStoreTests {
         #expect(store.read()?.generatedAt == second.generatedAt)
     }
 
+    /// The widget gets the last two weeks' shape — shares of the busiest
+    /// day — and nothing when the app's charts are turned off.
+    @MainActor @Test func carriesTheRecentDaysShapeOnlyWhenChartsAreOn() {
+        let calendar = TestDates.utc
+        let period = ActivityPeriod(now: now, calendar: calendar)
+        let records = [
+            ActivityRecord(key: "a", timestamp: now, tokens: 400, model: "m"),
+            ActivityRecord(key: "b", timestamp: now.addingTimeInterval(-86_400), tokens: 1_000, model: "m"),
+            ActivityRecord(key: "c", timestamp: now.addingTimeInterval(-20 * 86_400), tokens: 9_000, model: "m"),
+        ]
+        var snapshot = ProviderSnapshot(provider: .gemini, status: .available, updatedAt: now)
+        snapshot.activity = LocalActivity(tokensToday: 400, requestsToday: 1, history: ActivityHistory(records: records, period: period))
+        let states = [ProviderState(provider: .gemini, snapshot: snapshot)]
+
+        let days = WidgetSnapshotWriter.makeSnapshot(states: states, enabledProviders: [.gemini], generatedAt: now).providers.first?.recentDays
+        #expect(days?.count == 14)
+        // The 20-day-old peak is outside the two weeks, so yesterday is the busiest.
+        #expect(days?.suffix(2) == [1, 0.4])
+        #expect(days?.dropLast(2).allSatisfy { $0 == 0 } == true)
+
+        let off = WidgetSnapshotWriter.makeSnapshot(states: states, enabledProviders: [.gemini], generatedAt: now, includesRecentDays: false)
+        #expect(off.providers.first?.recentDays == nil)
+    }
+
     /// The snapshot file is the app's only channel to the widget, so its
     /// shape is pinned: nothing outside this list may ever be written.
     @Test func onlySafeFieldsAreSerialized() throws {
@@ -309,7 +333,7 @@ struct WidgetSnapshotStoreTests {
         let allowed: Set<String> = [
             "schemaVersion", "generatedAt", "state", "usageAmountStyle", "providers", "_0",
             "provider", "planName", "modelName", "windows", "tokensToday", "requestsToday", "creditsToday",
-            "quotaUnavailableReason", "kind", "scope", "usage", "resetsAt",
+            "quotaUnavailableReason", "kind", "scope", "usage", "resetsAt", "recentDays",
         ]
         #expect(keys.subtracting(allowed).isEmpty, "Unexpected fields: \(keys.subtracting(allowed))")
 

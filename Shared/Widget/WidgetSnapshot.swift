@@ -85,8 +85,16 @@ struct WidgetProviderSnapshot: Codable, Sendable, Equatable, Identifiable {
     var creditsToday: Decimal? = nil
     /// Why quota is missing, when that's worth showing.
     var quotaUnavailableReason: QuotaUnavailableReason?
+    /// The last days of activity, oldest first and today last, each as a
+    /// share of the busiest of them (0–1) — the shape of the chart, not
+    /// amounts. `nil` when the app's charts are turned off or there's no
+    /// history; optional, so snapshots from earlier versions still read.
+    var recentDays: [Double]? = nil
 
     var id: ProviderID { provider }
+
+    /// Days shown in the widget's chart: two weeks fit its width.
+    static let recentDayCount = 14
 
     /// Never localized; comes from the shared catalog.
     var displayName: String { provider.displayName }
@@ -146,7 +154,7 @@ extension WidgetSnapshot.State {
 
 extension WidgetProviderSnapshot {
     private enum CodingKeys: String, CodingKey {
-        case provider, planName, modelName, windows, tokensToday, requestsToday, creditsToday, quotaUnavailableReason
+        case provider, planName, modelName, windows, tokensToday, requestsToday, creditsToday, quotaUnavailableReason, recentDays
     }
 
     /// An unknown provider fails, so the list can skip it; an unknown window
@@ -161,6 +169,7 @@ extension WidgetProviderSnapshot {
         requestsToday = try container.decodeIfPresent(Int64.self, forKey: .requestsToday)
         creditsToday = try container.decodeIfPresent(Decimal.self, forKey: .creditsToday)
         quotaUnavailableReason = try? container.decodeIfPresent(QuotaUnavailableReason.self, forKey: .quotaUnavailableReason)
+        recentDays = try? container.decodeIfPresent([Double].self, forKey: .recentDays)
     }
 }
 
