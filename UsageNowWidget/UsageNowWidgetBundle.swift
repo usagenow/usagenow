@@ -23,7 +23,7 @@ struct UsageNowWidget: Widget {
             UsageNowWidgetEntryView(entry: entry)
         }
         .configurationDisplayName(Text(verbatim: AppInfo.name))
-        .description(Text("Codex, Claude Code, and Gemini CLI usage at a glance."))
+        .description(Text("What’s left of your AI coding limits, at a glance."))
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }

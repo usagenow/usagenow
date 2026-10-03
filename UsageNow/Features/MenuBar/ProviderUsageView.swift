@@ -180,7 +180,10 @@ private struct ProviderActivityView: View {
             if let requests = activity.requestsToday {
                 MetricLabel(
                     value: UsageFormatter.count(requests),
-                    unit: requests == 1 ? "request" : "requests"
+                    unit: nil,
+                    // The word alone, in the form the count takes: "request",
+                    // "requests" — and in Russian, three forms.
+                    verbatimUnit: UsageFormatter.requestsUnit(requests)
                 )
             }
             if let cost = activity.estimatedCostToday {
@@ -289,6 +292,8 @@ struct ModelActivityView: View {
 private struct MetricLabel: View {
     let value: String
     let unit: LocalizedStringKey?
+    /// A unit already localized, used in place of `unit`.
+    var verbatimUnit: String?
     var spokenValue: String?
 
     var body: some View {
@@ -297,15 +302,20 @@ private struct MetricLabel: View {
                 .font(.callout.weight(.medium))
                 .monospacedDigit()
                 .contentTransition(.numericText())
-            if let unit {
-                Text(unit)
+            if let label = unitText {
+                label
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
         }
         .fixedSize()
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(unit.map { Text($0) } ?? Text("Estimated cost at API prices"))
+        .accessibilityLabel(unitText ?? Text("Estimated cost at API prices"))
         .accessibilityValue(spokenValue ?? value)
+    }
+
+    private var unitText: Text? {
+        if let verbatimUnit { return Text(verbatim: verbatimUnit) }
+        return unit.map { Text($0) }
     }
 }

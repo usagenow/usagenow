@@ -34,6 +34,15 @@ enum UsageAmountStyle: String, CaseIterable, Codable, Sendable {
         }
     }
 
+    /// The word in its shortest form, for a widget row where a column holds
+    /// it: "left" in English, "ост." in Russian.
+    var compactUnit: Text {
+        switch self {
+        case .remaining: Text(verbatim: String(localized: "unit.left.short", defaultValue: "left", comment: "Follows a remaining percentage where space is tight, e.g. 58% left; abbreviate if needed"))
+        case .used: Text(verbatim: String(localized: "unit.used.short", defaultValue: "used", comment: "Follows a used percentage where space is tight, e.g. 42% used; abbreviate if needed"))
+        }
+    }
+
     /// "58% left" or "42% used", for VoiceOver.
     func accessibilityDescription(_ usage: UsagePercentage) -> String {
         switch self {

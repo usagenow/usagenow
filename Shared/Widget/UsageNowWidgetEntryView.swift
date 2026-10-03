@@ -113,7 +113,7 @@ struct SmallUsageWidgetView: View {
                 Spacer(minLength: 4)
                 if provider.mostRelevantWindow != nil {
                     // With three rows the name needs the room; the bar still shows the level.
-                    WidgetRemainingLabel(usage: provider.mostRelevantWindow?.usage, font: .caption, showsLevelSymbol: providers.count < 3)
+                    WidgetRemainingLabel(usage: provider.mostRelevantWindow?.usage, font: .caption, showsLevelSymbol: providers.count < 3, compact: true)
                 }
             }
             if let window = provider.mostRelevantWindow {

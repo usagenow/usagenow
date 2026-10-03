@@ -157,10 +157,10 @@ struct ActivityHistoryView: View {
         return values
     }
 
+    /// "1,204 requests": the grouped number, then the word in the form
+    /// that number takes.
     private func requestsText(_ requests: Int64) -> String {
-        requests == 1
-            ? String(localized: "1 request")
-            : String(localized: "\(UsageFormatter.count(requests)) requests", comment: "e.g. 1,204 requests")
+        UsageFormatter.count(requests) + " " + UsageFormatter.requestsUnit(requests)
     }
 
     private var topModel: String? {

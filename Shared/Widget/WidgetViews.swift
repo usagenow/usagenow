@@ -39,6 +39,8 @@ struct WidgetRemainingLabel: View {
     var font: Font = .callout
     /// Off where space is tight; the bar's color still shows the level.
     var showsLevelSymbol = true
+    /// The word in its shortest form, for a fixed-width column.
+    var compact = false
 
     @Environment(\.usageAmountStyle) private var style
 
@@ -54,7 +56,7 @@ struct WidgetRemainingLabel: View {
                 Text(verbatim: style.percent(usage))
                     .font(font.weight(.semibold))
                     .monospacedDigit()
-                style.unit
+                (compact ? style.compactUnit : style.unit)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } else {
@@ -133,7 +135,7 @@ struct WidgetProviderRow: View {
     static let nameWidth: CGFloat = 94
     /// Fixed trailing columns keep every row's bar the same length.
     static let remainingWidth: CGFloat = 74
-    static let resetWidth: CGFloat = 46
+    static let resetWidth: CGFloat = 50
 
     let provider: WidgetProviderSnapshot
     let now: Date
@@ -147,7 +149,7 @@ struct WidgetProviderRow: View {
                 .frame(width: Self.nameWidth, alignment: .leading)
             if let window = provider.mostRelevantWindow {
                 UsageProgressView(usage: window.usage, height: WidgetLayout.barHeight)
-                WidgetRemainingLabel(usage: window.usage, font: .caption)
+                WidgetRemainingLabel(usage: window.usage, font: .caption, compact: true)
                     .frame(width: Self.remainingWidth, alignment: .trailing)
                 Text(verbatim: window.resetsAt.map { formatter.countdown(from: now, to: $0) } ?? "")
                     .font(.caption2)
