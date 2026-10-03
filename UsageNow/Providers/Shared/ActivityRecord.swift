@@ -13,6 +13,14 @@ struct ActivityRecord: Sendable, Equatable {
     /// the split. Needed for a cost estimate: cached tokens cost a fraction
     /// of fresh ones, and output costs several times more.
     var breakdown: TokenBreakdown? = nil
+    /// How many model responses this record stands for. One for tools that
+    /// record each response; a whole turn's count for tools that record
+    /// turns (Grok Build).
+    var requests: Int64 = 1
+    /// What the tool itself recorded this activity as costing, in USD, when
+    /// it records that (Cline, Grok Build). Used instead of an estimate from
+    /// the price table: it's the tool's own figure for the models it ran.
+    var cost: Decimal? = nil
 
     /// Everything billed as input: fresh tokens plus cache writes and reads.
     var inputTokens: Int64? {
@@ -45,13 +53,14 @@ struct ActivitySummary: Sendable, Equatable {
         var seen = Set<String>()
         var byModel: [String: ModelActivity] = [:]
         var breakdowns: [String: TokenBreakdown] = [:]
+        var recordedCosts: [String: Decimal] = [:]
         var unpricedTokens: Int64 = 0
 
         for record in records where record.timestamp >= since {
             guard seen.insert(record.key).inserted else { continue }
             let tokens = max(0, record.tokens)
             self.tokens += tokens
-            requests += 1
+            requests += max(1, record.requests)
             guard let model = record.model?.trimmingCharacters(in: .whitespacesAndNewlines), !model.isEmpty else {
                 unpricedTokens += tokens
                 continue
@@ -63,13 +72,15 @@ struct ActivitySummary: Sendable, Equatable {
             }
             var entry = byModel[model] ?? ModelActivity(modelID: model, totalTokens: 0, requests: 0)
             entry.totalTokens += tokens
-            entry.requests += 1
+            entry.requests += max(1, record.requests)
             entry.inputTokens = Self.adding(record.inputTokens, to: entry.inputTokens)
             entry.outputTokens = Self.adding(record.outputTokens, to: entry.outputTokens)
             entry.lastUsedAt = Swift.max(entry.lastUsedAt ?? .distantPast, record.timestamp)
             byModel[model] = entry
 
-            if let breakdown = record.breakdown {
+            if let cost = record.cost {
+                recordedCosts[model, default: 0] += max(0, cost)
+            } else if let breakdown = record.breakdown {
                 breakdowns[model] = (breakdowns[model] ?? TokenBreakdown()) + breakdown
             } else {
                 unpricedTokens += tokens
@@ -78,14 +89,18 @@ struct ActivitySummary: Sendable, Equatable {
 
         var total: Decimal?
         for (model, var entry) in byModel {
-            guard let breakdown = breakdowns[model] else { continue }
-            entry.estimatedCost = prices.cost(of: breakdown, model: model)
-            byModel[model] = entry
-            if let cost = entry.estimatedCost {
-                total = (total ?? 0) + cost
-            } else {
-                unpricedTokens += breakdown.total
+            var cost = recordedCosts[model]
+            if let breakdown = breakdowns[model] {
+                if let estimate = prices.cost(of: breakdown, model: model) {
+                    cost = (cost ?? 0) + estimate
+                } else {
+                    unpricedTokens += breakdown.total
+                }
             }
+            guard let cost else { continue }
+            entry.estimatedCost = cost
+            byModel[model] = entry
+            total = (total ?? 0) + cost
         }
 
         estimatedCost = total

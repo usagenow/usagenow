@@ -13,7 +13,7 @@ struct ProviderPreferencesTests {
 
     @Test func everySupportedProviderIsEnabledByDefault() {
         let preferences = ProviderPreferences(defaults: makeDefaults())
-        #expect(preferences.enabledProviders == [.codex, .claudeCode, .gemini, .antigravity, .kiro, .warp, .opencode, .qoder])
+        #expect(preferences.enabledProviders == [.codex, .claudeCode, .gemini, .antigravity, .kiro, .warp, .opencode, .qoder, .qwen, .cline, .grok])
         // Providers read with an API key start off until a key is added.
         #expect(!preferences.isEnabled(.deepseek))
     }
@@ -22,10 +22,10 @@ struct ProviderPreferencesTests {
         let defaults = makeDefaults()
         let preferences = ProviderPreferences(defaults: defaults)
         preferences.setEnabled(false, for: .codex)
-        #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.claudeCode, .gemini, .antigravity, .kiro, .warp, .opencode, .qoder])
+        #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.claudeCode, .gemini, .antigravity, .kiro, .warp, .opencode, .qoder, .qwen, .cline, .grok])
 
         preferences.setEnabled(true, for: .codex)
-        #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.codex, .claudeCode, .gemini, .antigravity, .kiro, .warp, .opencode, .qoder])
+        #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.codex, .claudeCode, .gemini, .antigravity, .kiro, .warp, .opencode, .qoder, .qwen, .cline, .grok])
     }
 
     @Test func turningEverythingOffPersists() {
@@ -58,10 +58,10 @@ struct ProviderPreferencesTests {
         defaults.set(["codex"], forKey: "enabledProviders")
 
         let upgraded = ProviderPreferences(defaults: defaults)
-        #expect(upgraded.enabledProviders == [.codex, .gemini, .antigravity, .kiro, .warp, .opencode, .qoder], "New providers start on; Claude Code stays off")
+        #expect(upgraded.enabledProviders == [.codex, .gemini, .antigravity, .kiro, .warp, .opencode, .qoder, .qwen, .cline, .grok], "New providers start on; Claude Code stays off")
 
         upgraded.setEnabled(false, for: .gemini)
-        #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.codex, .antigravity, .kiro, .warp, .opencode, .qoder], "Turning it off sticks")
+        #expect(ProviderPreferences(defaults: defaults).enabledProviders == [.codex, .antigravity, .kiro, .warp, .opencode, .qoder, .qwen, .cline, .grok], "Turning it off sticks")
     }
 }
 
@@ -75,17 +75,17 @@ struct ProviderOrderTests {
     }
 
     @Test func defaultOrderIsTheCatalogs() {
-        #expect(ProviderPreferences(defaults: makeDefaults()).order == [.codex, .claudeCode, .gemini, .antigravity, .kiro, .warp, .opencode, .qoder, .deepseek, .kimi, .openrouter, .ollama])
+        #expect(ProviderPreferences(defaults: makeDefaults()).order == [.codex, .claudeCode, .gemini, .antigravity, .kiro, .warp, .opencode, .qoder, .qwen, .cline, .grok, .deepseek, .kimi, .openrouter, .ollama])
     }
 
     @Test func draggingOntoAnotherTakesItsPlaceAndPersists() {
         let defaults = makeDefaults()
         let preferences = ProviderPreferences(defaults: defaults)
         preferences.move(.antigravity, to: .codex)
-        #expect(preferences.order == [.antigravity, .codex, .claudeCode, .gemini, .kiro, .warp, .opencode, .qoder, .deepseek, .kimi, .openrouter, .ollama])
+        #expect(preferences.order == [.antigravity, .codex, .claudeCode, .gemini, .kiro, .warp, .opencode, .qoder, .qwen, .cline, .grok, .deepseek, .kimi, .openrouter, .ollama])
         preferences.move(.codex, to: .gemini)
-        #expect(preferences.order == [.antigravity, .claudeCode, .gemini, .codex, .kiro, .warp, .opencode, .qoder, .deepseek, .kimi, .openrouter, .ollama])
-        #expect(ProviderPreferences(defaults: defaults).order == [.antigravity, .claudeCode, .gemini, .codex, .kiro, .warp, .opencode, .qoder, .deepseek, .kimi, .openrouter, .ollama])
+        #expect(preferences.order == [.antigravity, .claudeCode, .gemini, .codex, .kiro, .warp, .opencode, .qoder, .qwen, .cline, .grok, .deepseek, .kimi, .openrouter, .ollama])
+        #expect(ProviderPreferences(defaults: defaults).order == [.antigravity, .claudeCode, .gemini, .codex, .kiro, .warp, .opencode, .qoder, .qwen, .cline, .grok, .deepseek, .kimi, .openrouter, .ollama])
     }
 
     @Test func moveUpAndDownStopAtTheEnds() {
@@ -93,13 +93,13 @@ struct ProviderOrderTests {
         preferences.move(.codex, by: -1)
         #expect(preferences.order.first == .codex)
         preferences.move(.codex, by: 1)
-        #expect(preferences.order == [.claudeCode, .codex, .gemini, .antigravity, .kiro, .warp, .opencode, .qoder, .deepseek, .kimi, .openrouter, .ollama])
+        #expect(preferences.order == [.claudeCode, .codex, .gemini, .antigravity, .kiro, .warp, .opencode, .qoder, .qwen, .cline, .grok, .deepseek, .kimi, .openrouter, .ollama])
         preferences.move(.antigravity, by: 50)
         #expect(preferences.order.last == .antigravity)
     }
 
     @Test func storedOrderDropsUnknownsAndAddsNewProvidersAtTheEnd() {
-        #expect(ProviderPreferences.normalized([.gemini, .cursor, .gemini, .codex]) == [.gemini, .codex, .claudeCode, .antigravity, .kiro, .warp, .opencode, .qoder, .deepseek, .kimi, .openrouter, .ollama])
+        #expect(ProviderPreferences.normalized([.gemini, .cursor, .gemini, .codex]) == [.gemini, .codex, .claudeCode, .antigravity, .kiro, .warp, .opencode, .qoder, .qwen, .cline, .grok, .deepseek, .kimi, .openrouter, .ollama])
     }
 
     @Test func storeFollowsTheOrder() async {
@@ -124,8 +124,8 @@ struct ProviderOrderTests {
 
 struct ProviderCatalogTests {
     @Test func availableAndComingSoonProviders() {
-        #expect(ProviderCatalog.availableIDs == [.codex, .claudeCode, .gemini, .antigravity, .kiro, .warp, .opencode, .qoder, .deepseek, .kimi, .openrouter, .ollama])
-        #expect(ProviderCatalog.comingSoon.map(\.id) == [.cursor, .copilot, .qwen])
+        #expect(ProviderCatalog.availableIDs == [.codex, .claudeCode, .gemini, .antigravity, .kiro, .warp, .opencode, .qoder, .qwen, .cline, .grok, .deepseek, .kimi, .openrouter, .ollama])
+        #expect(ProviderCatalog.comingSoon.map(\.id) == [.cursor, .copilot])
         #expect(ProviderID.copilot.displayName == "GitHub Copilot")
     }
 

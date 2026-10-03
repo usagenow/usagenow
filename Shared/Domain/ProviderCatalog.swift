@@ -14,13 +14,15 @@ enum ProviderID: String, CaseIterable, Codable, Sendable, Identifiable, Comparab
     case warp
     case opencode
     case qoder
+    case qwen
+    case cline
+    case grok
     case deepseek
     case kimi
     case openrouter
     case ollama
     case cursor
     case copilot
-    case qwen
 
     var id: String { rawValue }
 
@@ -140,6 +142,30 @@ enum ProviderCatalog {
             symbolName: "circle.dashed"
         ),
         ProviderDefinition(
+            id: .qwen,
+            displayName: "Qwen Code",
+            summary: "Track Qwen Code tokens and models.",
+            availability: .available,
+            logoAssetName: "QwenLogo",
+            symbolName: "circle.dashed"
+        ),
+        ProviderDefinition(
+            id: .cline,
+            displayName: "Cline",
+            summary: "Track Cline tokens, requests, and cost.",
+            availability: .available,
+            logoAssetName: "ClineLogo",
+            symbolName: "chevron.left.forwardslash.chevron.right"
+        ),
+        ProviderDefinition(
+            id: .grok,
+            displayName: "Grok Build",
+            summary: "Track Grok Build tokens, models, and cost.",
+            availability: .available,
+            logoAssetName: "GrokLogo",
+            symbolName: "terminal"
+        ),
+        ProviderDefinition(
             id: .deepseek,
             displayName: "DeepSeek",
             summary: "Track your DeepSeek API balance.",
@@ -191,14 +217,6 @@ enum ProviderCatalog {
             availability: .comingSoon,
             logoAssetName: "CopilotLogo",
             symbolName: "chevron.left.forwardslash.chevron.right"
-        ),
-        ProviderDefinition(
-            id: .qwen,
-            displayName: "Qwen",
-            summary: nil,
-            availability: .comingSoon,
-            logoAssetName: "QwenLogo",
-            symbolName: "circle.dashed"
         ),
     ]
 
