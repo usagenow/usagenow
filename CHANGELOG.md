@@ -2,11 +2,28 @@
 
 All notable changes to UsageNow. This project follows [Semantic Versioning](https://semver.org).
 
+## 0.7.1
+
+### Added
+
+- **Choose UsageNow's language** in **Settings › General › Language**: follow macOS, or pick German, English, Spanish, French, or Russian, then **Restart Now**. The widget follows too. It's the same setting as **System Settings › General › Language & Region › Applications**, so the two always agree.
+- **Rename an added account** from its **…** menu in **Settings › Providers**.
+
+### Changed
+
+- **An added account's actions share one menu**, so its row fits in every language.
+- **An empty or missing account folder says so.** The menu bar window says the folder has no sign-in or sessions, rather than asking you to sign in, and Settings marks a folder that was moved or deleted.
+- **Report a Problem includes the language** UsageNow is set to and running in.
+
+### Fixed
+
+- **Adding an account made the other added accounts read their month of sessions again.** Accounts that didn't change keep what they've read.
+
 ## 0.7.0
 
 ### Added
 
-- **More than one account.** Under Codex, Claude Code, DeepSeek, Kimi, OpenRouter, and Ollama Cloud in **Settings › Providers**, **Add Account…** adds another: for Codex and Claude Code, the folder the tool uses for it — the one `CODEX_HOME` or `CLAUDE_CONFIG_DIR` points to — and for an API provider, that account's key, kept like the first: only in your Keychain, sent only to the provider, and deleted when you remove the account or turn the provider off. Each account gets its own section in the menu bar window, its own row in the widget, and its own limit notifications, named after the provider and a label you choose — "Codex · Work". UsageNow never reads an account's own name or email, and Report a Problem numbers accounts instead of naming them. An added Claude Code account shows the limits Claude Code records reaching; the experimental limits source reads only the default sign-in.
+- **More than one account.** Under Codex, Claude Code, DeepSeek, Kimi, OpenRouter, and Ollama Cloud in **Settings › Providers**, **Add Account…** adds another: the folder `CODEX_HOME` or `CLAUDE_CONFIG_DIR` points to, or another API key, kept like the first. Each account gets its own section, widget row, and notifications under a name you choose, such as "Codex · Work". UsageNow never reads an account's own name or email. An added Claude Code account shows only the limits Claude Code records reaching.
 - **Qwen Code.** Today's tokens, answers, and models, and what they would have cost, from the session recordings Qwen Code writes on your Mac. Only each answer's identifier, time, model, and token counts are decoded — never the messages — and Qwen Code's sign-in is never opened. Not yet verified against a live install.
 - **Cline.** Today's tokens, API requests, and models, with the cost Cline recorded for them, from the tasks the extension saves in VS Code, Cursor, Windsurf, Kiro, VSCodium, or Trae, and the sessions the Cline CLI saves. Only the numbers, the model, and the time are read; prompts, replies, and Cline's keys never are.
 - **Grok Build.** Today's tokens, model calls, and models, with the cost xAI reported, from the session logs Grok Build writes on your Mac. Only finished turns' numbers, models, and times are decoded. Not yet verified against a live install.

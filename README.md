@@ -56,7 +56,7 @@ Token, credit, and request counts are **local activity** observed in files on th
 - **Notifications about limits.** Optional: a notice when a limit is down to 20% and at 5%, and when a limit you were warned about resets.
 - **A keyboard shortcut of your own** to open UsageNow from any app, with no extra permissions.
 - **Desktop widget.** Small and medium widgets showing what’s left at a glance, with credits for tools that meter in credits and the last two weeks for tools without limits.
-- **In five languages.** English, German, Spanish, French, and Russian, following your Mac.
+- **In five languages.** English, German, Spanish, French, and Russian — your Mac's, or the one you choose in Settings › General.
 - **What's New** in Settings › About: every version's changes, shipped inside the app.
 - **Report a Problem.** Shows you the whole diagnostic report first — versions, screens, settings, what each provider shows, never names, paths, keys, or prompts — and opens a prefilled GitHub issue or email.
 - **Local-first.** Your usage data stays on your Mac.
