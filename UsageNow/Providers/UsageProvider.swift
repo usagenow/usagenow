@@ -16,6 +16,8 @@ enum RefreshTrigger: Sendable, Equatable {
 /// on Codex- or Claude-specific details.
 protocol UsageProvider: Sendable {
     var id: ProviderID { get }
+    /// The added account this provider reads; `nil` for the one found on its own.
+    var account: ProviderAccount? { get }
 
     /// Returns the provider's current usage. Called off the main actor.
     ///
@@ -24,6 +26,12 @@ protocol UsageProvider: Sendable {
     /// data through `nil` fields. Throw only when a refresh attempt failed
     /// and previously loaded data should be kept.
     func fetchSnapshot(trigger: RefreshTrigger) async throws -> ProviderSnapshot
+}
+
+extension UsageProvider {
+    var account: ProviderAccount? { nil }
+
+    var sourceKey: SourceKey { SourceKey(provider: id, account: account?.id) }
 }
 
 /// Refresh failures. Messages are sanitized: no paths, tokens, or payloads.

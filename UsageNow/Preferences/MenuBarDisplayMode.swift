@@ -60,7 +60,7 @@ enum MenuBarDisplayMode: String, CaseIterable, Identifiable, Sendable {
         case .mostCriticalPercentage:
             UsageSummary.mostCritical(in: snapshots)?.window.usage
         case .codexPercentage, .claudePercentage, .geminiPercentage, .antigravityPercentage, .kiroPercentage:
-            UsageSummary.mostCritical(in: snapshots.filter { $0.provider == requiredProvider })?.window.usage
+            UsageSummary.mostCritical(in: snapshots.filter { $0.provider == requiredProvider && $0.account == nil })?.window.usage
         }
     }
 }

@@ -81,7 +81,7 @@ struct SmallUsageWidgetView: View {
     /// One provider gets room for its window name and reset time.
     @ViewBuilder
     private func single(_ provider: WidgetProviderSnapshot) -> some View {
-        WidgetProviderName(provider: provider.provider, font: .callout)
+        WidgetProviderName(provider: provider.provider, name: provider.displayName, font: .callout)
         if let window = provider.mostRelevantWindow {
             WidgetRemainingLabel(usage: window.usage, font: .title2)
             UsageProgressView(usage: window.usage, height: WidgetLayout.barHeight)
@@ -109,7 +109,7 @@ struct SmallUsageWidgetView: View {
     private func compact(_ provider: WidgetProviderSnapshot) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             HStack(alignment: .firstTextBaseline) {
-                WidgetProviderName(provider: provider.provider, font: .caption)
+                WidgetProviderName(provider: provider.provider, name: provider.displayName, font: .caption)
                 Spacer(minLength: 4)
                 if provider.mostRelevantWindow != nil {
                     // With three rows the name needs the room; the bar still shows the level.
@@ -209,7 +209,7 @@ struct MediumUsageWidgetView: View {
 
     private func column(_ provider: WidgetProviderSnapshot) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            WidgetProviderName(provider: provider.provider)
+            WidgetProviderName(provider: provider.provider, name: provider.displayName)
             let windows = Array(provider.windows.sortedForDisplay().prefix(Self.maxWindowsPerProvider))
             if windows.isEmpty {
                 WidgetUnavailableLabel()

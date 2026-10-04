@@ -48,8 +48,9 @@ struct UsageNowApp: App {
                 limitNotifier: appState.limitNotifier,
                 hotKey: appState.hotKey,
                 retryLimits: { appState.retryLimits(for: $0) },
-                hasAPIKey: { appState.apiKeys.hasKey(for: $0) },
-                setAPIKey: { try appState.setAPIKey($0, for: $1) },
+                hasAPIKey: { appState.apiKeys.hasKey(for: $0, account: $1) },
+                setAPIKey: { try appState.setAPIKey($0, for: $1, account: $2) },
+                removeAccount: { appState.removeAccount($0) },
                 navigation: appState.settingsNavigation
             )
         }

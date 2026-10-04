@@ -114,13 +114,15 @@ struct WidgetWindowRow: View {
 /// Provider name with its logo, sized for a widget.
 struct WidgetProviderName: View {
     let provider: ProviderID
+    /// "Codex · Work" for an added account; the provider's name otherwise.
+    var name: String? = nil
     var font: Font = .subheadline
 
     var body: some View {
         HStack(spacing: 5) {
             ProviderLogo(provider: provider)
                 .frame(width: 12, height: 12)
-            Text(verbatim: provider.displayName)
+            Text(verbatim: name ?? provider.displayName)
                 .font(font.weight(.semibold))
                 .lineLimit(1)
                 .minimumScaleFactor(0.85)
@@ -145,7 +147,7 @@ struct WidgetProviderRow: View {
 
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
-            WidgetProviderName(provider: provider.provider, font: .caption)
+            WidgetProviderName(provider: provider.provider, name: provider.displayName, font: .caption)
                 .frame(width: Self.nameWidth, alignment: .leading)
             if let window = provider.mostRelevantWindow {
                 UsageProgressView(usage: window.usage, height: WidgetLayout.barHeight)

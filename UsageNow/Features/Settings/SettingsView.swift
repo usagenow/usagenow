@@ -23,8 +23,10 @@ struct SettingsView: View {
     var hotKey: GlobalHotKey = .shared
     /// Asks an experimental limits source to try again, keychain included.
     let retryLimits: (ProviderID) -> Void
-    var hasAPIKey: (ProviderID) -> Bool = { _ in false }
-    var setAPIKey: (String?, ProviderID) throws -> Void = { _, _ in }
+    /// Whether a provider's first account (`nil`) or an added one has a key.
+    var hasAPIKey: (ProviderID, String?) -> Bool = { _, _ in false }
+    var setAPIKey: (String?, ProviderID, String?) throws -> Void = { _, _, _ in }
+    var removeAccount: (ProviderAccount) -> Void = { _ in }
     @Bindable var navigation: SettingsNavigation
 
     var body: some View {
@@ -40,7 +42,12 @@ struct SettingsView: View {
                 )
             }
             Tab("Providers", systemImage: "circle.hexagongrid", value: SettingsTab.providers) {
-                ProvidersSettingsView(preferences: providerPreferences, hasAPIKey: hasAPIKey, setAPIKey: setAPIKey)
+                ProvidersSettingsView(
+                    preferences: providerPreferences,
+                    hasAPIKey: hasAPIKey,
+                    setAPIKey: setAPIKey,
+                    removeAccount: removeAccount
+                )
             }
             Tab("Menu Bar", systemImage: "menubar.rectangle", value: SettingsTab.menuBar) {
                 MenuBarSettingsView(preferences: preferences, providerPreferences: providerPreferences, hotKey: hotKey)
@@ -63,7 +70,7 @@ struct SettingsView: View {
             states: store.states,
             order: providerPreferences.order,
             enabled: providerPreferences.enabledProviders,
-            hasAPIKey: hasAPIKey,
+            hasAPIKey: { hasAPIKey($0, nil) },
             settings: DiagnosticReport.Settings(
                 appearance: preferences.appearance.rawValue,
                 usageAmountStyle: preferences.usageAmountStyle.rawValue,
@@ -88,7 +95,7 @@ struct GeneralSettingsView: View {
 
     /// Why a provider's quota is missing right now, if it is.
     private func quotaIssue(_ provider: ProviderID) -> QuotaUnavailableReason? {
-        store.states.first { $0.provider == provider }?.snapshot?.quotaUnavailableReason
+        store.states.first { $0.provider == provider && $0.account == nil }?.snapshot?.quotaUnavailableReason
     }
 
     var body: some View {

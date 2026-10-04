@@ -12,11 +12,13 @@ private actor RedirectedTransport: HTTPTransport {
 }
 
 private final class MemoryKeys: APIKeyStoring, @unchecked Sendable {
-    private var keys: [ProviderID: String] = [:]
-    init(_ keys: [ProviderID: String] = [:]) { self.keys = keys }
-    func key(for provider: ProviderID) throws -> String? { keys[provider] }
-    func setKey(_ key: String, for provider: ProviderID) throws { keys[provider] = key }
-    func removeKey(for provider: ProviderID) throws { keys[provider] = nil }
+    private var keys: [String: String] = [:]
+    init(_ keys: [ProviderID: String] = [:]) {
+        self.keys = Dictionary(uniqueKeysWithValues: keys.map { (KeychainAPIKeyStore.item($0.key, nil), $0.value) })
+    }
+    func key(for provider: ProviderID, account: String?) throws -> String? { keys[KeychainAPIKeyStore.item(provider, account)] }
+    func setKey(_ key: String, for provider: ProviderID, account: String?) throws { keys[KeychainAPIKeyStore.item(provider, account)] = key }
+    func removeKey(for provider: ProviderID, account: String?) throws { keys[KeychainAPIKeyStore.item(provider, account)] = nil }
 }
 
 struct APIKeyClientTests {

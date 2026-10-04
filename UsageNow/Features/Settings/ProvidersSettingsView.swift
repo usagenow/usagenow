@@ -6,12 +6,24 @@ import SwiftUI
 /// behind them — those providers have no integration yet.
 struct ProvidersSettingsView: View {
     @Bindable var preferences: ProviderPreferences
-    /// Reads whether a key is saved; the key itself never reaches this view.
-    var hasAPIKey: (ProviderID) -> Bool = { _ in false }
+    /// Reads whether a key is saved — the first account's (`nil`) or an
+    /// added one's; the key itself never reaches this view.
+    var hasAPIKey: (ProviderID, String?) -> Bool = { _, _ in false }
     /// Saves a key, or removes it when `nil`.
-    var setAPIKey: (String?, ProviderID) throws -> Void = { _, _ in }
+    var setAPIKey: (String?, ProviderID, String?) throws -> Void = { _, _, _ in }
+    /// Removes an added account and its key.
+    var removeAccount: (ProviderAccount) -> Void = { _ in }
 
-    @State private var editingKeyFor: ProviderDefinition?
+    /// Whose key the key sheet edits.
+    private struct KeyTarget: Identifiable {
+        let definition: ProviderDefinition
+        var account: ProviderAccount?
+
+        var id: String { account?.id ?? definition.id.rawValue }
+    }
+
+    @State private var editingKey: KeyTarget?
+    @State private var addingAccountFor: ProviderDefinition?
 
     /// Tall enough for most of the list, short enough for a 13-inch screen
     /// with room for the window's title and tabs.
@@ -62,10 +74,24 @@ struct ProvidersSettingsView: View {
         // The list outgrew a laptop screen, so this tab scrolls within a
         // height that fits, unlike the others, which size to their content.
         .frame(height: Self.height)
-        .sheet(item: $editingKeyFor) { definition in
-            APIKeySheet(definition: definition) { key in
-                try setAPIKey(key, definition.id)
+        .sheet(item: $editingKey) { target in
+            APIKeySheet(definition: target.definition, account: target.account) { key in
+                try setAPIKey(key, target.definition.id, target.account?.id)
                 keyRevision += 1
+            }
+        }
+        .sheet(item: $addingAccountFor) { definition in
+            if let kind = ProviderAccount.kind(for: definition.id) {
+                AddAccountSheet(
+                    definition: definition,
+                    kind: kind,
+                    existingNames: preferences.accounts(for: definition.id).map(\.name)
+                ) { account, key in
+                    // The key first, so the account's first reading finds it.
+                    if let key { try setAPIKey(key, definition.id, account.id) }
+                    preferences.addAccount(account)
+                    keyRevision += 1
+                }
             }
         }
     }
@@ -84,6 +110,21 @@ struct ProvidersSettingsView: View {
             }
             if definition.apiKey != nil, preferences.isEnabled(definition.id) {
                 apiKeyStatus(definition)
+            }
+            if let kind = ProviderAccount.kind(for: definition.id), preferences.isEnabled(definition.id) {
+                ProviderAccountsView(
+                    definition: definition,
+                    kind: kind,
+                    accounts: preferences.accounts(for: definition.id),
+                    hasKey: { hasAPIKey($0.provider, $0.id) },
+                    keyRevision: keyRevision,
+                    onAdd: { addingAccountFor = definition },
+                    onReplaceKey: { editingKey = KeyTarget(definition: definition, account: $0) },
+                    onRemove: { account in
+                        withAnimation(.snappy) { removeAccount(account) }
+                        keyRevision += 1
+                    }
+                )
             }
         }
         .contentShape(.rect)
@@ -108,20 +149,20 @@ extension ProvidersSettingsView {
     /// "API key saved" with Replace and Remove, or a button to add one.
     @ViewBuilder
     private func apiKeyStatus(_ definition: ProviderDefinition) -> some View {
-        let saved = { _ = keyRevision; return hasAPIKey(definition.id) }()
+        let saved = { _ = keyRevision; return hasAPIKey(definition.id, nil) }()
         HStack(spacing: 8) {
             Label(saved ? "API key saved" : "No API key yet", systemImage: saved ? "key.fill" : "key")
                 .font(.callout)
                 .foregroundStyle(.secondary)
             Spacer(minLength: 8)
             if saved {
-                Button("Replace…") { editingKeyFor = definition }
+                Button("Replace…") { editingKey = KeyTarget(definition: definition) }
                 Button("Remove") {
-                    try? setAPIKey(nil, definition.id)
+                    try? setAPIKey(nil, definition.id, nil)
                     keyRevision += 1
                 }
             } else {
-                Button("Add API Key…") { editingKeyFor = definition }
+                Button("Add API Key…") { editingKey = KeyTarget(definition: definition) }
             }
         }
         .controlSize(.small)
@@ -132,6 +173,7 @@ extension ProvidersSettingsView {
 /// Asks for a provider's API key and says plainly what happens to it.
 private struct APIKeySheet: View {
     let definition: ProviderDefinition
+    var account: ProviderAccount?
     let save: (String) throws -> Void
 
     @Environment(\.dismiss) private var dismiss
@@ -142,7 +184,7 @@ private struct APIKeySheet: View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(spacing: 10) {
                 ProviderLogoTile(provider: definition.id)
-                Text("\(definition.displayName) API key")
+                Text("\(definition.id.displayName(account: account?.tag)) API key")
                     .font(.headline)
             }
 
@@ -150,22 +192,7 @@ private struct APIKeySheet: View {
                 .textFieldStyle(.roundedBorder)
                 .onSubmit(submit)
 
-            VStack(alignment: .leading, spacing: 6) {
-                if let host = definition.apiKey?.host {
-                    Text("UsageNow uses this key only to read your usage from \(host). It stays in the Keychain on this Mac, is never sent anywhere else, and is deleted when you turn \(definition.displayName) off.")
-                }
-                if definition.isExperimental {
-                    Text("Experimental: \(definition.displayName) doesn’t document how to read usage, so this may stop working without notice. If it does, UsageNow shows limits as unavailable rather than guessing.")
-                }
-                Text("API keys can usually spend money, not just read it. If \(definition.displayName) lets you, create a separate key for UsageNow.")
-                    .foregroundStyle(.orange)
-                if let page = definition.apiKey?.keysPage {
-                    Link("Create a key on \(definition.displayName)…", destination: page)
-                }
-            }
-            .font(.callout)
-            .foregroundStyle(.secondary)
-            .fixedSize(horizontal: false, vertical: true)
+            APIKeyNotes(definition: definition)
 
             if failed {
                 Text("The key couldn’t be saved to the Keychain.")

@@ -60,11 +60,20 @@ enum DiagnosticReport {
         lines.append("Providers, in popover order:")
 
         for id in order where enabled.contains(id) {
-            let state = states.first { $0.provider == id }
-            lines.append("- \(id.displayName): \(describe(state, id: id, hasAPIKey: hasAPIKey, now: now))")
-            if let failure = state?.failure {
-                let clean = sanitized(failure.message, homeDirectory: environment.homeDirectory)
-                lines.append("  Last refresh failed \(age(of: failure.date, now: now)): \(clean)")
+            // The provider's own account, then added ones — numbered, since
+            // their names are the person's own.
+            let rows = states.filter { $0.provider == id }
+            let main = rows.first { $0.account == nil }
+            let added = rows.filter { $0.account != nil }
+            var entries: [(label: String, state: ProviderState?)] = [(id.displayName, main)]
+            entries += added.enumerated().map { ("\(id.displayName), added account \($0.offset + 1)", $0.element) }
+            for (index, entry) in entries.enumerated() {
+                let keyStatus = index == 0 && ProviderCatalog.definition(for: id).apiKey != nil ? hasAPIKey(id) : nil
+                lines.append("- \(entry.label): \(describe(entry.state, keyStatus: keyStatus, now: now))")
+                if let failure = entry.state?.failure {
+                    let clean = sanitized(failure.message, homeDirectory: environment.homeDirectory)
+                    lines.append("  Last refresh failed \(age(of: failure.date, now: now)): \(clean)")
+                }
             }
         }
 
@@ -77,10 +86,13 @@ enum DiagnosticReport {
 
     // MARK: Providers
 
-    private static func describe(_ state: ProviderState?, id: ProviderID, hasAPIKey: (ProviderID) -> Bool, now: Date) -> String {
+    /// - Parameter keyStatus: Whether a key is saved, for a provider's own
+    ///   account when it's connected with one. An added account without a
+    ///   key reads as not installed.
+    private static func describe(_ state: ProviderState?, keyStatus: Bool?, now: Date) -> String {
         var parts: [String] = []
-        if ProviderCatalog.definition(for: id).apiKey != nil {
-            parts.append(hasAPIKey(id) ? "API key saved" : "no API key")
+        if let keyStatus {
+            parts.append(keyStatus ? "API key saved" : "no API key")
         }
         guard let snapshot = state?.snapshot else {
             parts.append(state?.isRefreshing == true ? "loading" : "no reading yet")

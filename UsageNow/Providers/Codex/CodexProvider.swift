@@ -15,6 +15,7 @@ struct CodexProvider: UsageProvider {
     typealias AppServerFetch = @Sendable (CodexEnvironment) async throws -> CodexAppServerClient.Outcome
 
     let id: ProviderID = .codex
+    let account: ProviderAccount?
 
     private let discover: @Sendable () -> CodexEnvironment
     private let appServer: AppServerFetch?
@@ -25,15 +26,24 @@ struct CodexProvider: UsageProvider {
 
     /// - Parameter appServer: Queries the app-server. `nil` disables it (tests).
     init(
+        account: ProviderAccount? = nil,
         discover: @escaping @Sendable () -> CodexEnvironment = { .discover() },
         appServer: AppServerFetch? = CodexProvider.liveAppServer,
         now: @escaping @Sendable () -> Date = { .now },
         calendar: Calendar = .autoupdatingCurrent
     ) {
+        self.account = account
         self.discover = discover
         self.appServer = appServer
         self.now = now
         self.calendar = calendar
+    }
+
+    /// An added account: Codex as it runs with `CODEX_HOME` set to the
+    /// account's folder.
+    static func reading(_ account: ProviderAccount) -> CodexProvider {
+        let folder = account.folder ?? ""
+        return CodexProvider(account: account, discover: { .discover(environment: ["CODEX_HOME": folder]) })
     }
 
     static let liveAppServer: AppServerFetch = { environment in

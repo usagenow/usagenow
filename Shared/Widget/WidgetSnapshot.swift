@@ -71,6 +71,10 @@ struct WidgetSnapshot: Codable, Sendable, Equatable {
 /// One provider's state, already filtered and sanitized by the main app.
 struct WidgetProviderSnapshot: Codable, Sendable, Equatable, Identifiable {
     var provider: ProviderID
+    /// The name the person gave an added account, e.g. "Work"; `nil` for
+    /// the provider's own. Optional, so snapshots from earlier versions
+    /// still read.
+    var accountName: String? = nil
     /// Plan label the provider stated explicitly, e.g. "Pro".
     var planName: String?
     /// Display name of the most recently used model, e.g. "claude-opus-5".
@@ -91,13 +95,14 @@ struct WidgetProviderSnapshot: Codable, Sendable, Equatable, Identifiable {
     /// history; optional, so snapshots from earlier versions still read.
     var recentDays: [Double]? = nil
 
-    var id: ProviderID { provider }
+    /// Account names are unique per provider, so this tells rows apart.
+    var id: String { accountName.map { "\(provider.rawValue) · \($0)" } ?? provider.rawValue }
 
     /// Days shown in the widget's chart: two weeks fit its width.
     static let recentDayCount = 14
 
-    /// Never localized; comes from the shared catalog.
-    var displayName: String { provider.displayName }
+    /// "Codex", or "Codex · Work" for an added account. Never localized.
+    var displayName: String { accountName.map { "\(provider.displayName) · \($0)" } ?? provider.displayName }
 
     /// The window to show when there's only room for one.
     var mostRelevantWindow: UsageWindow? { windows.mostRelevant }
@@ -154,7 +159,7 @@ extension WidgetSnapshot.State {
 
 extension WidgetProviderSnapshot {
     private enum CodingKeys: String, CodingKey {
-        case provider, planName, modelName, windows, tokensToday, requestsToday, creditsToday, quotaUnavailableReason, recentDays
+        case provider, accountName, planName, modelName, windows, tokensToday, requestsToday, creditsToday, quotaUnavailableReason, recentDays
     }
 
     /// An unknown provider fails, so the list can skip it; an unknown window
@@ -162,6 +167,7 @@ extension WidgetProviderSnapshot {
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         provider = try container.decode(ProviderID.self, forKey: .provider)
+        accountName = try? container.decodeIfPresent(String.self, forKey: .accountName)
         planName = try container.decodeIfPresent(String.self, forKey: .planName)
         modelName = try container.decodeIfPresent(String.self, forKey: .modelName)
         windows = (try container.decodeIfPresent([Skippable<UsageWindow>].self, forKey: .windows) ?? []).compactMap(\.value)

@@ -32,8 +32,14 @@ struct ProviderSnapshot: Sendable, Equatable, Identifiable {
     /// When the quota windows were captured, if earlier than `updatedAt` —
     /// for example when they come from a cache or a fallback source.
     var limitsUpdatedAt: Date? = nil
+    /// The added account this reading is for; `nil` for the provider's own.
+    /// Set by `UsageStore`, so providers needn't know.
+    var account: AccountTag? = nil
 
-    var id: ProviderID { provider }
+    var id: SourceKey { SourceKey(provider: provider, account: account?.id) }
+
+    /// "Codex", or "Codex · Work" for an added account.
+    var displayName: String { provider.displayName(account: account) }
 
     var capabilities: ProviderCapabilities {
         var capabilities: ProviderCapabilities = []

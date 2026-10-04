@@ -10,6 +10,8 @@ struct LimitNotice: Sendable, Equatable {
     }
 
     var provider: ProviderID
+    /// The added account the window belongs to; `nil` for the provider's own.
+    var account: AccountTag? = nil
     var window: UsageWindowKind
     var scope: String?
     var kind: Kind
@@ -18,7 +20,7 @@ struct LimitNotice: Sendable, Equatable {
 
     /// Identifies the window, so a later notice about it replaces an earlier
     /// one of the same kind instead of piling up.
-    var windowKey: String { LimitNoticePlanner.key(provider, kind: window, scope: scope) }
+    var windowKey: String { LimitNoticePlanner.key(SourceKey(provider: provider, account: account?.id), kind: window, scope: scope) }
 
     var identifier: String {
         switch kind {
@@ -63,8 +65,9 @@ enum LimitNoticePlanner {
         case cancel(identifier: String)
     }
 
-    static func key(_ provider: ProviderID, kind: UsageWindowKind, scope: String?) -> String {
-        "\(provider.rawValue)|\(UsageWindow(kind: kind, scope: scope).id)"
+    /// "codex|weekly", or "codex@<account id>|weekly" for an added account.
+    static func key(_ source: SourceKey, kind: UsageWindowKind, scope: String?) -> String {
+        "\(source)|\(UsageWindow(kind: kind, scope: scope).id)"
     }
 
     static func plan(snapshots: [ProviderSnapshot], memory: inout Memory, now: Date) -> [Action] {
@@ -73,10 +76,10 @@ enum LimitNoticePlanner {
 
         for snapshot in snapshots where snapshot.status == .available {
             for window in snapshot.windows {
-                let key = key(snapshot.provider, kind: window.kind, scope: window.scope)
+                let key = key(snapshot.id, kind: window.kind, scope: window.scope)
                 seen.insert(key)
                 func notice(_ kind: LimitNotice.Kind) -> LimitNotice {
-                    LimitNotice(provider: snapshot.provider, window: window.kind, scope: window.scope, kind: kind, resetsAt: window.resetsAt)
+                    LimitNotice(provider: snapshot.provider, account: snapshot.account, window: window.kind, scope: window.scope, kind: kind, resetsAt: window.resetsAt)
                 }
 
                 // A window whose reset time has passed is a new window. A
@@ -139,7 +142,8 @@ enum LimitNoticePlanner {
     static func forget(providersOtherThan enabled: Set<ProviderID>, memory: inout Memory) -> [Action] {
         var actions: [Action] = []
         for (key, remembered) in memory {
-            guard let provider = key.split(separator: "|").first.flatMap({ ProviderID(rawValue: String($0)) }),
+            let source = key.split(separator: "|").first?.split(separator: "@").first
+            guard let provider = source.flatMap({ ProviderID(rawValue: String($0)) }),
                   !enabled.contains(provider) else { continue }
             if remembered.isResetScheduled { actions.append(.cancel(identifier: "limit.reset.\(key)")) }
             memory[key] = nil
@@ -151,7 +155,7 @@ enum LimitNoticePlanner {
 extension LimitNotice {
     /// "Claude Code: 18% of the 5-hour limit left".
     func title(style: UsageAmountStyle) -> String {
-        let name = provider.displayName
+        let name = provider.displayName(account: account)
         let limit = scope.map { "\(window.title) \($0)" } ?? window.title
         switch kind {
         case .reset:

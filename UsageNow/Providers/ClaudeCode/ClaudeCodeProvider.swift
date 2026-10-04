@@ -11,6 +11,7 @@ import Synchronization
 /// UsageNow never refreshes, modifies, or stores Claude Code credentials.
 struct ClaudeCodeProvider: UsageProvider {
     let id: ProviderID = .claudeCode
+    let account: ProviderAccount?
 
     private let discover: @Sendable () -> ClaudeCodeEnvironment
     private let sessions = ClaudeSessionReader()
@@ -20,17 +21,28 @@ struct ClaudeCodeProvider: UsageProvider {
     private let calendar: Calendar
 
     init(
+        account: ProviderAccount? = nil,
         discover: @escaping @Sendable () -> ClaudeCodeEnvironment = { .discover() },
         limitsClient: ClaudeUsageLimitsClient? = nil,
         limitsEnabled: FeatureSwitch = FeatureSwitch(false),
         now: @escaping @Sendable () -> Date = { .now },
         calendar: Calendar = .autoupdatingCurrent
     ) {
+        self.account = account
         self.discover = discover
         self.limitsClient = limitsClient
         self.limitsEnabled = limitsEnabled
         self.now = now
         self.calendar = calendar
+    }
+
+    /// An added account: Claude Code as it runs with `CLAUDE_CONFIG_DIR`
+    /// set to the account's folder. Limits come only from the limits it
+    /// records hitting: the experimental limits source reads the first
+    /// account's sign-in.
+    static func reading(_ account: ProviderAccount) -> ClaudeCodeProvider {
+        let folder = account.folder ?? ""
+        return ClaudeCodeProvider(account: account, discover: { .discover(environment: ["CLAUDE_CONFIG_DIR": folder]) })
     }
 
     func fetchSnapshot(trigger: RefreshTrigger) async throws -> ProviderSnapshot {

@@ -16,6 +16,7 @@ final class ProviderPreferences {
     /// provider added in an update can be turned on once.
     private static let knownKey = "knownProviders"
     private static let orderKey = "providerOrder"
+    private static let accountsKey = "providerAccounts"
     /// What was available before `knownProviders` was recorded (0.2.x).
     private static let initiallyKnown: Set<ProviderID> = [.codex, .claudeCode]
 
@@ -44,10 +45,22 @@ final class ProviderPreferences {
         }
     }
 
+    /// Accounts added beside the ones UsageNow finds itself, in the order
+    /// they were added. Names and folders only; keys stay in the Keychain.
+    private(set) var accounts: [ProviderAccount] {
+        didSet {
+            guard accounts != oldValue else { return }
+            defaults.set(try? JSONEncoder().encode(accounts), forKey: Self.accountsKey)
+        }
+    }
+
     @ObservationIgnored private let defaults: UserDefaults
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
+        accounts = defaults.data(forKey: Self.accountsKey)
+            .flatMap { try? JSONDecoder().decode([ProviderAccount].self, from: $0) }?
+            .filter { $0.provider.isAvailable && ProviderAccount.supportsAccounts($0.provider) } ?? []
         order = Self.normalized(defaults.stringArray(forKey: Self.orderKey)?.compactMap(ProviderID.init(rawValue:)) ?? [])
         defer { defaults.set(ProviderCatalog.availableIDs.map(\.rawValue).sorted(), forKey: Self.knownKey) }
         guard let stored = defaults.stringArray(forKey: Self.key) else {
@@ -79,6 +92,23 @@ final class ProviderPreferences {
         } else {
             enabledProviders.remove(provider)
         }
+    }
+
+    func accounts(for provider: ProviderID) -> [ProviderAccount] {
+        accounts.filter { $0.provider == provider }
+    }
+
+    func addAccount(_ account: ProviderAccount) {
+        guard ProviderAccount.supportsAccounts(account.provider), !accounts.contains(where: { $0.id == account.id }) else { return }
+        accounts.append(account)
+    }
+
+    func removeAccount(id: String) {
+        accounts.removeAll { $0.id == id }
+    }
+
+    func removeAccounts(of provider: ProviderID) {
+        accounts.removeAll { $0.provider == provider }
     }
 
     /// Moves `provider` to where `target` is, shifting the rest.

@@ -68,6 +68,7 @@ final class WidgetSnapshotWriter {
         guard let snapshot = state.snapshot, snapshot.status != .notInstalled else { return nil }
         return WidgetProviderSnapshot(
             provider: snapshot.provider,
+            accountName: state.account?.name,
             planName: snapshot.planName,
             modelName: snapshot.recentModel,
             // A window known only to have reset has nothing to show at a glance.

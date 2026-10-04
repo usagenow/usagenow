@@ -14,6 +14,7 @@ struct APIKeyReading: Sendable, Equatable {
 /// says the refresh failed.
 struct APIKeyProvider: UsageProvider {
     let id: ProviderID
+    var account: ProviderAccount?
     private let keys: any APIKeyStoring
     private let client: APIKeyClient
     private let read: @Sendable (APIKeyClient, String) async throws -> APIKeyReading
@@ -21,6 +22,7 @@ struct APIKeyProvider: UsageProvider {
 
     init(
         id: ProviderID,
+        account: ProviderAccount? = nil,
         keys: any APIKeyStoring,
         transport: (any HTTPTransport)? = nil,
         now: @escaping @Sendable () -> Date = { .now },
@@ -30,6 +32,7 @@ struct APIKeyProvider: UsageProvider {
             // Only catalog providers with a connection reach here; this keeps it total.
             ?? APIKeyConnection(host: "invalid.invalid", keysPage: URL(string: "https://usagenow.com")!)
         self.id = id
+        self.account = account
         self.keys = keys
         self.client = transport.map { APIKeyClient(connection: connection, transport: $0) } ?? APIKeyClient(connection: connection)
         self.read = read
@@ -38,7 +41,7 @@ struct APIKeyProvider: UsageProvider {
 
     func fetchSnapshot(trigger: RefreshTrigger) async throws -> ProviderSnapshot {
         let date = now()
-        guard let key = (try? keys.key(for: id)) ?? nil, !key.isEmpty else {
+        guard let key = (try? keys.key(for: id, account: account?.id)) ?? nil, !key.isEmpty else {
             return .notInstalled(id, at: date)
         }
         do {
@@ -47,6 +50,13 @@ struct APIKeyProvider: UsageProvider {
         } catch APIKeyClient.Failure.rejectedKey {
             return .notAuthenticated(id, at: date)
         }
+    }
+
+    /// The same provider, reading an added account with that account's key.
+    func reading(_ account: ProviderAccount) -> APIKeyProvider {
+        var copy = self
+        copy.account = account
+        return copy
     }
 
     // MARK: Providers

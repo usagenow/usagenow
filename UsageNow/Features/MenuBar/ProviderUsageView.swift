@@ -14,12 +14,13 @@ struct ProviderUsageView: View {
         VStack(alignment: .leading, spacing: 10) {
             ProviderHeaderView(
                 provider: state.provider,
+                name: state.displayName,
                 model: snapshot?.recentModel,
                 planName: snapshot?.planName,
                 note: staleNote
             )
             if state.failure != nil {
-                RefreshFailureView(provider: state.provider, isRetrying: state.isRefreshing, onRetry: onRetry)
+                RefreshFailureView(name: state.displayName, isRetrying: state.isRefreshing, onRetry: onRetry)
             }
             content
         }
@@ -51,13 +52,13 @@ struct ProviderUsageView: View {
                 }
                 ModelActivityView(models: snapshot.modelActivity)
             case .notAuthenticated where ProviderCatalog.definition(for: state.provider).apiKey != nil:
-                StatusMessage(text: String(localized: "\(state.provider.displayName) didn’t accept the API key. Check it in Settings › Providers."))
+                StatusMessage(text: String(localized: "\(state.displayName) didn’t accept the API key. Check it in Settings › Providers."))
             case .notAuthenticated:
-                StatusMessage(text: String(localized: "Sign in to \(state.provider.displayName) to view usage"))
+                StatusMessage(text: String(localized: "Sign in to \(state.displayName) to view usage"))
             case .unavailable:
                 StatusMessage(text: String(localized: "Usage limits unavailable"))
             case .notInstalled:
-                StatusMessage(text: String(localized: "\(state.provider.displayName) isn’t installed"))
+                StatusMessage(text: String(localized: "\(state.displayName) isn’t installed"))
             }
         }
     }
@@ -71,6 +72,8 @@ struct ProviderUsageView: View {
 
 private struct ProviderHeaderView: View {
     let provider: ProviderID
+    /// "Codex", or "Codex · Work" for an added account.
+    let name: String
     let model: String?
     let planName: String?
     let note: String?
@@ -79,8 +82,9 @@ private struct ProviderHeaderView: View {
         HStack(spacing: 8) {
             ProviderLogoTile(provider: provider)
             VStack(alignment: .leading, spacing: 0) {
-                Text(verbatim: provider.displayName)
+                Text(verbatim: name)
                     .font(.headline)
+                    .lineLimit(1)
                 if let model {
                     Text(verbatim: ModelNameFormatter.displayName(for: model))
                         .font(.subheadline)
@@ -122,7 +126,7 @@ private struct StatusMessage: View {
 }
 
 private struct RefreshFailureView: View {
-    let provider: ProviderID
+    let name: String
     let isRetrying: Bool
     let onRetry: () -> Void
 
@@ -132,14 +136,14 @@ private struct RefreshFailureView: View {
                 .foregroundStyle(.orange)
                 .imageScale(.small)
                 .accessibilityHidden(true)
-            Text("Couldn’t refresh \(provider.displayName)")
+            Text("Couldn’t refresh \(name)")
                 .foregroundStyle(.secondary)
             Spacer(minLength: 8)
             TextButton(title: "Retry", action: onRetry)
                 .disabled(isRetrying)
                 .padding(.vertical, -3) // Keep the hover area from growing the row.
                 .padding(.trailing, -7) // Align the label, not the highlight, with the content edge.
-                .accessibilityLabel(Text("Retry refreshing \(provider.displayName)"))
+                .accessibilityLabel(Text("Retry refreshing \(name)"))
         }
         .font(.subheadline)
     }

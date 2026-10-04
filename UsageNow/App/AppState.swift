@@ -30,6 +30,9 @@ final class AppState {
     private let widgetSnapshots: WidgetSnapshotWriter
     private let scheduler: AutoRefreshScheduler
     private let claudeLimits: ClaudeLimitsControl?
+    /// Builds the provider that reads an added account, or `nil` when it
+    /// can't be read (mock providers).
+    private let accountProvider: @Sendable (ProviderAccount) -> (any UsageProvider)?
 
     /// The experimental Claude usage-limits source and its on/off switch.
     struct ClaudeLimitsControl: Sendable {
@@ -45,10 +48,15 @@ final class AppState {
         claudeLimits: ClaudeLimitsControl? = nil,
         widgetSnapshots: WidgetSnapshotWriter = WidgetSnapshotWriter(),
         apiKeys: any APIKeyStoring = KeychainAPIKeyStore(),
-        limitNotifier: LimitNotifier? = nil
+        limitNotifier: LimitNotifier? = nil,
+        accountProvider: @escaping @Sendable (ProviderAccount) -> (any UsageProvider)? = { _ in nil }
     ) {
         let providerPreferences = ProviderPreferences(defaults: defaults)
-        let store = UsageStore(providers: providers, enabledProviders: providerPreferences.enabledProviders, order: providerPreferences.order)
+        let store = UsageStore(
+            providers: providers + providerPreferences.accounts.compactMap(accountProvider),
+            enabledProviders: providerPreferences.enabledProviders,
+            order: providerPreferences.order
+        )
         let analyticsPreferences = AnalyticsPreferences(defaults: defaults)
         let client = NetworkTelemetryClient(
             configuration: telemetryConfiguration,
@@ -66,6 +74,7 @@ final class AppState {
         self.limitNotifier = limitNotifier ?? LimitNotifier(defaults: defaults)
         self.telemetry = TelemetryReporter(client: client, preferences: analyticsPreferences, identity: identity, defaults: defaults)
         self.claudeLimits = claudeLimits
+        self.accountProvider = accountProvider
         self.widgetSnapshots = widgetSnapshots
         self.scheduler = AutoRefreshScheduler { [weak store] in
             await store?.refresh()
@@ -82,13 +91,34 @@ final class AppState {
             )
         )
         let apiKeys = KeychainAPIKeyStore()
+        let isMocked = usesMockProviders(defaults: defaults)
         return AppState(
             providers: makeProviders(defaults: defaults, claudeLimits: claudeLimits, apiKeys: apiKeys),
             defaults: defaults,
             telemetryConfiguration: .current(defaults: defaults),
             claudeLimits: claudeLimits,
-            apiKeys: apiKeys
+            apiKeys: apiKeys,
+            accountProvider: { isMocked ? nil : makeAccountProvider($0, apiKeys: apiKeys) }
         )
+    }
+
+    private static let mockArguments = ["UsageNowMockCodex", "UsageNowMockClaude", "UsageNowMockGemini", "UsageNowMockAntigravity"]
+
+    static func usesMockProviders(defaults: UserDefaults) -> Bool {
+        mockArguments.contains { defaults.string(forKey: $0).flatMap(MockScenario.init(rawValue:)) != nil }
+    }
+
+    /// The provider that reads an added account.
+    nonisolated static func makeAccountProvider(_ account: ProviderAccount, apiKeys: any APIKeyStoring) -> (any UsageProvider)? {
+        switch account.provider {
+        case .codex: CodexProvider.reading(account)
+        case .claudeCode: ClaudeCodeProvider.reading(account)
+        case .deepseek: APIKeyProvider.deepSeek(keys: apiKeys).reading(account)
+        case .kimi: APIKeyProvider.kimi(keys: apiKeys).reading(account)
+        case .openrouter: APIKeyProvider.openRouter(keys: apiKeys).reading(account)
+        case .ollama: APIKeyProvider.ollama(keys: apiKeys).reading(account)
+        default: nil
+        }
     }
 
     /// Real providers in production. Launch arguments such as
@@ -148,6 +178,7 @@ final class AppState {
         observe({ [preferences] in _ = preferences.fetchClaudeUsageLimits }, apply: { [weak self] in self?.applyClaudeLimitsPreference() })
         observe({ [providerPreferences] in _ = providerPreferences.enabledProviders }, apply: { [weak self] in self?.applyEnabledProviders() })
         observe({ [providerPreferences] in _ = providerPreferences.order }, apply: { [weak self] in self?.applyProviderOrder() })
+        observe({ [providerPreferences] in _ = providerPreferences.accounts }, apply: { [weak self] in self?.applyAccounts() })
         observe({ [store] in _ = store.states }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.usageAmountStyle }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.showsActivityHistory }, apply: { [weak self] in self?.storeDidChange() })
@@ -176,14 +207,33 @@ final class AppState {
     /// bar showing a provider that's still enabled.
     private func applyEnabledProviders() {
         let enabled = providerPreferences.enabledProviders
-        // Turning off a provider connected with a key forgets the key.
+        // Turning off a provider connected with a key forgets the key, and
+        // the accounts added with keys of their own.
         for definition in ProviderCatalog.available where definition.apiKey != nil && !enabled.contains(definition.id) {
             try? apiKeys.removeKey(for: definition.id)
+            for account in providerPreferences.accounts(for: definition.id) {
+                try? apiKeys.removeKey(for: definition.id, account: account.id)
+            }
+            providerPreferences.removeAccounts(of: definition.id)
         }
         if let required = preferences.menuBarDisplayMode.requiredProvider, !enabled.contains(required) {
             preferences.menuBarDisplayMode = .default
         }
         Task { [store] in await store.setEnabledProviders(enabled) }
+    }
+
+    /// An account added in Settings is read right away; a removed one
+    /// disappears, its key with it.
+    private func applyAccounts() {
+        let accounts = providerPreferences.accounts
+        let providers = accounts.compactMap(accountProvider)
+        Task { [store] in await store.setAccounts(providers) }
+    }
+
+    /// Removes an added account, and its key if it has one.
+    func removeAccount(_ account: ProviderAccount) {
+        try? apiKeys.removeKey(for: account.provider, account: account.id)
+        providerPreferences.removeAccount(id: account.id)
     }
 
     /// The popover and widget follow the order set in Settings.
@@ -208,12 +258,13 @@ final class AppState {
         if provider == .claudeCode { retryClaudeLimits() }
     }
 
-    /// Saves or clears a provider's API key, then reads the provider with it.
-    func setAPIKey(_ key: String?, for provider: ProviderID) throws {
+    /// Saves or clears a provider's API key — its first account's, or an
+    /// added account's — then reads the provider with it.
+    func setAPIKey(_ key: String?, for provider: ProviderID, account: String? = nil) throws {
         if let key, !key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            try apiKeys.setKey(key, for: provider)
+            try apiKeys.setKey(key, for: provider, account: account)
         } else {
-            try apiKeys.removeKey(for: provider)
+            try apiKeys.removeKey(for: provider, account: account)
         }
         guard providerPreferences.isEnabled(provider) else { return }
         Task { [store] in await store.refresh(only: [provider], trigger: .manual) }

@@ -26,12 +26,14 @@ enum Fixtures {
 /// A provider whose result tests control.
 actor StubProvider: UsageProvider {
     nonisolated let id: ProviderID
+    nonisolated let account: ProviderAccount?
     private var result: Result<ProviderSnapshot, any Error>
     private let delay: Duration
     private(set) var fetchCount = 0
 
-    init(_ id: ProviderID, _ result: Result<ProviderSnapshot, any Error>, delay: Duration = .zero) {
+    init(_ id: ProviderID, _ result: Result<ProviderSnapshot, any Error>, delay: Duration = .zero, account: ProviderAccount? = nil) {
         self.id = id
+        self.account = account
         self.result = result
         self.delay = delay
     }
