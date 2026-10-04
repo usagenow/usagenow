@@ -33,6 +33,9 @@ final class AppState {
     /// Builds the provider that reads an added account, or `nil` when it
     /// can't be read (mock providers).
     private let accountProvider: @Sendable (ProviderAccount) -> (any UsageProvider)?
+    /// The provider reading each added account, kept while the account is
+    /// unchanged so its caches survive another account being added.
+    private var accountProviders: [ProviderAccount: any UsageProvider] = [:]
 
     /// The experimental Claude usage-limits source and its on/off switch.
     struct ClaudeLimitsControl: Sendable {
@@ -52,8 +55,12 @@ final class AppState {
         accountProvider: @escaping @Sendable (ProviderAccount) -> (any UsageProvider)? = { _ in nil }
     ) {
         let providerPreferences = ProviderPreferences(defaults: defaults)
+        var accountProviders: [ProviderAccount: any UsageProvider] = [:]
+        for account in providerPreferences.accounts {
+            accountProviders[account] = accountProvider(account)
+        }
         let store = UsageStore(
-            providers: providers + providerPreferences.accounts.compactMap(accountProvider),
+            providers: providers + providerPreferences.accounts.compactMap { accountProviders[$0] },
             enabledProviders: providerPreferences.enabledProviders,
             order: providerPreferences.order
         )
@@ -75,6 +82,7 @@ final class AppState {
         self.telemetry = TelemetryReporter(client: client, preferences: analyticsPreferences, identity: identity, defaults: defaults)
         self.claudeLimits = claudeLimits
         self.accountProvider = accountProvider
+        self.accountProviders = accountProviders
         self.widgetSnapshots = widgetSnapshots
         self.scheduler = AutoRefreshScheduler { [weak store] in
             await store?.refresh()
@@ -227,7 +235,12 @@ final class AppState {
     /// disappears, its key with it.
     private func applyAccounts() {
         let accounts = providerPreferences.accounts
-        let providers = accounts.compactMap(accountProvider)
+        var kept: [ProviderAccount: any UsageProvider] = [:]
+        for account in accounts {
+            kept[account] = accountProviders[account] ?? accountProvider(account)
+        }
+        accountProviders = kept
+        let providers = accounts.compactMap { kept[$0] }
         Task { [store] in await store.setAccounts(providers) }
     }
 
