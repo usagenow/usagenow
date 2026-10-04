@@ -103,6 +103,7 @@ struct NetworkTelemetryClientTests {
         #expect(Set(TelemetryEvent.allCases.map(\.rawValue)) == [
             "first_launch", "app_active", "app_updated", "codex_detected", "claude_detected", "gemini_detected", "antigravity_detected",
             "kiro_detected", "warp_detected", "opencode_detected", "qoder_detected",
+            "qwen_detected", "cline_detected", "grok_detected",
         ])
     }
 
@@ -196,7 +197,7 @@ struct TelemetryReporterTests {
     @Test func geminiIsReportedLikeTheOtherProvidersAndRoadmapEntriesAreNot() async {
         let client = RecordingTelemetryClient()
         let (reporter, _) = reporter(client: client, defaults: makeDefaults(), sharing: true)
-        await reporter.providersDetected([.gemini, .deepseek, .qwen])
+        await reporter.providersDetected([.gemini, .deepseek, .cursor])
         await reporter.providersDetected([.gemini])
         #expect(await client.events == [.geminiDetected])
         #expect(TelemetryEvent.detected(.deepseek) == nil)
