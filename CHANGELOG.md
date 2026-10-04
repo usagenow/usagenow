@@ -2,6 +2,23 @@
 
 All notable changes to UsageNow. This project follows [Semantic Versioning](https://semver.org).
 
+## 0.7.0
+
+### Added
+
+- **More than one account.** Under Codex, Claude Code, DeepSeek, Kimi, OpenRouter, and Ollama Cloud in **Settings › Providers**, **Add Account…** adds another: for Codex and Claude Code, the folder the tool uses for it — the one `CODEX_HOME` or `CLAUDE_CONFIG_DIR` points to — and for an API provider, that account's key, kept like the first: only in your Keychain, sent only to the provider, and deleted when you remove the account or turn the provider off. Each account gets its own section in the menu bar window, its own row in the widget, and its own limit notifications, named after the provider and a label you choose — "Codex · Work". UsageNow never reads an account's own name or email, and Report a Problem numbers accounts instead of naming them. An added Claude Code account shows the limits Claude Code records reaching; the experimental limits source reads only the default sign-in.
+- **Qwen Code.** Today's tokens, answers, and models, and what they would have cost, from the session recordings Qwen Code writes on your Mac. Only each answer's identifier, time, model, and token counts are decoded — never the messages — and Qwen Code's sign-in is never opened. Not yet verified against a live install.
+- **Cline.** Today's tokens, API requests, and models, with the cost Cline recorded for them, from the tasks the extension saves in VS Code, Cursor, Windsurf, Kiro, VSCodium, or Trae, and the sessions the Cline CLI saves. Only the numbers, the model, and the time are read; prompts, replies, and Cline's keys never are.
+- **Grok Build.** Today's tokens, model calls, and models, with the cost xAI reported, from the session logs Grok Build writes on your Mac. Only finished turns' numbers, models, and times are decoded. Not yet verified against a live install.
+- **The last two weeks in the widget.** A provider without limits to show — Gemini CLI, Warp, OpenCode, Qoder, and the three new ones — gets a small chart of its last 14 days in the medium widget's rows, today's bar highlighted. The widget receives only the shape — each day as a share of the busiest — never amounts. It follows **Settings › General › Show the last 30 days**.
+- **UsageNow in German, Spanish, French, and Russian.** The app and the widget follow your Mac's language; choose another for UsageNow alone in **System Settings › General › Language & Region › Applications**. Counts use each language's plural forms, and the widget uses short units so longer words still fit.
+- **What's New** in **Settings › About**: every version's changes, newest first, with the installed one marked. The list ships inside the app, so it opens offline and matches your version.
+
+### Changed
+
+- **Cost for Cline and Grok Build is the tool's own.** Both record what each request cost at the prices of the provider you ran them with; UsageNow shows that figure, and estimates only a request they recorded no cost for.
+- **Cursor and GitHub Copilot** are what's left under **Coming soon**.
+
 ## 0.6.1
 
 ### Added
