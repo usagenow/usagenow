@@ -602,6 +602,56 @@ T: dict[str, tuple[str, str, str, str]] = {
     "requests.few": ("запроса", "Anfragen", "solicitudes", "requêtes"),
     "requests.many": ("запросов", "Anfragen", "solicitudes", "requêtes"),
     "requests.other": ("запроса", "Anfragen", "solicitudes", "requêtes"),
+    # What's New window. The changelog itself stays in English.
+    "What’s New": ("Что нового", "Neuigkeiten", "Novedades", "Nouveautés"),
+    "What’s New…": ("Что нового…", "Neuigkeiten …", "Novedades…", "Nouveautés…"),
+    "Version %@": ("Версия %@", "Version %@", "Versión %@", "Version %@"),
+    "Installed": ("Установлена", "Installiert", "Instalada", "Installée"),
+    "Added": ("Добавлено", "Neu", "Añadido", "Ajouts"),
+    "Changed": ("Изменено", "Geändert", "Cambios", "Modifications"),
+    "Fixed": ("Исправлено", "Behoben", "Correcciones", "Corrections"),
+    "Removed": ("Удалено", "Entfernt", "Eliminado", "Suppressions"),
+    "The list of changes isn’t included in this build.": (
+        "В эту сборку не входит список изменений.",
+        "Die Liste der Änderungen ist in diesem Build nicht enthalten.",
+        "La lista de cambios no está incluida en esta compilación.",
+        "La liste des modifications n’est pas incluse dans cette version.",
+    ),
+    "View on GitHub": ("Открыть на GitHub", "Auf GitHub ansehen", "Ver en GitHub", "Voir sur GitHub"),
+    # Added accounts.
+    "Add %@ Account": ("Добавить аккаунт %@", "%@-Account hinzufügen", "Añadir cuenta de %@", "Ajouter un compte %@"),
+    "Add Account": ("Добавить", "Hinzufügen", "Añadir", "Ajouter"),
+    "Add Account…": ("Добавить аккаунт…", "Account hinzufügen …", "Añadir cuenta…", "Ajouter un compte…"),
+    "Another %@ account already has this name.": (
+        "Это имя уже есть у другого аккаунта %@.",
+        "Ein anderer %@-Account hat schon diesen Namen.",
+        "Otra cuenta de %@ ya tiene este nombre.",
+        "Un autre compte %@ porte déjà ce nom.",
+    ),
+    "Choose": ("Выбрать", "Auswählen", "Elegir", "Choisir"),
+    "Choose…": ("Выбрать…", "Auswählen …", "Elegir…", "Choisir…"),
+    "Name": ("Имя", "Name", "Nombre", "Nom"),
+    "No folder chosen": ("Папка не выбрана", "Kein Ordner ausgewählt", "Ninguna carpeta elegida", "Aucun dossier choisi"),
+    "Replace Key…": ("Заменить ключ…", "Schlüssel ersetzen …", "Reemplazar clave…", "Remplacer la clé…"),
+    "Shown after %@ in the menu bar window and the widget. UsageNow never reads the account’s own name or email.": (
+        "Показывается после %@ в окне UsageNow и в виджете. Имя и email самого аккаунта UsageNow не читает.",
+        "Wird im UsageNow-Fenster und im Widget nach %@ angezeigt. UsageNow liest nie den Namen oder die E-Mail-Adresse des Accounts.",
+        "Se muestra después de %@ en la ventana de UsageNow y en el widget. UsageNow nunca lee el nombre ni el correo de la cuenta.",
+        "Affiché après %@ dans la fenêtre UsageNow et le widget. UsageNow ne lit jamais le nom ni l’adresse e-mail du compte.",
+    ),
+    "The folder %@ uses when %@ is set to it. Only usage is read from it, as from %@.": (
+        "Папка, с которой %1$@ работает, когда в неё указывает %2$@. Из неё читается только использование, как из %3$@.",
+        "Der Ordner, den %1$@ verwendet, wenn %2$@ darauf gesetzt ist. Daraus wird nur die Nutzung gelesen, wie aus %3$@.",
+        "La carpeta que usa %1$@ cuando %2$@ apunta a ella. Solo se lee el uso, como de %3$@.",
+        "Le dossier qu’utilise %1$@ quand %2$@ pointe vers lui. Seule l’utilisation y est lue, comme dans %3$@.",
+    ),
+    "UsageNow already reads this folder as the first %@ account.": (
+        "UsageNow уже читает эту папку как первый аккаунт %@.",
+        "UsageNow liest diesen Ordner schon als ersten %@-Account.",
+        "UsageNow ya lee esta carpeta como la primera cuenta de %@.",
+        "UsageNow lit déjà ce dossier comme premier compte %@.",
+    ),
+    "Work": ("Работа", "Arbeit", "Trabajo", "Travail"),
 }
 
 # A word whose form follows a number shown apart from it is one string per

@@ -1161,6 +1161,34 @@
         }
       }
     },
+    "Add %@ Account" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить аккаунт %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@-Account hinzufügen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir cuenta de %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter un compte %@"
+          }
+        }
+      }
+    },
     "Add API Key…" : {
       "localizations" : {
         "de" : {
@@ -1185,6 +1213,90 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Добавить ключ API…"
+          }
+        }
+      }
+    },
+    "Add Account" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hinzufügen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter"
+          }
+        }
+      }
+    },
+    "Add Account…" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить аккаунт…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account hinzufügen …"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir cuenta…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter un compte…"
+          }
+        }
+      }
+    },
+    "Added" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neu"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadido"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouts"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавлено"
           }
         }
       }
@@ -1241,6 +1353,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Разрешите UsageNow доступ к входу Claude Code в Связке ключей."
+          }
+        }
+      }
+    },
+    "Another %@ account already has this name." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Это имя уже есть у другого аккаунта %@."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein anderer %@-Account hat schon diesen Namen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otra cuenta de %@ ya tiene este nombre."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un autre compte %@ porte déjà ce nom."
           }
         }
       }
@@ -1441,6 +1581,34 @@
         }
       }
     },
+    "Changed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geändert"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambios"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifications"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Изменено"
+          }
+        }
+      }
+    },
     "Check Now" : {
       "localizations" : {
         "de" : {
@@ -1525,6 +1693,34 @@
         }
       }
     },
+    "Choose" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auswählen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elegir"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir"
+          }
+        }
+      }
+    },
     "Choose a provider in Settings to start tracking usage." : {
       "localizations" : {
         "de" : {
@@ -1577,6 +1773,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выберите сервисы, которые UsageNow показывает и отслеживает, и перетащите их в нужном порядке."
+          }
+        }
+      }
+    },
+    "Choose…" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auswählen …"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elegir…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir…"
           }
         }
       }
@@ -2141,6 +2365,34 @@
         }
       }
     },
+    "Fixed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behoben"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Correcciones"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrections"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Исправлено"
+          }
+        }
+      }
+    },
     "Gemini CLI usage" : {
       "localizations" : {
         "de" : {
@@ -2305,6 +2557,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Установите или запустите поддерживаемый инструмент ИИ для программирования, чтобы начать отслеживание."
+          }
+        }
+      }
+    },
+    "Installed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Installiert"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instalada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Installée"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Установлена"
           }
         }
       }
@@ -2758,6 +3038,34 @@
         }
       }
     },
+    "Name" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Имя"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom"
+          }
+        }
+      }
+    },
     "Nearly exhausted" : {
       "localizations" : {
         "de" : {
@@ -2894,6 +3202,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Нет активности"
+          }
+        }
+      }
+    },
+    "No folder chosen" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Папка не выбрана"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Ordner ausgewählt"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ninguna carpeta elegida"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun dossier choisi"
           }
         }
       }
@@ -3794,6 +4130,62 @@
         }
       }
     },
+    "Removed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entfernt"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suppressions"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалено"
+          }
+        }
+      }
+    },
+    "Replace Key…" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заменить ключ…"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schlüssel ersetzen …"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reemplazar clave…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remplacer la clé…"
+          }
+        }
+      }
+    },
     "Replace…" : {
       "localizations" : {
         "de" : {
@@ -4215,6 +4607,34 @@
         }
       }
     },
+    "Shown after %@ in the menu bar window and the widget. UsageNow never reads the account’s own name or email." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показывается после %@ в окне UsageNow и в виджете. Имя и email самого аккаунта UsageNow не читает."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wird im UsageNow-Fenster und im Widget nach %@ angezeigt. UsageNow liest nie den Namen oder die E-Mail-Adresse des Accounts."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se muestra después de %@ en la ventana de UsageNow y en el widget. UsageNow nunca lee el nombre ni el correo de la cuenta."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Affiché après %@ dans la fenêtre UsageNow et le widget. UsageNow ne lit jamais le nom ni l’adresse e-mail du compte."
+          }
+        }
+      }
+    },
     "Shows the icon alone when no usage limit is available." : {
       "localizations" : {
         "de" : {
@@ -4355,6 +4775,40 @@
         }
       }
     },
+    "The folder %@ uses when %@ is set to it. Only usage is read from it, as from %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The folder %1$@ uses when %2$@ is set to it. Only usage is read from it, as from %3$@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Папка, с которой %1$@ работает, когда в неё указывает %2$@. Из неё читается только использование, как из %3$@."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Ordner, den %1$@ verwendet, wenn %2$@ darauf gesetzt ist. Daraus wird nur die Nutzung gelesen, wie aus %3$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La carpeta que usa %1$@ cuando %2$@ apunta a ella. Solo se lee el uso, como de %3$@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le dossier qu’utilise %1$@ quand %2$@ pointe vers lui. Seule l’utilisation y est lue, comme dans %3$@."
+          }
+        }
+      }
+    },
     "The full limit is available again." : {
       "localizations" : {
         "de" : {
@@ -4407,6 +4861,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Не удалось сохранить ключ в Связке ключей."
+          }
+        }
+      }
+    },
+    "The list of changes isn’t included in this build." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Liste der Änderungen ist in diesem Build nicht enthalten."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La lista de cambios no está incluida en esta compilación."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La liste des modifications n’est pas incluse dans cette version."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В эту сборку не входит список изменений."
           }
         }
       }
@@ -5139,6 +5621,34 @@
         }
       }
     },
+    "UsageNow already reads this folder as the first %@ account." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow уже читает эту папку как первый аккаунт %@."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow liest diesen Ordner schon als ersten %@-Account."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow ya lee esta carpeta como la primera cuenta de %@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow lit déjà ce dossier comme premier compte %@."
+          }
+        }
+      }
+    },
     "UsageNow also checks for new usage when you open it." : {
       "localizations" : {
         "de" : {
@@ -5313,6 +5823,34 @@
         }
       }
     },
+    "Version %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versión %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Версия %@"
+          }
+        }
+      }
+    },
     "Version %@ (%@)" : {
       "localizations" : {
         "de" : {
@@ -5343,6 +5881,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Версия %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "View on GitHub" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auf GitHub ansehen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver en GitHub"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voir sur GitHub"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открыть на GitHub"
           }
         }
       }
@@ -5487,6 +6053,62 @@
         }
       }
     },
+    "What’s New" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neuigkeiten"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Novedades"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouveautés"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Что нового"
+          }
+        }
+      }
+    },
+    "What’s New…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neuigkeiten …"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Novedades…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouveautés…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Что нового…"
+          }
+        }
+      }
+    },
     "What’s left of your AI coding limits, at a glance." : {
       "localizations" : {
         "de" : {
@@ -5539,6 +6161,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Когда остаётся 20% и 5% лимита, и когда лимит, о котором вы были предупреждены, обновится."
+          }
+        }
+      }
+    },
+    "Work" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Работа"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arbeit"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trabajo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Travail"
           }
         }
       }
@@ -5944,22 +6594,16 @@
       "comment" : "Follows a remaining percentage where space is tight, e.g. 58% left; abbreviate if needed",
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "left"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ост."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "übrig"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "left"
           }
         },
         "es" : {
@@ -5973,6 +6617,12 @@
             "state" : "translated",
             "value" : "rest."
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ост."
+          }
         }
       }
     },
@@ -5980,22 +6630,16 @@
       "comment" : "Follows a used percentage where space is tight, e.g. 42% used; abbreviate if needed",
       "extractionState" : "extracted_with_value",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "used"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "исп."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "verbr."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "used"
           }
         },
         "es" : {
@@ -6008,6 +6652,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "util."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "исп."
           }
         }
       }
