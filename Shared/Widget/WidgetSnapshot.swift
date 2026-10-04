@@ -27,6 +27,9 @@ struct WidgetSnapshot: Codable, Sendable, Equatable {
     /// Whether limits read as left or used. Optional so a snapshot written
     /// before the choice existed still reads, as "left".
     var usageAmountStyle: UsageAmountStyle? = nil
+    /// The language chosen in UsageNow, e.g. "ru"; `nil` follows macOS.
+    /// The widget is its own process and doesn't share the app's setting.
+    var language: String? = nil
 
     var providers: [WidgetProviderSnapshot] {
         if case .providers(let providers) = state { return providers }

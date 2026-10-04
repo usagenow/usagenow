@@ -17,7 +17,26 @@ final class AppPreferences {
         static let fetchClaudeUsageLimits = "experimental.fetchClaudeUsageLimits"
         static let notifiesAboutLimits = "notifiesAboutLimits"
         static let popoverShortcut = "popoverShortcut"
+        /// macOS's own per-app language list, the one System Settings writes.
+        static let appleLanguages = "AppleLanguages"
     }
+
+    /// The language UsageNow uses from its next launch. Stored where macOS
+    /// keeps a per-app language, so System Settings and this choice agree.
+    var language: AppLanguage {
+        didSet {
+            guard language != oldValue else { return }
+            if let code = language.code {
+                defaults.set([code], forKey: Key.appleLanguages)
+            } else {
+                defaults.removeObject(forKey: Key.appleLanguages)
+            }
+        }
+    }
+
+    /// The language this launch is running in; differs from `language`
+    /// until UsageNow restarts.
+    @ObservationIgnored let languageAtLaunch: AppLanguage
 
     var appearance: AppAppearance {
         didSet { defaults.set(appearance.rawValue, forKey: Key.appearance) }
@@ -60,8 +79,14 @@ final class AppPreferences {
 
     @ObservationIgnored private let defaults: UserDefaults
 
-    init(defaults: UserDefaults = .standard) {
+    /// - Parameter languageDomain: The defaults domain holding the per-app
+    ///   language: UsageNow's own, or a test suite's name. Reading the key
+    ///   through `defaults` would also find the system-wide list.
+    init(defaults: UserDefaults = .standard, languageDomain: String? = Bundle.main.bundleIdentifier) {
         self.defaults = defaults
+        let stored = languageDomain.flatMap { defaults.persistentDomain(forName: $0)?[Key.appleLanguages] as? [String] }
+        language = AppLanguage(preferredLanguages: stored)
+        languageAtLaunch = AppLanguage(preferredLanguages: stored)
         appearance = defaults.string(forKey: Key.appearance).flatMap(AppAppearance.init(rawValue:)) ?? .default
         usageAmountStyle = defaults.string(forKey: Key.usageAmountStyle).flatMap(UsageAmountStyle.init(rawValue:)) ?? .default
         showsActivityHistory = defaults.object(forKey: Key.showsActivityHistory) as? Bool ?? true

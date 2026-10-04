@@ -182,6 +182,7 @@ final class AppState {
         observe({ [store] in _ = store.states }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.usageAmountStyle }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.showsActivityHistory }, apply: { [weak self] in self?.storeDidChange() })
+        observe({ [preferences] in _ = preferences.language }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.notifiesAboutLimits }, apply: { [weak self] in self?.applyLimitNotifications() })
         observe({ [preferences] in _ = preferences.popoverShortcut }, apply: { [weak self] in self?.applyPopoverShortcut() })
         observe({ [analyticsPreferences] in _ = analyticsPreferences.isSharingEnabled }, apply: { [weak self] in self?.analyticsSharingChanged() })
@@ -323,7 +324,8 @@ final class AppState {
             states: store.states,
             enabledProviders: store.enabledProviders,
             style: preferences.usageAmountStyle,
-            includesRecentDays: preferences.showsActivityHistory
+            includesRecentDays: preferences.showsActivityHistory,
+            language: preferences.language
         )
         notifyAboutLimits()
     }

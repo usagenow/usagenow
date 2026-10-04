@@ -22,6 +22,7 @@ enum DiagnosticReport {
         var screens: [String] = DiagnosticReport.screenDescriptions()
         var menuBarManagers: [String] = DiagnosticReport.runningMenuBarManagers()
         var homeDirectory = NSHomeDirectory()
+        var runningLanguage = Bundle.main.preferredLocalizations.first ?? "unknown"
     }
 
     struct Settings: Sendable {
@@ -33,6 +34,7 @@ enum DiagnosticReport {
         var fetchClaudeUsageLimits: Bool
         var notifiesAboutLimits = false
         var hasPopoverShortcut = false
+        var language = "system"
     }
 
     @MainActor
@@ -54,7 +56,7 @@ enum DiagnosticReport {
             "Settings: appearance \(settings.appearance), limits as \(settings.usageAmountStyle), "
                 + "30-day charts \(settings.showsActivityHistory ? "on" : "off"), refresh \(settings.refreshInterval), "
                 + "menu bar \(settings.menuBarDisplayMode), Claude limits (experimental) \(settings.fetchClaudeUsageLimits ? "on" : "off"), "
-                + "limit notifications \(settings.notifiesAboutLimits ? "on" : "off"), global shortcut \(settings.hasPopoverShortcut ? "set" : "not set")"
+                + "limit notifications \(settings.notifiesAboutLimits ? "on" : "off"), global shortcut \(settings.hasPopoverShortcut ? "set" : "not set"), language \(settings.language) (running in \(environment.runningLanguage))"
         )
         lines.append("")
         lines.append("Providers, in popover order:")

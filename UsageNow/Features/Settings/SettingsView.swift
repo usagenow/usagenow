@@ -79,7 +79,8 @@ struct SettingsView: View {
                 menuBarDisplayMode: preferences.menuBarDisplayMode.rawValue,
                 fetchClaudeUsageLimits: preferences.fetchClaudeUsageLimits,
                 notifiesAboutLimits: preferences.notifiesAboutLimits,
-                hasPopoverShortcut: preferences.popoverShortcut != nil
+                hasPopoverShortcut: preferences.popoverShortcut != nil,
+                language: preferences.language.rawValue
             )
         )
     }
@@ -152,6 +153,26 @@ struct GeneralSettingsView: View {
                     }
                 }
                 .pickerStyle(.segmented)
+            }
+
+            Section {
+                Picker("Language", selection: $preferences.language) {
+                    Text("System").tag(AppLanguage.system)
+                    Divider()
+                    ForEach(AppLanguage.allCases.filter { $0 != .system }) { language in
+                        Text(verbatim: language.nativeName ?? language.rawValue).tag(language)
+                    }
+                }
+                if preferences.language != preferences.languageAtLaunch {
+                    HStack {
+                        Text("UsageNow switches language when it restarts.")
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                        Spacer(minLength: 8)
+                        Button("Restart Now") { AppRelauncher.relaunch() }
+                            .controlSize(.small)
+                    }
+                }
             }
 
             Section {

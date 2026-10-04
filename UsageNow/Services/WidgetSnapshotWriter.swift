@@ -27,11 +27,20 @@ final class WidgetSnapshotWriter {
 
     /// Writes the snapshot, and reloads widget timelines only when what the
     /// widget would show actually changed.
-    func update(states: [ProviderState], enabledProviders: Set<ProviderID>, style: UsageAmountStyle = .default, includesRecentDays: Bool = true) {
+    func update(
+        states: [ProviderState],
+        enabledProviders: Set<ProviderID>,
+        style: UsageAmountStyle = .default,
+        includesRecentDays: Bool = true,
+        language: AppLanguage = .system
+    ) {
         guard let store else { return }
         var snapshot = Self.makeSnapshot(states: states, enabledProviders: enabledProviders, generatedAt: now(), includesRecentDays: includesRecentDays)
         snapshot.usageAmountStyle = style
-        guard snapshot.state != lastWritten?.state || snapshot.usageAmountStyle != lastWritten?.usageAmountStyle else { return }
+        snapshot.language = language.code
+        guard snapshot.state != lastWritten?.state
+            || snapshot.usageAmountStyle != lastWritten?.usageAmountStyle
+            || snapshot.language != lastWritten?.language else { return }
 
         do {
             try store.write(snapshot)

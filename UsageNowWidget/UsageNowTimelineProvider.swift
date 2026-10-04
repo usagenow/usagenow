@@ -20,7 +20,23 @@ struct UsageNowTimelineProvider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping (Timeline<UsageNowWidgetEntry>) -> Void) {
         let date = now()
         let snapshot = store?.read()
+        Self.adoptLanguage(of: snapshot)
         let entry = UsageNowWidgetEntry(date: date, snapshot: snapshot)
         completion(Timeline(entries: [entry], policy: .after(WidgetRefreshSchedule.next(after: date, snapshot: snapshot))))
+    }
+
+    /// The view follows the app's language at once through its locale;
+    /// text built outside views follows the widget's own language list,
+    /// which macOS reads when the widget next starts. Keep it matching.
+    private static func adoptLanguage(of snapshot: WidgetSnapshot?) {
+        guard let snapshot else { return }
+        let defaults = UserDefaults.standard
+        if let code = snapshot.language {
+            if (defaults.persistentDomain(forName: Bundle.main.bundleIdentifier ?? "")?["AppleLanguages"] as? [String])?.first != code {
+                defaults.set([code], forKey: "AppleLanguages")
+            }
+        } else {
+            defaults.removeObject(forKey: "AppleLanguages")
+        }
     }
 }

@@ -21,6 +21,7 @@ struct UsageNowWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: Self.kind, provider: UsageNowTimelineProvider()) { entry in
             UsageNowWidgetEntryView(entry: entry)
+                .environment(\.locale, AppLanguage(rawValue: entry.snapshot?.language ?? "")?.locale ?? .autoupdatingCurrent)
         }
         .configurationDisplayName(Text(verbatim: AppInfo.name))
         .description(Text("What’s left of your AI coding limits, at a glance."))

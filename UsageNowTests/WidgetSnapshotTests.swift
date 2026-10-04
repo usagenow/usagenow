@@ -331,7 +331,7 @@ struct WidgetSnapshotStoreTests {
         var keys = Set<String>()
         collectKeys(json, into: &keys)
         let allowed: Set<String> = [
-            "schemaVersion", "generatedAt", "state", "usageAmountStyle", "providers", "_0",
+            "schemaVersion", "generatedAt", "state", "usageAmountStyle", "language", "providers", "_0",
             "provider", "accountName", "planName", "modelName", "windows", "tokensToday", "requestsToday", "creditsToday",
             "quotaUnavailableReason", "kind", "scope", "usage", "resetsAt", "recentDays",
         ]
