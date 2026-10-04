@@ -334,6 +334,7 @@ struct ReportDraft: Identifiable {
 struct AboutSettingsView: View {
     var makeReport: () -> String = { "" }
 
+    @State private var isShowingChangelog = false
     @State private var isShowingLicenses = false
     @State private var report: ReportDraft?
 
@@ -363,6 +364,7 @@ struct AboutSettingsView: View {
             .font(.callout)
 
             HStack(spacing: 10) {
+                Button("What’s New…") { isShowingChangelog = true }
                 Button("Open Source Licenses…") { isShowingLicenses = true }
                 Button("Report a Problem…") { report = ReportDraft(text: makeReport()) }
             }
@@ -371,6 +373,9 @@ struct AboutSettingsView: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 28)
         .padding(.horizontal, 24)
+        .sheet(isPresented: $isShowingChangelog) {
+            ChangelogView()
+        }
         .sheet(isPresented: $isShowingLicenses) {
             LicensesView()
         }
