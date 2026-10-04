@@ -1,17 +1,43 @@
 import AppKit
 import SwiftUI
 
-enum SettingsTab: Hashable, Sendable {
+enum SettingsTab: Hashable, Sendable, CaseIterable {
     case general
     case providers
     case menuBar
     case notifications
     case privacy
     case about
+
+    /// The tab's title in the toolbar, as the language UsageNow runs in has it.
+    var title: String {
+        switch self {
+        case .general: String(localized: "General")
+        case .providers: String(localized: "Providers")
+        case .menuBar: String(localized: "Menu Bar")
+        case .notifications: String(localized: "Notifications")
+        case .privacy: String(localized: "Privacy")
+        case .about: String(localized: "About")
+        }
+    }
 }
 
 struct SettingsView: View {
-    static let width: CGFloat = 480
+    /// Wide enough for every tab's title in the toolbar. When they don't
+    /// fit, macOS moves the last tabs into an overflow menu, where Settings
+    /// tabs can't be chosen — Russian, French, and Spanish titles are longer
+    /// than 480 points allow.
+    static let width: CGFloat = toolbarWidth(for: SettingsTab.allCases.map(\.title))
+
+    /// The narrowest width that fits these toolbar titles, and never less
+    /// than 480.
+    static func toolbarWidth(for titles: [String]) -> CGFloat {
+        let font = NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)
+        // Each toolbar item pads its title and is never narrower than its
+        // icon; the window keeps a margin on each side for the items.
+        let items = titles.map { max(($0 as NSString).size(withAttributes: [.font: font]).width + 16, 52) }
+        return max(480, (items.reduce(0, +) + 80).rounded(.up))
+    }
 
     let preferences: AppPreferences
     let providerPreferences: ProviderPreferences

@@ -43,3 +43,15 @@ struct AppLanguageTests {
         #expect(store.read()?.language == nil)
     }
 }
+
+@MainActor
+struct SettingsWidthTests {
+    /// The toolbar's titles must fit, or macOS hides the last tabs in an
+    /// overflow menu where they can't be chosen.
+    @Test func settingsWidenForLongerTabTitles() {
+        let english = ["General", "Providers", "Menu Bar", "Notifications", "Privacy", "About"]
+        let russian = ["Основные", "Провайдеры", "Строка меню", "Уведомления", "Конфиденциальность", "О программе"]
+        #expect(SettingsView.toolbarWidth(for: english) == 480)
+        #expect(SettingsView.toolbarWidth(for: russian) > 600)
+    }
+}
