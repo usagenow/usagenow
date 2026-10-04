@@ -2,6 +2,12 @@
 
 All notable changes to UsageNow. This project follows [Semantic Versioning](https://semver.org).
 
+## 0.7.2
+
+### Fixed
+
+- **Privacy and About couldn't be opened in Russian, French, or Spanish.** Their tab titles didn't fit the Settings window, so macOS moved the last tabs into an overflow menu where they couldn't be chosen. The window now widens to fit every tab's title in the language UsageNow runs in.
+
 ## 0.7.1
 
 ### Added
