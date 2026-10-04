@@ -652,6 +652,26 @@ T: dict[str, tuple[str, str, str, str]] = {
         "UsageNow lit déjà ce dossier comme premier compte %@.",
     ),
     "Work": ("Работа", "Arbeit", "Trabajo", "Travail"),
+    # Language.
+    "Language": ("Язык", "Sprache", "Idioma", "Langue"),
+    "Restart Now": ("Перезапустить", "Jetzt neu starten", "Reiniciar ahora", "Redémarrer"),
+    "UsageNow switches language when it restarts.": (
+        "UsageNow сменит язык после перезапуска.",
+        "UsageNow wechselt die Sprache beim Neustart.",
+        "UsageNow cambiará de idioma al reiniciarse.",
+        "UsageNow changera de langue au redémarrage.",
+    ),
+    "Actions for %@": ("Действия с аккаунтом %@", "Aktionen für %@", "Acciones de %@", "Actions pour %@"),
+    "Folder not found": ("Папка не найдена", "Ordner nicht gefunden", "Carpeta no encontrada", "Dossier introuvable"),
+    "No sign-in or sessions in this account’s folder. Check it in Settings › Providers.": (
+        "В папке этого аккаунта нет ни входа, ни сессий. Проверьте её в Настройки › Провайдеры.",
+        "Im Ordner dieses Accounts gibt es weder Anmeldung noch Sitzungen. Prüfe ihn unter Einstellungen › Anbieter.",
+        "La carpeta de esta cuenta no tiene inicio de sesión ni sesiones. Revísala en Ajustes › Proveedores.",
+        "Le dossier de ce compte ne contient ni connexion ni sessions. Vérifiez-le dans Réglages › Fournisseurs.",
+    ),
+    "Rename": ("Переименовать", "Umbenennen", "Renombrar", "Renommer"),
+    "Rename %@": ("Переименовать %@", "%@ umbenennen", "Renombrar %@", "Renommer %@"),
+    "Rename…": ("Переименовать…", "Umbenennen …", "Renombrar…", "Renommer…"),
 }
 
 # A word whose form follows a number shown apart from it is one string per

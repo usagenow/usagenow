@@ -1105,6 +1105,34 @@
         }
       }
     },
+    "Actions for %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Действия с аккаунтом %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktionen für %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acciones de %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actions pour %@"
+          }
+        }
+      }
+    },
     "Activity, last 14 days" : {
       "localizations" : {
         "de" : {
@@ -1163,12 +1191,6 @@
     },
     "Add %@ Account" : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Добавить аккаунт %@"
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1185,6 +1207,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ajouter un compte %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить аккаунт %@"
           }
         }
       }
@@ -1219,12 +1247,6 @@
     },
     "Add Account" : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Добавить"
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1242,17 +1264,17 @@
             "state" : "translated",
             "value" : "Ajouter"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить"
+          }
         }
       }
     },
     "Add Account…" : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Добавить аккаунт…"
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1269,6 +1291,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ajouter un compte…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить аккаунт…"
           }
         }
       }
@@ -1359,12 +1387,6 @@
     },
     "Another %@ account already has this name." : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Это имя уже есть у другого аккаунта %@."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1381,6 +1403,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Un autre compte %@ porte déjà ce nom."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Это имя уже есть у другого аккаунта %@."
           }
         }
       }
@@ -1695,12 +1723,6 @@
     },
     "Choose" : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Выбрать"
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1717,6 +1739,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Choisir"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать"
           }
         }
       }
@@ -1779,12 +1807,6 @@
     },
     "Choose…" : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Выбрать…"
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1801,6 +1823,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Choisir…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать…"
           }
         }
       }
@@ -2393,6 +2421,34 @@
         }
       }
     },
+    "Folder not found" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Папка не найдена"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner nicht gefunden"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carpeta no encontrada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dossier introuvable"
+          }
+        }
+      }
+    },
     "Gemini CLI usage" : {
       "localizations" : {
         "de" : {
@@ -2669,6 +2725,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Использование Kiro"
+          }
+        }
+      }
+    },
+    "Language" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprache"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idioma"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Langue"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Язык"
           }
         }
       }
@@ -3040,12 +3124,6 @@
     },
     "Name" : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Имя"
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3062,6 +3140,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nom"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Имя"
           }
         }
       }
@@ -3208,12 +3292,6 @@
     },
     "No folder chosen" : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Папка не выбрана"
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3230,6 +3308,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucun dossier choisi"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Папка не выбрана"
           }
         }
       }
@@ -3286,6 +3370,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Провайдеры не включены"
+          }
+        }
+      }
+    },
+    "No sign-in or sessions in this account’s folder. Check it in Settings › Providers." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Im Ordner dieses Accounts gibt es weder Anmeldung noch Sitzungen. Prüfe ihn unter Einstellungen › Anbieter."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La carpeta de esta cuenta no tiene inicio de sesión ni sesiones. Revísala en Ajustes › Proveedores."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le dossier de ce compte ne contient ni connexion ni sessions. Vérifiez-le dans Réglages › Fournisseurs."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В папке этого аккаунта нет ни входа, ни сессий. Проверьте её в Настройки › Провайдеры."
           }
         }
       }
@@ -4158,14 +4270,92 @@
         }
       }
     },
-    "Replace Key…" : {
+    "Rename" : {
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umbenennen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Renombrar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Renommer"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Заменить ключ…"
+            "value" : "Переименовать"
+          }
+        }
+      }
+    },
+    "Rename %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ umbenennen"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Renombrar %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Renommer %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Переименовать %@"
+          }
+        }
+      }
+    },
+    "Rename…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umbenennen …"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Renombrar…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Renommer…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Переименовать…"
+          }
+        }
+      }
+    },
+    "Replace Key…" : {
+      "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4182,6 +4372,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Remplacer la clé…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заменить ключ…"
           }
         }
       }
@@ -4411,6 +4607,34 @@
         }
       }
     },
+    "Restart Now" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jetzt neu starten"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reiniciar ahora"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redémarrer"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перезапустить"
+          }
+        }
+      }
+    },
     "Retry" : {
       "localizations" : {
         "de" : {
@@ -4609,12 +4833,6 @@
     },
     "Shown after %@ in the menu bar window and the widget. UsageNow never reads the account’s own name or email." : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Показывается после %@ в окне UsageNow и в виджете. Имя и email самого аккаунта UsageNow не читает."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4631,6 +4849,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Affiché après %@ dans la fenêtre UsageNow et le widget. UsageNow ne lit jamais le nom ni l’adresse e-mail du compte."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показывается после %@ в окне UsageNow и в виджете. Имя и email самого аккаунта UsageNow не читает."
           }
         }
       }
@@ -4777,22 +5001,16 @@
     },
     "The folder %@ uses when %@ is set to it. Only usage is read from it, as from %@." : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "The folder %1$@ uses when %2$@ is set to it. Only usage is read from it, as from %3$@."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Папка, с которой %1$@ работает, когда в неё указывает %2$@. Из неё читается только использование, как из %3$@."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Der Ordner, den %1$@ verwendet, wenn %2$@ darauf gesetzt ist. Daraus wird nur die Nutzung gelesen, wie aus %3$@."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "The folder %1$@ uses when %2$@ is set to it. Only usage is read from it, as from %3$@."
           }
         },
         "es" : {
@@ -4805,6 +5023,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le dossier qu’utilise %1$@ quand %2$@ pointe vers lui. Seule l’utilisation y est lue, comme dans %3$@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Папка, с которой %1$@ работает, когда в неё указывает %2$@. Из неё читается только использование, как из %3$@."
           }
         }
       }
@@ -5623,12 +5847,6 @@
     },
     "UsageNow already reads this folder as the first %@ account." : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "UsageNow уже читает эту папку как первый аккаунт %@."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5645,6 +5863,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "UsageNow lit déjà ce dossier comme premier compte %@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow уже читает эту папку как первый аккаунт %@."
           }
         }
       }
@@ -5757,6 +5981,34 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "UsageNow работает локально. Ваши данные об использовании остаются на этом Mac."
+          }
+        }
+      }
+    },
+    "UsageNow switches language when it restarts." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow wechselt die Sprache beim Neustart."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow cambiará de idioma al reiniciarse."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow changera de langue au redémarrage."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow сменит язык после перезапуска."
           }
         }
       }
@@ -6167,12 +6419,6 @@
     },
     "Work" : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Работа"
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6189,6 +6435,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Travail"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Работа"
           }
         }
       }
