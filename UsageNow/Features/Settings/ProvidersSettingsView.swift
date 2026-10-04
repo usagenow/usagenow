@@ -24,6 +24,7 @@ struct ProvidersSettingsView: View {
 
     @State private var editingKey: KeyTarget?
     @State private var addingAccountFor: ProviderDefinition?
+    @State private var renamingAccount: ProviderAccount?
 
     /// Tall enough for most of the list, short enough for a 13-inch screen
     /// with room for the window's title and tabs.
@@ -80,6 +81,14 @@ struct ProvidersSettingsView: View {
                 keyRevision += 1
             }
         }
+        .sheet(item: $renamingAccount) { account in
+            RenameAccountSheet(
+                account: account,
+                otherNames: preferences.accounts(for: account.provider).filter { $0.id != account.id }.map(\.name)
+            ) { name in
+                preferences.renameAccount(id: account.id, to: name)
+            }
+        }
         .sheet(item: $addingAccountFor) { definition in
             if let kind = ProviderAccount.kind(for: definition.id) {
                 AddAccountSheet(
@@ -120,6 +129,7 @@ struct ProvidersSettingsView: View {
                     keyRevision: keyRevision,
                     onAdd: { addingAccountFor = definition },
                     onReplaceKey: { editingKey = KeyTarget(definition: definition, account: $0) },
+                    onRename: { renamingAccount = $0 },
                     onRemove: { account in
                         withAnimation(.snappy) { removeAccount(account) }
                         keyRevision += 1

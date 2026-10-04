@@ -12,6 +12,7 @@ struct ProviderAccountsView: View {
     let keyRevision: Int
     let onAdd: () -> Void
     let onReplaceKey: (ProviderAccount) -> Void
+    let onRename: (ProviderAccount) -> Void
     let onRemove: (ProviderAccount) -> Void
 
     var body: some View {
@@ -28,12 +29,28 @@ struct ProviderAccountsView: View {
                             .foregroundStyle(.secondary)
                             .lineLimit(1)
                             .truncationMode(.middle)
+                        if isFolderMissing(account) {
+                            Text("Folder not found")
+                                .font(.caption)
+                                .foregroundStyle(.orange)
+                        }
                     }
                     Spacer(minLength: 8)
-                    if kind == .apiKey {
-                        Button("Replace Key…") { onReplaceKey(account) }
+                    // One menu, so the row fits in every language.
+                    Menu {
+                        Button("Rename…") { onRename(account) }
+                        if kind == .apiKey {
+                            Button("Replace Key…") { onReplaceKey(account) }
+                        }
+                        Divider()
+                        Button("Remove", role: .destructive) { onRemove(account) }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
                     }
-                    Button("Remove") { onRemove(account) }
+                    .menuStyle(.borderlessButton)
+                    .menuIndicator(.hidden)
+                    .fixedSize()
+                    .accessibilityLabel(Text("Actions for \(account.name)"))
                 }
                 .accessibilityElement(children: .contain)
             }
@@ -45,6 +62,13 @@ struct ProviderAccountsView: View {
         .font(.callout)
         .controlSize(.small)
         .padding(.leading, 60)
+    }
+
+    /// The folder was moved or deleted since it was chosen.
+    private func isFolderMissing(_ account: ProviderAccount) -> Bool {
+        guard kind != .apiKey, let folder = account.folder else { return false }
+        var isDirectory: ObjCBool = false
+        return !(FileManager.default.fileExists(atPath: folder, isDirectory: &isDirectory) && isDirectory.boolValue)
     }
 
     private func detail(for account: ProviderAccount) -> String {
@@ -219,5 +243,68 @@ struct APIKeyNotes: View {
         .font(.callout)
         .foregroundStyle(.secondary)
         .fixedSize(horizontal: false, vertical: true)
+    }
+}
+
+/// Gives an added account a new name.
+struct RenameAccountSheet: View {
+    let account: ProviderAccount
+    /// Names the provider's other accounts use.
+    let otherNames: [String]
+    let rename: (String) -> Void
+
+    @Environment(\.dismiss) private var dismiss
+    @State private var name: String
+
+    init(account: ProviderAccount, otherNames: [String], rename: @escaping (String) -> Void) {
+        self.account = account
+        self.otherNames = otherNames
+        self.rename = rename
+        _name = State(initialValue: account.name)
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(spacing: 10) {
+                ProviderLogoTile(provider: account.provider)
+                Text("Rename \(account.provider.displayName(account: account.tag))")
+                    .font(.headline)
+                    .lineLimit(1)
+            }
+            VStack(alignment: .leading, spacing: 6) {
+                TextField("Name", text: $name)
+                    .textFieldStyle(.roundedBorder)
+                    .onSubmit(submit)
+                if isNameTaken {
+                    Text("Another \(account.provider.displayName) account already has this name.")
+                        .font(.callout)
+                        .foregroundStyle(.red)
+                }
+            }
+            HStack {
+                Spacer()
+                Button("Cancel", role: .cancel) { dismiss() }
+                    .keyboardShortcut(.cancelAction)
+                Button("Rename", action: submit)
+                    .keyboardShortcut(.defaultAction)
+                    .disabled(!canSave)
+            }
+        }
+        .padding(20)
+        .frame(width: 360)
+    }
+
+    private var trimmed: String { name.trimmingCharacters(in: .whitespacesAndNewlines) }
+
+    private var isNameTaken: Bool {
+        otherNames.contains { $0.compare(trimmed, options: .caseInsensitive) == .orderedSame }
+    }
+
+    private var canSave: Bool { !trimmed.isEmpty && !isNameTaken }
+
+    private func submit() {
+        guard canSave else { return }
+        rename(trimmed)
+        dismiss()
     }
 }

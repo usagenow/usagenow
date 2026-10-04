@@ -53,6 +53,9 @@ struct ProviderUsageView: View {
                 ModelActivityView(models: snapshot.modelActivity)
             case .notAuthenticated where ProviderCatalog.definition(for: state.provider).apiKey != nil:
                 StatusMessage(text: String(localized: "\(state.displayName) didn’t accept the API key. Check it in Settings › Providers."))
+            case .notAuthenticated where state.account != nil:
+                // An added folder with nothing in it: usually the wrong folder.
+                StatusMessage(text: String(localized: "No sign-in or sessions in this account’s folder. Check it in Settings › Providers."))
             case .notAuthenticated:
                 StatusMessage(text: String(localized: "Sign in to \(state.displayName) to view usage"))
             case .unavailable:

@@ -103,6 +103,19 @@ final class ProviderPreferences {
         accounts.append(account)
     }
 
+    /// Renames an account. A blank name, or one another account of the same
+    /// provider already has, is ignored.
+    func renameAccount(id: String, to name: String) {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let index = accounts.firstIndex(where: { $0.id == id }), !trimmed.isEmpty else { return }
+        let provider = accounts[index].provider
+        let taken = accounts.contains {
+            $0.id != id && $0.provider == provider && $0.name.compare(trimmed, options: .caseInsensitive) == .orderedSame
+        }
+        guard !taken else { return }
+        accounts[index].name = trimmed
+    }
+
     func removeAccount(id: String) {
         accounts.removeAll { $0.id == id }
     }

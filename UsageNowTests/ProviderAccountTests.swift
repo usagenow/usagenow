@@ -88,6 +88,22 @@ struct ProviderAccountTests {
         #expect(ProviderPreferences(defaults: defaults).accounts == [work])
     }
 
+    @Test func renamingKeepsTheAccountAndRefusesADuplicate() throws {
+        let defaults = try #require(UserDefaults(suiteName: "rename-\(UUID())"))
+        let preferences = ProviderPreferences(defaults: defaults)
+        let personal = ProviderAccount(provider: .codex, name: "Personal", folder: "/tmp/codex-personal")
+        preferences.addAccount(work)
+        preferences.addAccount(personal)
+
+        preferences.renameAccount(id: work.id, to: "  Client ")
+        #expect(preferences.accounts(for: .codex).map(\.name) == ["Client", "Personal"])
+        #expect(preferences.accounts(for: .codex).first?.folder == work.folder)
+
+        preferences.renameAccount(id: work.id, to: "personal")
+        preferences.renameAccount(id: work.id, to: "   ")
+        #expect(ProviderPreferences(defaults: defaults).accounts(for: .codex).map(\.name) == ["Client", "Personal"])
+    }
+
     // MARK: Keys
 
     @Test func anAddedAccountReadsItsOwnKey() async throws {
