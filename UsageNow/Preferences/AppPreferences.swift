@@ -11,6 +11,7 @@ final class AppPreferences {
     private enum Key {
         static let refreshInterval = "refreshInterval"
         static let menuBarDisplayMode = "menuBarDisplayMode"
+        static let menuBarAccount = "menuBarAccount"
         static let appearance = "appearance"
         static let usageAmountStyle = "usageAmountStyle"
         static let showsActivityHistory = "showsActivityHistory"
@@ -61,6 +62,21 @@ final class AppPreferences {
         didSet { defaults.set(menuBarDisplayMode.rawValue, forKey: Key.menuBarDisplayMode) }
     }
 
+    /// For a provider's mode, the added account the menu bar shows; `nil`
+    /// for the provider's own account.
+    var menuBarAccount: String? {
+        didSet { defaults.set(menuBarAccount, forKey: Key.menuBarAccount) }
+    }
+
+    /// The mode and account together, as the Display picker sets them.
+    var menuBarChoice: MenuBarChoice {
+        get { MenuBarChoice(mode: menuBarDisplayMode, account: menuBarAccount) }
+        set {
+            menuBarDisplayMode = newValue.mode
+            menuBarAccount = newValue.account
+        }
+    }
+
     /// Experimental: read Claude Code subscription limits from Anthropic's
     /// undocumented usage endpoint. Off by default.
     var fetchClaudeUsageLimits: Bool {
@@ -98,5 +114,6 @@ final class AppPreferences {
         // Unknown identifiers fall back to the default.
         menuBarDisplayMode = defaults.string(forKey: Key.menuBarDisplayMode)
             .flatMap(MenuBarDisplayMode.init(rawValue:)) ?? .default
+        menuBarAccount = defaults.string(forKey: Key.menuBarAccount)
     }
 }

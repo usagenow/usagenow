@@ -27,6 +27,8 @@ struct ProviderSnapshot: Sendable, Equatable, Identifiable {
     /// Money on a prepaid API account, for providers connected with the
     /// person's own API key. `nil` for subscription tools.
     var balance: AccountBalance? = nil
+    /// Account/billing counters. These are not attributed to today.
+    var totals: [UsageTotal] = []
     /// When this snapshot was assembled.
     var updatedAt: Date
     /// When the quota windows were captured, if earlier than `updatedAt` —

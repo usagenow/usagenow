@@ -102,7 +102,9 @@ struct SettingsView: View {
                 usageAmountStyle: preferences.usageAmountStyle.rawValue,
                 showsActivityHistory: preferences.showsActivityHistory,
                 refreshInterval: "\(preferences.refreshInterval.rawValue)s",
-                menuBarDisplayMode: preferences.menuBarDisplayMode.rawValue,
+                // Whether an added account is shown, never which.
+                menuBarDisplayMode: preferences.menuBarDisplayMode.rawValue
+                    + (preferences.menuBarAccount != nil ? " (added account)" : ""),
                 fetchClaudeUsageLimits: preferences.fetchClaudeUsageLimits,
                 notifiesAboutLimits: preferences.notifiesAboutLimits,
                 hasPopoverShortcut: preferences.popoverShortcut != nil,
@@ -274,9 +276,10 @@ struct MenuBarSettingsView: View {
     var body: some View {
         Form {
             Section {
-                Picker("Display", selection: $preferences.menuBarDisplayMode) {
-                    ForEach(MenuBarDisplayMode.available(for: providerPreferences.enabledProviders)) { mode in
-                        Text(mode.title).tag(mode)
+                Picker("Display", selection: $preferences.menuBarChoice) {
+                    let accounts = providerPreferences.accounts
+                    ForEach(MenuBarChoice.available(for: providerPreferences.enabledProviders, accounts: accounts)) { choice in
+                        Text(verbatim: choice.title(accounts: accounts)).tag(choice)
                     }
                 }
             } footer: {
@@ -448,15 +451,22 @@ extension QuotaUnavailableReason {
             String(localized: "Open the Antigravity app to update usage limits.")
         case .toolNotRunning:
             String(localized: "Open \(provider.displayName) to update usage limits.")
-        // Claude Code is the only provider with a sign-in-based source today.
-        case .signInExpired:
+        case .signInExpired where provider == .claudeCode:
             String(localized: "Refresh Claude Code from Terminal to view usage limits.")
-        case .permissionDenied:
+        case .permissionDenied where provider == .claudeCode:
             String(localized: "Allow UsageNow to access your Claude Code sign-in in Keychain.")
         case .temporarilyUnavailable where provider == .antigravity:
             String(localized: "Antigravity usage limits are temporarily unavailable.")
-        case .temporarilyUnavailable:
+        case .temporarilyUnavailable where provider == .claudeCode:
             String(localized: "Claude usage limits are temporarily unavailable.")
+        case .signInExpired:
+            String(localized: "Reconnect \(provider.displayName) in Settings › Providers.")
+        case .permissionDenied where provider == .elevenlabs:
+            String(localized: "Allow user_read on your ElevenLabs API key, then try again.")
+        case .permissionDenied:
+            String(localized: "Check this connection’s permissions in Settings › Providers.")
+        case .temporarilyUnavailable:
+            String(localized: "\(provider.displayName) usage limits are temporarily unavailable.")
         }
     }
 }

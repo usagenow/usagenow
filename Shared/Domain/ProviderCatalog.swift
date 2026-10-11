@@ -17,12 +17,16 @@ enum ProviderID: String, CaseIterable, Codable, Sendable, Identifiable, Comparab
     case qwen
     case cline
     case grok
+    case windsurf
     case deepseek
     case kimi
     case openrouter
     case ollama
     case cursor
     case copilot
+    case perplexity
+    case elevenlabs
+    case zai
 
     var id: String { rawValue }
 
@@ -69,6 +73,27 @@ struct APIKeyConnection: Sendable, Equatable {
     let host: String
     /// The provider's page for creating a key.
     let keysPage: URL
+    /// The credential is always supplied explicitly in Settings. Existing
+    /// app/browser sign-ins are never searched or imported automatically.
+    var authentication: Authentication = .bearer
+
+    enum Authentication: Sendable, Equatable {
+        case bearer
+        case elevenLabs
+        case githubToken
+        case cursorSession
+        case perplexitySession
+
+        var isSession: Bool { self == .cursorSession || self == .perplexitySession }
+
+        var cookieNames: [String] {
+            switch self {
+            case .cursorSession: ["WorkosCursorSessionToken", "__Secure-next-auth.session-token", "next-auth.session-token"]
+            case .perplexitySession: ["__Secure-authjs.session-token", "authjs.session-token", "__Secure-next-auth.session-token", "next-auth.session-token"]
+            default: []
+            }
+        }
+    }
 }
 
 /// The single source of truth for provider metadata.
@@ -166,6 +191,14 @@ enum ProviderCatalog {
             symbolName: "terminal"
         ),
         ProviderDefinition(
+            id: .windsurf,
+            displayName: "Windsurf",
+            summary: "Track Windsurf daily and weekly limits.",
+            availability: .available,
+            logoAssetName: nil,
+            symbolName: "wind"
+        ),
+        ProviderDefinition(
             id: .deepseek,
             displayName: "DeepSeek",
             summary: "Track your DeepSeek API balance.",
@@ -205,18 +238,42 @@ enum ProviderCatalog {
         ProviderDefinition(
             id: .cursor,
             displayName: "Cursor",
-            summary: nil,
-            availability: .comingSoon,
+            summary: "Track Cursor plan usage.",
+            availability: .available,
             logoAssetName: "CursorLogo",
-            symbolName: "cursorarrow"
+            symbolName: "cursorarrow",
+            apiKey: APIKeyConnection(host: "cursor.com", keysPage: URL(string: "https://cursor.com/dashboard")!, authentication: .cursorSession),
+            isExperimental: true
         ),
         ProviderDefinition(
             id: .copilot,
             displayName: "GitHub Copilot",
-            summary: nil,
-            availability: .comingSoon,
+            summary: "Track Copilot allowances and credits.",
+            availability: .available,
             logoAssetName: "CopilotLogo",
-            symbolName: "chevron.left.forwardslash.chevron.right"
+            symbolName: "chevron.left.forwardslash.chevron.right",
+            apiKey: APIKeyConnection(host: "api.github.com", keysPage: URL(string: "https://github.com/settings/tokens")!, authentication: .githubToken),
+            isExperimental: true
+        ),
+        ProviderDefinition(
+            id: .perplexity, displayName: "Perplexity",
+            summary: "Track Perplexity web credits.", availability: .available,
+            logoAssetName: nil, symbolName: "magnifyingglass",
+            apiKey: APIKeyConnection(host: "www.perplexity.ai", keysPage: URL(string: "https://www.perplexity.ai/account/usage")!, authentication: .perplexitySession),
+            isExperimental: true
+        ),
+        ProviderDefinition(
+            id: .elevenlabs, displayName: "ElevenLabs",
+            summary: "Track ElevenLabs character usage.", availability: .available,
+            logoAssetName: nil, symbolName: "waveform",
+            apiKey: APIKeyConnection(host: "api.elevenlabs.io", keysPage: URL(string: "https://elevenlabs.io/app/settings/api-keys")!, authentication: .elevenLabs)
+        ),
+        ProviderDefinition(
+            id: .zai, displayName: "Z.ai",
+            summary: "Track Z.ai Coding Plan limits.", availability: .available,
+            logoAssetName: nil, symbolName: "z.square",
+            apiKey: APIKeyConnection(host: "api.z.ai", keysPage: URL(string: "https://z.ai/manage-apikey/apikey-list")!),
+            isExperimental: true
         ),
     ]
 

@@ -2,6 +2,31 @@
 
 All notable changes to UsageNow. This project follows [Semantic Versioning](https://semver.org).
 
+## 0.8.0
+
+### Added
+
+- **Check before saving a connection.** Manual keys, tokens, and session cookies are verified with the provider's existing read-only usage request before Keychain changes. The first-account and added-account sheets distinguish rejected credentials, missing permissions, offline services, unsupported responses, and Keychain failures. Canceling keeps the previous connection unchanged.
+- **Respect provider request limits.** HTTP 429 pauses that connection until Retry-After allows another request (five minutes when absent or invalid). Background refresh, manual refresh, and connection checks share the pause; other accounts continue. Last known values keep their original reading time.
+- **Cursor, GitHub Copilot, Perplexity, ElevenLabs, and Z.ai connections.** Explicitly connected, off by default, with separate accounts and menu-bar/widget integration. Cursor, Copilot, Perplexity, and Z.ai use experimental endpoints. ElevenLabs uses the official subscription API with `user_read` permission. Availability depends on the plan and credential; not every plan or token type has been verified.
+- **Optional isolated web sign-in for Cursor and Perplexity**, plus a manual named session cookie fallback. No existing browser profile is imported. Selected cookies, user-supplied GitHub tokens, and API keys are stored only in UsageNow's Keychain and sent only to their service's host.
+- **Absolute credit and character counters**, kept separate from daily local activity. Unlimited or unreported allowances never become an invented percentage.
+- **Windsurf.** Daily and weekly limits, reset times, and the plan Windsurf cached on this Mac. Older plans can show billing-cycle prompt credits and flow actions instead. UsageNow reads only the cached plan, never Windsurf's sign-in, and makes no network request. Windsurf must run to refresh its cache; token activity isn't available through this integration. Available fields depend on the plan and Windsurf version.
+- **Portuguese, Japanese, Korean, and Hebrew**, bringing UsageNow to nine languages. The widget follows the chosen language, including right-to-left layout for Hebrew.
+- **What's New in your language.** Release notes are bundled in every supported language and work offline; a missing translation falls back to English.
+- **Choose an added account for the menu bar**, such as “Codex · Work”. The choice is remembered; removing the account falls back to the provider's first account.
+
+### Fixed
+
+- **Widget freshness belongs to each provider.** Updating one provider no longer makes another provider's old quota look newly read. A clock marks stale readings.
+- **Widget limits expire at their reset time**, including while the app is closed. An expired percentage becomes unknown until new data arrives; it never turns into an invented 100% remaining.
+- **Widget countdowns keep ticking** between extension refreshes. Timelines also include upcoming resets and the point when a reading becomes stale.
+- **A fresh reading of unchanged limits is saved**, so the shared snapshot doesn't keep an old date merely because the percentage stayed the same.
+
+### Development
+
+- Debug builds use separate app and widget identifiers, preferences, and an App Group. They cannot replace the installed widget's registration or overwrite its snapshot. Automatic updates are disabled in Debug builds, and unit tests don't start live providers.
+
 ## 0.7.2
 
 ### Fixed

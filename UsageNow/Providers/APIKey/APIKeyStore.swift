@@ -48,7 +48,8 @@ struct KeychainAPIKeyStore: APIKeyStoring {
             try removeKey(for: provider, account: account)
             return
         }
-        try store.setData(Data(trimmed.utf8), for: Self.item(provider, account))
+        let value = try ProviderCatalog.definition(for: provider).apiKey?.normalizedCredential(trimmed) ?? trimmed
+        try store.setData(Data(value.utf8), for: Self.item(provider, account))
     }
 
     func removeKey(for provider: ProviderID, account: String?) throws {

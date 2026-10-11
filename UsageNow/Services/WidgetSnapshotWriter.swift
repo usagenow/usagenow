@@ -14,10 +14,13 @@ final class WidgetSnapshotWriter {
     private let reloadTimelines: @Sendable () -> Void
     private let now: () -> Date
     private var lastWritten: WidgetSnapshot?
+    /// The timeline may still show this reading even after several
+    /// timestamp-only writes. Compare freshness against it, not the file.
+    private var lastReloadRequested: WidgetSnapshot?
 
     init(
         store: WidgetSnapshotStore? = WidgetSnapshotStore.shared(),
-        reloadTimelines: @escaping @Sendable () -> Void = { WidgetCenter.shared.reloadAllTimelines() },
+        reloadTimelines: @escaping @Sendable () -> Void = { WidgetCenter.shared.reloadTimelines(ofKind: WidgetSnapshot.widgetKind) },
         now: @escaping () -> Date = { .now }
     ) {
         self.store = store
@@ -25,8 +28,8 @@ final class WidgetSnapshotWriter {
         self.now = now
     }
 
-    /// Writes the snapshot, and reloads widget timelines only when what the
-    /// widget would show actually changed.
+    /// Publishes timestamps as well as values. A routine successful read
+    /// of unchanged limits must not leave the file looking hours old.
     func update(
         states: [ProviderState],
         enabledProviders: Set<ProviderID>,
@@ -38,14 +41,19 @@ final class WidgetSnapshotWriter {
         var snapshot = Self.makeSnapshot(states: states, enabledProviders: enabledProviders, generatedAt: now(), includesRecentDays: includesRecentDays)
         snapshot.usageAmountStyle = style
         snapshot.language = language.code
-        guard snapshot.state != lastWritten?.state
+        let needsReload = lastReloadRequested.map { snapshot.needsReload(comparedTo: $0, at: snapshot.generatedAt) } ?? true
+        guard needsReload || snapshot.state != lastWritten?.state
             || snapshot.usageAmountStyle != lastWritten?.usageAmountStyle
-            || snapshot.language != lastWritten?.language else { return }
+            || snapshot.language != lastWritten?.language
+            || snapshot.generatedAt.timeIntervalSince(lastWritten?.generatedAt ?? .distantPast) >= WidgetRefreshSchedule.idleInterval else { return }
 
         do {
             try store.write(snapshot)
             lastWritten = snapshot
-            reloadTimelines()
+            if needsReload {
+                lastReloadRequested = snapshot
+                reloadTimelines()
+            }
         } catch {
             Log.app.debug("Couldn’t write the widget snapshot")
         }
@@ -85,8 +93,10 @@ final class WidgetSnapshotWriter {
             tokensToday: snapshot.activity.tokensToday,
             requestsToday: snapshot.activity.requestsToday,
             creditsToday: snapshot.activity.creditsToday,
-            quotaUnavailableReason: snapshot.windows.isEmpty ? snapshot.quotaUnavailableReason : nil,
-            recentDays: includesRecentDays ? snapshot.activity.history.flatMap(recentDays) : nil
+            quotaUnavailableReason: snapshot.quotaUnavailableReason,
+            recentDays: includesRecentDays ? snapshot.activity.history.flatMap(recentDays) : nil,
+            updatedAt: snapshot.dataDate,
+            totals: snapshot.totals.isEmpty ? nil : snapshot.totals
         )
     }
 

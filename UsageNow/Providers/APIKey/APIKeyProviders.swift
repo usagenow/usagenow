@@ -4,6 +4,9 @@ import Foundation
 struct APIKeyReading: Sendable, Equatable {
     var balance: AccountBalance?
     var windows: [UsageWindow] = []
+    var planName: String? = nil
+    var quotaUnavailableReason: QuotaUnavailableReason? = nil
+    var totals: [UsageTotal] = []
 }
 
 /// A provider read through its official API with the person's own key.
@@ -46,9 +49,13 @@ struct APIKeyProvider: UsageProvider {
         }
         do {
             let reading = try await read(client, key)
-            return ProviderSnapshot(provider: id, status: .available, windows: reading.windows, balance: reading.balance, updatedAt: date)
+            return ProviderSnapshot(provider: id, status: .available, planName: reading.planName,
+                                    windows: reading.windows.asOf(date), quotaUnavailableReason: reading.quotaUnavailableReason,
+                                    balance: reading.balance, totals: reading.totals, updatedAt: date)
         } catch APIKeyClient.Failure.rejectedKey {
             return .notAuthenticated(id, at: date)
+        } catch APIKeyClient.Failure.permissionDenied {
+            return ProviderSnapshot(provider: id, status: .available, quotaUnavailableReason: .permissionDenied, updatedAt: date)
         }
     }
 
@@ -57,6 +64,33 @@ struct APIKeyProvider: UsageProvider {
         var copy = self
         copy.account = account
         return copy
+    }
+
+    /// The same request and parser used for refresh, without reading or
+    /// writing Keychain. A response must parse before a connection is saved.
+    func verifyCredential(_ credential: String) async throws -> String {
+        let normalized = try client.connection.normalizedCredential(credential)
+        try Task.checkCancellation()
+        _ = try ConnectedUsage.requireReading(await read(client, normalized))
+        try Task.checkCancellation()
+        return normalized
+    }
+
+    /// One factory for runtime accounts and pre-save connection checks.
+    static func connected(_ id: ProviderID, keys: any APIKeyStoring,
+                          transport: (any HTTPTransport)? = nil) -> APIKeyProvider? {
+        switch id {
+        case .deepseek: .deepSeek(keys: keys, transport: transport)
+        case .kimi: .kimi(keys: keys, transport: transport)
+        case .openrouter: .openRouter(keys: keys, transport: transport)
+        case .ollama: .ollama(keys: keys, transport: transport)
+        case .cursor: .cursor(keys: keys, transport: transport)
+        case .copilot: .copilot(keys: keys, transport: transport)
+        case .perplexity: .perplexity(keys: keys, transport: transport)
+        case .elevenlabs: .elevenLabs(keys: keys, transport: transport)
+        case .zai: .zai(keys: keys, transport: transport)
+        default: nil
+        }
     }
 
     // MARK: Providers

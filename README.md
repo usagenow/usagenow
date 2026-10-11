@@ -2,7 +2,7 @@
 
 # UsageNow
 
-**AI coding usage tracker for macOS.** Monitor usage, limits, reset times, and activity across Codex, Claude Code, Gemini CLI, Antigravity, Kiro, Warp, OpenCode, Qoder, Qwen Code, Cline, and Grok Build — plus DeepSeek, Kimi, OpenRouter, and Ollama Cloud — from the menu bar.
+**AI coding usage tracker for macOS.** Monitor usage, limits, reset times, and activity across Codex, Claude Code, Gemini CLI, Antigravity, Kiro, Warp, OpenCode, Qoder, Qwen Code, Cline, Grok Build, and Windsurf — plus explicit connections for DeepSeek, Kimi, OpenRouter, Ollama Cloud, Cursor, GitHub Copilot, Perplexity, ElevenLabs, and Z.ai — from the menu bar.
 
 *See what's left. Keep building.*
 
@@ -18,7 +18,7 @@ Requires macOS 15 or later. The app is signed with a Developer ID and notarized 
 
 ## What it reads
 
-UsageNow reads what each tool already keeps on your Mac, and — only for services you connect with your own API key — that service's official API. Which data is available depends on the tool:
+UsageNow reads what each tool already keeps on your Mac and the usage services you explicitly connect. Undocumented endpoints are labeled Experimental. Which data is available depends on the tool:
 
 | Provider | Usage limits and resets | Activity | Where it comes from |
 |---|---|---|---|
@@ -33,21 +33,44 @@ UsageNow reads what each tool already keeps on your Mac, and — only for servic
 | Qwen Code | — | tokens, requests, models, cost, 30 days | `~/.qwen/projects` |
 | Cline | — | tokens, requests, models, the cost Cline records, 30 days | the editor extension's tasks; `~/.cline/data` |
 | Grok Build | — | tokens, model calls, models, the cost xAI reports, 30 days | `~/.grok/sessions` |
+| Windsurf | daily and weekly limits, or billing-cycle credits on older plans | — | Windsurf's cached plan in its local database, read-only |
 | DeepSeek, Kimi, OpenRouter | balance and spending; OpenRouter's key limit | — | the official API, with your key |
 | Ollama Cloud | ✓ session and weekly, experimental | — | `ollama.com`, with your key |
+| Cursor | reported personal plan allowance; no team-wide analytics | — | experimental `cursor.com/api/usage-summary`, with your web session |
+| GitHub Copilot | reported allowances and absolute credits; no percentage for unlimited/zero-cap placeholders | — | experimental GitHub Copilot endpoint, with your own GitHub token |
+| Perplexity | web credit counters; percentage only for a reconciled reported allowance | — | experimental web billing endpoint, with your web session; not a Perplexity API key |
+| ElevenLabs | monthly characters and explicit reset date | — | official subscription API, with a restricted `user_read` key |
+| Z.ai | Coding Plan quota windows and MCP allowance | — | experimental global `api.z.ai` endpoint, with your key |
+
+The five connections above are new in **0.8.0** and off by default.
+Enable one under **Settings › Providers › Connect**. For Cursor and Perplexity,
+**Sign In** opens the official website in an isolated, temporary window. After
+**Connect**, press **Check and Save** (or **Check and Add Account**). Only the selected session cookie
+is saved in this Mac's Keychain. Existing browser profiles are never imported.
+Some SSO providers refuse embedded browsers; a manually supplied named session
+cookie (`name=value`) is the fallback. Expired sessions require signing in again.
+
+Copilot uses your token, not VS Code's OAuth client or identity. GitHub may refuse
+some token types; a successful billing-API request alone does not validate this
+experimental integration. Availability depends on the account, plan, and endpoint;
+not every paid plan or token type has been verified. See [connection details](docs/provider-connections.md).
 
 Plans appear when the tool states them — for Codex including Team, Business, and Enterprise, and for Claude a Team seat. Limit windows are whatever the provider reports. An account may have only a weekly limit, for example, and UsageNow never invents a missing window or shows a fake 0%.
 
 **Account limits aren’t model limits.** A 5-hour or weekly window belongs to your account. The **Models today** list shows how today’s activity split across models — tokens and requests — and never a percentage, because no provider reports limits per model.
 
-Token, credit, and request counts are **local activity** observed in files on this Mac. They include cached input and don’t necessarily match billing or quota consumption.
+Counts labeled **today** are local activity observed in files on this Mac. They
+include cached input and don’t necessarily match billing or quota consumption.
+Account credit/character counters are shown separately and are never labeled
+as today's activity unless the source explicitly reports that period.
 
 ## Highlights
 
 - **macOS native.** SwiftUI and `MenuBarExtra`. Lives in the menu bar, not the Dock.
 - **Codex, Claude Code, Gemini CLI, Antigravity, Kiro, Warp, OpenCode, Qoder, Qwen Code, Cline, and Grok Build** side by side: usage limits and reset times where the tool reports them, and daily token, credit, and request activity.
 - **The last 30 days.** A bar per day under each provider, with the month's tokens, estimated cost, and top model — hover a bar for that day.
-- **More than one account.** A second Codex or Claude Code folder, or another API key, shows as its own section — "Codex · Work" — under a name you choose.
+- **More than one account.** A second Codex or Claude Code folder, or another explicitly connected account, shows as its own section — "Codex · Work" — under a name you choose.
+- **Six new providers in 0.8.0.** Windsurf's locally cached limits, plus Cursor, GitHub Copilot, Perplexity, ElevenLabs, and Z.ai connections. Credentials are checked with a read-only usage request before saving, and rate-limit cooldowns apply to manual refresh too.
 - **DeepSeek, Kimi, and OpenRouter** balances and spending, and **Ollama Cloud** limits (experimental), with your own API key — kept only in your Keychain and sent only to that provider.
 - **Activity by model.** See which models today’s tokens and requests went to — any model, including ones released after this version.
 - **What it would have cost.** An estimate of today’s activity at published API prices, with cached tokens priced as cached. A sense of scale, never a bill.
@@ -56,8 +79,10 @@ Token, credit, and request counts are **local activity** observed in files on th
 - **Notifications about limits.** Optional: a notice when a limit is down to 20% and at 5%, and when a limit you were warned about resets.
 - **A keyboard shortcut of your own** to open UsageNow from any app, with no extra permissions.
 - **Desktop widget.** Small and medium widgets showing what’s left at a glance, with credits for tools that meter in credits and the last two weeks for tools without limits.
-- **In five languages.** English, German, Spanish, French, and Russian — your Mac's, or the one you choose in Settings › General.
+- **Honest widget freshness.** A clock marks old readings per provider. Countdown timers keep ticking between reloads, and a limit's old percentage expires at its reset time until new data arrives. The main app must be running to fetch new usage; the widget reads only its safe snapshot.
+- **In your language.** English, German, Spanish, French, Portuguese, Russian, Hebrew, Japanese, and Korean — your Mac's, or the one you choose in Settings › General. What's New follows it too.
 - **What's New** in Settings › About: every version's changes, shipped inside the app.
+- **Any account in the menu bar.** Settings › Menu Bar can show an added account, such as "Codex · Work", instead of the first one.
 - **Report a Problem.** Shows you the whole diagnostic report first — versions, screens, settings, what each provider shows, never names, paths, keys, or prompts — and opens a prefilled GitHub issue or email.
 - **Local-first.** Your usage data stays on your Mac.
 - **Updates itself**, and only from a signed release.
@@ -90,7 +115,8 @@ xcodebuild -project UsageNow.xcodeproj -scheme UsageNow test
 - **Qwen Code:** each answer's identifier, time, model, and token counts from the session recordings in `~/.qwen/projects/<project>/chats`. Messages are never decoded, and `~/.qwen/oauth_creds.json` is never opened. Not yet verified against a live install.
 - **Cline:** each API request's time, model, token counts, and the cost Cline recorded, from the tasks the extension saves in VS Code, Cursor, Windsurf, Kiro, VSCodium, or Trae (`…/globalStorage/saoudrizwan.claude-dev/tasks`) and the sessions the CLI saves in `~/.cline/data`. In an editor task, only API request messages are read; the request Cline stored beside the numbers passes through memory and is never kept or logged. Cline's `secrets.json` and the editor's secret storage are never opened.
 - **Grok Build:** each finished turn's time, models, token counts, model calls, and the cost xAI reported, from the `turn_completed` lines of `~/.grok/sessions/<project>/<session>/updates.jsonl`. The turn's result text and every other line are never decoded. Not yet verified against a live install.
-- **API keys you add** (DeepSeek, Kimi, OpenRouter, Ollama Cloud): stored only in this Mac's Keychain, sent over HTTPS only to that provider's host, for read-only balance or usage requests. Redirects are refused, and a key is deleted when you turn its provider off. Ollama Cloud's endpoint isn't documented, so it's marked Experimental.
+- **Windsurf:** only `windsurf.settings.cachedPlanInfo` in `~/Library/Application Support/Windsurf/User/globalStorage/state.vscdb`. Daily and weekly limits, reset dates and plan, or billing-cycle credits on older plans. The database is opened read-only; its sign-in entries are never selected. Windsurf needs to run to refresh its cache. This integration provides no token activity; available fields depend on the plan and Windsurf version.
+- **Connections you add** (API keys, your GitHub token, or Cursor/Perplexity sessions): stored only in this Mac's Keychain, sent over HTTPS only to the provider's catalog host, for read-only usage requests. Redirects are refused; credentials are deleted when you turn the provider off. The new browser sign-in window is temporary and never imports an existing browser profile. See [connection details](docs/provider-connections.md) for endpoint and permission requirements.
 
 The last 30 days are computed from the same files each time. UsageNow stores no history of its own.
 
@@ -134,9 +160,9 @@ The Antigravity app keeps its limits in memory and shows them in its `/usage` pa
 
 When the Antigravity app isn’t running there’s nothing to ask: the last limits stay for a day, marked stale, with a reminder to open it. The Antigravity CLI (`agy`) runs a server too, but keeps its CSRF token in memory only, so UsageNow can’t read it — the app must be running. There’s no token or model activity for Antigravity, because it stores conversations in an undocumented binary format and UsageNow doesn’t guess at numbers. Google’s Cloud Code quota service itself answers only Antigravity’s own clients, and UsageNow won’t impersonate one, so it doesn’t call Google directly.
 
-### Roadmap providers
+### New connections in 0.8.0
 
-Cursor and GitHub Copilot are listed in Settings › Providers as **Coming soon**. They’re labels only: no integration, no credentials, and no network or file access. GitHub Copilot is planned through GitHub’s official premium request usage API, with a token you provide.
+Cursor and GitHub Copilot are now **experimental connections**, alongside Perplexity and Z.ai; ElevenLabs uses an official API. All five require an explicit connection. Experimental APIs can change, and plan or token compatibility is not universal. No future provider is represented as working before it has an implementation.
 
 ## Updates
 
@@ -158,7 +184,7 @@ UsageNow ships a WidgetKit extension with small and medium sizes.
 - Percentages follow **Settings › General › Show limits as**: left by default, or used. A provider without limits shows today's tokens, or credits for Kiro, Warp, and Qoder, and in the medium widget's rows a chart of its last two weeks — the shape of the activity as shares of the busiest day, never amounts.
 - An added account has its own row, such as "Codex · Work".
 - Disabled providers never appear, quota that isn’t available reads “Usage limits unavailable”, and old data stays visible with an “Updated … ago” note. No placeholder or fabricated values.
-- A widget reads snapshots from a newer app too, skipping what it doesn't recognize, so an update never leaves it asking you to open UsageNow.
+- The snapshot reader tolerates unknown providers and fields from newer app versions. An unreadable or missing snapshot asks you to open UsageNow instead of guessing values.
 
 **The widget never touches providers.** It can’t read any tool's files or databases, reach Antigravity, open the keychain, run `codex app-server`, or call any service. The main app publishes a sanitized snapshot to a shared App Group container, and the widget only renders that. The provider and credential code isn’t compiled into the widget target at all.
 
@@ -193,7 +219,7 @@ UsageNow/
   App/          Entry point and composition root (AppState)
   Domain/       Normalized models: ProviderSnapshot, UsageWindow, UsagePercentage, UsageLevel…
   Providers/    UsageProvider protocol; one folder per tool (Codex, Claude Code, Gemini,
-                Antigravity, Kiro, Warp, OpenCode, Qoder, Qwen Code, Cline, Grok Build),
+                Antigravity, Kiro, Warp, OpenCode, Qoder, Qwen Code, Cline, Grok Build, Windsurf),
                 API-key providers, mocks,
                 and shared readers (incremental JSONL, read-only SQLite)
   Services/     UsageStore, auto-refresh, launch at login, keychain storage,

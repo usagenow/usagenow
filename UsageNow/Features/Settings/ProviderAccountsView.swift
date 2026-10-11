@@ -40,7 +40,7 @@ struct ProviderAccountsView: View {
                     Menu {
                         Button("Rename…") { onRename(account) }
                         if kind == .apiKey {
-                            Button("Replace Key…") { onReplaceKey(account) }
+                            Button("Reconnect…") { onReplaceKey(account) }
                         }
                         Divider()
                         Button("Remove", role: .destructive) { onRemove(account) }
@@ -77,7 +77,7 @@ struct ProviderAccountsView: View {
             return account.folder.map { ($0 as NSString).abbreviatingWithTildeInPath } ?? ""
         case .apiKey:
             _ = keyRevision
-            return hasKey(account) ? String(localized: "API key saved") : String(localized: "No API key yet")
+            return String(localized: definition.apiKey?.statusTitle(saved: hasKey(account)) ?? "Not connected")
         }
     }
 }
@@ -96,6 +96,8 @@ struct AddAccountSheet: View {
     @State private var folder: URL?
     @State private var key = ""
     @State private var failed = false
+    @State private var verification = ConnectionVerification()
+    @State private var checkTask: Task<Void, Never>?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -108,6 +110,7 @@ struct AddAccountSheet: View {
             VStack(alignment: .leading, spacing: 6) {
                 TextField("Name", text: $name, prompt: Text("Work"))
                     .textFieldStyle(.roundedBorder)
+                    .disabled(checkTask != nil)
                 if isNameTaken {
                     Text("Another \(definition.displayName) account already has this name.")
                         .font(.callout)
@@ -124,28 +127,33 @@ struct AddAccountSheet: View {
             case .folder(let variable, let defaultPath):
                 folderPicker(variable: variable, defaultPath: defaultPath)
             case .apiKey:
-                SecureField("API key", text: $key)
-                    .textFieldStyle(.roundedBorder)
+                ConnectionCredentialField(definition: definition, credential: $key)
+                    .disabled(checkTask != nil)
                 APIKeyNotes(definition: definition)
+                ConnectionCheckFeedback(verification: verification)
             }
 
             if failed {
-                Text("The key couldn’t be saved to the Keychain.")
+                Text("Couldn’t save the connection. Check the credential format and Keychain access.")
                     .font(.callout)
                     .foregroundStyle(.red)
             }
 
             HStack {
                 Spacer()
-                Button("Cancel", role: .cancel) { dismiss() }
+                Button("Cancel", role: .cancel) { cancel(); dismiss() }
                     .keyboardShortcut(.cancelAction)
-                Button("Add Account", action: submit)
+                Button(action: submit) {
+                    if kind == .apiKey { Text("Check and Add Account") }
+                    else { Text("Add Account") }
+                }
                     .keyboardShortcut(.defaultAction)
-                    .disabled(!canSave)
+                    .disabled(!canSave || checkTask != nil)
             }
         }
         .padding(20)
         .frame(width: 400)
+        .onDisappear(perform: cancel)
     }
 
     @ViewBuilder
@@ -211,15 +219,28 @@ struct AddAccountSheet: View {
     }
 
     private func submit() {
-        guard canSave else { return }
+        guard canSave, checkTask == nil else { return }
         let account = ProviderAccount(provider: definition.id, name: trimmedName, folder: folder?.path)
+        if kind == .apiKey {
+            let credential = key
+            checkTask = Task { @MainActor in
+                defer { checkTask = nil }
+                if await verification.checkAndSave(credential, for: definition.id, save: { try save(account, $0) }) {
+                    key = ""
+                    dismiss()
+                }
+            }
+            return
+        }
         do {
-            try save(account, kind == .apiKey ? key : nil)
+            try save(account, nil)
             dismiss()
         } catch {
             failed = true
         }
     }
+
+    private func cancel() { checkTask?.cancel(); verification.cancel(); key = "" }
 }
 
 /// What happens to an API key, said wherever one is asked for.
@@ -228,16 +249,25 @@ struct APIKeyNotes: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            if let host = definition.apiKey?.host {
-                Text("UsageNow uses this key only to read your usage from \(host). It stays in the Keychain on this Mac, is never sent anywhere else, and is deleted when you turn \(definition.displayName) off.")
+            if let connection = definition.apiKey {
+                Text("UsageNow sends this credential only to \(connection.host) to read usage. It is stored in Keychain on this Mac and deleted when you turn \(definition.displayName) off.")
+                if connection.authentication.isSession {
+                    Text("A session cookie grants access to your web account. UsageNow never imports existing browser profiles or renews the session. Sign in again when it expires.")
+                        .foregroundStyle(.orange)
+                } else if connection.authentication == .githubToken {
+                    Text("Use your own GitHub token. Copilot access depends on the token and account; the experimental API may reject personal tokens. UsageNow does not sign in as VS Code.")
+                } else if connection.authentication == .elevenLabs {
+                    Text("Create a restricted key with user_read permission. UsageNow does not generate audio.")
+                } else {
+                    Text("API keys can usually spend money, not just read it. If \(definition.displayName) lets you, create a separate key for UsageNow.")
+                        .foregroundStyle(.orange)
+                }
             }
             if definition.isExperimental {
                 Text("Experimental: \(definition.displayName) doesn’t document how to read usage, so this may stop working without notice. If it does, UsageNow shows limits as unavailable rather than guessing.")
             }
-            Text("API keys can usually spend money, not just read it. If \(definition.displayName) lets you, create a separate key for UsageNow.")
-                .foregroundStyle(.orange)
             if let page = definition.apiKey?.keysPage {
-                Link("Create a key on \(definition.displayName)…", destination: page)
+                Link("Open \(definition.displayName)…", destination: page)
             }
         }
         .font(.callout)

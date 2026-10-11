@@ -16,14 +16,15 @@ struct UsageNowWidgetBundle: WidgetBundle {
 }
 
 struct UsageNowWidget: Widget {
-    static let kind = "UsageNowWidget"
+    static let kind = WidgetSnapshot.widgetKind
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: Self.kind, provider: UsageNowTimelineProvider()) { entry in
+            let language = AppLanguage(rawValue: entry.snapshot?.language ?? "")
             UsageNowWidgetEntryView(entry: entry)
-                .environment(\.locale, AppLanguage(rawValue: entry.snapshot?.language ?? "")?.locale ?? .autoupdatingCurrent)
+                .appLanguage(language)
         }
-        .configurationDisplayName(Text(verbatim: AppInfo.name))
+        .configurationDisplayName(Text(verbatim: Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? AppInfo.name))
         .description(Text("What’s left of your AI coding limits, at a glance."))
         .supportedFamilies([.systemSmall, .systemMedium])
     }

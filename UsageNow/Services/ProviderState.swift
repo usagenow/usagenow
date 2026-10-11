@@ -27,4 +27,6 @@ struct RefreshFailure: Sendable, Equatable {
     /// Technical detail, shown as a tooltip.
     var message: String
     var date: Date
+    /// A provider-requested pause, not the quota's reset time.
+    var retryAt: Date? = nil
 }

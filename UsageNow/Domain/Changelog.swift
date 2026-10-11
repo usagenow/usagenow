@@ -21,9 +21,36 @@ struct Changelog: Equatable, Sendable {
 
     var releases: [Release]
 
-    /// The changelog bundled with this build, or nil when it's missing.
+    init(releases: [Release]) {
+        self.releases = releases
+    }
+
+    /// The changelog bundled with this build, in the language UsageNow
+    /// runs in, or nil when it's missing.
     static func bundled(in bundle: Bundle = .main) -> Changelog? {
-        guard let url = bundle.url(forResource: "CHANGELOG", withExtension: "md"),
+        bundled(in: bundle, language: bundle.preferredLocalizations.first)
+    }
+
+    /// CHANGELOG.md, with each release replaced by its translation from
+    /// `CHANGELOG.<language>.md` where that file has one. A release not
+    /// translated yet stays in English.
+    static func bundled(in bundle: Bundle, language: String?) -> Changelog? {
+        guard let english = read("CHANGELOG", in: bundle) else { return nil }
+        guard let code = language.flatMap({ Locale(identifier: $0).language.languageCode?.identifier }),
+              code != "en",
+              let translation = read("CHANGELOG.\(code)", in: bundle) else { return english }
+        return english.translated(by: translation)
+    }
+
+    /// Each release in `translation`'s words where it has them, and as it
+    /// is where it doesn't. Only versions this changelog lists are kept.
+    func translated(by translation: Changelog) -> Changelog {
+        let translated = Dictionary(translation.releases.map { ($0.version, $0) }) { first, _ in first }
+        return Changelog(releases: releases.map { translated[$0.version] ?? $0 })
+    }
+
+    private static func read(_ name: String, in bundle: Bundle) -> Changelog? {
+        guard let url = bundle.url(forResource: name, withExtension: "md"),
               let text = try? String(contentsOf: url, encoding: .utf8) else { return nil }
         let changelog = Changelog(markdown: text)
         return changelog.releases.isEmpty ? nil : changelog

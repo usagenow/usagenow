@@ -42,6 +42,10 @@
       </Testables>
       <CommandLineArguments>
          <CommandLineArgument
+            argument = "-UsageNowTesting YES"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "-AppleLanguages (en)"
             isEnabled = "YES">
          </CommandLineArgument>

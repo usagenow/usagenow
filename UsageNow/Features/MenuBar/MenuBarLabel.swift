@@ -9,7 +9,7 @@ struct MenuBarLabel: View {
     let store: UsageStore
 
     var body: some View {
-        if let usage = preferences.menuBarDisplayMode.usage(in: store.snapshots) {
+        if let usage = preferences.menuBarDisplayMode.usage(in: store.snapshots, account: preferences.menuBarAccount) {
             HStack(spacing: 3) {
                 icon
                 // Left or used, matching the popover. Set a size rather than

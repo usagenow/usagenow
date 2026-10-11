@@ -50,6 +50,8 @@ enum TelemetryEvent: String, Sendable, CaseIterable {
     case clineDetected = "cline_detected"
     /// Grok Build is installed. A yes, never anything about its usage.
     case grokDetected = "grok_detected"
+    /// Windsurf is installed. A yes, never anything about its usage.
+    case windsurfDetected = "windsurf_detected"
 
     /// `nil` for providers with no integration yet — nothing to report.
     static func detected(_ provider: ProviderID) -> TelemetryEvent? {
@@ -65,6 +67,7 @@ enum TelemetryEvent: String, Sendable, CaseIterable {
         case .qwen: .qwenDetected
         case .cline: .clineDetected
         case .grok: .grokDetected
+        case .windsurf: .windsurfDetected
         default: nil
         }
     }

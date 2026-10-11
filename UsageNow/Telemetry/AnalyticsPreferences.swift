@@ -4,8 +4,9 @@ import Observation
 /// The user's analytics consent. Off by default.
 ///
 /// Consent alone sends nothing: a build also needs an endpoint, from the
-/// `USAGENOW_TELEMETRY_ENDPOINT` build setting. Released builds are shipped
-/// without one, so they transmit nothing whatever this value is.
+/// `USAGENOW_TELEMETRY_ENDPOINT` build setting. Builds without an endpoint
+/// transmit nothing whatever this value is; configured releases still require
+/// this explicit, off-by-default consent.
 @Observable
 @MainActor
 final class AnalyticsPreferences {

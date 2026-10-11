@@ -73,6 +73,9 @@ final class AppState {
 
         self.store = store
         self.preferences = AppPreferences(defaults: defaults)
+        // Also validate persisted selections at launch: the chosen account
+        // may have been removed since this build last ran.
+        self.preferences.menuBarChoice = self.preferences.menuBarChoice.validated(against: providerPreferences.accounts)
         self.providerPreferences = providerPreferences
         self.analyticsPreferences = analyticsPreferences
         self.launchAtLogin = LaunchAtLogin()
@@ -121,11 +124,7 @@ final class AppState {
         switch account.provider {
         case .codex: CodexProvider.reading(account)
         case .claudeCode: ClaudeCodeProvider.reading(account)
-        case .deepseek: APIKeyProvider.deepSeek(keys: apiKeys).reading(account)
-        case .kimi: APIKeyProvider.kimi(keys: apiKeys).reading(account)
-        case .openrouter: APIKeyProvider.openRouter(keys: apiKeys).reading(account)
-        case .ollama: APIKeyProvider.ollama(keys: apiKeys).reading(account)
-        default: nil
+        default: APIKeyProvider.connected(account.provider, keys: apiKeys)?.reading(account)
         }
     }
 
@@ -158,10 +157,16 @@ final class AppState {
             QwenCodeProvider(),
             ClineProvider(),
             GrokBuildProvider(),
+            WindsurfProvider(),
             APIKeyProvider.deepSeek(keys: apiKeys),
             APIKeyProvider.kimi(keys: apiKeys),
             APIKeyProvider.openRouter(keys: apiKeys),
             APIKeyProvider.ollama(keys: apiKeys),
+            APIKeyProvider.cursor(keys: apiKeys),
+            APIKeyProvider.copilot(keys: apiKeys),
+            APIKeyProvider.perplexity(keys: apiKeys),
+            APIKeyProvider.elevenLabs(keys: apiKeys),
+            APIKeyProvider.zai(keys: apiKeys),
         ]
     }
 
@@ -226,7 +231,7 @@ final class AppState {
             providerPreferences.removeAccounts(of: definition.id)
         }
         if let required = preferences.menuBarDisplayMode.requiredProvider, !enabled.contains(required) {
-            preferences.menuBarDisplayMode = .default
+            preferences.menuBarChoice = .default
         }
         Task { [store] in await store.setEnabledProviders(enabled) }
     }
@@ -235,6 +240,9 @@ final class AppState {
     /// disappears, its key with it.
     private func applyAccounts() {
         let accounts = providerPreferences.accounts
+        // A removed account's menu bar choice falls back to the provider's own.
+        let choice = preferences.menuBarChoice.validated(against: accounts)
+        if choice != preferences.menuBarChoice { preferences.menuBarChoice = choice }
         var kept: [ProviderAccount: any UsageProvider] = [:]
         for account in accounts {
             kept[account] = accountProviders[account] ?? accountProvider(account)
@@ -276,10 +284,13 @@ final class AppState {
     /// added account's — then reads the provider with it.
     func setAPIKey(_ key: String?, for provider: ProviderID, account: String? = nil) throws {
         if let key, !key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            try apiKeys.setKey(key, for: provider, account: account)
+            let connection = ProviderCatalog.definition(for: provider).apiKey
+            let value = try connection?.normalizedCredential(key) ?? key
+            try apiKeys.setKey(value, for: provider, account: account)
         } else {
             try apiKeys.removeKey(for: provider, account: account)
         }
+        store.connectionDidChange(provider: provider, account: account)
         guard providerPreferences.isEnabled(provider) else { return }
         Task { [store] in await store.refresh(only: [provider], trigger: .manual) }
     }
@@ -375,6 +386,7 @@ private struct ShortcutPanelContent: View {
             navigation: appState.settingsNavigation,
             openSettingsOverride: appState.openSettings
         )
+        .appLanguage(appState.preferences.languageAtLaunch)
         .environment(\.usageAmountStyle, appState.preferences.usageAmountStyle)
         .environment(\.showsActivityHistory, appState.preferences.showsActivityHistory)
     }

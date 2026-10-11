@@ -4,12 +4,18 @@ import Foundation
 /// others match what **System Settings › General › Language & Region ›
 /// Applications** sets for UsageNow alone.
 enum AppLanguage: String, CaseIterable, Identifiable, Sendable {
+    // Ordered as macOS lists languages: Latin-script names alphabetically,
+    // then the others.
     case system
     case de
     case en
     case es
     case fr
+    case pt
     case ru
+    case he
+    case ja
+    case ko
 
     var id: String { rawValue }
 
@@ -33,4 +39,9 @@ enum AppLanguage: String, CaseIterable, Identifiable, Sendable {
 
     /// The locale to render in, or `nil` to follow macOS.
     var locale: Locale? { code.map(Locale.init(identifier:)) }
+
+    /// Whether the language reads right to left, as Hebrew does.
+    var isRightToLeft: Bool {
+        locale?.language.characterDirection == .rightToLeft
+    }
 }

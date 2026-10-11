@@ -10,7 +10,9 @@ enum WidgetLayout {
 
 /// Small brand line: the symbol plus the name, quieter than the data.
 struct WidgetHeader: View {
-    var note: String?
+    var updatedAt: Date? = nil
+    var now: Date = .now
+    var compactNote = false
 
     var body: some View {
         HStack(spacing: 5) {
@@ -21,9 +23,10 @@ struct WidgetHeader: View {
             Text(verbatim: AppInfo.name)
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(.secondary)
+                .fixedSize(horizontal: true, vertical: false)
             Spacer(minLength: 4)
-            if let note {
-                Text(note)
+            if let updatedAt {
+                WidgetUpdatedLabel(updatedAt: updatedAt, now: now, compact: compactNote)
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
                     .lineLimit(1)
@@ -31,6 +34,28 @@ struct WidgetHeader: View {
         }
         .accessibilityElement(children: .combine)
     }
+}
+
+/// Keep these labels as localizable Text, so a widget language change
+/// doesn't depend on restarting the extension's cached Bundle language.
+struct WidgetUpdatedLabel: View {
+    let updatedAt: Date
+    let now: Date
+    var compact = false
+
+    var text: Text {
+        let seconds = max(0, now.timeIntervalSince(updatedAt))
+        if seconds < 60 { return Text("Updated just now") }
+        let elapsed: Text
+        switch seconds {
+        case ..<3600: elapsed = Text("\(Int(seconds / 60))m ago")
+        case ..<86_400: elapsed = Text("\(Int(seconds / 3600))h ago")
+        default: elapsed = Text("\(Int(seconds / 86_400))d ago")
+        }
+        return compact ? elapsed : Text("Updated \(elapsed)")
+    }
+
+    var body: some View { text }
 }
 
 /// "58% left" or "42% used", with a warning glyph when little is left.
@@ -59,6 +84,7 @@ struct WidgetRemainingLabel: View {
                 (compact ? style.compactUnit : style.unit)
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                    .lineLimit(1)
             } else {
                 Text(verbatim: UsageFormatter.placeholder)
                     .font(font.weight(.semibold))
@@ -81,7 +107,10 @@ struct WidgetWindowRow: View {
         VStack(alignment: .leading, spacing: 3) {
             HStack(alignment: .firstTextBaseline) {
                 // "Weekly · Gemini" when a provider has several windows of one length.
-                Text(verbatim: window.scope.map { "\(window.kind.title) · \($0)" } ?? window.kind.title)
+                HStack(spacing: 0) {
+                    Text(window.kind.titleKey)
+                    if let scope = window.scope { Text(verbatim: " · \(scope)") }
+                }
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
@@ -90,7 +119,7 @@ struct WidgetWindowRow: View {
             }
             UsageProgressView(usage: window.usage, height: WidgetLayout.barHeight)
             if showsResetLine, let resetsAt = window.resetsAt {
-                Text(formatter.resetDescription(for: resetsAt, now: now))
+                WidgetResetLabel(resetsAt: resetsAt, now: now)
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
                     .lineLimit(1)
@@ -117,6 +146,8 @@ struct WidgetProviderName: View {
     /// "Codex · Work" for an added account; the provider's name otherwise.
     var name: String? = nil
     var font: Font = .subheadline
+    var updatedAt: Date? = nil
+    var now: Date? = nil
 
     var body: some View {
         HStack(spacing: 5) {
@@ -126,6 +157,14 @@ struct WidgetProviderName: View {
                 .font(font.weight(.semibold))
                 .lineLimit(1)
                 .minimumScaleFactor(0.85)
+            if let updatedAt, let now, now.timeIntervalSince(updatedAt) > WidgetSnapshot.staleThreshold {
+                let description = WidgetUpdatedLabel(updatedAt: updatedAt, now: now).text
+                Image(systemName: "clock")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .help(description)
+                    .accessibilityLabel(description)
+            }
         }
         .accessibilityElement(children: .combine)
     }
@@ -147,37 +186,36 @@ struct WidgetProviderRow: View {
 
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
-            WidgetProviderName(provider: provider.provider, name: provider.displayName, font: .caption)
+            WidgetProviderName(provider: provider.provider, name: provider.displayName, font: .caption, updatedAt: provider.updatedAt, now: now)
                 .frame(width: Self.nameWidth, alignment: .leading)
             if let window = provider.mostRelevantWindow {
                 UsageProgressView(usage: window.usage, height: WidgetLayout.barHeight)
                 WidgetRemainingLabel(usage: window.usage, font: .caption, compact: true)
                     .frame(width: Self.remainingWidth, alignment: .trailing)
-                Text(verbatim: window.resetsAt.map { formatter.countdown(from: now, to: $0) } ?? "")
+                WidgetCountdown(resetsAt: window.resetsAt, now: now)
                     .font(.caption2)
                     .monospacedDigit()
                     .foregroundStyle(.tertiary)
                     .lineLimit(1)
+                    .minimumScaleFactor(0.7)
                     .frame(width: Self.resetWidth, alignment: .trailing)
             } else {
                 // Without limits, the recent days are the most there is to see.
                 if let days = provider.recentDays {
                     WidgetActivityChart(days: days, height: 12)
-                } else {
+                } else if provider.totals?.isEmpty != false {
                     Text("Limits unavailable", comment: "Widget row for a provider that reports no usage limits")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
                     Spacer(minLength: 4)
                 }
-                if let activity = provider.activityText(short: true) {
-                    Text(verbatim: activity)
-                        .font(.caption2)
-                        .monospacedDigit()
-                        .foregroundStyle(.tertiary)
-                        .lineLimit(1)
-                        .fixedSize()
-                }
+                WidgetActivityLabel(provider: provider, short: true)
+                    .font(.caption2)
+                    .monospacedDigit()
+                    .foregroundStyle(.tertiary)
+                    .lineLimit(1)
+                    .fixedSize()
             }
         }
         .accessibilityElement(children: .ignore)
@@ -187,13 +225,72 @@ struct WidgetProviderRow: View {
 
     private var accessibilityValue: String {
         guard let window = provider.mostRelevantWindow, let usage = window.usage else {
-            return String(localized: "Usage limits unavailable")
+            return provider.activityText() ?? String(localized: "Usage limits unavailable")
         }
         var parts = [style.accessibilityDescription(usage)]
         if let resetsAt = window.resetsAt {
             parts.append(formatter.accessibleResetDescription(for: resetsAt, now: now))
         }
         return parts.joined(separator: ", ")
+    }
+}
+
+/// WidgetKit renders the timer itself between timeline entries. Unlike a
+/// formatted string it keeps counting even when the extension is asleep.
+struct WidgetCountdown: View {
+    let resetsAt: Date?
+    let now: Date
+    @Environment(\.locale) private var locale
+
+    var body: some View {
+        if let resetsAt, resetsAt > now {
+            if resetsAt.timeIntervalSince(now) < ResetTimeFormatter.countdownThreshold {
+                Text(timerInterval: now...resetsAt, countsDown: true, showsHours: true)
+            } else {
+                Text(verbatim: ResetTimeFormatter(locale: locale).weekdayTime(resetsAt))
+            }
+        } else {
+            Text(verbatim: UsageFormatter.placeholder)
+        }
+    }
+}
+
+struct WidgetResetLabel: View {
+    let resetsAt: Date
+    let now: Date
+    @Environment(\.locale) private var locale
+
+    var body: some View {
+        if resetsAt <= now {
+            Text("Waiting for update", comment: "Widget: a limit reset, but its new usage has not been read yet")
+        } else if resetsAt.timeIntervalSince(now) < ResetTimeFormatter.countdownThreshold {
+            Text("Resets in \(timerInterval: now...resetsAt, countsDown: true, showsHours: true)")
+        } else {
+            Text("Resets \(ResetTimeFormatter(locale: locale).weekdayTime(resetsAt))")
+        }
+    }
+}
+
+struct WidgetActivityLabel: View {
+    let provider: WidgetProviderSnapshot
+    var short = false
+    @Environment(\.locale) private var locale
+
+    var body: some View {
+        if let tokens = provider.tokensToday {
+            let amount = UsageFormatter.tokens(tokens, locale: locale)
+            if short { Text("\(amount) tokens") } else { Text("\(amount) tokens today") }
+        } else if let credits = provider.creditsToday {
+            let amount = UsageFormatter.credits(credits, locale: locale)
+            if short { Text("\(amount) credits") } else { Text("\(amount) credits today") }
+        } else if let total = provider.totals?.first {
+            let amount = UsageFormatter.credits(total.value, locale: locale)
+            switch total.kind {
+            case .creditsUsed: Text("\(amount) credits used")
+            case .creditsRemaining: Text("\(amount) credits remaining")
+            case .charactersUsed: Text("\(amount) characters used")
+            }
+        }
     }
 }
 

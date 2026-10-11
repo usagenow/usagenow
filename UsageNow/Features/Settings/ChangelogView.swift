@@ -1,7 +1,8 @@
 import SwiftUI
 
 /// Every release's changes, read from the CHANGELOG.md bundled with the
-/// app, so it works offline and matches the installed version.
+/// app and its translations, so it works offline and matches the
+/// installed version.
 struct ChangelogView: View {
     static let onlineURL = URL(string: "https://github.com/usagenow/usagenow/blob/main/CHANGELOG.md")!
 
@@ -89,11 +90,12 @@ private struct ReleaseView: View {
         }
     }
 
-    /// The changelog's text is in English; its standard headings follow
-    /// the app's language.
+    /// Every translation keeps the English headings; they follow the
+    /// app's language here.
     private static func localizedTitle(_ title: String) -> String {
         switch title {
         case "Added": String(localized: "Added")
+        case "Development": String(localized: "Development")
         case "Changed": String(localized: "Changed")
         case "Fixed": String(localized: "Fixed")
         case "Removed": String(localized: "Removed")

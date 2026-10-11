@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>$(USAGENOW_APP_GROUP)</string>
+		<string>$(USAGENOW_APP_GROUP)$(USAGENOW_BUILD_SUFFIX)</string>
 	</array>
 </dict>
 </plist>

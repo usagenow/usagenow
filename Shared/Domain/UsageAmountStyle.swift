@@ -38,8 +38,8 @@ enum UsageAmountStyle: String, CaseIterable, Codable, Sendable {
     /// it: "left" in English, "ост." in Russian.
     var compactUnit: Text {
         switch self {
-        case .remaining: Text(verbatim: String(localized: "unit.left.short", defaultValue: "left", comment: "Follows a remaining percentage where space is tight, e.g. 58% left; abbreviate if needed"))
-        case .used: Text(verbatim: String(localized: "unit.used.short", defaultValue: "used", comment: "Follows a used percentage where space is tight, e.g. 42% used; abbreviate if needed"))
+        case .remaining: Text(LocalizedStringResource("unit.left.short", defaultValue: "left", comment: "Follows a remaining percentage where space is tight, e.g. 58% left; abbreviate if needed"))
+        case .used: Text(LocalizedStringResource("unit.used.short", defaultValue: "used", comment: "Follows a used percentage where space is tight, e.g. 42% used; abbreviate if needed"))
         }
     }
 

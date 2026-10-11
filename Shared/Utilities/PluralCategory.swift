@@ -20,8 +20,10 @@ enum PluralCategory: Sendable, Equatable {
             if n % 10 == 1, n % 100 != 11 { return .one }
             if (2...4).contains(n % 10), !(12...14).contains(n % 100) { return .few }
             return .many
-        case "fr":
+        case "fr", "pt":
             return n <= 1 ? .one : .other
+        case "ja", "ko":
+            return .other
         default:
             return n == 1 ? .one : .other
         }

@@ -143,6 +143,67 @@ struct WidgetSnapshotWriterTests {
         #expect(store.read()?.providers.first?.windows.first?.usage?.displayValue == 43)
     }
 
+    @Test func unchangedValuesStillPublishTheirNewReadingDate() throws {
+        let directory = try TemporaryDirectory()
+        let store = WidgetSnapshotStore(directory: directory.url)
+        let clock = TestClock(now)
+        let reloads = Counter()
+        let writer = WidgetSnapshotWriter(store: store, reloadTimelines: { reloads.increment() }, now: { clock.now })
+        var reading = state(.codex, windows: [window(.weekly, used: 42)])
+        writer.update(states: [reading], enabledProviders: [.codex])
+
+        clock.advance(by: 300)
+        reading.snapshot?.updatedAt = clock.now
+        writer.update(states: [reading], enabledProviders: [.codex])
+        #expect(store.read()?.providers.first?.updatedAt == clock.now)
+        #expect(store.read()?.generatedAt == clock.now)
+        #expect(reloads.value == 1, "A timestamp-only update while still fresh needn't reload")
+
+        clock.advance(by: 900)
+        reading.snapshot?.updatedAt = clock.now
+        writer.update(states: [reading], enabledProviders: [.codex])
+        #expect(reloads.value == 2, "Recovery from stale data needs a new timeline even if the percentage is unchanged")
+    }
+
+    @Test func repeatedFreshReadingsEventuallyReplaceTheOldTimeline() throws {
+        let directory = try TemporaryDirectory()
+        let store = WidgetSnapshotStore(directory: directory.url)
+        let clock = TestClock(now)
+        let reloads = Counter()
+        let writer = WidgetSnapshotWriter(store: store, reloadTimelines: { reloads.increment() }, now: { clock.now })
+        var reading = state(.codex, windows: [window(.weekly, used: 42)])
+        writer.update(states: [reading], enabledProviders: [.codex])
+
+        for _ in 0..<5 {
+            clock.advance(by: 120)
+            reading.snapshot?.updatedAt = clock.now
+            writer.update(states: [reading], enabledProviders: [.codex])
+        }
+        #expect(reloads.value == 1)
+
+        clock.advance(by: 120)
+        reading.snapshot?.updatedAt = clock.now
+        writer.update(states: [reading], enabledProviders: [.codex])
+        #expect(reloads.value == 2, "The first timeline is now stale, even though each file write was fresh")
+        #expect(store.read()?.providers.first?.updatedAt == clock.now)
+    }
+
+    @Test func anotherProviderCannotMakeCachedClaudeLimitsLookFresh() {
+        var claude = state(.claudeCode, windows: [window(.weekly, used: 70)])
+        let capturedAt = now.addingTimeInterval(-4 * 3600)
+        claude.snapshot?.limitsUpdatedAt = capturedAt
+        claude.snapshot?.quotaUnavailableReason = .signInExpired
+        let snapshot = WidgetSnapshotWriter.makeSnapshot(
+            states: [state(.codex, windows: [window(.weekly, used: 42)]), claude],
+            enabledProviders: [.codex, .claudeCode], generatedAt: now
+        )
+        #expect(snapshot.providers[0].updatedAt == now)
+        #expect(!snapshot.providers[0].isStale(at: now))
+        #expect(snapshot.providers[1].updatedAt == capturedAt)
+        #expect(snapshot.providers[1].isStale(at: now))
+        #expect(snapshot.providers[1].quotaUnavailableReason == .signInExpired)
+    }
+
     /// Switching between "left" and "used" redraws the widget even when the
     /// numbers are the same.
     @Test func carriesTheUsageAmountStyle() throws {
@@ -324,6 +385,10 @@ struct WidgetSnapshotStoreTests {
     @Test func onlySafeFieldsAreSerialized() throws {
         var snapshot = makeSnapshot()
         snapshot.usageAmountStyle = .used
+        if case .providers(var providers) = snapshot.state, !providers.isEmpty {
+            providers[0].totals = [UsageTotal(kind: .creditsUsed, value: 12)]
+            snapshot.state = .providers(providers)
+        }
         let data = try JSONEncoder.widget.encode(snapshot)
         let json = try #require(try JSONSerialization.jsonObject(with: data) as? [String: Any])
         #expect(Set(json.keys) == ["schemaVersion", "generatedAt", "state", "usageAmountStyle"])
@@ -333,7 +398,7 @@ struct WidgetSnapshotStoreTests {
         let allowed: Set<String> = [
             "schemaVersion", "generatedAt", "state", "usageAmountStyle", "language", "providers", "_0",
             "provider", "accountName", "planName", "modelName", "windows", "tokensToday", "requestsToday", "creditsToday",
-            "quotaUnavailableReason", "kind", "scope", "usage", "resetsAt", "recentDays",
+            "quotaUnavailableReason", "kind", "scope", "usage", "resetsAt", "recentDays", "updatedAt", "totals", "value",
         ]
         #expect(keys.subtracting(allowed).isEmpty, "Unexpected fields: \(keys.subtracting(allowed))")
 
@@ -358,6 +423,54 @@ struct WidgetSnapshotStoreTests {
 
 struct WidgetTimelineTests {
     private let now = TestDates.noon
+
+    @Test func anExpiredWindowIsUnknownWithoutAnotherAppRefresh() {
+        let reset = now.addingTimeInterval(300)
+        let snapshot = WidgetSnapshot(generatedAt: now, state: .providers([
+            WidgetProviderSnapshot(provider: .claudeCode, windows: [
+                UsageWindow(kind: .fiveHour, usage: UsagePercentage(percent: 100), resetsAt: reset),
+                UsageWindow(kind: .weekly, usage: UsagePercentage(percent: 40), resetsAt: now.addingTimeInterval(3 * 86_400)),
+            ], updatedAt: now),
+        ]))
+        let later = snapshot.asOf(reset)
+        #expect(later.providers[0].windows[0].usage == nil)
+        #expect(later.providers[0].windows[0].resetsAt == reset)
+        #expect(later.providers[0].mostRelevantWindow?.kind == .weekly)
+        #expect(later.providers[0].updatedAt == now)
+        #expect(snapshot.providers[0].windows[0].usage?.displayValue == 100, "The source snapshot is unchanged")
+    }
+
+    @Test func timelinePreparesResetsAndStalenessEvenIfReloadIsDelayed() {
+        let reset = now.addingTimeInterval(300)
+        let snapshot = WidgetSnapshot(generatedAt: now, state: .providers([
+            WidgetProviderSnapshot(provider: .codex, windows: [
+                UsageWindow(kind: .fiveHour, usage: UsagePercentage(percent: 100), resetsAt: reset),
+                UsageWindow(kind: .weekly, usage: UsagePercentage(percent: 20), resetsAt: now.addingTimeInterval(25 * 3600)),
+            ], updatedAt: now.addingTimeInterval(-120)),
+        ]))
+        let dates = WidgetRefreshSchedule.entryDates(after: now, snapshot: snapshot)
+        #expect(dates.first == now)
+        #expect(dates.contains(reset))
+        #expect(dates.contains(now.addingTimeInterval(481)), "This provider becomes stale before the shared file")
+        #expect(dates.contains(now.addingTimeInterval(601)))
+        #expect(dates.contains(now.addingTimeInterval(3601)), "The weekly reset enters the live countdown range")
+        #expect(dates == dates.sorted())
+        #expect(Set(dates).count == dates.count)
+        #expect(dates.allSatisfy { $0 <= now.addingTimeInterval(86_400) })
+    }
+
+    @Test func oldSnapshotsWithoutReadingDatesStillDecode() throws {
+        let data = Data("""
+            {"schemaVersion":1,"generatedAt":"2026-10-10T12:00:00Z", "state":{"providers":{"_0":[
+              {"provider":"codex","windows":[{"kind":300,"usage":25,"resetsAt":"2026-10-10T13:00:00Z"}]}
+            ]}}}
+            """.utf8)
+        let snapshot = try JSONDecoder.widget.decode(WidgetSnapshot.self, from: data)
+        #expect(snapshot.providers.count == 1)
+        #expect(snapshot.providers[0].updatedAt == nil)
+        #expect(snapshot.providers[0].windows[0].usage == UsagePercentage(percent: 25))
+        #expect(snapshot.asOf(snapshot.generatedAt.addingTimeInterval(7200)).providers[0].windows[0].usage == nil)
+    }
 
     @Test func refreshesAtTheIdleIntervalWithoutResets() {
         let snapshot = WidgetSnapshot(generatedAt: now, state: .noProvidersEnabled)

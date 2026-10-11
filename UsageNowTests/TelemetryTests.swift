@@ -103,7 +103,7 @@ struct NetworkTelemetryClientTests {
         #expect(Set(TelemetryEvent.allCases.map(\.rawValue)) == [
             "first_launch", "app_active", "app_updated", "codex_detected", "claude_detected", "gemini_detected", "antigravity_detected",
             "kiro_detected", "warp_detected", "opencode_detected", "qoder_detected",
-            "qwen_detected", "cline_detected", "grok_detected",
+            "qwen_detected", "cline_detected", "grok_detected", "windsurf_detected",
         ])
     }
 

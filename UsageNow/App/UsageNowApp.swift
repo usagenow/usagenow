@@ -20,14 +20,20 @@ struct UsageNowApp: App {
         // quitting early — raises SIGPIPE, which ends the app without a word.
         // Ignored, the write fails with an error the caller already handles.
         signal(SIGPIPE, SIG_IGN)
-        let appState = AppState.live()
-        appState.start()
+        // Hosted unit tests must not launch real providers, touch sign-ins,
+        // or publish synthetic data to a desktop widget.
+        let isTesting = UserDefaults.standard.bool(forKey: "UsageNowTesting")
+        let appState = isTesting
+            ? AppState(providers: [], widgetSnapshots: WidgetSnapshotWriter(store: nil))
+            : AppState.live()
+        if !isTesting { appState.start() }
         _appState = State(initialValue: appState)
     }
 
     var body: some Scene {
         MenuBarExtra {
             MenuBarContentView(store: appState.store, navigation: appState.settingsNavigation)
+                .appLanguage(appState.preferences.languageAtLaunch)
                 .environment(\.usageAmountStyle, appState.preferences.usageAmountStyle)
                 .environment(\.showsActivityHistory, appState.preferences.showsActivityHistory)
                 .onPopoverOpen { appState.popoverDidOpen() }
@@ -53,6 +59,7 @@ struct UsageNowApp: App {
                 removeAccount: { appState.removeAccount($0) },
                 navigation: appState.settingsNavigation
             )
+            .appLanguage(appState.preferences.languageAtLaunch)
         }
     }
 }

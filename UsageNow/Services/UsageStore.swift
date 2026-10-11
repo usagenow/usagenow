@@ -29,6 +29,15 @@ final class UsageStore {
     @ObservationIgnored private var order: [ProviderID]
     @ObservationIgnored private let now: @Sendable () -> Date
     @ObservationIgnored private var inFlightRefresh: Task<Void, Never>?
+    @ObservationIgnored private var credentialRevisions: [SourceKey: Int] = [:]
+
+    /// Replacing/removing a connection must never leave the previous
+    /// account's values visible, including a response already in flight.
+    func connectionDidChange(provider: ProviderID, account: String?) {
+        let key = SourceKey(provider: provider, account: account)
+        credentialRevisions[key, default: 0] += 1
+        update(key) { state in state = ProviderState(provider: state.provider, account: state.account) }
+    }
 
     /// - Parameters:
     ///   - providers: Each provider's own account, followed by any added ones.
@@ -187,6 +196,7 @@ final class UsageStore {
 
     private func performRefresh(of targets: [any UsageProvider], trigger: RefreshTrigger) async {
         isRefreshing = true
+        let revisions = credentialRevisions
         for provider in targets {
             update(provider.sourceKey) { $0.isRefreshing = true }
         }
@@ -203,6 +213,8 @@ final class UsageStore {
             }
             // Apply each result as it arrives so a slow provider doesn't hold back the others.
             for await (id, result) in group {
+                guard credentialRevisions[id, default: 0] == revisions[id, default: 0],
+                      enabledProviders.contains(id.provider) else { continue }
                 apply(result, to: id)
             }
         }
@@ -223,6 +235,8 @@ final class UsageStore {
                 state.failure = nil
             case .failure(let error) where error is CancellationError:
                 break
+            case .failure(APIKeyClient.Failure.rateLimited(let until)):
+                state.failure = RefreshFailure(message: "Refresh temporarily limited", date: date, retryAt: until)
             case .failure(let error):
                 Log.provider.error("Refresh failed for \(id.provider.rawValue, privacy: .public): \(error.localizedDescription)")
                 state.failure = RefreshFailure(message: error.localizedDescription, date: date)

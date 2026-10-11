@@ -161,7 +161,9 @@ extension ProvidersSettingsView {
     private func apiKeyStatus(_ definition: ProviderDefinition) -> some View {
         let saved = { _ = keyRevision; return hasAPIKey(definition.id, nil) }()
         HStack(spacing: 8) {
-            Label(saved ? "API key saved" : "No API key yet", systemImage: saved ? "key.fill" : "key")
+            Label { Text(definition.apiKey?.statusTitle(saved: saved) ?? "Not connected") } icon: {
+                Image(systemName: saved ? "key.fill" : "key")
+            }
                 .font(.callout)
                 .foregroundStyle(.secondary)
             Spacer(minLength: 8)
@@ -172,7 +174,7 @@ extension ProvidersSettingsView {
                     keyRevision += 1
                 }
             } else {
-                Button("Add API Key…") { editingKey = KeyTarget(definition: definition) }
+                Button("Connect…") { editingKey = KeyTarget(definition: definition) }
             }
         }
         .controlSize(.small)
@@ -181,57 +183,58 @@ extension ProvidersSettingsView {
 }
 
 /// Asks for a provider's API key and says plainly what happens to it.
-private struct APIKeySheet: View {
+struct APIKeySheet: View {
     let definition: ProviderDefinition
     var account: ProviderAccount?
     let save: (String) throws -> Void
 
     @Environment(\.dismiss) private var dismiss
     @State private var key = ""
-    @State private var failed = false
+    @State private var verification = ConnectionVerification()
+    @State private var checkTask: Task<Void, Never>?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(spacing: 10) {
                 ProviderLogoTile(provider: definition.id)
-                Text("\(definition.id.displayName(account: account?.tag)) API key")
+                Text("Connect \(definition.id.displayName(account: account?.tag))")
                     .font(.headline)
             }
 
-            SecureField("API key", text: $key)
-                .textFieldStyle(.roundedBorder)
-                .onSubmit(submit)
+            ConnectionCredentialField(definition: definition, credential: $key)
+                .disabled(checkTask != nil)
 
             APIKeyNotes(definition: definition)
 
-            if failed {
-                Text("The key couldn’t be saved to the Keychain.")
-                    .font(.callout)
-                    .foregroundStyle(.red)
-            }
+            ConnectionCheckFeedback(verification: verification)
 
             HStack {
                 Spacer()
-                Button("Cancel", role: .cancel) { dismiss() }
+                Button("Cancel", role: .cancel) { cancel(); dismiss() }
                     .keyboardShortcut(.cancelAction)
-                Button("Save", action: submit)
+                Button("Check and Save", action: submit)
                     .keyboardShortcut(.defaultAction)
-                    .disabled(key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .disabled(checkTask != nil || key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
         }
         .padding(20)
         .frame(width: 400)
+        .onDisappear(perform: cancel)
     }
 
     private func submit() {
-        do {
-            try save(key)
-            key = ""
-            dismiss()
-        } catch {
-            failed = true
+        guard checkTask == nil else { return }
+        let credential = key
+        checkTask = Task { @MainActor in
+            defer { checkTask = nil }
+            if await verification.checkAndSave(credential, for: definition.id, save: save) {
+                key = ""
+                dismiss()
+            }
         }
     }
+
+    private func cancel() { checkTask?.cancel(); verification.cancel(); key = "" }
 }
 
 private struct ProviderRowLabel: View {

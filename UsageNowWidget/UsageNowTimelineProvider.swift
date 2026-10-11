@@ -14,15 +14,18 @@ struct UsageNowTimelineProvider: TimelineProvider {
     }
 
     func getSnapshot(in context: Context, completion: @escaping (UsageNowWidgetEntry) -> Void) {
-        completion(UsageNowWidgetEntry(date: now(), snapshot: store?.read()))
+        let date = now()
+        completion(UsageNowWidgetEntry(date: date, snapshot: store?.read()?.asOf(date)))
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<UsageNowWidgetEntry>) -> Void) {
         let date = now()
         let snapshot = store?.read()
         Self.adoptLanguage(of: snapshot)
-        let entry = UsageNowWidgetEntry(date: date, snapshot: snapshot)
-        completion(Timeline(entries: [entry], policy: .after(WidgetRefreshSchedule.next(after: date, snapshot: snapshot))))
+        let entries = WidgetRefreshSchedule.entryDates(after: date, snapshot: snapshot).map { date in
+            UsageNowWidgetEntry(date: date, snapshot: snapshot?.asOf(date))
+        }
+        completion(Timeline(entries: entries, policy: .after(WidgetRefreshSchedule.next(after: date, snapshot: snapshot))))
     }
 
     /// The view follows the app's language at once through its locale;

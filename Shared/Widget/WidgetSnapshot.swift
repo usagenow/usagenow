@@ -8,6 +8,8 @@ import Foundation
 /// provider files must never reach this model — see the serialization
 /// test that pins the JSON keys.
 struct WidgetSnapshot: Codable, Sendable, Equatable {
+    static let widgetKind = "UsageNowWidget"
+    static let staleThreshold: TimeInterval = 10 * 60
     /// Bumped when the shape changes. A widget that finds a newer version
     /// asks the user to open UsageNow instead of guessing.
     static let currentSchemaVersion = 1
@@ -66,8 +68,39 @@ struct WidgetSnapshot: Codable, Sendable, Equatable {
         return chosen.sorted { $0.offset < $1.offset }.map(\.element)
     }
 
-    func isStale(at date: Date, threshold: TimeInterval = 10 * 60) -> Bool {
+    func isStale(at date: Date, threshold: TimeInterval = staleThreshold) -> Bool {
         date.timeIntervalSince(generatedAt) > threshold
+    }
+
+    /// A timeline can outlive the app that supplied it. A past reset is
+    /// no longer evidence of the usage in the new window.
+    func asOf(_ date: Date) -> WidgetSnapshot {
+        guard case .providers(let providers) = state else { return self }
+        var copy = self
+        copy.state = .providers(providers.map { provider in
+            var provider = provider
+            provider.windows = provider.windows.asOf(date)
+            return provider
+        })
+        return copy
+    }
+
+    /// Timestamp-only changes are written for the next timeline read, but
+    /// don't spend another reload unless data became fresh or stale.
+    func needsReload(comparedTo previous: WidgetSnapshot, at date: Date) -> Bool {
+        var current = self
+        var previous = previous
+        current.generatedAt = previous.generatedAt
+        if case .providers(let providers) = current.state,
+           case .providers(let oldProviders) = previous.state {
+            guard providers.map(\.id) == oldProviders.map(\.id) else { return true }
+            for (provider, old) in zip(providers, oldProviders) {
+                if provider.isStale(at: date) != old.isStale(at: date) { return true }
+            }
+            current.state = .providers(providers.map { var value = $0; value.updatedAt = nil; return value })
+            previous.state = .providers(oldProviders.map { var value = $0; value.updatedAt = nil; return value })
+        }
+        return current != previous
     }
 }
 
@@ -97,6 +130,16 @@ struct WidgetProviderSnapshot: Codable, Sendable, Equatable, Identifiable {
     /// amounts. `nil` when the app's charts are turned off or there's no
     /// history; optional, so snapshots from earlier versions still read.
     var recentDays: [Double]? = nil
+    /// When these displayed values were obtained, not when another
+    /// provider caused the app to write the file. Optional for old readers.
+    var updatedAt: Date? = nil
+    /// Account counters, never confused with today's local activity.
+    var totals: [UsageTotal]? = nil
+
+    func isStale(at date: Date) -> Bool {
+        guard let updatedAt else { return false }
+        return date.timeIntervalSince(updatedAt) > WidgetSnapshot.staleThreshold
+    }
 
     /// Account names are unique per provider, so this tells rows apart.
     var id: String { accountName.map { "\(provider.rawValue) · \($0)" } ?? provider.rawValue }
@@ -123,6 +166,9 @@ struct WidgetProviderSnapshot: Codable, Sendable, Equatable, Identifiable {
             return short
                 ? String(localized: "\(UsageFormatter.credits(credits)) credits", comment: "Widget activity, e.g. 2.23 credits")
                 : String(localized: "\(UsageFormatter.credits(credits)) credits today", comment: "Widget activity, e.g. 2.23 credits today")
+        }
+        if let total = totals?.first {
+            return "\(String(localized: total.kind.title)): \(UsageFormatter.credits(total.value))"
         }
         return nil
     }
@@ -162,7 +208,7 @@ extension WidgetSnapshot.State {
 
 extension WidgetProviderSnapshot {
     private enum CodingKeys: String, CodingKey {
-        case provider, accountName, planName, modelName, windows, tokensToday, requestsToday, creditsToday, quotaUnavailableReason, recentDays
+        case provider, accountName, planName, modelName, windows, tokensToday, requestsToday, creditsToday, quotaUnavailableReason, recentDays, updatedAt, totals
     }
 
     /// An unknown provider fails, so the list can skip it; an unknown window
@@ -179,6 +225,8 @@ extension WidgetProviderSnapshot {
         creditsToday = try container.decodeIfPresent(Decimal.self, forKey: .creditsToday)
         quotaUnavailableReason = try? container.decodeIfPresent(QuotaUnavailableReason.self, forKey: .quotaUnavailableReason)
         recentDays = try? container.decodeIfPresent([Double].self, forKey: .recentDays)
+        updatedAt = try? container.decodeIfPresent(Date.self, forKey: .updatedAt)
+        totals = (try? container.decodeIfPresent([Skippable<UsageTotal>].self, forKey: .totals))?.compactMap(\.value)
     }
 }
 

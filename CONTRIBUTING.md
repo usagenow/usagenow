@@ -10,6 +10,14 @@ Thanks for your interest in improving UsageNow.
 
 The project uses Xcode’s folder-synchronized groups, so new files in `UsageNow/` or `UsageNowTests/` are picked up automatically.
 
+Debug builds appear as **UsageNow.Debug**, with their own bundle identifiers,
+preferences, and App Group (the release group's identifier plus `.Debug`).
+They can run beside the installed app without replacing its widget registration
+or writing to its snapshot. Their automatic updater is disabled. The test
+scheme passes `-UsageNowTesting YES` so its host doesn't start live providers.
+Use a signed **Release** build to verify an upgrade over an installed release;
+don't copy a Debug build over `/Applications/UsageNow.app`.
+
 ## Guidelines
 
 - **Native first.** Use SwiftUI, system colors, and SF Pro. The app must look right in light and dark mode and with increased contrast.

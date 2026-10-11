@@ -11,6 +11,9 @@ enum UsageWindowKind: Sendable, Hashable, Codable {
     /// A billing month, which resets on a date rather than after a fixed
     /// length. Distinct from a rolling 30-day window, which stays `custom`.
     case monthly
+    /// A reported allowance whose billing cadence isn't known. Never
+    /// pretend a credit balance is a daily or monthly rate limit.
+    case allowance
     /// A window of another length reported by an official source.
     case custom(minutes: Int)
 
@@ -29,6 +32,7 @@ enum UsageWindowKind: Sendable, Hashable, Codable {
         case .weekly: 10_080
         // Nominal, for ordering against other windows only.
         case .monthly: 43_200
+        case .allowance: Int.max
         case .custom(let minutes): minutes
         }
     }
@@ -41,10 +45,12 @@ enum UsageWindowKind: Sendable, Hashable, Codable {
         let container = try decoder.singleValueContainer()
         if let minutes = try? container.decode(Int.self) {
             self.init(durationMinutes: minutes)
-        } else if try container.decode(String.self) == Self.monthlyToken {
-            self = .monthly
         } else {
-            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Unknown usage window kind"))
+            switch try container.decode(String.self) {
+            case Self.monthlyToken: self = .monthly
+            case "allowance": self = .allowance
+            default: throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Unknown usage window kind"))
+            }
         }
     }
 
@@ -52,6 +58,8 @@ enum UsageWindowKind: Sendable, Hashable, Codable {
         var container = encoder.singleValueContainer()
         if self == .monthly {
             try container.encode(Self.monthlyToken)
+        } else if self == .allowance {
+            try container.encode("allowance")
         } else {
             try container.encode(durationMinutes)
         }
@@ -69,7 +77,7 @@ struct UsageWindow: Sendable, Equatable, Identifiable, Codable {
     /// When the window resets, or `nil` if unknown.
     var resetsAt: Date?
 
-    var id: String { "\(kind == .monthly ? "monthly" : String(kind.durationMinutes))|\(scope ?? "")" }
+    var id: String { "\(kind == .monthly ? "monthly" : kind == .allowance ? "allowance" : String(kind.durationMinutes))|\(scope ?? "")" }
 }
 
 extension [UsageWindow] {

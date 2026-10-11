@@ -8,12 +8,20 @@ struct AppLanguageTests {
     @Test func readsTheLanguageMacOSKeepsForTheApp() {
         #expect(AppLanguage(preferredLanguages: ["ru-KZ"]) == .ru)
         #expect(AppLanguage(preferredLanguages: ["de"]) == .de)
-        #expect(AppLanguage(preferredLanguages: ["ja"]) == .system)
+        #expect(AppLanguage(preferredLanguages: ["pt-BR"]) == .pt)
+        #expect(AppLanguage(preferredLanguages: ["he-IL"]) == .he)
+        #expect(AppLanguage(preferredLanguages: ["zh-Hans"]) == .system)
         #expect(AppLanguage(preferredLanguages: nil) == .system)
     }
 
     @Test func namesEachLanguageInItself() {
-        #expect(AppLanguage.allCases.compactMap(\.nativeName) == ["Deutsch", "English", "Español", "Français", "Русский"])
+        #expect(AppLanguage.allCases.compactMap(\.nativeName) == [
+            "Deutsch", "English", "Español", "Français", "Português", "Русский", "עברית", "日本語", "한국어",
+        ])
+    }
+
+    @Test func onlyHebrewReadsRightToLeft() {
+        #expect(AppLanguage.allCases.filter(\.isRightToLeft) == [.he])
     }
 
     @Test func choosingALanguageSetsTheAppsOwnLanguageList() throws {

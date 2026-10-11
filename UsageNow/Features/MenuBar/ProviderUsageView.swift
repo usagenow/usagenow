@@ -19,8 +19,9 @@ struct ProviderUsageView: View {
                 planName: snapshot?.planName,
                 note: staleNote
             )
-            if state.failure != nil {
-                RefreshFailureView(name: state.displayName, isRetrying: state.isRefreshing, onRetry: onRetry)
+            if let failure = state.failure {
+                RefreshFailureView(name: state.displayName, isRetrying: state.isRefreshing,
+                                   retryAt: failure.retryAt, now: now, onRetry: onRetry)
             }
             content
         }
@@ -43,8 +44,16 @@ struct ProviderUsageView: View {
                 }
                 // Also under windows that are only known to have reset, so the fix stays visible.
                 // A balance is the reading for API accounts, so its absence of windows isn't news.
-                if (snapshot.windows.isEmpty && snapshot.balance == nil) || snapshot.quotaUnavailableReason != nil {
+                if (snapshot.windows.isEmpty && snapshot.balance == nil && snapshot.totals.isEmpty) || snapshot.quotaUnavailableReason != nil {
                     StatusMessage(text: snapshot.quotaUnavailableReason?.message(for: state.provider) ?? String(localized: "Usage limits unavailable"))
+                }
+                ForEach(snapshot.totals) { total in
+                    HStack {
+                        Text(total.kind.title).foregroundStyle(.secondary)
+                        Spacer()
+                        Text(UsageFormatter.credits(total.value)).monospacedDigit()
+                    }
+                    .font(.callout)
                 }
                 ProviderActivityView(activity: snapshot.activity)
                 if showsActivityHistory, let history = snapshot.activity.history {
@@ -52,7 +61,7 @@ struct ProviderUsageView: View {
                 }
                 ModelActivityView(models: snapshot.modelActivity)
             case .notAuthenticated where ProviderCatalog.definition(for: state.provider).apiKey != nil:
-                StatusMessage(text: String(localized: "\(state.displayName) didn’t accept the API key. Check it in Settings › Providers."))
+                StatusMessage(text: String(localized: "\(state.displayName) rejected the connection. Sign in again or replace the credential in Settings › Providers."))
             case .notAuthenticated where state.account != nil:
                 // An added folder with nothing in it: usually the wrong folder.
                 StatusMessage(text: String(localized: "No sign-in or sessions in this account’s folder. Check it in Settings › Providers."))
@@ -68,7 +77,8 @@ struct ProviderUsageView: View {
 
     /// "Updated 18m ago" when the shown data is old.
     private var staleNote: String? {
-        guard let snapshot, snapshot.status == .available, snapshot.isStale(at: now) else { return nil }
+        guard let snapshot, snapshot.status == .available,
+              snapshot.isStale(at: now) || state.failure != nil else { return nil }
         return formatter.updatedDescription(snapshot.dataDate, now: now)
     }
 }
@@ -131,6 +141,8 @@ private struct StatusMessage: View {
 private struct RefreshFailureView: View {
     let name: String
     let isRetrying: Bool
+    let retryAt: Date?
+    let now: Date
     let onRetry: () -> Void
 
     var body: some View {
@@ -139,11 +151,17 @@ private struct RefreshFailureView: View {
                 .foregroundStyle(.orange)
                 .imageScale(.small)
                 .accessibilityHidden(true)
-            Text("Couldn’t refresh \(name)")
-                .foregroundStyle(.secondary)
+            if let retryAt {
+                Text(RateLimitMessage.until(retryAt))
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            } else {
+                Text("Couldn’t refresh \(name)")
+                    .foregroundStyle(.secondary)
+            }
             Spacer(minLength: 8)
             TextButton(title: "Retry", action: onRetry)
-                .disabled(isRetrying)
+                .disabled(isRetrying || (retryAt.map { $0 > now } ?? false))
                 .padding(.vertical, -3) // Keep the hover area from growing the row.
                 .padding(.trailing, -7) // Align the label, not the highlight, with the content edge.
                 .accessibilityLabel(Text("Retry refreshing \(name)"))

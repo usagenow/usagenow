@@ -13,6 +13,8 @@ struct UsageNowWidgetEntryView: View {
 
     let entry: UsageNowWidgetEntry
 
+    private var snapshot: WidgetSnapshot? { entry.snapshot?.asOf(entry.date) }
+
     var body: some View {
         content
             .environment(\.usageAmountStyle, entry.snapshot?.usageAmountStyle ?? .default)
@@ -21,7 +23,7 @@ struct UsageNowWidgetEntryView: View {
 
     @ViewBuilder
     private var content: some View {
-        if let snapshot = entry.snapshot {
+        if let snapshot {
             switch snapshot.state {
             case .noProvidersEnabled:
                 WidgetMessageView(
@@ -63,7 +65,7 @@ struct SmallUsageWidgetView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: WidgetLayout.contentSpacing) {
-            WidgetHeader(note: staleNote)
+            WidgetHeader(updatedAt: staleReadingDate, now: now, compactNote: true)
             if providers.count == 1, let provider = providers.first {
                 single(provider)
             } else {
@@ -81,20 +83,20 @@ struct SmallUsageWidgetView: View {
     /// One provider gets room for its window name and reset time.
     @ViewBuilder
     private func single(_ provider: WidgetProviderSnapshot) -> some View {
-        WidgetProviderName(provider: provider.provider, name: provider.displayName, font: .callout)
-        if let window = provider.mostRelevantWindow {
+        WidgetProviderName(provider: provider.provider, name: provider.displayName, font: .callout, updatedAt: provider.updatedAt, now: now)
+        if let window = provider.mostRelevantWindow ?? provider.windows.sortedForDisplay().first {
             WidgetRemainingLabel(usage: window.usage, font: .title2)
             UsageProgressView(usage: window.usage, height: WidgetLayout.barHeight)
-            Text(verbatim: window.kind.title)
+            Text(window.kind.titleKey)
                 .font(.caption)
                 .foregroundStyle(.secondary)
             if let resetsAt = window.resetsAt {
-                Text(formatter.resetDescription(for: resetsAt, now: now))
+                WidgetResetLabel(resetsAt: resetsAt, now: now)
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
             }
         } else {
-            WidgetUnavailableLabel()
+            if provider.totals?.isEmpty != false { WidgetUnavailableLabel() }
             activity(provider)
             if let days = provider.recentDays {
                 Spacer(minLength: 0)
@@ -109,17 +111,23 @@ struct SmallUsageWidgetView: View {
     private func compact(_ provider: WidgetProviderSnapshot) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             HStack(alignment: .firstTextBaseline) {
-                WidgetProviderName(provider: provider.provider, name: provider.displayName, font: .caption)
+                WidgetProviderName(provider: provider.provider, name: provider.displayName, font: .caption, updatedAt: provider.updatedAt, now: now)
                 Spacer(minLength: 4)
                 if provider.mostRelevantWindow != nil {
-                    // With three rows the name needs the room; the bar still shows the level.
-                    WidgetRemainingLabel(usage: provider.mostRelevantWindow?.usage, font: .caption, showsLevelSymbol: providers.count < 3, compact: true)
+                    // The bar carries the warning color; keep the name and
+                    // its stale-reading marker readable in a small widget.
+                    WidgetRemainingLabel(usage: provider.mostRelevantWindow?.usage, font: .caption, showsLevelSymbol: false, compact: true)
+                        .fixedSize(horizontal: true, vertical: false)
                 }
             }
             if let window = provider.mostRelevantWindow {
                 UsageProgressView(usage: window.usage, height: WidgetLayout.barHeight)
             } else if let days = provider.recentDays {
                 WidgetActivityChart(days: days, height: 10)
+            } else if provider.totals?.isEmpty == false {
+                activity(provider)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
             } else {
                 WidgetUnavailableLabel()
             }
@@ -137,7 +145,7 @@ struct SmallUsageWidgetView: View {
                     .font(.caption2)
                     .foregroundStyle(.secondary)
                 Spacer(minLength: 4)
-                Text(verbatim: formatter.countdown(from: now, to: next.resetsAt))
+                WidgetCountdown(resetsAt: next.resetsAt, now: now)
                     .font(.caption.weight(.medium))
                     .monospacedDigit()
             }
@@ -147,21 +155,20 @@ struct SmallUsageWidgetView: View {
 
     @ViewBuilder
     private func activity(_ provider: WidgetProviderSnapshot) -> some View {
-        if let activity = provider.activityText() {
-            Text(verbatim: activity)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-        }
+        WidgetActivityLabel(provider: provider)
+            .font(.caption2)
+            .foregroundStyle(.secondary)
     }
 
-    private var staleNote: String? {
-        guard snapshot.isStale(at: now) else { return nil }
-        return formatter.updatedDescription(snapshot.generatedAt, now: now)
+    private var staleReadingDate: Date? {
+        let oldest = snapshot.providers(fitting: Self.maxRows).compactMap(\.updatedAt).min() ?? snapshot.generatedAt
+        guard now.timeIntervalSince(oldest) > WidgetSnapshot.staleThreshold else { return nil }
+        return oldest
     }
 
     private func accessibilityValue(for provider: WidgetProviderSnapshot) -> String {
         guard let window = provider.mostRelevantWindow, let usage = window.usage else {
-            return String(localized: "Usage limits unavailable")
+            return provider.activityText() ?? String(localized: "Usage limits unavailable")
         }
         var parts = [style.accessibilityDescription(usage)]
         if let resetsAt = window.resetsAt {
@@ -184,11 +191,9 @@ struct MediumUsageWidgetView: View {
     let snapshot: WidgetSnapshot
     let now: Date
 
-    private let formatter = ResetTimeFormatter()
-
     var body: some View {
         VStack(alignment: .leading, spacing: WidgetLayout.contentSpacing) {
-            WidgetHeader(note: staleNote)
+            WidgetHeader(updatedAt: staleReadingDate, now: now)
             if providers.count <= Self.maxColumns {
                 HStack(alignment: .top, spacing: 16) {
                     ForEach(providers) { provider in
@@ -209,15 +214,13 @@ struct MediumUsageWidgetView: View {
 
     private func column(_ provider: WidgetProviderSnapshot) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            WidgetProviderName(provider: provider.provider, name: provider.displayName)
+            WidgetProviderName(provider: provider.provider, name: provider.displayName, updatedAt: provider.updatedAt, now: now)
             let windows = Array(provider.windows.sortedForDisplay().prefix(Self.maxWindowsPerProvider))
             if windows.isEmpty {
-                WidgetUnavailableLabel()
-                if let activity = provider.activityText() {
-                    Text(verbatim: activity)
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                }
+                if provider.totals?.isEmpty != false { WidgetUnavailableLabel() }
+                WidgetActivityLabel(provider: provider)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
             } else {
                 ForEach(windows) { window in
                     WidgetWindowRow(window: window, now: now)
@@ -232,8 +235,9 @@ struct MediumUsageWidgetView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    private var staleNote: String? {
-        guard snapshot.isStale(at: now) else { return nil }
-        return formatter.updatedDescription(snapshot.generatedAt, now: now)
+    private var staleReadingDate: Date? {
+        let oldest = snapshot.providers(fitting: Self.maxRows).compactMap(\.updatedAt).min() ?? snapshot.generatedAt
+        guard now.timeIntervalSince(oldest) > WidgetSnapshot.staleThreshold else { return nil }
+        return oldest
     }
 }

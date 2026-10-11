@@ -29,6 +29,57 @@ struct ProviderAccountTests {
         #expect(store.states[0].snapshot?.account == nil)
     }
 
+    // MARK: Menu bar
+
+    @Test func theMenuBarShowsTheChosenAccount() async {
+        let store = UsageStore(
+            providers: [
+                StubProvider(.codex, .success(Fixtures.snapshot(.codex, weekly: 40, at: now))),
+                StubProvider(.codex, .success(Fixtures.snapshot(.codex, weekly: 90, at: now)), account: work),
+            ],
+            order: [.codex]
+        )
+        await store.refresh()
+
+        #expect(MenuBarDisplayMode.codexPercentage.usage(in: store.snapshots)?.displayValue == 50)
+        #expect(MenuBarDisplayMode.codexPercentage.usage(in: store.snapshots, account: work.id)?.displayValue == 90)
+        #expect(MenuBarDisplayMode.codexPercentage.usage(in: store.snapshots, account: "gone") == nil)
+    }
+
+    @Test func eachProvidersAccountsFollowItsMode() {
+        let claude = ProviderAccount(id: "B1", provider: .claudeCode, name: "Team")
+        let choices = MenuBarChoice.available(for: [.codex, .claudeCode], accounts: [work, claude])
+
+        #expect(choices == [
+            MenuBarChoice(mode: .iconOnly),
+            MenuBarChoice(mode: .mostCriticalPercentage),
+            MenuBarChoice(mode: .codexPercentage),
+            MenuBarChoice(mode: .codexPercentage, account: work.id),
+            MenuBarChoice(mode: .claudePercentage),
+            MenuBarChoice(mode: .claudePercentage, account: claude.id),
+        ])
+        #expect(MenuBarChoice(mode: .codexPercentage, account: work.id).title(accounts: [work]) == "Codex · Work usage")
+    }
+
+    @Test func aRemovedAccountsChoiceFallsBackToItsProvider() {
+        let chosen = MenuBarChoice(mode: .codexPercentage, account: work.id)
+        #expect(chosen.validated(against: [work]) == chosen)
+        #expect(chosen.validated(against: []) == MenuBarChoice(mode: .codexPercentage))
+        #expect(MenuBarChoice(mode: .claudePercentage, account: work.id).validated(against: [work]) == MenuBarChoice(mode: .claudePercentage))
+    }
+
+    @Test func theChosenAccountIsRemembered() {
+        let defaults = UserDefaults(suiteName: "ProviderAccountTests.menuBar")!
+        defaults.removePersistentDomain(forName: "ProviderAccountTests.menuBar")
+        let preferences = AppPreferences(defaults: defaults, languageDomain: nil)
+        preferences.menuBarChoice = MenuBarChoice(mode: .codexPercentage, account: work.id)
+
+        let reloaded = AppPreferences(defaults: defaults, languageDomain: nil)
+        #expect(reloaded.menuBarChoice == MenuBarChoice(mode: .codexPercentage, account: work.id))
+        reloaded.menuBarChoice = .default
+        #expect(AppPreferences(defaults: defaults, languageDomain: nil).menuBarAccount == nil)
+    }
+
     @Test func anAddedAccountIsReadAloneAndARemovedOneDisappears() async {
         let codex = StubProvider(.codex, .success(Fixtures.snapshot(.codex, at: now)))
         let store = UsageStore(providers: [codex], order: [.codex])

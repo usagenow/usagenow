@@ -7,14 +7,22 @@ struct PluralCategoryTests {
         #expect(forms == [.one, .few, .few, .many, .many, .many, .many, .one, .few, .many, .one, .many, .few])
     }
 
-    @Test func frenchCountsZeroAsOne() {
-        #expect(PluralCategory.of(0, language: "fr") == .one)
-        #expect(PluralCategory.of(1, language: "fr") == .one)
-        #expect(PluralCategory.of(2, language: "fr") == .other)
+    @Test func frenchAndPortugueseCountZeroAsOne() {
+        for language in ["fr", "pt"] {
+            #expect(PluralCategory.of(0, language: language) == .one)
+            #expect(PluralCategory.of(1, language: language) == .one)
+            #expect(PluralCategory.of(2, language: language) == .other)
+        }
     }
 
-    @Test func englishGermanAndSpanishHaveOneAndOther() {
-        for language in ["en", "de", "es"] {
+    @Test func japaneseAndKoreanHaveOneForm() {
+        for language in ["ja", "ko"] {
+            #expect([0, 1, 2, 11].map { PluralCategory.of(Int64($0), language: language) } == [.other, .other, .other, .other])
+        }
+    }
+
+    @Test func englishGermanSpanishAndHebrewHaveOneAndOther() {
+        for language in ["en", "de", "es", "he"] {
             #expect(PluralCategory.of(1, language: language) == .one)
             #expect(PluralCategory.of(0, language: language) == .other)
             #expect(PluralCategory.of(7, language: language) == .other)

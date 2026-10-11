@@ -29,6 +29,21 @@ extension UsageLevel {
 }
 
 extension UsageWindowKind {
+    /// SwiftUI resolves this against the view's locale, including a widget
+    /// whose language was changed while its process was still running.
+    var titleKey: LocalizedStringKey {
+        switch self {
+        case .fiveHour: "5-hour"
+        case .weekly: "Weekly"
+        case .monthly: "Monthly"
+        case .allowance: "Allowance"
+        case .custom(let minutes) where minutes == 24 * 60: "Daily"
+        case .custom(let minutes) where minutes % (24 * 60) == 0: "\(minutes / (24 * 60))-day"
+        case .custom(let minutes) where minutes % 60 == 0: "\(minutes / 60)-hour"
+        case .custom(let minutes): "\(minutes)-minute"
+        }
+    }
+
     /// "5-hour", "Weekly", or a label derived from the window length.
     var title: String {
         switch self {
@@ -38,6 +53,10 @@ extension UsageWindowKind {
             String(localized: "Weekly")
         case .monthly:
             String(localized: "Monthly")
+        case .allowance:
+            String(localized: "Allowance")
+        case .custom(let minutes) where minutes == 24 * 60:
+            String(localized: "Daily")
         case .custom(let minutes) where minutes % (24 * 60) == 0:
             String(localized: "\(minutes / (24 * 60))-day", comment: "Usage window length, e.g. 30-day")
         case .custom(let minutes) where minutes % 60 == 0:

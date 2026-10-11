@@ -43,6 +43,24 @@ xcodebuild -exportArchive -archivePath "$ARCHIVE" \
     -exportPath "$EXPORT" -quiet
 
 echo "==> Verifying signatures"
+WIDGET="$APP/Contents/PlugIns/UsageNowWidget.appex"
+APP_VERSION=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$APP/Contents/Info.plist")
+APP_BUILD=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP/Contents/Info.plist")
+APP_GROUP=$(/usr/libexec/PlistBuddy -c 'Print :UsageNowAppGroupIdentifier' "$APP/Contents/Info.plist")
+if [ "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP/Contents/Info.plist")" != 'com.usagenow.UsageNow' ] \
+    || [ "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$WIDGET/Contents/Info.plist")" != 'com.usagenow.UsageNow.Widget' ]; then
+    echo "error: release must contain the production app and widget identifiers" >&2
+    exit 1
+fi
+if [ "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$WIDGET/Contents/Info.plist")" != "$APP_VERSION" ] \
+    || [ "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$WIDGET/Contents/Info.plist")" != "$APP_BUILD" ] \
+    || [ "$(/usr/libexec/PlistBuddy -c 'Print :UsageNowAppGroupIdentifier' "$WIDGET/Contents/Info.plist")" != "$APP_GROUP" ]; then
+    echo "error: app and widget versions, builds, and App Groups must match" >&2
+    exit 1
+fi
+case "$APP_GROUP" in
+    ""|*.Debug) echo "error: missing or development App Group in release" >&2; exit 1 ;;
+esac
 codesign --verify --deep --strict --verbose=2 "$APP"
 codesign --verify --strict --verbose=2 "$APP/Contents/PlugIns/UsageNowWidget.appex"
 
@@ -54,6 +72,10 @@ for target in "$APP" "$APP/Contents/PlugIns/UsageNowWidget.appex"; do
 
     grep -E "^(Authority=Developer ID|TeamIdentifier|Identifier=)" <<<"$signature" || true
     grep -E "application-groups|app-sandbox|get-task-allow" <<<"$entitlements" || true
+    if ! grep -Fq "\"$APP_GROUP\"" <<<"$entitlements"; then
+        echo "error: $(basename "$target") is not entitled for the configured App Group" >&2
+        exit 1
+    fi
 
     case "$signature" in
         *"flags="*"runtime"*) ;;
