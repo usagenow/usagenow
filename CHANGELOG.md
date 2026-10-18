@@ -2,6 +2,12 @@
 
 All notable changes to UsageNow. This project follows [Semantic Versioning](https://semver.org).
 
+## Unreleased
+
+### Added
+
+- **Gemini 4 Argon cost estimates.** Official standard Gemini API prices: $2 input, $10 output (including thinking), and $0.10 cached input per million tokens through November 30, 2026; $4 / $20 / $0.20 from December 1. Estimates use each activity record's date, so past activity keeps its introductory rate. UsageNow uses midnight UTC for the published date change; these are estimates, not provider billing totals. The reviewed schedule is preserved when the bundled price table is regenerated.
+
 ## 0.9.0
 
 ### Added

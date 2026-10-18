@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-01",
+  "generated": "2026-10-18",
   "source": "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json",
   "unit": "USD per million tokens",
   "models": {
@@ -398,6 +398,23 @@
       "input": "1.5",
       "output": "7.5",
       "cacheRead": "0.15"
+    },
+    "gemini-4-argon": {
+      "input": "2",
+      "output": "10",
+      "cacheRead": "0.1",
+      "source": "https://ai.google.dev/gemini-api/docs/pricing#gemini-4-argon",
+      "verified": "2026-10-18",
+      "changes": [
+        {
+          "effectiveFrom": "2026-12-01T00:00:00Z",
+          "price": {
+            "input": "4",
+            "output": "20",
+            "cacheRead": "0.2"
+          }
+        }
+      ]
     },
     "gemini-exp-1206": {
       "input": "0.3",

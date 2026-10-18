@@ -3,13 +3,14 @@
 
 UsageNow shows an estimate of what local token activity would have cost at
 list prices. The estimate is only as honest as its table, so the table is
-generated from one maintained source rather than typed in by hand, and it
+generated from a maintained source plus reviewed vendor overrides, and it
 records where and when it came from.
 
 Source: LiteLLM's model_prices_and_context_window.json (MIT), which tracks
 Anthropic, OpenAI and Google list prices including prompt-cache rates. Spot
 checks against the vendors' own pricing pages are part of reviewing a
-regenerated table — see docs/model-prices.md.
+regenerated table. Reviewed vendor overrides, including dated price changes,
+live in scripts/model-price-overrides.json and take precedence over the feed.
 
 Usage: scripts/update-model-prices.py [--source URL]
 """
@@ -50,22 +51,8 @@ def per_million(cost_per_token: float) -> str:
     return format(value, "f")
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--source", default=SOURCE)
-    arguments = parser.parse_args()
-
-    # curl rather than urllib: python.org builds ship without CA certificates,
-    # and the system curl already trusts the keychain's roots.
-    download = subprocess.run(
-        ["curl", "--fail", "--silent", "--show-error", "--location", arguments.source],
-        capture_output=True,
-        text=True,
-        check=True,
-    )
-    catalog = json.loads(download.stdout)
-
-    models: dict[str, dict[str, str]] = {}
+def model_prices(catalog: dict, previous: dict, overrides: dict) -> dict:
+    models: dict = {}
     for key, entry in catalog.items():
         name = key
         for prefix in OWN_API_PREFIXES:
@@ -92,20 +79,43 @@ def main() -> None:
     # A model the catalog stops listing — usually because it was retired —
     # keeps its last known price, so older sessions in the 30-day history
     # stay priced.
-    destination_path = pathlib.Path(__file__).resolve().parent.parent / "Shared/Resources/ModelPrices.json"
-    if destination_path.exists():
-        previous = json.loads(destination_path.read_text()).get("models", {})
-        for name, prices in previous.items():
-            models.setdefault(name, prices)
+    for name, prices in previous.items():
+        models.setdefault(name, prices)
+
+    # Preserve the full reviewed schedule even after the feed adds this model
+    # or changes to its standard rate. Historical activity still needs the
+    # introductory price, and regenerating must not lose the future cutoff.
+    models.update(overrides)
+    return dict(sorted(models.items()))
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--source", default=SOURCE)
+    arguments = parser.parse_args()
+
+    # curl rather than urllib: python.org builds ship without CA certificates,
+    # and the system curl already trusts the keychain's roots.
+    download = subprocess.run(
+        ["curl", "--fail", "--silent", "--show-error", "--location", arguments.source],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    catalog = json.loads(download.stdout)
+    scripts = pathlib.Path(__file__).resolve().parent
+    destination = scripts.parent / "Shared/Resources/ModelPrices.json"
+    previous = json.loads(destination.read_text()).get("models", {}) if destination.exists() else {}
+    overrides = json.loads((scripts / "model-price-overrides.json").read_text())
+    models = model_prices(catalog, previous, overrides)
 
     table = {
         "generated": dt.date.today().isoformat(),
         "source": arguments.source,
         "unit": "USD per million tokens",
-        "models": dict(sorted(models.items())),
+        "models": models,
     }
 
-    destination = pathlib.Path(__file__).resolve().parent.parent / "Shared/Resources/ModelPrices.json"
     destination.write_text(json.dumps(table, indent=2) + "\n")
     print(f"wrote {len(models)} models to {destination.relative_to(pathlib.Path.cwd())}")
 

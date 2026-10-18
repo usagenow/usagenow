@@ -94,7 +94,9 @@ struct Changelog: Equatable, Sendable {
         }
 
         self.releases = releases.filter { release in
-            release.sections.contains { !$0.items.isEmpty }
+            // Development notes are kept in the repository, not presented
+            // as an already shipped release in What's New.
+            release.version.lowercased() != "unreleased" && release.sections.contains { !$0.items.isEmpty }
         }
     }
 

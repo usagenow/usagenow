@@ -48,7 +48,7 @@ struct ModelPrice: Sendable, Equatable {
 struct ModelPriceTable: Sendable {
     /// The day the table was generated, for the "prices as of" note.
     let generated: Date?
-    private let prices: [String: ModelPrice]
+    private let prices: [String: PriceSchedule]
 
     /// The table shipped in this bundle, or an empty one if it's missing.
     static let bundled: ModelPriceTable = {
@@ -61,22 +61,15 @@ struct ModelPriceTable: Sendable {
 
     init(generated: Date?, prices: [String: ModelPrice]) {
         self.generated = generated
-        self.prices = prices
+        self.prices = prices.mapValues { PriceSchedule(initial: $0, changes: []) }
     }
 
     init(data: Data) throws {
         let file = try JSONDecoder().decode(PriceFile.self, from: data)
         generated = file.generated.flatMap { try? Date($0, strategy: .iso8601.year().month().day()) }
         prices = file.models.reduce(into: [:]) { result, entry in
-            guard let input = Decimal(string: entry.value.input),
-                  let output = Decimal(string: entry.value.output)
-            else { return }
-            result[entry.key.lowercased()] = ModelPrice(
-                input: input,
-                output: output,
-                cacheWrite: entry.value.cacheWrite.flatMap { Decimal(string: $0) },
-                cacheRead: entry.value.cacheRead.flatMap { Decimal(string: $0) }
-            )
+            guard let schedule = entry.value.schedule else { return }
+            result[entry.key.lowercased()] = schedule
         }
     }
 
@@ -87,9 +80,10 @@ struct ModelPriceTable: Sendable {
     /// Matching is deliberately narrow: the identifier as written, without a
     /// vendor prefix, without a trailing date stamp, and without `-latest`.
     /// Anything else returns `nil`.
-    func price(for modelID: String) -> ModelPrice? {
+    /// Uses the activity's timestamp, not the day the history is viewed.
+    func price(for modelID: String, at date: Date = .now) -> ModelPrice? {
         for candidate in Self.candidates(for: modelID) {
-            if let price = prices[candidate] { return price }
+            if let schedule = prices[candidate] { return schedule.price(at: date) }
         }
         return nil
     }
@@ -98,8 +92,8 @@ struct ModelPriceTable: Sendable {
     ///
     /// Tokens in a bucket the model has no separate price for — a cache write
     /// on a provider that doesn't charge for one — are priced as input.
-    func cost(of tokens: TokenBreakdown, model: String) -> Decimal? {
-        guard let price = price(for: model) else { return nil }
+    func cost(of tokens: TokenBreakdown, model: String, at date: Date = .now) -> Decimal? {
+        guard let price = price(for: model, at: date) else { return nil }
         let million: Decimal = 1_000_000
         let amounts: [(Int64, Decimal)] = [
             (max(0, tokens.input), price.input),
@@ -135,12 +129,71 @@ struct ModelPriceTable: Sendable {
         }
     }
 
+    private struct PriceSchedule: Sendable {
+        struct Change: Sendable {
+            var effectiveFrom: Date
+            var price: ModelPrice
+        }
+
+        var initial: ModelPrice
+        /// Sorted oldest first; each timestamp is inclusive.
+        var changes: [Change]
+
+        func price(at date: Date) -> ModelPrice {
+            changes.last(where: { $0.effectiveFrom <= date })?.price ?? initial
+        }
+    }
+
     private struct PriceFile: Decodable {
-        struct Entry: Decodable {
+        struct Rates: Decodable {
             var input: String
             var output: String
             var cacheWrite: String?
             var cacheRead: String?
+
+            var price: ModelPrice? {
+                guard let input = Self.amount(input), let output = Self.amount(output) else { return nil }
+                let write = cacheWrite.flatMap(Self.amount)
+                let read = cacheRead.flatMap(Self.amount)
+                guard cacheWrite == nil || write != nil, cacheRead == nil || read != nil else { return nil }
+                return ModelPrice(input: input, output: output, cacheWrite: write, cacheRead: read)
+            }
+
+            private static func amount(_ string: String) -> Decimal? {
+                guard let value = Decimal(string: string), !value.isNaN, value >= 0 else { return nil }
+                return value
+            }
+        }
+
+        struct Change: Decodable {
+            var effectiveFrom: String
+            var price: Rates
+        }
+
+        struct Entry: Decodable {
+            var rates: Rates
+            var changes: [Change]
+
+            private enum CodingKeys: String, CodingKey { case changes }
+
+            init(from decoder: any Decoder) throws {
+                rates = try Rates(from: decoder)
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                changes = try container.decodeIfPresent([Change].self, forKey: .changes) ?? []
+            }
+
+            var schedule: PriceSchedule? {
+                guard let initial = rates.price else { return nil }
+                var parsed: [PriceSchedule.Change] = []
+                for change in changes {
+                    guard let date = try? Date(change.effectiveFrom, strategy: .iso8601),
+                          let price = change.price.price
+                    else { return nil } // Never keep an expired rate after a malformed change.
+                    parsed.append(.init(effectiveFrom: date, price: price))
+                }
+                guard Set(parsed.map(\.effectiveFrom)).count == parsed.count else { return nil }
+                return PriceSchedule(initial: initial, changes: parsed.sorted { $0.effectiveFrom < $1.effectiveFrom })
+            }
         }
 
         var generated: String?

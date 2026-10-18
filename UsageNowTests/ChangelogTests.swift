@@ -61,6 +61,22 @@ struct ChangelogTests {
         #expect(changelog.releases.map(\.version) == ["0.6.1"])
     }
 
+    @Test func populatedUnreleasedNotesAreNotShownAsAShippedRelease() {
+        let changelog = Changelog(markdown: """
+            ## Unreleased
+
+            ### Added
+
+            - Upcoming price changes.
+
+            ## 0.9.0
+
+            - Shipped changes.
+            """)
+        #expect(changelog.releases.map(\.version) == ["0.9.0"])
+        #expect(changelog.releases[0].sections[0].items == ["Shipped changes."])
+    }
+
     @Test func translationReplacesTheReleasesItHasAndLeavesTheRest() {
         let english = Changelog(markdown: """
             ## 0.8.0

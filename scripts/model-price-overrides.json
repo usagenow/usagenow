@@ -1,0 +1,19 @@
+{
+  "gemini-4-argon": {
+    "input": "2",
+    "output": "10",
+    "cacheRead": "0.1",
+    "source": "https://ai.google.dev/gemini-api/docs/pricing#gemini-4-argon",
+    "verified": "2026-10-18",
+    "changes": [
+      {
+        "effectiveFrom": "2026-12-01T00:00:00Z",
+        "price": {
+          "input": "4",
+          "output": "20",
+          "cacheRead": "0.2"
+        }
+      }
+    ]
+  }
+}

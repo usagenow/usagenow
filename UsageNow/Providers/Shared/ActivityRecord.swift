@@ -52,8 +52,7 @@ struct ActivitySummary: Sendable, Equatable {
     init(records: some Sequence<ActivityRecord>, since: Date, prices: ModelPriceTable = .bundled) {
         var seen = Set<String>()
         var byModel: [String: ModelActivity] = [:]
-        var breakdowns: [String: TokenBreakdown] = [:]
-        var recordedCosts: [String: Decimal] = [:]
+        var costs: [String: Decimal] = [:]
         var unpricedTokens: Int64 = 0
 
         for record in records where record.timestamp >= since {
@@ -79,9 +78,15 @@ struct ActivitySummary: Sendable, Equatable {
             byModel[model] = entry
 
             if let cost = record.cost {
-                recordedCosts[model, default: 0] += max(0, cost)
+                costs[model, default: 0] += max(0, cost)
             } else if let breakdown = record.breakdown {
-                breakdowns[model] = (breakdowns[model] ?? TokenBreakdown()) + breakdown
+                // Price before aggregating: a model may change rates inside
+                // one day or the 30-day history. Old activity keeps its rate.
+                if let estimate = prices.cost(of: breakdown, model: model, at: record.timestamp) {
+                    costs[model, default: 0] += estimate
+                } else {
+                    unpricedTokens += max(0, breakdown.total)
+                }
             } else {
                 unpricedTokens += tokens
             }
@@ -89,15 +94,7 @@ struct ActivitySummary: Sendable, Equatable {
 
         var total: Decimal?
         for (model, var entry) in byModel {
-            var cost = recordedCosts[model]
-            if let breakdown = breakdowns[model] {
-                if let estimate = prices.cost(of: breakdown, model: model) {
-                    cost = (cost ?? 0) + estimate
-                } else {
-                    unpricedTokens += breakdown.total
-                }
-            }
-            guard let cost else { continue }
+            guard let cost = costs[model] else { continue }
             entry.estimatedCost = cost
             byModel[model] = entry
             total = (total ?? 0) + cost

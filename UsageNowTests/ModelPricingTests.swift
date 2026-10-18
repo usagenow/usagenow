@@ -87,6 +87,108 @@ struct ModelPricingTests {
         #expect(opus.output == 25)
     }
 
+    // MARK: Dated prices
+
+    private var argonCutoff: Date {
+        get throws { try Date("2026-12-01T00:00:00Z", strategy: .iso8601) }
+    }
+
+    @Test func bundledArgonPricesSwitchAtTheInclusiveUTCCutoff() throws {
+        let prices = ModelPriceTable.bundled
+        let cutoff = try argonCutoff
+        let intro = ModelPrice(input: 2, output: 10, cacheRead: Decimal(string: "0.1"))
+        let standard = ModelPrice(input: 4, output: 20, cacheRead: Decimal(string: "0.2"))
+        #expect(prices.price(for: "gemini-4-argon", at: cutoff.addingTimeInterval(-0.001)) == intro)
+        #expect(prices.price(for: "gemini-4-argon", at: cutoff) == standard)
+        #expect(prices.price(for: "gemini-4-argon", at: cutoff.addingTimeInterval(86_400)) == standard)
+        let tokens = TokenBreakdown(input: 1_000_000, output: 1_000_000, cacheRead: 1_000_000)
+        #expect(prices.cost(of: tokens, model: "gemini-4-argon", at: cutoff.addingTimeInterval(-1)) == Decimal(string: "12.1"))
+        #expect(prices.cost(of: tokens, model: "gemini-4-argon", at: cutoff) == Decimal(string: "24.2"))
+    }
+
+    @Test func argonScheduleUsesTheExistingExactIdentifierMatching() throws {
+        let cutoff = try argonCutoff
+        for model in ["gemini-4-argon", "google/gemini-4-argon", "gemini-4-argon-latest", "gemini-4-argon-20261013"] {
+            #expect(ModelPriceTable.bundled.price(for: model, at: cutoff.addingTimeInterval(-1))?.input == 2)
+            #expect(ModelPriceTable.bundled.price(for: model, at: cutoff)?.input == 4)
+        }
+        #expect(ModelPriceTable.bundled.price(for: "gemini-4-argon-cyber-permissive", at: cutoff) == nil)
+        #expect(ModelPriceTable.bundled.price(for: "gemini-4-argon-unknown", at: cutoff) == nil)
+    }
+
+    @Test func modelsWithoutScheduledChangesKeepTheirPrices() {
+        #expect(table.price(for: "gpt-5-codex", at: .distantPast) == table.price(for: "gpt-5-codex", at: .distantFuture))
+    }
+
+    private func scheduledTable(_ changes: String) throws -> ModelPriceTable {
+        try ModelPriceTable(data: Data("""
+        {"models":{
+          "scheduled":{"input":"2","output":"10","cacheRead":"0.1","changes":\(changes)},
+          "unchanged":{"input":"1","output":"5"}
+        }}
+        """.utf8))
+    }
+
+    @Test func scheduledChangesAreSortedAndUseTheMostRecentApplicableRate() throws {
+        let prices = try scheduledTable("""
+        [
+          {"effectiveFrom":"2027-01-01T00:00:00Z","price":{"input":"6","output":"30"}},
+          {"effectiveFrom":"2026-12-01T00:00:00Z","price":{"input":"4","output":"20"}}
+        ]
+        """)
+        #expect(prices.price(for: "scheduled", at: .distantPast)?.input == 2)
+        #expect(prices.price(for: "scheduled", at: try argonCutoff)?.input == 4)
+        #expect(prices.price(for: "scheduled", at: .distantFuture)?.input == 6)
+    }
+
+    @Test(arguments: [
+        #"[{"effectiveFrom":"bad-date","price":{"input":"4","output":"20"}}]"#,
+        #"[{"effectiveFrom":"2026-12-01T00:00:00Z","price":{"input":"-4","output":"20"}}]"#,
+        #"[{"effectiveFrom":"2026-12-01T00:00:00Z","price":{"input":"4","output":"20","cacheRead":"invalid"}}]"#,
+        #"[{"effectiveFrom":"2026-12-01T00:00:00Z","price":{"input":"4","output":"20"}},{"effectiveFrom":"2026-12-01T00:00:00Z","price":{"input":"5","output":"25"}}]"#,
+    ])
+    func malformedSchedulesDoNotLeaveAnExpiredPriceOrHideOtherModels(changes: String) throws {
+        let prices = try scheduledTable(changes)
+        #expect(prices.price(for: "scheduled", at: .distantFuture) == nil)
+        #expect(prices.price(for: "unchanged", at: .distantFuture)?.input == 1)
+    }
+
+    @Test func argonHistoryKeepsBothRatesEvenOnTheSameLocalDay() throws {
+        let cutoff = try argonCutoff
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = try #require(TimeZone(secondsFromGMT: 5 * 3600))
+        let period = ActivityPeriod(now: cutoff.addingTimeInterval(3600), calendar: calendar)
+        let tokens = TokenBreakdown(input: 1_000_000, output: 1_000_000, cacheRead: 1_000_000)
+        let before = ActivityRecord(key: "before", timestamp: cutoff.addingTimeInterval(-1), tokens: tokens.total,
+                                    model: "gemini-4-argon", breakdown: tokens)
+        let after = ActivityRecord(key: "after", timestamp: cutoff, tokens: tokens.total,
+                                   model: "gemini-4-argon", breakdown: tokens)
+        let records = [before, after, before] // A copied response must not be charged twice.
+        let history = ActivityHistory(records: records, period: period)
+        #expect(history.estimatedCost == Decimal(string: "36.3"))
+        #expect(history.days.last?.estimatedCost == Decimal(string: "36.3"))
+        #expect(history.requests == 2)
+        #expect(history.isCostComplete)
+        let summary = ActivitySummary(records: records, since: period.start)
+        #expect(summary.models.first?.estimatedCost == Decimal(string: "36.3"))
+
+        // Viewing the same records on December 2 must not reprice November's activity.
+        let laterPeriod = ActivityPeriod(now: cutoff.addingTimeInterval(86_400), calendar: calendar)
+        #expect(ActivityHistory(records: records, period: laterPeriod).estimatedCost == history.estimatedCost)
+    }
+
+    @Test func recordedCostsStillOverrideTheArgonEstimate() throws {
+        let cutoff = try argonCutoff
+        let tokens = TokenBreakdown(input: 1_000_000)
+        let recorded = ActivityRecord(key: "billed", timestamp: cutoff, tokens: tokens.total,
+                                      model: "gemini-4-argon", breakdown: tokens, cost: Decimal(string: "0.25"))
+        let estimated = ActivityRecord(key: "estimated", timestamp: cutoff, tokens: tokens.total,
+                                       model: "gemini-4-argon", breakdown: tokens)
+        let summary = ActivitySummary(records: [recorded, estimated], since: .distantPast)
+        #expect(summary.estimatedCost == Decimal(string: "4.25"))
+        #expect(summary.isCostComplete)
+    }
+
     // MARK: Summaries
 
     private func record(_ key: String, model: String, _ breakdown: TokenBreakdown?) -> ActivityRecord {
