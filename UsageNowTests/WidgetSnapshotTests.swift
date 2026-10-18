@@ -397,7 +397,7 @@ struct WidgetSnapshotStoreTests {
         collectKeys(json, into: &keys)
         let allowed: Set<String> = [
             "schemaVersion", "generatedAt", "state", "usageAmountStyle", "language", "providers", "_0",
-            "provider", "accountName", "planName", "modelName", "windows", "tokensToday", "requestsToday", "creditsToday",
+            "provider", "selectionID", "accountName", "planName", "modelName", "windows", "tokensToday", "requestsToday", "creditsToday",
             "quotaUnavailableReason", "kind", "scope", "usage", "resetsAt", "recentDays", "updatedAt", "totals", "value",
         ]
         #expect(keys.subtracting(allowed).isEmpty, "Unexpected fields: \(keys.subtracting(allowed))")

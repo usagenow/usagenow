@@ -2,6 +2,20 @@
 
 What's New in Spanish: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 0.9.0
+
+### Added
+
+- **JetBrains AI (experimental).** Límites locales de AI Assistant desde tu IDE de JetBrains, con la fecha de recarga comunicada, en la barra de menús y los widgets. Los datos antiguos conservan su fecha original. Sin credenciales ni solicitudes de red. Pendiente de validación con AI Assistant activo.
+- **Widgets personales.** Elige proveedores y cuentas para cada widget, o deja la selección vacía para seguir UsageNow. Renombrar conserva la elección; una cuenta eliminada no se sustituye silenciosamente.
+- **Widget grande.** Hasta cuatro filas detalladas de proveedores y cuentas, con dos ventanas de cuota y sus reinicios. Solo muestra la instantánea depurada.
+- **Ritmo de consumo.** Gráfico local y estimación claramente indicada para la ventana más crítica, a partir de tres lecturas recientes durante al menos 15 minutos. Repeticiones en caché, datos antiguos, pausas largas, reinicios o duraciones desconocidas no generan pronósticos. No usa tokens.
+- **Incidencias opcionales.** Páginas públicas de OpenAI, Claude, Cursor y GitHub Copilot, desactivadas por defecto y con caché de diez minutos. Estado separado de la conexión y los límites; no se envían datos de cuenta ni de uso.
+- **Neerlandés (Nederlands).** App, widgets y novedades integradas: ahora diez idiomas.
+- **Iconos renovados de Windsurf y ElevenLabs.** Logotipos correctos para las apariencias clara y oscura.
+
+- **Antigravity sin IDE.** Si el IDE no responde, UsageNow lee el informe oficial `agy /usage` de versiones compatibles de CLI 1.x desde la 1.1.11. No inicia un turno del agente ni accede a credenciales; caché de cinco minutos. Verificado con CLI 1.2.2.
+
 ## 0.8.0
 
 ### Added
@@ -113,10 +127,6 @@ What's New in Spanish: each version's changes, shorter than CHANGELOG.md. Headin
 - Kiro: el límite mensual de créditos de tu plan, cuándo se reinicia y los créditos y prompts de hoy, a partir de lo que Kiro escribe en tu Mac. Sin peticiones a Kiro ni credenciales de Kiro.
 - Warp: solicitudes del agente, créditos y tokens por modelo de hoy, desde la base de datos local de Warp, en solo lectura.
 - DeepSeek, Kimi y OpenRouter: saldos y gasto desde sus API oficiales, con tu propia clave de API. La clave se queda en tu Llavero y solo va a ese proveedor. Ninguno de los tres se ha comprobado aún con una cuenta real.
-
-### Fixed
-
-- El aviso de licencia de Sparkle está ahora en Acerca de › Licencias de código abierto.
 
 ## 0.4.0
 

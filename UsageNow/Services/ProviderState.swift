@@ -10,6 +10,7 @@ struct ProviderState: Sendable, Equatable, Identifiable {
     /// Set when the latest refresh attempt failed.
     var failure: RefreshFailure?
     var isRefreshing = false
+    var quotaPaces: [QuotaPace] = []
 
     var id: SourceKey { SourceKey(provider: provider, account: account?.id) }
 

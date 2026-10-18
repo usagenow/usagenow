@@ -9,6 +9,7 @@ final class AppState {
     static let popoverRefreshMaxAge: TimeInterval = 60
 
     let store: UsageStore
+    let serviceHealth: ServiceHealthStore
     let preferences: AppPreferences
     let providerPreferences: ProviderPreferences
     let analyticsPreferences: AnalyticsPreferences
@@ -52,6 +53,7 @@ final class AppState {
         widgetSnapshots: WidgetSnapshotWriter = WidgetSnapshotWriter(),
         apiKeys: any APIKeyStoring = KeychainAPIKeyStore(),
         limitNotifier: LimitNotifier? = nil,
+        serviceHealth: ServiceHealthStore = ServiceHealthStore(),
         accountProvider: @escaping @Sendable (ProviderAccount) -> (any UsageProvider)? = { _ in nil }
     ) {
         let providerPreferences = ProviderPreferences(defaults: defaults)
@@ -62,7 +64,8 @@ final class AppState {
         let store = UsageStore(
             providers: providers + providerPreferences.accounts.compactMap { accountProviders[$0] },
             enabledProviders: providerPreferences.enabledProviders,
-            order: providerPreferences.order
+            order: providerPreferences.order,
+            quotaHistory: QuotaHistory(defaults: defaults)
         )
         let analyticsPreferences = AnalyticsPreferences(defaults: defaults)
         let client = NetworkTelemetryClient(
@@ -72,6 +75,7 @@ final class AppState {
         )
 
         self.store = store
+        self.serviceHealth = serviceHealth
         self.preferences = AppPreferences(defaults: defaults)
         // Also validate persisted selections at launch: the chosen account
         // may have been removed since this build last ran.
@@ -87,8 +91,9 @@ final class AppState {
         self.accountProvider = accountProvider
         self.accountProviders = accountProviders
         self.widgetSnapshots = widgetSnapshots
-        self.scheduler = AutoRefreshScheduler { [weak store] in
+        self.scheduler = AutoRefreshScheduler { [weak store, weak serviceHealth] in
             await store?.refresh()
+            await serviceHealth?.refreshIfNeeded()
         }
     }
 
@@ -149,7 +154,10 @@ final class AppState {
             ClaudeCodeProvider(limitsClient: claudeLimits?.client, limitsEnabled: claudeLimits?.isEnabled ?? FeatureSwitch(false)),
             GeminiProvider(),
             // Percentages and reset times only, so they survive a relaunch between app runs.
-            AntigravityProvider(server: AntigravityLocalServer(lastKnownLimits: .userDefaults(defaults, key: "antigravityLastKnownLimits"))),
+            AntigravityProvider(
+                server: AntigravityLocalServer(lastKnownLimits: .userDefaults(defaults, key: "antigravityLastKnownLimits")),
+                cli: AntigravityCLI(lastKnownLimits: .userDefaults(defaults, key: "antigravityCLILastKnownLimits"))
+            ),
             KiroProvider(),
             WarpProvider(),
             OpenCodeProvider(),
@@ -158,6 +166,7 @@ final class AppState {
             ClineProvider(),
             GrokBuildProvider(),
             WindsurfProvider(),
+            JetBrainsProvider(),
             APIKeyProvider.deepSeek(keys: apiKeys),
             APIKeyProvider.kimi(keys: apiKeys),
             APIKeyProvider.openRouter(keys: apiKeys),
@@ -183,6 +192,7 @@ final class AppState {
         applyAppearance()
         applyRefreshInterval()
         applyLimitNotifications()
+        applyServiceStatusPreference()
         hotKey.action = { [weak self] in self?.toggleShortcutPanel() }
         applyPopoverShortcut()
 
@@ -195,6 +205,7 @@ final class AppState {
         observe({ [store] in _ = store.states }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.usageAmountStyle }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.showsActivityHistory }, apply: { [weak self] in self?.storeDidChange() })
+        observe({ [preferences] in _ = preferences.showsServiceStatus }, apply: { [weak self] in self?.applyServiceStatusPreference() })
         observe({ [preferences] in _ = preferences.language }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.notifiesAboutLimits }, apply: { [weak self] in self?.applyLimitNotifications() })
         observe({ [preferences] in _ = preferences.popoverShortcut }, apply: { [weak self] in self?.applyPopoverShortcut() })
@@ -205,6 +216,7 @@ final class AppState {
 
     func popoverDidOpen() {
         Task { await store.refreshIfNeeded(maxAge: Self.popoverRefreshMaxAge) }
+        Task { await serviceHealth.refreshIfNeeded() }
         Task { [telemetry] in await telemetry.appDidBecomeActive() }
     }
 
@@ -221,6 +233,7 @@ final class AppState {
     /// bar showing a provider that's still enabled.
     private func applyEnabledProviders() {
         let enabled = providerPreferences.enabledProviders
+        applyServiceStatusPreference()
         // Turning off a provider connected with a key forgets the key, and
         // the accounts added with keys of their own.
         for definition in ProviderCatalog.available where definition.apiKey != nil && !enabled.contains(definition.id) {
@@ -234,6 +247,11 @@ final class AppState {
             preferences.menuBarChoice = .default
         }
         Task { [store] in await store.setEnabledProviders(enabled) }
+    }
+
+    private func applyServiceStatusPreference() {
+        serviceHealth.configure(enabled: preferences.showsServiceStatus, providers: providerPreferences.enabledProviders)
+        Task { [serviceHealth] in await serviceHealth.refreshIfNeeded() }
     }
 
     /// An account added in Settings is read right away; a removed one
@@ -383,6 +401,7 @@ private struct ShortcutPanelContent: View {
     var body: some View {
         MenuBarContentView(
             store: appState.store,
+            serviceHealth: appState.serviceHealth,
             navigation: appState.settingsNavigation,
             openSettingsOverride: appState.openSettings
         )

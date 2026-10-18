@@ -36,8 +36,12 @@ struct UsageNowWidgetEntryView: View {
                     message: "Install or use a supported AI coding tool to start tracking usage."
                 )
             case .providers(let providers):
-                if family == .systemSmall {
+                if providers.isEmpty {
+                    WidgetMessageView(title: "Selected account unavailable", message: "Edit this widget to choose an enabled provider and account.")
+                } else if family == .systemSmall {
                     SmallUsageWidgetView(providers: providers, snapshot: snapshot, now: entry.date)
+                } else if family == .systemLarge {
+                    LargeUsageWidgetView(snapshot: snapshot, now: entry.date)
                 } else {
                     MediumUsageWidgetView(providers: providers, snapshot: snapshot, now: entry.date)
                 }
@@ -48,6 +52,45 @@ struct UsageNowWidgetEntryView: View {
                 message: "Open UsageNow to load usage data."
             )
         }
+    }
+}
+
+/// Four detailed rows leave space for two windows and reset times per account.
+struct LargeUsageWidgetView: View {
+    nonisolated static let maxRows = 4
+    let snapshot: WidgetSnapshot
+    let now: Date
+
+    var body: some View {
+        let providers = snapshot.providers(fitting: Self.maxRows)
+        VStack(alignment: .leading, spacing: 10) {
+            WidgetHeader(updatedAt: staleReadingDate(providers), now: now)
+            ForEach(providers) { provider in
+                VStack(alignment: .leading, spacing: 4) {
+                    WidgetProviderName(provider: provider.provider, name: provider.displayName, updatedAt: provider.updatedAt, now: now)
+                    let windows = Array(provider.windows.sortedForDisplay().prefix(2))
+                    if windows.isEmpty {
+                        WidgetActivityLabel(provider: provider)
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        if provider.activityText() == nil { WidgetUnavailableLabel() }
+                    } else {
+                        HStack(alignment: .top, spacing: 16) {
+                            ForEach(windows) { window in
+                                WidgetWindowRow(window: window, now: now)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                        }
+                    }
+                }
+            }
+            Spacer(minLength: 0)
+        }
+    }
+
+    private func staleReadingDate(_ providers: [WidgetProviderSnapshot]) -> Date? {
+        let oldest = providers.compactMap(\.updatedAt).min() ?? snapshot.generatedAt
+        return now.timeIntervalSince(oldest) > WidgetSnapshot.staleThreshold ? oldest : nil
     }
 }
 

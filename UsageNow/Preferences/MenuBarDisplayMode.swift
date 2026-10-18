@@ -12,6 +12,7 @@ enum MenuBarDisplayMode: String, CaseIterable, Identifiable, Sendable {
     case antigravityPercentage
     case kiroPercentage
     case windsurfPercentage
+    case jetbrainsPercentage
     case cursorPercentage
     case copilotPercentage
     case perplexityPercentage
@@ -30,6 +31,7 @@ enum MenuBarDisplayMode: String, CaseIterable, Identifiable, Sendable {
         case .antigravityPercentage: .antigravity
         case .kiroPercentage: .kiro
         case .windsurfPercentage: .windsurf
+        case .jetbrainsPercentage: .jetbrains
         case .cursorPercentage: .cursor
         case .copilotPercentage: .copilot
         case .perplexityPercentage: .perplexity
@@ -58,6 +60,7 @@ enum MenuBarDisplayMode: String, CaseIterable, Identifiable, Sendable {
         case .antigravityPercentage: "Antigravity usage"
         case .kiroPercentage: "Kiro usage"
         case .windsurfPercentage: "Windsurf usage"
+        case .jetbrainsPercentage: "JetBrains AI usage"
         case .cursorPercentage: "Cursor usage"
         case .copilotPercentage: "GitHub Copilot usage"
         case .perplexityPercentage: "Perplexity usage"

@@ -8,6 +8,7 @@ struct MenuBarContentView: View {
     private static let clockInterval: TimeInterval = 15
 
     let store: UsageStore
+    var serviceHealth: ServiceHealthStore? = nil
     var navigation = SettingsNavigation()
     /// Opens Settings where the environment's action can't: outside a
     /// SwiftUI scene, in the panel the global shortcut shows.
@@ -63,7 +64,7 @@ struct MenuBarContentView: View {
             ScrollView(.vertical) {
                 VStack(spacing: 0) {
                     ForEach(states) { state in
-                        ProviderUsageView(state: state, now: now) {
+                        ProviderUsageView(state: state, now: now, serviceHealth: serviceHealth?.readings[state.provider]) {
                             Task { await store.refresh(only: [state.provider], trigger: .manual) }
                         }
                         if state.id != states.last?.id {

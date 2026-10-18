@@ -5,7 +5,8 @@ import WidgetKit
 ///
 /// It never refreshes providers itself: no files, keychain, processes, or
 /// network. See `WidgetRefreshSchedule` for redraw timing.
-struct UsageNowTimelineProvider: TimelineProvider {
+struct UsageNowTimelineProvider: AppIntentTimelineProvider {
+    typealias Intent = WidgetSelectionIntent
     var store: WidgetSnapshotStore? = WidgetSnapshotStore.shared()
     var now: @Sendable () -> Date = { .now }
 
@@ -13,19 +14,21 @@ struct UsageNowTimelineProvider: TimelineProvider {
         UsageNowWidgetEntry(date: now(), snapshot: store?.read())
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (UsageNowWidgetEntry) -> Void) {
+    func snapshot(for configuration: WidgetSelectionIntent, in context: Context) async -> UsageNowWidgetEntry {
         let date = now()
-        completion(UsageNowWidgetEntry(date: date, snapshot: store?.read()?.asOf(date)))
+        let snapshot = store?.read()?.selecting(configuration.sources?.map(\.id) ?? [])
+        Self.adoptLanguage(of: snapshot)
+        return UsageNowWidgetEntry(date: date, snapshot: snapshot?.asOf(date))
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<UsageNowWidgetEntry>) -> Void) {
+    func timeline(for configuration: WidgetSelectionIntent, in context: Context) async -> Timeline<UsageNowWidgetEntry> {
         let date = now()
-        let snapshot = store?.read()
+        let snapshot = store?.read()?.selecting(configuration.sources?.map(\.id) ?? [])
         Self.adoptLanguage(of: snapshot)
         let entries = WidgetRefreshSchedule.entryDates(after: date, snapshot: snapshot).map { date in
             UsageNowWidgetEntry(date: date, snapshot: snapshot?.asOf(date))
         }
-        completion(Timeline(entries: entries, policy: .after(WidgetRefreshSchedule.next(after: date, snapshot: snapshot))))
+        return Timeline(entries: entries, policy: .after(WidgetRefreshSchedule.next(after: date, snapshot: snapshot)))
     }
 
     /// The view follows the app's language at once through its locale;

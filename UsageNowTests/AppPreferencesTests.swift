@@ -16,6 +16,7 @@ struct AppPreferencesTests {
         #expect(preferences.appearance == .light)
         #expect(preferences.refreshInterval == .fiveMinutes)
         #expect(preferences.menuBarDisplayMode == .iconOnly)
+        #expect(!preferences.showsServiceStatus)
     }
 
     @Test func persistsChanges() {
@@ -23,10 +24,12 @@ struct AppPreferencesTests {
         let preferences = AppPreferences(defaults: defaults)
         preferences.appearance = .dark
         preferences.refreshInterval = .thirtyMinutes
+        preferences.showsServiceStatus = true
 
         let reloaded = AppPreferences(defaults: defaults)
         #expect(reloaded.appearance == .dark)
         #expect(reloaded.refreshInterval == .thirtyMinutes)
+        #expect(reloaded.showsServiceStatus)
     }
 
     @Test func ignoresInvalidStoredValues() {

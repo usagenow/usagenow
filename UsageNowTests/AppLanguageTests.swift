@@ -9,6 +9,8 @@ struct AppLanguageTests {
         #expect(AppLanguage(preferredLanguages: ["ru-KZ"]) == .ru)
         #expect(AppLanguage(preferredLanguages: ["de"]) == .de)
         #expect(AppLanguage(preferredLanguages: ["pt-BR"]) == .pt)
+        #expect(AppLanguage(preferredLanguages: ["nl-NL"]) == .nl)
+        #expect(AppLanguage(preferredLanguages: ["nl-BE"]) == .nl)
         #expect(AppLanguage(preferredLanguages: ["he-IL"]) == .he)
         #expect(AppLanguage(preferredLanguages: ["zh-Hans"]) == .system)
         #expect(AppLanguage(preferredLanguages: nil) == .system)
@@ -16,12 +18,21 @@ struct AppLanguageTests {
 
     @Test func namesEachLanguageInItself() {
         #expect(AppLanguage.allCases.compactMap(\.nativeName) == [
-            "Deutsch", "English", "Español", "Français", "Português", "Русский", "עברית", "日本語", "한국어",
+            "Deutsch", "English", "Español", "Français", "Nederlands", "Português", "Русский", "עברית", "日本語", "한국어",
         ])
     }
 
     @Test func onlyHebrewReadsRightToLeft() {
         #expect(AppLanguage.allCases.filter(\.isRightToLeft) == [.he])
+    }
+
+    @Test func dutchResourcesAreBundledForAppAndWidgetCopy() throws {
+        #expect(Bundle.main.localizations.contains("nl"))
+        let path = try #require(Bundle.main.path(forResource: "nl", ofType: "lproj"))
+        let bundle = try #require(Bundle(path: path))
+        for (key, value) in ["General": "Algemeen", "Quota pace": "Verbruikstempo", "Done": "Gereed"] {
+            #expect(bundle.localizedString(forKey: key, value: nil, table: nil) == value)
+        }
     }
 
     @Test func choosingALanguageSetsTheAppsOwnLanguageList() throws {
@@ -47,6 +58,8 @@ struct AppLanguageTests {
         let writer = WidgetSnapshotWriter(store: store, reloadTimelines: {})
         writer.update(states: [], enabledProviders: [.codex], language: .fr)
         #expect(store.read()?.language == "fr")
+        writer.update(states: [], enabledProviders: [.codex], language: .nl)
+        #expect(store.read()?.language == "nl")
         writer.update(states: [], enabledProviders: [.codex], language: .system)
         #expect(store.read()?.language == nil)
     }

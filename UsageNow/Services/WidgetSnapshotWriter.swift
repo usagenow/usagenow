@@ -1,4 +1,5 @@
 import Foundation
+import CryptoKit
 import WidgetKit
 
 /// Publishes the widget's view of the world.
@@ -85,6 +86,7 @@ final class WidgetSnapshotWriter {
         guard let snapshot = state.snapshot, snapshot.status != .notInstalled else { return nil }
         return WidgetProviderSnapshot(
             provider: snapshot.provider,
+            selectionID: selectionID(for: state),
             accountName: state.account?.name,
             planName: snapshot.planName,
             modelName: snapshot.recentModel,
@@ -98,6 +100,14 @@ final class WidgetSnapshotWriter {
             updatedAt: snapshot.dataDate,
             totals: snapshot.totals.isEmpty ? nil : snapshot.totals
         )
+    }
+
+    /// Hash only UsageNow's random local UUID; provider identity, credentials
+    /// and paths never become widget configuration data.
+    static func selectionID(for state: ProviderState) -> String {
+        guard let account = state.account else { return state.provider.rawValue }
+        let digest = SHA256.hash(data: Data("\(state.provider.rawValue):\(account.id)".utf8))
+        return state.provider.rawValue + ":" + digest.map { String(format: "%02x", $0) }.joined()
     }
 
     /// The last two weeks as shares of the busiest day, rounded so a small

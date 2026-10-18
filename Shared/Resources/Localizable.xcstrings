@@ -1,6 +1,55 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "JetBrains AI usage" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "JetBrains AI-Nutzung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Uso de JetBrains AI" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Utilisation de JetBrains AI" } },
+        "he" : { "stringUnit" : { "state" : "translated", "value" : "שימוש ב-JetBrains AI" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "JetBrains AIの使用量" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "JetBrains AI 사용량" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "JetBrains AI-gebruik" } },
+        "pt" : { "stringUnit" : { "state" : "translated", "value" : "Uso do JetBrains AI" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Использование JetBrains AI" } }
+      }
+    },
+    "Track AI Assistant limits from your JetBrains IDE." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "AI Assistant-Limits aus deiner JetBrains-IDE verfolgen." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Consulta los límites de AI Assistant desde tu IDE de JetBrains." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Suivez les limites d’AI Assistant depuis votre IDE JetBrains." } },
+        "he" : { "stringUnit" : { "state" : "translated", "value" : "מעקב אחר מגבלות AI Assistant מתוך סביבת הפיתוח של JetBrains." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "JetBrains IDEからAI Assistantの上限を確認します。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "JetBrains IDE에서 AI Assistant 한도를 확인합니다." } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Volg de AI Assistant-limieten uit je JetBrains-IDE." } },
+        "pt" : { "stringUnit" : { "state" : "translated", "value" : "Acompanhe os limites do AI Assistant no seu IDE JetBrains." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Лимиты AI Assistant из вашей IDE JetBrains." } }
+      }
+    },
+    "Open a JetBrains IDE with AI Assistant enabled to update usage limits." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Öffne eine JetBrains-IDE mit aktiviertem AI Assistant, um die Nutzungslimits zu aktualisieren." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Abre un IDE de JetBrains con AI Assistant activado para actualizar los límites de uso." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ouvrez un IDE JetBrains avec AI Assistant activé pour actualiser les limites d’utilisation." } },
+        "he" : { "stringUnit" : { "state" : "translated", "value" : "יש לפתוח סביבת פיתוח של JetBrains עם AI Assistant פעיל כדי לעדכן את מגבלות השימוש." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "使用上限を更新するには、AI Assistantを有効にしたJetBrains IDEを開いてください。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "사용 한도를 업데이트하려면 AI Assistant가 활성화된 JetBrains IDE를 여세요." } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Open een JetBrains-IDE met AI Assistant ingeschakeld om de gebruikslimieten bij te werken." } },
+        "pt" : { "stringUnit" : { "state" : "translated", "value" : "Abra um IDE JetBrains com o AI Assistant ativado para atualizar os limites de uso." } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Откройте IDE JetBrains с включённым AI Assistant, чтобы обновить лимиты." } }
+      }
+    },
+    "%@" : {
+      "localizations" : {
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        }
+      }
+    },
     "%@ %@ usage" : {
       "comment" : "e.g. Weekly Opus usage",
       "localizations" : {
@@ -44,6 +93,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사용량: %1$@ %2$@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbruik: %1$@ %2$@"
           }
         },
         "pt" : {
@@ -99,6 +154,12 @@
             "value" : "%@ API 키"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API-sleutel voor %@"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -149,6 +210,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ 문자 사용"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ tekens gebruikt"
           }
         },
         "pt" : {
@@ -204,6 +271,12 @@
             "value" : "%@크레딧"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ credits"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -254,6 +327,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ 크레딧 남음"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ credits over"
           }
         },
         "pt" : {
@@ -309,6 +388,12 @@
             "value" : "오늘 %@크레딧"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ credits vandaag"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -359,6 +444,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ 크레딧 사용"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ credits gebruikt"
           }
         },
         "pt" : {
@@ -414,6 +505,12 @@
             "value" : "%@에서 API 키를 받아들이지 않았습니다. 설정 › 제공업체에서 확인하십시오."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ heeft de API-sleutel geweigerd. Controleer deze in Instellingen › Providers."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -464,6 +561,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@이(가) 설치되어 있지 않음"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ is niet geïnstalleerd"
           }
         },
         "pt" : {
@@ -519,6 +622,12 @@
             "value" : "%@ 남음"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ over"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -571,6 +680,12 @@
             "value" : "%@ 요금제"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@-abonnement"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -621,6 +736,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@에서 연결을 거부했습니다. 다시 로그인하거나 설정 › 제공업체에서 인증 정보를 변경하십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ heeft de verbinding geweigerd. Log opnieuw in of vervang de toegangsgegevens in Instellingen › Providers."
           }
         },
         "pt" : {
@@ -676,6 +797,12 @@
             "value" : "%@토큰"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ tokens"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -727,6 +854,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "오늘 %@토큰"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ tokens vandaag"
           }
         },
         "pt" : {
@@ -788,6 +921,12 @@
             "value" : "%1$@토큰, 요청 %2$@개"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ tokens, %2$@ verzoeken"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -839,6 +978,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사용량: %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@-verbruik"
           }
         },
         "pt" : {
@@ -893,6 +1038,12 @@
             "value" : "%@ 사용 한도를 일시적으로 확인할 수 없습니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De gebruikslimieten van %@ zijn tijdelijk niet beschikbaar."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -944,6 +1095,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ 사용함"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ gebruikt"
           }
         },
         "pt" : {
@@ -1005,6 +1162,12 @@
             "value" : "%1$@: ‘%2$@’ 한도가 재설정됨"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@: de limiet voor %2$@ is gereset"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1062,6 +1225,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@: ‘%2$@’ 한도에 도달함"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@: de limiet voor %2$@ is bereikt"
           }
         },
         "pt" : {
@@ -1123,6 +1292,12 @@
             "value" : "%1$@: ‘%3$@’ 한도 %2$@ 남음"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@: %2$@ van de limiet voor %3$@ over"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1182,6 +1357,12 @@
             "value" : "%1$@: ‘%3$@’ 한도 %2$@ 사용함"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@: %2$@ van de limiet voor %3$@ gebruikt"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1192,6 +1373,122 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@: использовано %2$@ лимита «%3$@»"
+          }
+        }
+      }
+    },
+    "%@: service incident" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: Dienststörung"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: incidencia del servicio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: incident du service"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: תקלה בשירות"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@：サービス障害"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: 서비스 장애"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: storing bij de dienst"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: incidente no serviço"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: сбой сервиса"
+          }
+        }
+      }
+    },
+    "%@: status unavailable" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: Status nicht verfügbar"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: estado no disponible"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: état indisponible"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: הסטטוס לא זמין"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@：ステータス不明"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: 상태 확인 불가"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: status niet beschikbaar"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: estado indisponível"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: статус недоступен"
           }
         }
       }
@@ -1233,6 +1530,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld일"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld dagen"
           }
         },
         "pt" : {
@@ -1288,6 +1591,12 @@
             "value" : "%lld시간"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld uur"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1339,6 +1648,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld분"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld minuten"
           }
         },
         "pt" : {
@@ -1400,6 +1715,12 @@
             "value" : "%1$lld일 %2$lld시간"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld d %2$lld u"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1450,6 +1771,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld일 전"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld d geleden"
           }
         },
         "pt" : {
@@ -1511,6 +1838,12 @@
             "value" : "%1$lld시간 %2$@분"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld u %2$@ min"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1561,6 +1894,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld시간 전"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld u geleden"
           }
         },
         "pt" : {
@@ -1616,6 +1955,12 @@
             "value" : "%lld분"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld min"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1666,6 +2011,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld분 전"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld min geleden"
           }
         },
         "pt" : {
@@ -1721,6 +2072,12 @@
             "value" : "외 %lld개"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld meer"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1771,6 +2128,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "15분"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "15 minuten"
           }
         },
         "pt" : {
@@ -1825,6 +2188,12 @@
             "value" : "30분"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 minuten"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1875,6 +2244,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "5분"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5 minuten"
           }
         },
         "pt" : {
@@ -1929,6 +2304,12 @@
             "value" : "5시간"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5 uur"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1979,6 +2360,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "메뉴 막대 윈도우에서 각 제공업체 아래에 일별 활동 차트를 표시합니다. 윈도우를 짧게 유지하려면 끄십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een grafiek met dagelijkse activiteit onder elke provider in het menubalkvenster. Schakel deze uit om het venster compact te houden."
           }
         },
         "pt" : {
@@ -2033,6 +2420,12 @@
             "value" : "세션 쿠키는 웹 계정에 대한 접근을 허용합니다. UsageNow는 기존 브라우저 프로필을 가져오거나 세션을 갱신하지 않습니다. 만료되면 다시 로그인하십시오."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een sessiecookie geeft toegang tot je webaccount. UsageNow importeert nooit bestaande browserprofielen en verlengt de sessie niet. Log opnieuw in als de sessie verloopt."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2083,6 +2476,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "macOS용 AI 코딩 사용량 추적기"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbruikstracker voor AI-codetools op macOS"
           }
         },
         "pt" : {
@@ -2137,6 +2536,12 @@
             "value" : "API 키"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API-sleutel"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2187,6 +2592,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "API 키 저장됨"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API-sleutel opgeslagen"
           }
         },
         "pt" : {
@@ -2241,6 +2652,12 @@
             "value" : "API 키는 보통 데이터를 읽는 것뿐 아니라 비용을 지출할 수도 있습니다. %@에서 허용한다면 UsageNow 전용 키를 만드십시오."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API-sleutels kunnen meestal ook geld uitgeven, niet alleen het verbruik lezen. Maak een aparte sleutel voor UsageNow als %@ dat toestaat."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2291,6 +2708,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "정보"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Over"
           }
         },
         "pt" : {
@@ -2345,6 +2768,12 @@
             "value" : "%@ 동작"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acties voor %@"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2395,6 +2824,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "활동, 최근 14일"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activiteit, afgelopen 14 dagen"
           }
         },
         "pt" : {
@@ -2449,6 +2884,12 @@
             "value" : "활동, 최근 30일"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activiteit, afgelopen 30 dagen"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2499,6 +2940,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ 계정 추가"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@-account toevoegen"
           }
         },
         "pt" : {
@@ -2554,6 +3001,12 @@
             "value" : "API 키 추가…"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API-sleutel toevoegen…"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2604,6 +3057,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "추가"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account toevoegen"
           }
         },
         "pt" : {
@@ -2658,6 +3117,12 @@
             "value" : "계정 추가…"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account toevoegen…"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2708,6 +3173,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "추가됨"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toegevoegd"
           }
         },
         "pt" : {
@@ -2762,6 +3233,12 @@
             "value" : "설정을 완료하려면 시스템 설정에서 UsageNow를 허용하십시오."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sta UsageNow toe in Systeeminstellingen om de configuratie af te ronden."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2812,6 +3289,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "UsageNow가 키체인에 있는 Claude Code 로그인 정보에 접근하도록 허용하십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geef UsageNow toegang tot je Claude Code-aanmelding in Sleutelhanger."
           }
         },
         "pt" : {
@@ -2866,6 +3349,12 @@
             "value" : "ElevenLabs API 키에 user_read를 허용한 후 다시 시도하십시오."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geef je ElevenLabs-API-sleutel de machtiging user_read en probeer het opnieuw."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2916,6 +3405,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "할당량"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tegoed"
           }
         },
         "pt" : {
@@ -2970,6 +3465,12 @@
             "value" : "다른 %@ 계정에서 이미 이 이름을 사용 중입니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een ander %@-account heeft deze naam al."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3020,6 +3521,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "다른 앱에서 이미 이 단축키를 사용 중입니다. 다른 단축키를 기록하십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een andere app gebruikt deze sneltoets al. Stel een andere in."
           }
         },
         "pt" : {
@@ -3074,6 +3581,12 @@
             "value" : "Antigravity 사용량"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antigravity-verbruik"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3124,6 +3637,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Antigravity 사용 한도를 일시적으로 사용할 수 없습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De gebruikslimieten van Antigravity zijn tijdelijk niet beschikbaar."
           }
         },
         "pt" : {
@@ -3178,6 +3697,12 @@
             "value" : "화면 모드"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weergave"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3228,6 +3753,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "UsageNow 윈도우, 메뉴 막대 및 위젯에 적용됩니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geldt voor het uitklapvenster, de menubalk en de widget."
           }
         },
         "pt" : {
@@ -3282,6 +3813,12 @@
             "value" : "사용 가능"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beschikbaar"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3332,6 +3869,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "취소"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuleren"
           }
         },
         "pt" : {
@@ -3386,6 +3929,12 @@
             "value" : "변경됨"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gewijzigd"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3436,6 +3985,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사용한 문자 수"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gebruikte tekens"
           }
         },
         "pt" : {
@@ -3490,6 +4045,12 @@
             "value" : "지금 확인"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu controleren"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3506,12 +4067,6 @@
     },
     "Check and Add Account" : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Проверить и добавить"
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3530,10 +4085,10 @@
             "value" : "Vérifier et ajouter"
           }
         },
-        "pt" : {
+        "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verificar e Adicionar"
+            "value" : "בדיקה והוספת חשבון"
           }
         },
         "ja" : {
@@ -3548,22 +4103,28 @@
             "value" : "확인 후 계정 추가"
           }
         },
-        "he" : {
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "בדיקה והוספת חשבון"
+            "value" : "Controleren en account toevoegen"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verificar e Adicionar"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Проверить и добавить"
           }
         }
       }
     },
     "Check and Save" : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Проверить и сохранить"
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3582,10 +4143,10 @@
             "value" : "Vérifier et enregistrer"
           }
         },
-        "pt" : {
+        "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verificar e Salvar"
+            "value" : "בדיקה ושמירה"
           }
         },
         "ja" : {
@@ -3600,10 +4161,22 @@
             "value" : "확인 후 저장"
           }
         },
-        "he" : {
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "בדיקה ושמירה"
+            "value" : "Controleren en opslaan"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verificar e Salvar"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Проверить и сохранить"
           }
         }
       }
@@ -3646,6 +4219,12 @@
             "value" : "자동으로 업데이트 확인"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisch op updates controleren"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3662,12 +4241,6 @@
     },
     "Check the credential format. Session cookies must include their name." : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Проверьте формат данных. Cookie сессии должен содержать имя."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3686,10 +4259,10 @@
             "value" : "Vérifiez le format des identifiants. Les cookies de session doivent inclure leur nom."
           }
         },
-        "pt" : {
+        "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verifique o formato da credencial. Cookies de sessão devem incluir o nome."
+            "value" : "בדקו את פורמט פרטי הגישה. עוגיות סשן חייבות לכלול את השם שלהן."
           }
         },
         "ja" : {
@@ -3704,10 +4277,22 @@
             "value" : "인증 정보 형식을 확인하십시오. 세션 쿠키에는 이름이 포함되어야 합니다."
           }
         },
-        "he" : {
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "בדקו את פורמט פרטי הגישה. עוגיות סשן חייבות לכלול את השם שלהן."
+            "value" : "Controleer de notatie van de toegangsgegevens. Sessiecookies moeten hun naam bevatten."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verifique o formato da credencial. Cookies de sessão devem incluir o nome."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Проверьте формат данных. Cookie сессии должен содержать имя."
           }
         }
       }
@@ -3750,6 +4335,12 @@
             "value" : "설정 › 제공업체에서 연결 권한을 확인하십시오."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controleer de machtigingen van deze verbinding in Instellingen › Providers."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3766,12 +4357,6 @@
     },
     "Checking connection…" : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Проверка подключения…"
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3790,10 +4375,10 @@
             "value" : "Vérification de la connexion…"
           }
         },
-        "pt" : {
+        "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verificando conexão…"
+            "value" : "בודק את החיבור…"
           }
         },
         "ja" : {
@@ -3808,10 +4393,22 @@
             "value" : "연결 확인 중…"
           }
         },
-        "he" : {
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "בודק את החיבור…"
+            "value" : "Verbinding controleren…"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verificando conexão…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Проверка подключения…"
           }
         }
       }
@@ -3852,6 +4449,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사용량 확인 중…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbruik controleren…"
           }
         },
         "pt" : {
@@ -3906,6 +4509,12 @@
             "value" : "선택"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kiezen"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3958,6 +4567,12 @@
             "value" : "사용량 추적을 시작하려면 설정에서 제공업체를 선택하십시오."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kies een provider in Instellingen om je verbruik bij te houden."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3968,6 +4583,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выберите провайдера в настройках, чтобы начать отслеживание."
+          }
+        }
+      }
+    },
+    "Choose providers" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anbieter auswählen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elegir proveedores"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir les fournisseurs"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "בחירת ספקים"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロバイダーを選択"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제공업체 선택"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Providers kiezen"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolher fornecedores"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать провайдеров"
           }
         }
       }
@@ -4008,6 +4681,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "UsageNow가 표시하고 모니터링할 서비스를 선택하고 원하는 순서로 드래그하십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kies welke diensten UsageNow toont en bijhoudt en sleep ze in de gewenste volgorde."
           }
         },
         "pt" : {
@@ -4062,6 +4741,12 @@
             "value" : "선택…"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kiezen…"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4112,6 +4797,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Claude Code 사용량"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claude Code-verbruik"
           }
         },
         "pt" : {
@@ -4166,6 +4857,12 @@
             "value" : "Claude 사용 한도를 일시적으로 사용할 수 없습니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De gebruikslimieten van Claude zijn tijdelijk niet beschikbaar."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4216,6 +4913,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Claude 사용 한도 — 실험적"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claude-gebruikslimieten — Experimenteel"
           }
         },
         "pt" : {
@@ -4270,6 +4973,12 @@
             "value" : "Codex 사용량"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Codex-verbruik"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4320,6 +5029,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "출시 예정"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Binnenkort"
           }
         },
         "pt" : {
@@ -4374,6 +5089,12 @@
             "value" : "연결"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbinden"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4426,6 +5147,12 @@
             "value" : "%@ 연결"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbinden met %@"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4442,12 +5169,6 @@
     },
     "Connection verified, but it couldn’t be saved. Check Keychain access and try again." : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Подключение проверено, но не сохранено. Проверьте доступ к Связке ключей и повторите попытку."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4466,10 +5187,10 @@
             "value" : "Connexion vérifiée, mais impossible à enregistrer. Vérifiez l’accès au trousseau et réessayez."
           }
         },
-        "pt" : {
+        "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Conexão verificada, mas não foi possível salvá-la. Verifique o acesso às Chaves e tente novamente."
+            "value" : "החיבור אומת אך לא נשמר. בדקו את הגישה למחזיק המפתחות ונסו שוב."
           }
         },
         "ja" : {
@@ -4484,10 +5205,22 @@
             "value" : "연결은 확인되었지만 저장하지 못했습니다. 키체인 접근 권한을 확인한 후 다시 시도하십시오."
           }
         },
-        "he" : {
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "החיבור אומת אך לא נשמר. בדקו את הגישה למחזיק המפתחות ונסו שוב."
+            "value" : "De verbinding is gecontroleerd, maar kon niet worden opgeslagen. Controleer de toegang tot Sleutelhanger en probeer het opnieuw."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conexão verificada, mas não foi possível salvá-la. Verifique o acesso às Chaves e tente novamente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подключение проверено, но не сохранено. Проверьте доступ к Связке ключей и повторите попытку."
           }
         }
       }
@@ -4528,6 +5261,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "연결…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbinden…"
           }
         },
         "pt" : {
@@ -4582,6 +5321,12 @@
             "value" : "복사됨"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gekopieerd"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4632,6 +5377,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "복사"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiëren"
           }
         },
         "pt" : {
@@ -4686,6 +5437,12 @@
             "value" : "%@을(를) 새로 고칠 수 없음"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ kon niet worden vernieuwd"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4736,6 +5493,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "연결을 저장할 수 없습니다. 인증 정보 형식과 키체인 접근을 확인하십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De verbinding kon niet worden opgeslagen. Controleer de notatie van de toegangsgegevens en de toegang tot Sleutelhanger."
           }
         },
         "pt" : {
@@ -4791,6 +5554,12 @@
             "value" : "세션을 확인할 수 없습니다. 다시 시도하거나 쿠키를 수동으로 입력하십시오."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze sessie kon niet worden gecontroleerd. Probeer het opnieuw of voer handmatig een sessiecookie in."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4842,6 +5611,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@에서 키 생성…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een sleutel maken op %@…"
           }
         },
         "pt" : {
@@ -4896,6 +5671,12 @@
             "value" : "user_read 권한이 있는 제한된 키를 만드십시오. UsageNow는 오디오를 생성하지 않습니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maak een beperkte sleutel met de machtiging user_read. UsageNow genereert geen audio."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4946,6 +5727,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "크레딧"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Credits"
           }
         },
         "pt" : {
@@ -5000,6 +5787,12 @@
             "value" : "남은 크레딧"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resterende credits"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5050,6 +5843,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사용한 크레딧"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gebruikte credits"
           }
         },
         "pt" : {
@@ -5104,6 +5903,12 @@
             "value" : "사용량: Cursor"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cursor-verbruik"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5154,6 +5959,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "일간"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dagelijks"
           }
         },
         "pt" : {
@@ -5208,6 +6019,12 @@
             "value" : "다크"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Donker"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5258,6 +6075,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "일"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dag"
           }
         },
         "pt" : {
@@ -5312,6 +6135,12 @@
             "value" : "개발"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ontwikkeling"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5362,6 +6191,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "표시"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weergave"
           }
         },
         "pt" : {
@@ -5416,6 +6251,12 @@
             "value" : "완료"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gereed"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5426,6 +6267,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Готово"
+          }
+        }
+      }
+    },
+    "Edit this widget to choose an enabled provider and account." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bearbeite dieses Widget, um einen aktivierten Anbieter und Account auszuwählen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edita este widget para elegir un proveedor y una cuenta habilitados."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifiez ce widget pour choisir un fournisseur et un compte activés."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ערכו את הווידג׳ט כדי לבחור ספק וחשבון פעילים."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィジェットを編集して、有効なプロバイダーとアカウントを選択してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "위젯을 편집해 활성화된 제공업체와 계정을 선택하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewerk deze widget om een ingeschakelde provider en een account te kiezen."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edite este widget para escolher um fornecedor e uma conta ativos."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Измените этот виджет, чтобы выбрать включённого провайдера и аккаунт."
           }
         }
       }
@@ -5466,6 +6365,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사용량: ElevenLabs"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ElevenLabs-verbruik"
           }
         },
         "pt" : {
@@ -5520,6 +6425,12 @@
             "value" : "이메일…"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail…"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5530,6 +6441,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Письмо…"
+          }
+        }
+      }
+    },
+    "Estimate from recent quota readings, not token activity. Your pace can change." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schätzung anhand aktueller Limit-Messungen, nicht der Token-Aktivität. Dein Verbrauch kann sich ändern."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimación basada en lecturas recientes de cuota, no en tokens. Tu ritmo puede cambiar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimation basée sur les relevés récents de quota, pas sur les jetons. Votre rythme peut changer."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הערכה לפי מדידות מכסה אחרונות, לא לפי טוקנים. קצב השימוש עשוי להשתנות."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最近の上限使用量に基づく推定で、トークン数からの計算ではありません。使用ペースは変わることがあります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "최근 한도 측정값에 따른 추정이며 토큰 사용량 기준이 아닙니다. 사용 속도는 달라질 수 있습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schatting op basis van recente limietmetingen, niet van tokenactiviteit. Je verbruikstempo kan veranderen."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimativa baseada em leituras recentes de quota, não em tokens. O ritmo pode mudar."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оценка по свежим замерам квоты, а не по токенам. Темп использования может измениться."
           }
         }
       }
@@ -5570,6 +6539,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "API 가격 기준 예상 비용"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geschatte kosten tegen API-tarieven"
           }
         },
         "pt" : {
@@ -5624,6 +6599,12 @@
             "value" : "실험적"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Experimenteel"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5674,6 +6655,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "실험적: %@은(는) 사용량을 읽는 방법을 문서화하지 않으므로 예고 없이 작동하지 않을 수 있습니다. 그런 경우 UsageNow는 추측하지 않고 한도를 사용할 수 없음으로 표시합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Experimenteel: %@ documenteert niet hoe verbruik kan worden uitgelezen. Dit kan zonder aankondiging stoppen met werken. UsageNow toont dan dat de limieten niet beschikbaar zijn en doet geen schatting."
           }
         },
         "pt" : {
@@ -5728,6 +6715,12 @@
             "value" : "Claude 사용 한도 가져오기"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claude-gebruikslimieten ophalen"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5778,6 +6771,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "기존 Claude Code 로그인을 사용하여 현재 Claude Code 구독 한도를 Anthropic에서 직접 가져옵니다. 문서화되지 않은 Anthropic 엔드포인트를 사용하므로 예고 없이 작동하지 않을 수 있습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haal de huidige Claude Code-abonnementslimieten rechtstreeks bij Anthropic op met je bestaande Claude Code-aanmelding. Dit gebruikt een ongedocumenteerd Anthropic-eindpunt en kan zonder aankondiging stoppen met werken."
           }
         },
         "pt" : {
@@ -5832,6 +6831,12 @@
             "value" : "수정됨"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opgelost"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5882,6 +6887,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "폴더를 찾을 수 없음"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Map niet gevonden"
           }
         },
         "pt" : {
@@ -5936,6 +6947,12 @@
             "value" : "Gemini CLI 사용량"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gemini CLI-verbruik"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5986,6 +7003,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "일반"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Algemeen"
           }
         },
         "pt" : {
@@ -6040,6 +7063,12 @@
             "value" : "사용량: GitHub Copilot"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GitHub Copilot-verbruik"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6090,6 +7119,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "GitHub 토큰"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GitHub-token"
           }
         },
         "pt" : {
@@ -6144,6 +7179,12 @@
             "value" : "기본적인 앱 사용 및 기기 정보를 공유하여 UsageNow 개선에 도움을 줍니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Help UsageNow te verbeteren door basisgegevens over appgebruik en je apparaat te delen."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6194,6 +7235,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "높은 사용량"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoog verbruik"
           }
         },
         "pt" : {
@@ -6248,6 +7295,12 @@
             "value" : "아이콘만"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alleen pictogram"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6298,6 +7351,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사용량 추적을 시작하려면 지원되는 AI 코딩 도구를 설치하거나 사용하십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Installeer of gebruik een ondersteunde AI-codetool om je verbruik bij te houden."
           }
         },
         "pt" : {
@@ -6352,6 +7411,12 @@
             "value" : "설치됨"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geïnstalleerd"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6402,6 +7467,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "방금"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zojuist"
           }
         },
         "pt" : {
@@ -6456,6 +7527,12 @@
             "value" : "키보드 단축키"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sneltoets"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6506,6 +7583,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kiro 사용량"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kiro-verbruik"
           }
         },
         "pt" : {
@@ -6560,6 +7643,12 @@
             "value" : "언어"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taal"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6610,6 +7699,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "최근 30일"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afgelopen 30 dagen"
           }
         },
         "pt" : {
@@ -6664,6 +7759,12 @@
             "value" : "마지막 확인: %@"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laatst gecontroleerd %@"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6716,6 +7817,12 @@
             "value" : "로그인 시 UsageNow 열기"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow starten bij inloggen"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6726,6 +7833,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Открывать UsageNow при входе"
+          }
+        }
+      }
+    },
+    "Leave the selection empty to follow UsageNow. Select providers and accounts to personalize this widget." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lass die Auswahl leer, um UsageNow zu folgen. Wähle Anbieter und Accounts für dieses Widget aus."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deja la selección vacía para seguir UsageNow. Elige proveedores y cuentas para personalizar este widget."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laissez la sélection vide pour suivre UsageNow. Sélectionnez des fournisseurs et des comptes pour ce widget."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "השאירו את הבחירה ריקה כדי לעקוב אחר UsageNow. בחרו ספקים וחשבונות להתאמה אישית של הווידג׳ט."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未選択の場合はUsageNowの設定に従います。このウィジェットに表示するプロバイダーとアカウントを選択できます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택하지 않으면 UsageNow 설정을 따릅니다. 제공업체와 계정을 선택해 이 위젯을 맞춤 설정하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laat de selectie leeg om UsageNow te volgen. Selecteer providers en accounts om deze widget aan te passen."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deixe a seleção vazia para seguir o UsageNow. Escolha fornecedores e contas para personalizar este widget."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оставьте выбор пустым, чтобы следовать настройкам UsageNow. Выберите провайдеров и аккаунты для этого виджета."
           }
         }
       }
@@ -6768,6 +7933,12 @@
             "value" : "라이트"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Licht"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6778,6 +7949,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Светлое"
+          }
+        }
+      }
+    },
+    "Likely to last until reset" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reicht voraussichtlich bis zum Reset"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probablemente dure hasta el reinicio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Devrait suffire jusqu’au renouvellement"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "צפוי להספיק עד לאיפוס"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リセットまで持つ見込み"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "초기화까지 남을 것으로 예상"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waarschijnlijk genoeg tot de reset"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deverá durar até à reposição"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вероятно, хватит до сброса"
           }
         }
       }
@@ -6818,6 +8047,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "한도는 UsageNow가 새로 고칠 때 확인됩니다. 알림은 이 Mac에서 보내며, 어디에도 아무것도 전송되지 않습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limieten worden bij het vernieuwen gecontroleerd. Meldingen komen van deze Mac; er wordt niets verstuurd."
           }
         },
         "pt" : {
@@ -6873,6 +8108,12 @@
             "value" : "한도 사용 불가"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limieten niet beschikbaar"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6925,6 +8166,12 @@
             "value" : "수동"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Handmatig"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6935,6 +8182,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вручную"
+          }
+        }
+      }
+    },
+    "May run out in %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reicht möglicherweise noch %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podría agotarse en %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pourrait s’épuiser dans %@"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "עלול להיגמר בעוד %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "約%@で上限に達する可能性"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 후 소진될 수 있음"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mogelijk op over %@"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pode esgotar em %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Может закончиться через %@"
           }
         }
       }
@@ -6975,6 +8280,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "메뉴 막대"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menubalk"
           }
         },
         "pt" : {
@@ -7029,6 +8340,12 @@
             "value" : "오늘의 모델"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modellen vandaag"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7079,6 +8396,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "월간"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maandelijks"
           }
         },
         "pt" : {
@@ -7133,6 +8456,12 @@
             "value" : "한도에 가장 가까운 사용량"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meest kritieke verbruik"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7183,6 +8512,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "아래로 이동"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omlaag verplaatsen"
           }
         },
         "pt" : {
@@ -7237,6 +8572,12 @@
             "value" : "위로 이동"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omhoog verplaatsen"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7287,6 +8628,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "이름"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naam"
           }
         },
         "pt" : {
@@ -7341,6 +8688,12 @@
             "value" : "거의 소진됨"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bijna op"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7391,6 +8744,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "프롬프트, 토큰, 프로젝트 이름, 파일, 자격 증명 또는 코딩 활동은 절대 포함되지 않습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bevat nooit prompts, tokens, projectnamen, bestanden, toegangsgegevens of programmeeractiviteit."
           }
         },
         "pt" : {
@@ -7445,6 +8804,12 @@
             "value" : "다음 재설정"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volgende reset"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7495,6 +8860,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "아직 API 키 없음"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nog geen API-sleutel"
           }
         },
         "pt" : {
@@ -7549,6 +8920,12 @@
             "value" : "활동 없음"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen activiteit"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7601,6 +8978,12 @@
             "value" : "선택한 폴더 없음"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen map gekozen"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7617,12 +9000,6 @@
     },
     "No internet connection. Reconnect and try again; nothing has been saved." : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Нет подключения к интернету. Подключитесь и повторите попытку. Ничего не сохранено."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7641,10 +9018,10 @@
             "value" : "Pas de connexion Internet. Reconnectez-vous et réessayez ; rien n’a été enregistré."
           }
         },
-        "pt" : {
+        "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sem conexão com a internet. Reconecte e tente novamente; nada foi salvo."
+            "value" : "אין חיבור לאינטרנט. התחברו ונסו שוב; לא נשמר דבר."
           }
         },
         "ja" : {
@@ -7659,10 +9036,22 @@
             "value" : "인터넷에 연결되어 있지 않습니다. 다시 연결한 후 시도하십시오. 저장된 내용은 없습니다."
           }
         },
-        "he" : {
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "אין חיבור לאינטרנט. התחברו ונסו שוב; לא נשמר דבר."
+            "value" : "Geen internetverbinding. Maak opnieuw verbinding en probeer het nogmaals; er is niets opgeslagen."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sem conexão com a internet. Reconecte e tente novamente; nada foi salvo."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет подключения к интернету. Подключитесь и повторите попытку. Ничего не сохранено."
           }
         }
       }
@@ -7703,6 +9092,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "감지된 제공업체 없음"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen providers gevonden"
           }
         },
         "pt" : {
@@ -7757,6 +9152,12 @@
             "value" : "활성화된 제공업체 없음"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen providers ingeschakeld"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7807,6 +9208,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "이 계정의 폴더에 로그인 정보나 세션이 없습니다. 설정 › 제공업체에서 확인하십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen aanmelding of sessies in de map van dit account. Controleer de map in Instellingen › Providers."
           }
         },
         "pt" : {
@@ -7861,6 +9268,12 @@
             "value" : "유효한 세션이 없습니다. 로그인을 완료하거나 쿠키를 수동으로 입력하십시오."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nog geen geldige sessie. Rond het inloggen af of voer handmatig een sessiecookie in."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7911,6 +9324,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "없음"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen"
           }
         },
         "pt" : {
@@ -7965,6 +9384,12 @@
             "value" : "아직 확인하지 않음"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nog niet gecontroleerd"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8015,6 +9440,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "연결 안 됨"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niet verbonden"
           }
         },
         "pt" : {
@@ -8069,6 +9500,12 @@
             "value" : "알림"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meldingen"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8119,6 +9556,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "시스템 설정에서 UsageNow 알림이 꺼져 있습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meldingen voor UsageNow zijn uitgeschakeld in Systeeminstellingen."
           }
         },
         "pt" : {
@@ -8173,6 +9616,12 @@
             "value" : "한도 알림 받기"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meldingen over limieten"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8183,6 +9632,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Уведомлять о лимитах"
+          }
+        }
+      }
+    },
+    "Observed quota usage" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gemessener Limit-Verbrauch"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uso de cuota observado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utilisation du quota mesurée"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שימוש במכסה שנמדד"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "観測した上限使用量"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "측정된 한도 사용량"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gemeten limietverbruik"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utilização de quota observada"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Измеренное использование квоты"
           }
         }
       }
@@ -8223,6 +9730,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사용 한도를 업데이트하려면 %@을(를) 여십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open %@ om de gebruikslimieten te vernieuwen."
           }
         },
         "pt" : {
@@ -8277,6 +9790,12 @@
             "value" : "%@ 열기…"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ openen…"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8287,6 +9806,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Открыть %@…"
+          }
+        }
+      }
+    },
+    "Open Antigravity, or sign in with agy in Terminal, to update usage limits." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffne Antigravity oder melde dich mit agy im Terminal an, um Nutzungslimits zu aktualisieren."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre Antigravity o inicia sesión con agy en Terminal para actualizar los límites de uso."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrez Antigravity ou connectez-vous avec agy dans Terminal pour actualiser les limites d’utilisation."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "כדי לעדכן את מגבלות השימוש, פתחו את Antigravity או התחברו באמצעות agy ב-Terminal."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用上限を更新するには、Antigravity を開くか、ターミナルで agy にログインしてください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용 한도를 업데이트하려면 Antigravity를 열거나 터미널에서 agy로 로그인하세요."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Antigravity of meld je in Terminal aan met agy om de gebruikslimieten bij te werken."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abra o Antigravity ou inicie sessão com agy no Terminal para atualizar os limites de utilização."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Откройте Antigravity или войдите через agy в Терминале, чтобы обновить лимиты."
           }
         }
       }
@@ -8327,6 +9904,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "GitHub 이슈 열기…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GitHub-issue openen…"
           }
         },
         "pt" : {
@@ -8381,6 +9964,12 @@
             "value" : "로그인 항목 열기…"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inlogonderdelen openen…"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8431,6 +10020,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "알림 설정 열기…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meldingsinstellingen openen…"
           }
         },
         "pt" : {
@@ -8485,6 +10080,12 @@
             "value" : "제공업체 설정 열기"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Providerinstellingen openen"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8535,6 +10136,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "오픈 소스 라이선스"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open-sourcelicenties"
           }
         },
         "pt" : {
@@ -8589,6 +10196,12 @@
             "value" : "오픈 소스 라이선스…"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open-sourcelicenties…"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8639,6 +10252,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "UsageNow를 여십시오"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow openen"
           }
         },
         "pt" : {
@@ -8693,6 +10312,12 @@
             "value" : "제공업체를 선택하려면 UsageNow를 여십시오."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open UsageNow om providers te kiezen."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8745,6 +10370,12 @@
             "value" : "사용량 데이터를 불러오려면 UsageNow를 여십시오."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open UsageNow om verbruiksgegevens te laden."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8760,6 +10391,7 @@
       }
     },
     "Open the Antigravity app to update usage limits." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -8795,6 +10427,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사용 한도를 업데이트하려면 Antigravity 앱을 여십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open de Antigravity-app om de gebruikslimieten te vernieuwen."
           }
         },
         "pt" : {
@@ -8849,6 +10487,12 @@
             "value" : "어떤 앱에서든 UsageNow를 열고 닫습니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open en sluit UsageNow vanuit elke app."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8901,6 +10545,12 @@
             "value" : "또는 세션 쿠키를 붙여넣으십시오(이름=값):"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Of plak een sessiecookie met naam (naam=waarde):"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8911,6 +10561,122 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Или вставьте cookie сессии (имя=значение):"
+          }
+        }
+      }
+    },
+    "Overall service status. Your account connection and usage limits are checked separately." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allgemeiner Dienststatus. Account-Verbindung und Nutzungslimits werden separat geprüft."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estado general del servicio. La conexión de tu cuenta y sus límites se comprueban por separado."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "État global du service. La connexion de votre compte et ses limites sont vérifiées séparément."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "סטטוס כללי של השירות. החיבור לחשבון ומכסות השימוש נבדקים בנפרד."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サービス全体の状態です。アカウント接続と使用上限は別途確認されます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "서비스 전체 상태입니다. 계정 연결과 사용 한도는 별도로 확인합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Algemene dienststatus. Je accountverbinding en gebruikslimieten worden apart gecontroleerd."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estado geral do serviço. A ligação da conta e os limites são verificados separadamente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Общий статус сервиса. Подключение аккаунта и лимиты проверяются отдельно."
+          }
+        }
+      }
+    },
+    "Periodically check public OpenAI, Claude, Cursor and GitHub Copilot status pages. No account or usage data is sent. Service status does not diagnose your connection." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffentliche Statusseiten von OpenAI, Claude, Cursor und GitHub Copilot regelmäßig prüfen. Es werden keine Account- oder Nutzungsdaten gesendet. Der Dienststatus diagnostiziert nicht deine Verbindung."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprueba periódicamente las páginas públicas de estado de OpenAI, Claude, Cursor y GitHub Copilot. No se envían datos de cuenta ni de uso. El estado no diagnostica tu conexión."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consulte régulièrement les pages publiques d’état d’OpenAI, Claude, Cursor et GitHub Copilot. Aucune donnée de compte ou d’utilisation n’est envoyée. Cet état ne diagnostique pas votre connexion."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "בדיקה תקופתית של דפי הסטטוס הציבוריים של OpenAI, Claude, Cursor ו-GitHub Copilot. לא נשלחים נתוני חשבון או שימוש. הסטטוס אינו מאבחן את החיבור שלכם."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OpenAI、Claude、Cursor、GitHub Copilotの公開ステータスページを定期的に確認します。アカウントや使用量のデータは送信しません。接続の診断ではありません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OpenAI, Claude, Cursor, GitHub Copilot의 공개 상태 페이지를 주기적으로 확인합니다. 계정이나 사용량 데이터는 전송하지 않습니다. 연결 문제를 진단하는 기능은 아닙니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controleer periodiek de openbare statuspagina’s van OpenAI, Claude, Cursor en GitHub Copilot. Er worden geen account- of verbruiksgegevens verstuurd. De dienststatus stelt geen diagnose van je verbinding."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verifica periodicamente as páginas públicas de estado de OpenAI, Claude, Cursor e GitHub Copilot. Não envia dados de conta ou utilização. O estado não diagnostica a sua ligação."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Периодически проверять публичные страницы статуса OpenAI, Claude, Cursor и GitHub Copilot. Данные аккаунта и использования не отправляются. Статус сервиса не диагностирует ваше подключение."
           }
         }
       }
@@ -8951,6 +10717,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사용량: Perplexity"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perplexity-verbruik"
           }
         },
         "pt" : {
@@ -9005,6 +10777,12 @@
             "value" : "단축키를 누르십시오…"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Druk op een sneltoets…"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9057,6 +10835,12 @@
             "value" : "개인정보 보호"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9067,6 +10851,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Конфиденциальность"
+          }
+        }
+      }
+    },
+    "Provider and account" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anbieter und Account"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proveedor y cuenta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fournisseur et compte"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ספק וחשבון"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロバイダーとアカウント"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제공업체 및 계정"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Provider en account"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fornecedor e conta"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Провайдер и аккаунт"
           }
         }
       }
@@ -9109,6 +10951,12 @@
             "value" : "제공업체"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Providers"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9119,6 +10967,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Провайдеры"
+          }
+        }
+      }
+    },
+    "Providers and accounts" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anbieter und Accounts"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proveedores y cuentas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fournisseurs et comptes"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ספקים וחשבונות"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロバイダーとアカウント"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제공업체 및 계정"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Providers en accounts"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fornecedores e contas"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Провайдеры и аккаунты"
           }
         }
       }
@@ -9159,6 +11065,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "종료"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stoppen"
           }
         },
         "pt" : {
@@ -9213,6 +11125,12 @@
             "value" : "UsageNow 종료"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow stoppen"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9223,6 +11141,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Завершить UsageNow"
+          }
+        }
+      }
+    },
+    "Quota pace" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbrauchstempo"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ritmo de consumo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rythme de consommation"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "קצב שימוש במכסה"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上限の消費ペース"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "한도 사용 속도"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbruikstempo"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ritmo de consumo"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Темп расхода квоты"
           }
         }
       }
@@ -9263,6 +11239,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "설정 › 제공업체에서 %@에 다시 연결하십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbind %@ opnieuw in Instellingen › Providers."
           }
         },
         "pt" : {
@@ -9317,6 +11299,12 @@
             "value" : "다시 연결…"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opnieuw verbinden…"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9367,6 +11355,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "단축키 기록"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sneltoets instellen"
           }
         },
         "pt" : {
@@ -9421,6 +11415,12 @@
             "value" : "새로 고침"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vernieuwen"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9471,6 +11471,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사용 한도를 보려면 터미널에서 Claude Code를 새로 고치십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vernieuw Claude Code via Terminal om de gebruikslimieten te zien."
           }
         },
         "pt" : {
@@ -9525,6 +11531,12 @@
             "value" : "새로 고침 간격"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vernieuwingsinterval"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9541,12 +11553,6 @@
     },
     "Refresh temporarily limited. Try again after %@." : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Обновление временно ограничено. Повторите попытку после %@."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9565,10 +11571,10 @@
             "value" : "Actualisation temporairement limitée. Réessayez après %@."
           }
         },
-        "pt" : {
+        "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Atualização temporariamente limitada. Tente novamente após %@."
+            "value" : "הרענון מוגבל זמנית. נסו שוב אחרי %@."
           }
         },
         "ja" : {
@@ -9583,10 +11589,22 @@
             "value" : "새로고침이 일시적으로 제한되었습니다. %@ 이후에 다시 시도하십시오."
           }
         },
-        "he" : {
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "הרענון מוגבל זמנית. נסו שוב אחרי %@."
+            "value" : "Vernieuwen is tijdelijk beperkt. Probeer het opnieuw na %@."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atualização temporariamente limitada. Tente novamente após %@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обновление временно ограничено. Повторите попытку после %@."
           }
         }
       }
@@ -9627,6 +11645,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "새로 고치는 중…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vernieuwen…"
           }
         },
         "pt" : {
@@ -9681,6 +11705,12 @@
             "value" : "새로고침"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opnieuw laden"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9731,6 +11761,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "남음"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resterend"
           }
         },
         "pt" : {
@@ -9785,6 +11821,12 @@
             "value" : "제거"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwijderen"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9835,6 +11877,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "단축키 제거"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sneltoets verwijderen"
           }
         },
         "pt" : {
@@ -9889,6 +11937,12 @@
             "value" : "제거됨"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwijderd"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9939,6 +11993,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "이름 변경"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hernoemen"
           }
         },
         "pt" : {
@@ -9993,6 +12053,12 @@
             "value" : "%@ 이름 변경"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ hernoemen"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10043,6 +12109,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "이름 변경…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hernoemen…"
           }
         },
         "pt" : {
@@ -10098,6 +12170,12 @@
             "value" : "키 대치…"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sleutel vervangen…"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10148,6 +12226,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "대치…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vervangen…"
           }
         },
         "pt" : {
@@ -10202,6 +12286,12 @@
             "value" : "문제 보고"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een probleem melden"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10254,6 +12344,12 @@
             "value" : "문제 보고…"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een probleem melden…"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10304,6 +12400,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "요청"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verzoeken"
           }
         },
         "pt" : {
@@ -10359,6 +12461,12 @@
             "value" : "%@에 재설정됨 · 이후 업데이트 안 됨"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset op %@ · sindsdien niet vernieuwd"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10409,6 +12517,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@에 재설정"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset op %@"
           }
         },
         "pt" : {
@@ -10463,6 +12577,12 @@
             "value" : "%@ 후 재설정"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset over %@"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10513,6 +12633,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "지금 재설정 중"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wordt nu gereset"
           }
         },
         "pt" : {
@@ -10567,6 +12693,12 @@
             "value" : "지금 재시작"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu herstarten"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10619,6 +12751,12 @@
             "value" : "재시도"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opnieuw proberen"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10669,6 +12807,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ 새로 고침 재시도"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ opnieuw proberen te vernieuwen"
           }
         },
         "pt" : {
@@ -10724,6 +12868,12 @@
             "value" : "저장"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opslaan"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10776,6 +12926,12 @@
             "value" : "저장하여 연결을 완료하십시오."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sla op om het verbinden af te ronden."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10786,6 +12942,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Сохраните, чтобы завершить подключение."
+          }
+        }
+      }
+    },
+    "Selected account unavailable" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgewählter Account nicht verfügbar"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuenta seleccionada no disponible"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compte sélectionné indisponible"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "החשבון שנבחר אינו זמין"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択したアカウントを利用できません"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택한 계정을 사용할 수 없음"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geselecteerd account niet beschikbaar"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conta selecionada indisponível"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбранный аккаунт недоступен"
           }
         }
       }
@@ -10826,6 +13040,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "세션 쿠키"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sessiecookie"
           }
         },
         "pt" : {
@@ -10880,6 +13100,12 @@
             "value" : "세션 저장됨"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sessie opgeslagen"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10930,6 +13156,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "설정…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instellingen…"
           }
         },
         "pt" : {
@@ -10984,6 +13216,12 @@
             "value" : "익명 사용 분석 공유"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anonieme gebruiksstatistieken delen"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11036,6 +13274,12 @@
             "value" : "한도 표시 방식"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limieten tonen als"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11046,6 +13290,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Показывать лимиты как"
+          }
+        }
+      }
+    },
+    "Show service incidents" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dienststörungen anzeigen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar incidencias del servicio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher les incidents des services"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הצגת תקלות בשירותים"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サービス障害を表示"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "서비스 장애 표시"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Storingen bij diensten tonen"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar incidentes dos serviços"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показывать сбои сервисов"
           }
         }
       }
@@ -11086,6 +13388,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "최근 30일 보기"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De afgelopen 30 dagen tonen"
           }
         },
         "pt" : {
@@ -11140,6 +13448,12 @@
             "value" : "메뉴 막대 윈도우와 위젯에서 %@ 뒤에 표시됩니다. UsageNow는 계정 자체의 이름이나 이메일을 읽지 않습니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wordt na %@ getoond in het menubalkvenster en de widget. UsageNow leest nooit de eigen naam of het e-mailadres van het account."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11190,6 +13504,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사용할 수 있는 사용 한도가 없으면 아이콘만 표시합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toont alleen het pictogram als er geen gebruikslimiet beschikbaar is."
           }
         },
         "pt" : {
@@ -11244,6 +13564,12 @@
             "value" : "로그인…"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inloggen…"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11294,6 +13620,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "공식 웹사이트에서 로그인한 후 연결을 누르십시오. 설정에서 연결을 저장하면 세션 쿠키만 키체인에 보관됩니다. 이 창에서 로그인할 수 없으면 취소하고 브라우저의 쿠키를 사용하십시오."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log in op de officiële website en klik op Verbinden. Sla de verbinding op in Instellingen om alleen de sessiecookie in Sleutelhanger te bewaren. Als inloggen in dit venster niet lukt, annuleer dan en gebruik een sessiecookie uit je browser."
           }
         },
         "pt" : {
@@ -11348,6 +13680,12 @@
             "value" : "%@ 로그인"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inloggen bij %@"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11400,6 +13738,12 @@
             "value" : "사용량을 보려면 %@에 로그인하십시오"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log in bij %@ om je verbruik te zien"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11416,12 +13760,6 @@
     },
     "Signed-in usage couldn’t be verified. This account or response may not be supported; nothing has been saved." : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Не удалось проверить статистику. Этот аккаунт или формат ответа может не поддерживаться. Ничего не сохранено."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11440,10 +13778,10 @@
             "value" : "L’utilisation n’a pas pu être vérifiée. Ce compte ou ce format de réponse n’est peut-être pas pris en charge ; rien n’a été enregistré."
           }
         },
-        "pt" : {
+        "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Não foi possível verificar o uso. Esta conta ou resposta pode não ser compatível; nada foi salvo."
+            "value" : "לא ניתן לאמת את השימוש. ייתכן שהחשבון או פורמט התשובה אינם נתמכים; לא נשמר דבר."
           }
         },
         "ja" : {
@@ -11458,10 +13796,22 @@
             "value" : "사용량을 확인할 수 없습니다. 이 계정 또는 응답 형식이 지원되지 않을 수 있습니다. 저장된 내용은 없습니다."
           }
         },
-        "he" : {
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "לא ניתן לאמת את השימוש. ייתכן שהחשבון או פורמט התשובה אינם נתמכים; לא נשמר דבר."
+            "value" : "Het verbruik van het ingelogde account kon niet worden gecontroleerd. Dit account of antwoord wordt mogelijk niet ondersteund; er is niets opgeslagen."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível verificar o uso. Esta conta ou resposta pode não ser compatível; nada foi salvo."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось проверить статистику. Этот аккаунт или формат ответа может не поддерживаться. Ничего не сохранено."
           }
         }
       }
@@ -11502,6 +13852,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "시스템"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Systeem"
           }
         },
         "pt" : {
@@ -11556,6 +13912,12 @@
             "value" : "UsageNow 이름, 로고, 아이콘 및 기타 브랜드 자산은 MIT 라이선스의 적용을 받지 않습니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De naam, het logo, het pictogram en andere merkuitingen van UsageNow vallen niet onder de MIT-licentie."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11606,6 +13968,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "잔액이 부족하여 더 이상 요청할 수 없습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het saldo is onvoldoende voor meer verzoeken."
           }
         },
         "pt" : {
@@ -11666,6 +14034,12 @@
             "value" : "%2$@이(가) 가리킬 때 %1$@이(가) 사용하는 폴더입니다. %3$@에서처럼 사용량만 읽습니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De map die %1$@ gebruikt wanneer %2$@ ernaar verwijst. Alleen het verbruik wordt gelezen, net als uit %3$@."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11716,6 +14090,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "전체 한도를 다시 사용할 수 있습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De volledige limiet is weer beschikbaar."
           }
         },
         "pt" : {
@@ -11771,6 +14151,12 @@
             "value" : "키를 키체인에 저장할 수 없습니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De sleutel kon niet in Sleutelhanger worden opgeslagen."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11823,6 +14209,12 @@
             "value" : "이 빌드에는 변경 사항 목록이 포함되어 있지 않습니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De lijst met wijzigingen ontbreekt in deze build."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11839,12 +14231,6 @@
     },
     "The service couldn’t be reached. Try again later; nothing has been saved." : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Не удалось связаться с сервисом. Повторите попытку позже. Ничего не сохранено."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11863,10 +14249,10 @@
             "value" : "Le service est injoignable. Réessayez plus tard ; rien n’a été enregistré."
           }
         },
-        "pt" : {
+        "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Não foi possível acessar o serviço. Tente mais tarde; nada foi salvo."
+            "value" : "לא ניתן להגיע לשירות. נסו שוב מאוחר יותר; לא נשמר דבר."
           }
         },
         "ja" : {
@@ -11881,22 +14267,28 @@
             "value" : "서비스에 연결할 수 없습니다. 나중에 다시 시도하십시오. 저장된 내용은 없습니다."
           }
         },
-        "he" : {
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "לא ניתן להגיע לשירות. נסו שוב מאוחר יותר; לא נשמר דבר."
+            "value" : "De dienst kon niet worden bereikt. Probeer het later opnieuw; er is niets opgeslagen."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível acessar o serviço. Tente mais tarde; nada foi salvo."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось связаться с сервисом. Повторите попытку позже. Ничего не сохранено."
           }
         }
       }
     },
     "The service rejected this connection. Check the credential and its permissions, or sign in again." : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Сервис отклонил подключение. Проверьте данные и права доступа или войдите снова."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11915,10 +14307,10 @@
             "value" : "Le service a refusé la connexion. Vérifiez les identifiants et leurs autorisations, ou reconnectez-vous."
           }
         },
-        "pt" : {
+        "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O serviço recusou a conexão. Verifique a credencial e suas permissões ou entre novamente."
+            "value" : "השירות דחה את החיבור. בדקו את פרטי הגישה וההרשאות או היכנסו שוב."
           }
         },
         "ja" : {
@@ -11933,10 +14325,22 @@
             "value" : "서비스에서 연결을 거부했습니다. 인증 정보와 권한을 확인하거나 다시 로그인하십시오."
           }
         },
-        "he" : {
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "השירות דחה את החיבור. בדקו את פרטי הגישה וההרשאות או היכנסו שוב."
+            "value" : "De dienst heeft deze verbinding geweigerd. Controleer de toegangsgegevens en machtigingen of log opnieuw in."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O serviço recusou a conexão. Verifique a credencial e suas permissões ou entre novamente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сервис отклонил подключение. Проверьте данные и права доступа или войдите снова."
           }
         }
       }
@@ -11977,6 +14381,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "이 빌드는 자동으로 업데이트할 수 없습니다. 업데이트에 서명하는 릴리스 과정으로 만들어지지 않았기 때문입니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze build kan zichzelf niet bijwerken: hij is niet via het releaseproces gemaakt dat updates ondertekent."
           }
         },
         "pt" : {
@@ -12031,6 +14441,12 @@
             "value" : "이 빌드는 아직 분석 데이터를 전송하지 않습니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze build verstuurt nog geen gebruiksstatistieken."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12083,6 +14499,12 @@
             "value" : "보고서에 포함된 내용은 이것이 전부입니다: 버전, 화면, 설정 및 각 제공업체가 표시하는 내용. 이름, 이메일, 파일 경로, 키 또는 프롬프트는 포함되지 않습니다. 직접 보내기 전까지는 아무것도 전송되지 않습니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit is de volledige inhoud van het rapport: versies, schermen, instellingen en wat elke provider toont. Geen namen, e-mailadressen, bestandspaden, sleutels of prompts. Er wordt niets verstuurd totdat je dat zelf doet."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12099,12 +14521,6 @@
     },
     "This key cannot read usage. Enable the required read permission and try again." : {
       "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "У ключа нет доступа к статистике. Разрешите чтение данных и повторите попытку."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12123,10 +14539,10 @@
             "value" : "Cette clé ne peut pas lire l’utilisation. Activez l’autorisation de lecture requise, puis réessayez."
           }
         },
-        "pt" : {
+        "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esta chave não pode ler o uso. Ative a permissão de leitura necessária e tente novamente."
+            "value" : "למפתח הזה אין גישה לקריאת השימוש. הפעילו את הרשאת הקריאה הנדרשת ונסו שוב."
           }
         },
         "ja" : {
@@ -12141,10 +14557,80 @@
             "value" : "이 키는 사용량을 읽을 수 없습니다. 필요한 읽기 권한을 활성화한 후 다시 시도하십시오."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze sleutel kan geen verbruik lezen. Schakel de vereiste leesmachtiging in en probeer het opnieuw."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta chave não pode ler o uso. Ative a permissão de leitura necessária e tente novamente."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У ключа нет доступа к статистике. Разрешите чтение данных и повторите попытку."
+          }
+        }
+      }
+    },
+    "Time" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeit"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hora"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heure"
+          }
+        },
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "למפתח הזה אין גישה לקריאת השימוש. הפעילו את הרשאת הקריאה הנדרשת ונסו שוב."
+            "value" : "זמן"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "時刻"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시간"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tijd"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hora"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Время"
           }
         }
       }
@@ -12185,6 +14671,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "토큰 저장됨"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Token opgeslagen"
           }
         },
         "pt" : {
@@ -12239,6 +14731,12 @@
             "value" : "토큰"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tokens"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12289,6 +14787,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Antigravity 앱이 실행되는 동안 Antigravity 한도를 추적합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd Antigravity-limieten bij terwijl de Antigravity-app actief is."
           }
         },
         "pt" : {
@@ -12343,6 +14847,12 @@
             "value" : "Claude Code 사용량과 한도를 추적합니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd Claude Code-verbruik en -limieten bij."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12393,6 +14903,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cline 토큰, 요청 및 비용을 추적합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd Cline-tokens, -verzoeken en -kosten bij."
           }
         },
         "pt" : {
@@ -12447,6 +14963,12 @@
             "value" : "Codex 사용량과 한도를 추적합니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd Codex-verbruik en -limieten bij."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12497,6 +15019,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copilot 할당량과 크레딧을 추적합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd Copilot-tegoeden en -credits bij."
           }
         },
         "pt" : {
@@ -12551,6 +15079,12 @@
             "value" : "Cursor 요금제 사용량을 추적합니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd het verbruik van je Cursor-abonnement bij."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12601,6 +15135,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ElevenLabs 문자 사용량을 추적합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd het tekenverbruik van ElevenLabs bij."
           }
         },
         "pt" : {
@@ -12655,6 +15195,12 @@
             "value" : "모델별 Gemini CLI 활동을 추적합니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd Gemini CLI-activiteit per model bij."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12705,6 +15251,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Grok Build 토큰, 모델 및 비용을 추적합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd Grok Build-tokens, -modellen en -kosten bij."
           }
         },
         "pt" : {
@@ -12759,6 +15311,12 @@
             "value" : "Kiro 크레딧과 월간 한도를 추적합니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd Kiro-credits en maandlimieten bij."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12809,6 +15367,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ollama Cloud 세션 및 주간 한도를 추적합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd sessie- en weeklimieten van Ollama Cloud bij."
           }
         },
         "pt" : {
@@ -12863,6 +15427,12 @@
             "value" : "OpenCode 토큰과 모델을 추적합니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd OpenCode-tokens en -modellen bij."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12913,6 +15483,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "OpenRouter 지출과 키 한도를 추적합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd OpenRouter-uitgaven en sleutellimieten bij."
           }
         },
         "pt" : {
@@ -12967,6 +15543,12 @@
             "value" : "Perplexity 웹 크레딧을 추적합니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd Perplexity-webcredits bij."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13017,6 +15599,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Qoder 크레딧을 추적합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd Qoder-credits bij."
           }
         },
         "pt" : {
@@ -13071,6 +15659,12 @@
             "value" : "Qwen Code 토큰과 모델을 추적합니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd Qwen Code-tokens en -modellen bij."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13121,6 +15715,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Warp 에이전트 요청과 크레딧을 추적합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd Warp-agentverzoeken en -credits bij."
           }
         },
         "pt" : {
@@ -13175,6 +15775,12 @@
             "value" : "Windsurf 일간 및 주간 한도를 추적합니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd dag- en weeklimieten van Windsurf bij."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13225,6 +15831,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Z.ai Coding Plan 한도를 추적합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd limieten van het Z.ai Coding Plan bij."
           }
         },
         "pt" : {
@@ -13279,6 +15891,12 @@
             "value" : "DeepSeek API 잔액을 추적합니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd je DeepSeek-API-saldo bij."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13329,6 +15947,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kimi API 잔액을 추적합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd je Kimi-API-saldo bij."
           }
         },
         "pt" : {
@@ -13383,6 +16007,12 @@
             "value" : "다시 시도"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opnieuw proberen"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13433,6 +16063,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사용 불가"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niet beschikbaar"
           }
         },
         "pt" : {
@@ -13487,6 +16123,12 @@
             "value" : "%@에 업데이트됨"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bijgewerkt %@"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13537,6 +16179,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "방금 업데이트됨"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zojuist bijgewerkt"
           }
         },
         "pt" : {
@@ -13591,6 +16239,12 @@
             "value" : "이 빌드에서는 업데이트가 꺼져 있음"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Updates zijn uitgeschakeld in deze build"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13641,6 +16295,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사용 분석"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gebruiksstatistieken"
           }
         },
         "pt" : {
@@ -13695,6 +16355,12 @@
             "value" : "사용 한도 사용 불가"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gebruikslimieten niet beschikbaar"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13747,6 +16413,12 @@
             "value" : "UsageNow는 이미 이 폴더를 첫 번째 %@ 계정으로 읽고 있습니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow leest deze map al als het eerste %@-account."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13797,6 +16469,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "UsageNow는 열 때도 사용량을 확인합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow controleert ook op nieuw verbruik wanneer je het opent."
           }
         },
         "pt" : {
@@ -13852,6 +16530,12 @@
             "value" : "UsageNow에는 타사 코드가 포함되어 있지 않습니다. UsageNow의 소스 코드는 MIT 라이선스로 제공됩니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De eigen broncode van UsageNow is beschikbaar onder de MIT-licentie."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13904,6 +16588,12 @@
             "value" : "UsageNow는 UsageNow 업데이트 키로 서명된 업데이트만 설치합니다. 확인할 때 사용자에 대한 정보는 전송되지 않습니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow installeert een update alleen als deze met de UsageNow-updatesleutel is ondertekend. Bij het controleren worden geen gegevens over jou verstuurd."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13918,7 +16608,66 @@
         }
       }
     },
+    "UsageNow is available under the MIT License." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow ist unter der MIT-Lizenz verfügbar."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow está disponible bajo la licencia MIT."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow est disponible sous licence MIT."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow זמין ברישיון MIT."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNowはMITライセンスで提供されています。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow는 MIT 라이선스로 제공됩니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow is beschikbaar onder de MIT-licentie."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow está disponível sob a licença MIT."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow доступен по лицензии MIT."
+          }
+        }
+      }
+    },
     "UsageNow is available under the MIT License. Third-party acknowledgements and licenses are listed below." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -13954,6 +16703,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "UsageNow는 MIT 라이선스로 제공됩니다. 타사 감사 표시 및 라이선스는 아래에 나와 있습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow is beschikbaar onder de MIT-licentie. Vermeldingen en licenties van derden staan hieronder."
           }
         },
         "pt" : {
@@ -14006,6 +16761,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "UsageNow는 로컬에서 작동합니다. 사용량 데이터는 이 Mac에 남아 있습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow werkt in de eerste plaats lokaal. Je verbruiksgegevens blijven op deze Mac."
           }
         },
         "pt" : {
@@ -14066,6 +16827,12 @@
             "value" : "UsageNow는 사용량을 읽기 위해 이 인증 정보를 %1$@에만 보냅니다. 이 Mac의 키체인에 저장되며 %2$@을(를) 끄면 삭제됩니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow stuurt deze toegangsgegevens alleen naar %1$@ om verbruik te lezen. Ze worden in Sleutelhanger op deze Mac bewaard en verwijderd wanneer je %2$@ uitschakelt."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14116,6 +16883,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "UsageNow는 재시작할 때 언어를 변경합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow wisselt van taal na een herstart."
           }
         },
         "pt" : {
@@ -14177,6 +16950,12 @@
             "value" : "UsageNow는 %1$@에서 사용량을 읽는 데만 이 키를 사용합니다. 키는 이 Mac의 키체인에 보관되며 다른 곳으로 전송되지 않고, %2$@을(를) 끄면 삭제됩니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UsageNow gebruikt deze sleutel alleen om je verbruik bij %1$@ te lezen. De sleutel blijft in Sleutelhanger op deze Mac, wordt nooit ergens anders naartoe gestuurd en wordt verwijderd wanneer je %2$@ uitschakelt."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14227,6 +17006,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "본인의 GitHub 토큰을 사용하십시오. Copilot 접근은 토큰과 계정에 따라 다르며 실험적 API는 개인 토큰을 거부할 수 있습니다. UsageNow는 VS Code로 로그인하지 않습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gebruik je eigen GitHub-token. Toegang tot Copilot hangt af van het token en het account; de experimentele API kan persoonlijke tokens weigeren. UsageNow logt niet in namens VS Code."
           }
         },
         "pt" : {
@@ -14281,6 +17066,12 @@
             "value" : "사용함"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gebruikt"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14331,6 +17122,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "버전 %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versie %@"
           }
         },
         "pt" : {
@@ -14391,6 +17188,12 @@
             "value" : "버전 %1$@(%2$@)"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versie %1$@ (%2$@)"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14441,6 +17244,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "GitHub에서 보기"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekijken op GitHub"
           }
         },
         "pt" : {
@@ -14496,6 +17305,12 @@
             "value" : "업데이트 대기 중"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wachten op vernieuwing"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14546,6 +17361,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "주간"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wekelijks"
           }
         },
         "pt" : {
@@ -14600,6 +17421,12 @@
             "value" : "UsageNow가 가격을 아는 모델에 대해, 이 토큰이 공개된 API 가격으로 얼마인지 보여줍니다. 구독은 토큰당 요금을 부과하지 않습니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wat deze tokens zouden kosten tegen de gepubliceerde API-tarieven, voor modellen waarvan UsageNow de prijs kent. Je abonnement rekent niet per token."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14650,6 +17477,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "이 토큰이 공개된 API 가격으로 얼마인지 보여줍니다. 구독은 토큰당 요금을 부과하지 않습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wat deze tokens zouden kosten tegen de gepubliceerde API-tarieven. Je abonnement rekent niet per token."
           }
         },
         "pt" : {
@@ -14704,6 +17537,12 @@
             "value" : "UsageNow가 가격을 아는 모델에 대해, 오늘의 토큰이 공개된 API 가격으로 얼마인지 보여줍니다. 구독은 토큰당 요금을 부과하지 않습니다."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wat de tokens van vandaag zouden kosten tegen de gepubliceerde API-tarieven, voor modellen waarvan UsageNow de prijs kent. Je abonnement rekent niet per token."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14754,6 +17593,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "오늘의 토큰이 공개된 API 가격으로 얼마인지 보여줍니다. 구독은 토큰당 요금을 부과하지 않습니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wat de tokens van vandaag zouden kosten tegen de gepubliceerde API-tarieven. Je abonnement rekent niet per token."
           }
         },
         "pt" : {
@@ -14808,6 +17653,12 @@
             "value" : "새로운 기능"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wat is er nieuw?"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14858,6 +17709,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "새로운 기능…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wat is er nieuw?…"
           }
         },
         "pt" : {
@@ -14912,6 +17769,12 @@
             "value" : "AI 코딩 한도가 얼마나 남았는지 한눈에 확인하십시오."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je resterende AI-codelimieten in één oogopslag."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14962,6 +17825,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "한도가 20%와 5% 남았을 때, 그리고 알림을 받은 한도가 재설정될 때."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wanneer 20% en 5% van een limiet over is en wanneer een limiet waarover je bent gewaarschuwd wordt gereset."
           }
         },
         "pt" : {
@@ -15016,6 +17885,12 @@
             "value" : "사용량: Windsurf"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Windsurf-verbruik"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15066,6 +17941,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "업무"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Werk"
           }
         },
         "pt" : {
@@ -15120,6 +18001,12 @@
             "value" : "사용량: Z.ai"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Z.ai-verbruik"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15170,6 +18057,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "약 %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ongeveer %@"
           }
         },
         "pt" : {
@@ -15224,6 +18117,12 @@
             "value" : "API 가격 기준"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "tegen API-tarieven"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15274,6 +18173,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "API 가격 기준, 일부"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "tegen API-tarieven, gedeeltelijk"
           }
         },
         "pt" : {
@@ -15328,6 +18233,12 @@
             "value" : "오늘의 크레딧"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "credits vandaag"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15378,6 +18289,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "오늘의 크레딧, 일부"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "credits vandaag, gedeeltelijk"
           }
         },
         "pt" : {
@@ -15431,6 +18348,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "남음"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "over"
           }
         },
         "pt" : {
@@ -15493,6 +18416,12 @@
             "value" : "요청"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "verzoeken"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15551,6 +18480,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "요청"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "verzoeken"
           }
         },
         "pt" : {
@@ -15613,6 +18548,12 @@
             "value" : "요청"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "verzoek"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15673,6 +18614,12 @@
             "value" : "요청"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "verzoeken"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15723,6 +18670,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "오늘 지출"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vandaag besteed"
           }
         },
         "pt" : {
@@ -15777,6 +18730,12 @@
             "value" : "이번 달"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "deze maand"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15827,6 +18786,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "오늘의 토큰"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "tokens vandaag"
           }
         },
         "pt" : {
@@ -15889,6 +18854,12 @@
             "value" : "남음"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "over"
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15949,6 +18920,12 @@
             "value" : "사용"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "gebr."
+          }
+        },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16000,6 +18977,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사용함"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "gebruikt"
           }
         },
         "pt" : {

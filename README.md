@@ -25,7 +25,7 @@ UsageNow reads what each tool already keeps on your Mac and the usage services y
 | Codex | ✓ from the official `codex app-server` | tokens, requests, models, cost, 30 days | the app-server; `~/.codex/sessions` |
 | Claude Code | ✓ experimental, opt-in (see below), plus limits Claude Code reports hitting | tokens, requests, models, cost, 30 days | `~/.claude/projects`, `~/.claude.json` |
 | Gemini CLI | — not exposed locally | tokens, requests, models, cost, 30 days | `~/.gemini/tmp` |
-| Antigravity | ✓ while the Antigravity app runs | — | the app's own server on `127.0.0.1` |
+| Antigravity | ✓ | — | the app's server on `127.0.0.1`; official `agy /usage` fallback in 0.9.0 |
 | Kiro | ✓ monthly credits | credits and prompts, 30 days | Kiro's own log; `~/.kiro/sessions` |
 | Warp | — | requests, credits, models; requests over 30 days | Warp's database, read-only |
 | OpenCode | — | tokens, requests, models, cost, 30 days | OpenCode's database, read-only |
@@ -34,6 +34,7 @@ UsageNow reads what each tool already keeps on your Mac and the usage services y
 | Cline | — | tokens, requests, models, the cost Cline records, 30 days | the editor extension's tasks; `~/.cline/data` |
 | Grok Build | — | tokens, model calls, models, the cost xAI reports, 30 days | `~/.grok/sessions` |
 | Windsurf | daily and weekly limits, or billing-cycle credits on older plans | — | Windsurf's cached plan in its local database, read-only |
+| JetBrains AI (0.9.0) | monthly AI Assistant quota, or total allowance when monthly counters are absent; reported refill only | — | experimental, local quota XML and bounded quota events from the same IDE's log; live subscription validation pending |
 | DeepSeek, Kimi, OpenRouter | balance and spending; OpenRouter's key limit | — | the official API, with your key |
 | Ollama Cloud | ✓ session and weekly, experimental | — | `ollama.com`, with your key |
 | Cursor | reported personal plan allowance; no team-wide analytics | — | experimental `cursor.com/api/usage-summary`, with your web session |
@@ -78,9 +79,9 @@ as today's activity unless the source explicitly reports that period.
 - **Left or used.** Every percentage — popover, menu bar, and widget — reads as what's left or what's used, your choice.
 - **Notifications about limits.** Optional: a notice when a limit is down to 20% and at 5%, and when a limit you were warned about resets.
 - **A keyboard shortcut of your own** to open UsageNow from any app, with no extra permissions.
-- **Desktop widget.** Small and medium widgets showing what’s left at a glance, with credits for tools that meter in credits and the last two weeks for tools without limits.
+- **Desktop widget.** Small, medium, and large widgets showing what’s left at a glance. In 0.9.0, choose providers and accounts per widget; the large size shows up to four detailed rows with two windows each.
 - **Honest widget freshness.** A clock marks old readings per provider. Countdown timers keep ticking between reloads, and a limit's old percentage expires at its reset time until new data arrives. The main app must be running to fetch new usage; the widget reads only its safe snapshot.
-- **In your language.** English, German, Spanish, French, Portuguese, Russian, Hebrew, Japanese, and Korean — your Mac's, or the one you choose in Settings › General. What's New follows it too.
+- **In your language.** English, German, Spanish, French, Portuguese, Russian, Hebrew, Japanese, and Korean, with Dutch (Nederlands) added in 0.9.0 — your Mac's language, or the one you choose in Settings › General. What's New follows it too.
 - **What's New** in Settings › About: every version's changes, shipped inside the app.
 - **Any account in the menu bar.** Settings › Menu Bar can show an added account, such as "Codex · Work", instead of the first one.
 - **Report a Problem.** Shows you the whole diagnostic report first — versions, screens, settings, what each provider shows, never names, paths, keys, or prompts — and opens a prefilled GitHub issue or email.
@@ -117,8 +118,11 @@ xcodebuild -project UsageNow.xcodeproj -scheme UsageNow test
 - **Grok Build:** each finished turn's time, models, token counts, model calls, and the cost xAI reported, from the `turn_completed` lines of `~/.grok/sessions/<project>/<session>/updates.jsonl`. The turn's result text and every other line are never decoded. Not yet verified against a live install.
 - **Windsurf:** only `windsurf.settings.cachedPlanInfo` in `~/Library/Application Support/Windsurf/User/globalStorage/state.vscdb`. Daily and weekly limits, reset dates and plan, or billing-cycle credits on older plans. The database is opened read-only; its sign-in entries are never selected. Windsurf needs to run to refresh its cache. This integration provides no token activity; available fields depend on the plan and Windsurf version.
 - **Connections you add** (API keys, your GitHub token, or Cursor/Perplexity sessions): stored only in this Mac's Keychain, sent over HTTPS only to the provider's catalog host, for read-only usage requests. Redirects are refused; credentials are deleted when you turn the provider off. The new browser sign-in window is temporary and never imports an existing browser profile. See [connection details](docs/provider-connections.md) for endpoint and permission requirements.
+- **JetBrains AI (0.9.0):** experimental, local-only AI Assistant quota. Reads `options/AIAssistantQuotaManager2.xml` under versioned JetBrains IDE configuration folders, and at most the last 4 MiB of that IDE's `idea.log` for a newer complete quota event. Android Studio uses the equivalent Google directories. The newest XML selects one IDE; another IDE's log never replaces it. Without XML, the most recently modified IDE log is selected. The card identifies the IDE and keeps the quota's original timestamp. Monthly percentages exclude purchased top-ups; a total-only cache is labelled Allowance, without a monthly reset. No inferred plan, token activity, currency, credit conversion or top-up counter. Open the IDE with AI Assistant enabled to update its local data. Active-subscription validation remains pending; the cache found on the development Mac only reports Unknown. See [JetBrains integration details](docs/provider-connections.md#jetbrains-ai-local-source-090).
 
-The last 30 days are computed from the same files each time. UsageNow stores no history of its own.
+The last 30 days of token and credit activity are computed from the same files each time. Starting in 0.9.0, **quota pace** separately keeps a bounded local history of reported percentages, window labels and reset/capture times in app preferences. A window label may name a model group, but no credentials, account names, prompts, paths or token-activity records are kept. This history is never sent to telemetry or the widget. Disabling a provider, removing an account or changing its connection deletes that source's quota history. A forecast needs at least three fresh samples spanning 15 minutes; unknown durations, stale data, resets and gaps over 35 minutes suppress it. It is an estimate, not a promise, and cannot be reconstructed from token counts.
+
+**Service incidents** (0.9.0) are optional and off by default. Only enabled providers' public OpenAI, Claude, Cursor and GitHub Copilot status pages are checked, at most once every ten minutes during refreshes. Requests contain no account or usage data and use no cookies, credentials, persistent HTTP cache or redirects. Overall service incidents are not a diagnosis of an account connection; a failed status lookup is unknown, not healthy. GitHub incidents are filtered to Copilot components.
 
 UsageNow honors `CODEX_HOME` and `CLAUDE_CONFIG_DIR` when they’re set.
 
@@ -156,9 +160,11 @@ Google no longer lets personal Google accounts sign in to Gemini CLI; it still w
 
 The Antigravity app keeps its limits in memory and shows them in its `/usage` panel. While the app runs, it serves a language server on a loopback port and prints that port and a CSRF token in its own command line. UsageNow reads just those two arguments (via `ps`), finds the socket with `lsof`, and asks the server for the same quota summary (`RetrieveUserQuotaSummary` on `127.0.0.1`). Antigravity’s limits are shared by groups of models, so each appears as its own window, such as **5-hour · Gemini** or **Weekly · Claude and GPT**.
 
-**No credentials are involved.** UsageNow never reads the Google sign-in Antigravity saved, never reads any other process’s arguments or memory, and sends nothing beyond `127.0.0.1`. The loopback server uses a self-signed certificate, which UsageNow accepts for loopback addresses only.
+**UsageNow never reads the Google sign-in Antigravity saved or other processes’ memory.** This IDE path sends requests only to `127.0.0.1`. The loopback server uses a self-signed certificate, which UsageNow accepts for loopback addresses only.
 
-When the Antigravity app isn’t running there’s nothing to ask: the last limits stay for a day, marked stale, with a reminder to open it. The Antigravity CLI (`agy`) runs a server too, but keeps its CSRF token in memory only, so UsageNow can’t read it — the app must be running. There’s no token or model activity for Antigravity, because it stores conversations in an undocumented binary format and UsageNow doesn’t guess at numbers. Google’s Cloud Code quota service itself answers only Antigravity’s own clients, and UsageNow won’t impersonate one, so it doesn’t call Google directly.
+**0.9.0:** when the IDE cannot answer, UsageNow can use the official `agy -p /usage --output-format json` report. It checks the CLI version first (1.x, at least 1.1.11), accepts only a successful built-in `usage` command with zero agent turns, and caches reports for at least five minutes. This path was checked with CLI 1.2.2. Sign in through `agy` yourself; authentication remains entirely the CLI's responsibility. The IDE and CLI can be signed into different accounts: an answering IDE keeps priority, and its plan label is never attached to the CLI's report.
+
+If neither source answers, last known limits stay for a day, marked stale. There’s no token or model activity for Antigravity, because it stores conversations in an undocumented binary format and UsageNow doesn’t guess at numbers. UsageNow does not call Google's private quota service directly or extract the CLI's in-memory CSRF token.
 
 ### New connections in 0.8.0
 
@@ -166,20 +172,22 @@ Cursor and GitHub Copilot are now **experimental connections**, alongside Perple
 
 ## Updates
 
-UsageNow updates itself with [Sparkle](https://sparkle-project.org). **Settings › General** holds the switch and a Check Now button.
+UsageNow checks for and installs signed updates. **Settings › General** holds the switch and a Check Now button.
 
 An update is installed only if it is signed with the private half of the EdDSA key whose public half is in the app’s `Info.plist`. That private key lives in the maintainer’s keychain and is in no build, no script, and no part of this repository, so nothing published here can produce an update UsageNow will accept. A build without the public key — anything not made by the release process, including a build you make yourself — doesn’t start the updater at all.
 
-A check asks `usagenow.com` for the feed and nothing more: Sparkle’s system profiling is off, so no identifier, version history, or hardware information is sent.
+A check asks `usagenow.com` for the feed and nothing more: system profiling is off, so no identifier, version history, or hardware information is sent.
 
-Releases are signed into the feed with `scripts/appcast.sh`, which refuses to publish a feed where two releases share a build number — Sparkle compares those, and the update would silently never appear.
+Releases are signed into the feed with `scripts/appcast.sh`, which refuses to publish a feed where two releases share a build number — the updater compares those, and the update would silently never appear.
 
 ## Desktop widget
 
-UsageNow ships a WidgetKit extension with small and medium sizes.
+UsageNow ships a WidgetKit extension with small and medium sizes; 0.9.0 adds a large size and per-widget selection.
 
 - **Small** is a glance: each enabled provider’s tightest window — the one with the least left — plus the next reset. With a single provider it expands to show the window name and reset time.
 - **Medium** gives each provider a column with its windows, percentage, and reset times. With three or more providers it switches to one row per provider, so each stays readable.
+- **Large** shows up to four provider/account rows, with two reported quota windows and their reset times per row.
+- **Edit Widget › Providers and accounts** chooses this widget's sources. An empty selection follows the app, preserving the previous default. Local stable identifiers preserve a choice across account renames; a removed or disabled account never falls back to another account. The configuration query reads only the sanitized snapshot.
 - With more providers than fit, the ones closest to a limit are shown. Model details stay in the app.
 - Percentages follow **Settings › General › Show limits as**: left by default, or used. A provider without limits shows today's tokens, or credits for Kiro, Warp, and Qoder, and in the medium widget's rows a chart of its last two weeks — the shape of the activity as shares of the busiest day, never amounts.
 - An added account has its own row, such as "Codex · Work".

@@ -2,6 +2,20 @@
 
 All notable changes to UsageNow. This project follows [Semantic Versioning](https://semver.org).
 
+## 0.9.0
+
+### Added
+
+- **JetBrains AI (experimental).** Local AI Assistant quota from a JetBrains IDE: monthly tariff remaining and a reported refill date, with menu-bar and widget support. A newer quota event from the same IDE can replace its XML cache; old readings keep their original time. No JetBrains credentials or network requests. Live validation with an active AI Assistant subscription is still pending.
+- **Personal widgets.** Choose providers and accounts independently for each widget, or leave the selection empty to follow UsageNow. Renaming an account keeps the selection; a removed account never silently switches to another.
+- **Large widget.** Up to four detailed provider/account rows, with two quota windows and their reset times. Like the smaller widgets, it only renders the sanitized snapshot.
+- **Quota pace.** A local chart and a clearly labelled estimate for the most critical window, based on at least three fresh quota observations spanning 15 minutes. Cached repeats, stale readings, long gaps, resets and unknown window lengths do not produce a forecast. Estimates never use token counts.
+- **Optional service incidents.** Public OpenAI, Claude, Cursor and GitHub Copilot status checks, off by default and cached for ten minutes. Service status is separate from account connections and usage limits; no usage or account data is sent.
+- **Dutch (Nederlands).** App, widgets and bundled release notes, bringing UsageNow to ten languages.
+- **Refreshed Windsurf and ElevenLabs icons.** Proper provider artwork with light and dark appearance support.
+
+- **Antigravity without the IDE.** If the IDE cannot answer, read the official `agy /usage` report from compatible CLI 1.x versions (1.1.11 or later). No agent turn, no credential access by UsageNow; reports are cached for five minutes. Verified with CLI 1.2.2.
+
 ## 0.8.0
 
 ### Added
@@ -125,16 +139,12 @@ All notable changes to UsageNow. This project follows [Semantic Versioning](http
 - **DeepSeek, Kimi, and OpenRouter, with your own API key.** Each shows what its official API reports: DeepSeek's balance in your account's currency, Kimi's available balance, and OpenRouter's spending today and this month, with the key's limit as a window when it resets. Add a key in **Settings › Providers**. The key is kept only in this Mac's Keychain, sent over HTTPS only to that provider's host, and deleted when you turn the provider off. Redirects aren't followed and answers from other hosts are refused, so the key can't be passed on. These providers start off. All three follow their documented responses but are not yet verified against live accounts.
 - **Credits today** for tools that meter in credits, and a **Monthly** limit window.
 
-### Fixed
-
-- **Sparkle's license notice** is now in **About › Open Source Licenses**. It was missing from 0.4.0.
-
 ## 0.4.0
 
 ### Added
 
 - **What today's tokens would cost.** Each provider shows an estimate beside its token and request counts — "≈ $4.20 at API prices" — of what the day's activity would have cost had it been billed through the API. Your subscription doesn't charge per token, so this is a sense of scale, not a bill. Cached tokens are priced as cached: on Claude Code most of the volume is cache reads at a tenth of the input price, so counting everything at the input rate would overstate a day sevenfold. A model with no published price isn't counted at all, and the line says the estimate is partial instead of quietly leaving it out. Prices ship with the app and are refreshed each release.
-- **Updates in the app.** UsageNow can now check for updates and install them, through Sparkle. **Settings › General** has the switch and a Check Now button. An update is installed only when it carries UsageNow's signature, and checking sends nothing about you — no identifier and no system profile. A build that wasn't made by the release process, such as one you build yourself, can't update itself at all. Coming from 0.3.0, install this version by hand once; later versions arrive on their own.
+- **Updates in the app.** UsageNow can now check for updates and install them. **Settings › General** has the switch and a Check Now button. An update is installed only when it carries UsageNow's signature, and checking sends nothing about you — no identifier and no system profile. A build that wasn't made by the release process, such as one you build yourself, can't update itself at all. Coming from 0.3.0, install this version by hand once; later versions arrive on their own.
 
 ### Changed
 

@@ -30,12 +30,14 @@ final class UsageStore {
     @ObservationIgnored private let now: @Sendable () -> Date
     @ObservationIgnored private var inFlightRefresh: Task<Void, Never>?
     @ObservationIgnored private var credentialRevisions: [SourceKey: Int] = [:]
+    @ObservationIgnored private let quotaHistory: QuotaHistory
 
     /// Replacing/removing a connection must never leave the previous
     /// account's values visible, including a response already in flight.
     func connectionDidChange(provider: ProviderID, account: String?) {
         let key = SourceKey(provider: provider, account: account)
         credentialRevisions[key, default: 0] += 1
+        quotaHistory.remove(key)
         update(key) { state in state = ProviderState(provider: state.provider, account: state.account) }
     }
 
@@ -49,9 +51,11 @@ final class UsageStore {
         states: [ProviderState] = [],
         hasCompletedInitialLoad: Bool = false,
         lastRefreshAt: Date? = nil,
+        quotaHistory: QuotaHistory = QuotaHistory(),
         now: @escaping @Sendable () -> Date = { .now }
     ) {
         self.providers = providers
+        self.quotaHistory = quotaHistory
         self.enabledProviders = enabledProviders
         self.order = order
         self.now = now
@@ -59,6 +63,7 @@ final class UsageStore {
         self.lastRefreshAt = lastRefreshAt
         self.states = []
         self.states = arrangedStates(seeded: states)
+        quotaHistory.retain(Set(self.states.filter { enabledProviders.contains($0.provider) }.map(\.id)))
     }
 
     /// Puts providers in the user's order; any not in it follow in catalog
@@ -76,6 +81,7 @@ final class UsageStore {
         providers = providers.filter { $0.account == nil } + accountProviders.filter { $0.account != nil }
         let arranged = arrangedStates(seeded: states)
         if arranged != states { states = arranged }
+        quotaHistory.retain(Set(states.filter { enabledProviders.contains($0.provider) }.map(\.id)))
         let added = Set(providers.map(\.sourceKey)).subtracting(before)
         guard !added.isEmpty else { return }
         await refresh(matching: { added.contains($0.sourceKey) }, isParticular: true, trigger: .manual)
@@ -141,6 +147,7 @@ final class UsageStore {
         let disabled = enabledProviders.subtracting(enabled)
         enabledProviders = enabled
         for index in states.indices where disabled.contains(states[index].provider) {
+            quotaHistory.remove(states[index].id)
             states[index] = ProviderState(provider: states[index].provider, account: states[index].account)
         }
         guard !newlyEnabled.isEmpty else { return }
@@ -226,11 +233,14 @@ final class UsageStore {
 
     private func apply(_ result: Result<ProviderSnapshot, any Error>, to id: SourceKey) {
         let date = now()
+        let history = quotaHistory
         update(id) { state in
             state.isRefreshing = false
             switch result {
             case .success(var snapshot):
                 snapshot.account = state.account
+                if snapshot.status == .notAuthenticated { history.remove(id) }
+                state.quotaPaces = history.observe(snapshot, at: date)
                 state.snapshot = snapshot
                 state.failure = nil
             case .failure(let error) where error is CancellationError:

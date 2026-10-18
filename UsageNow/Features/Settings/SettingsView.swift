@@ -235,6 +235,13 @@ struct GeneralSettingsView: View {
                     .foregroundStyle(.secondary)
             }
 
+            Section {
+                Toggle(isOn: $preferences.showsServiceStatus) {
+                    Text("Show service incidents")
+                    Text("Periodically check public OpenAI, Claude, Cursor and GitHub Copilot status pages. No account or usage data is sent. Service status does not diagnose your connection.")
+                }
+            }
+
             // Only meaningful while Claude Code is tracked at all.
             if providerPreferences.isEnabled(.claudeCode) {
                 Section {
@@ -448,7 +455,9 @@ extension QuotaUnavailableReason {
     func message(for provider: ProviderID) -> String {
         switch self {
         case .toolNotRunning where provider == .antigravity:
-            String(localized: "Open the Antigravity app to update usage limits.")
+            String(localized: "Open Antigravity, or sign in with agy in Terminal, to update usage limits.")
+        case .toolNotRunning where provider == .jetbrains:
+            String(localized: "Open a JetBrains IDE with AI Assistant enabled to update usage limits.")
         case .toolNotRunning:
             String(localized: "Open \(provider.displayName) to update usage limits.")
         case .signInExpired where provider == .claudeCode:

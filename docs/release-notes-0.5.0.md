@@ -8,10 +8,6 @@ AI coding usage tracker for macOS. Usage, limits, reset times, and activity acro
 - **Warp** — today's agent requests, credits, and tokens per model, from Warp's local database, read-only. Prompt text is never read.
 - **DeepSeek, Kimi, and OpenRouter** — balances and spending from their official APIs, with your own API key. The key stays in your Keychain, goes only to that provider, and is deleted when you turn the provider off. None of the three is verified against a live account yet.
 
-## Fixed
-
-- Sparkle's license notice is now included in About › Open Source Licenses.
-
 ## Install
 
 Already on 0.4.0? UsageNow offers this update itself — or choose **Check Now** in Settings › General.

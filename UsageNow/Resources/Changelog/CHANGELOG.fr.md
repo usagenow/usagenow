@@ -2,6 +2,20 @@
 
 What's New in French: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 0.9.0
+
+### Added
+
+- **JetBrains AI (expérimental).** Limites locales d’AI Assistant depuis votre IDE JetBrains, avec la date de renouvellement indiquée, dans la barre des menus et les widgets. Les anciennes valeurs conservent leur date d’origine. Aucun identifiant ni appel réseau. La vérification avec AI Assistant actif reste à effectuer.
+- **Widgets personnels.** Choisissez fournisseurs et comptes pour chaque widget, ou laissez la sélection vide pour suivre UsageNow. Renommer conserve le choix ; un compte supprimé n’est jamais remplacé silencieusement.
+- **Grand widget.** Jusqu’à quatre lignes détaillées de fournisseurs et de comptes, avec deux fenêtres de quota et leurs réinitialisations. Il affiche uniquement l’instantané filtré.
+- **Rythme de consommation.** Graphique local et estimation explicite pour la fenêtre la plus critique, à partir d’au moins trois relevés récents sur 15 minutes. Le cache, les données anciennes, les longues pauses, les réinitialisations et les durées inconnues ne produisent pas de prévision. Aucun calcul à partir des jetons.
+- **Incidents des services en option.** Pages publiques d’OpenAI, Claude, Cursor et GitHub Copilot, désactivées par défaut et mises en cache dix minutes. État distinct de la connexion et des quotas ; aucune donnée de compte ou d’utilisation envoyée.
+- **Néerlandais (Nederlands).** App, widgets et notes de version intégrées : dix langues désormais.
+- **Nouvelles icônes Windsurf et ElevenLabs.** Logos adaptés aux apparences claire et sombre.
+
+- **Antigravity sans IDE.** Si l’IDE ne répond pas, UsageNow lit le rapport officiel `agy /usage` des versions compatibles du CLI 1.x à partir de 1.1.11. Aucun tour d’agent ni accès aux identifiants par UsageNow ; cache de cinq minutes. Vérifié avec le CLI 1.2.2.
+
 ## 0.8.0
 
 ### Added
@@ -113,10 +127,6 @@ What's New in French: each version's changes, shorter than CHANGELOG.md. Heading
 - Kiro — la limite mensuelle de crédits de votre forfait, sa date de réinitialisation, et les crédits et prompts du jour, d’après ce que Kiro écrit sur votre Mac. Aucune requête à Kiro, aucun identifiant Kiro.
 - Warp — requêtes de l’agent, crédits et tokens par modèle du jour, depuis la base locale de Warp, en lecture seule.
 - DeepSeek, Kimi et OpenRouter — soldes et dépenses via leurs API officielles, avec votre propre clé d’API. La clé reste dans votre trousseau et ne va qu’à ce fournisseur. Aucun des trois n’a encore été vérifié sur un vrai compte.
-
-### Fixed
-
-- La mention de licence de Sparkle figure désormais dans À propos › Licences open source.
 
 ## 0.4.0
 

@@ -3,7 +3,7 @@ import Synchronization
 import Testing
 @testable import UsageNow
 
-/// Antigravity limits come from Antigravity CLI's own loopback server. The
+/// Antigravity IDE limits come from its own loopback server. The
 /// response shape follows open implementations of the same RPC.
 struct AntigravityProviderTests {
     private let noon = TestDates.noon
@@ -34,7 +34,7 @@ struct AntigravityProviderTests {
         #expect(snapshot.status == .available)
         #expect(snapshot.windows.isEmpty)
         #expect(snapshot.quotaUnavailableReason == .toolNotRunning)
-        #expect(QuotaUnavailableReason.toolNotRunning.message(for: .antigravity) == "Open the Antigravity app to update usage limits.")
+        #expect(QuotaUnavailableReason.toolNotRunning.message(for: .antigravity) == "Open Antigravity, or sign in with agy in Terminal, to update usage limits.")
     }
 
     @Test func runningAgyGivesScopedWindowsAndTier() async throws {

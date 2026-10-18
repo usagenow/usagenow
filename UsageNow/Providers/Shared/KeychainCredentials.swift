@@ -1,4 +1,5 @@
 import Foundation
+import Darwin
 import Security
 
 /// Why an experimental quota source is or isn't available, in detail. Kept
@@ -145,5 +146,10 @@ final class TerminableProcess: @unchecked Sendable {
 
     func terminate() {
         if process.isRunning { process.terminate() }
+    }
+
+    /// Last-resort watchdog for a read-only subprocess ignoring SIGTERM.
+    func forceTerminate() {
+        if process.isRunning { Darwin.kill(process.processIdentifier, SIGKILL) }
     }
 }

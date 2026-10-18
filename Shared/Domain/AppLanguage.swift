@@ -11,6 +11,7 @@ enum AppLanguage: String, CaseIterable, Identifiable, Sendable {
     case en
     case es
     case fr
+    case nl
     case pt
     case ru
     case he

@@ -2,6 +2,20 @@
 
 What's New in Korean: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 0.9.0
+
+### Added
+
+- **JetBrains AI(실험적).** JetBrains IDE에 저장된 AI Assistant 한도와 보고된 충전 시각을 메뉴 막대와 위젯에 표시합니다. 오래된 데이터는 원래 기록 시각을 유지합니다. 인증 정보 접근이나 네트워크 요청은 없습니다. 활성 AI Assistant를 통한 실제 검증은 아직 필요합니다.
+- **개인별 위젯.** 위젯마다 제공업체와 계정을 선택하거나 비워 두어 UsageNow 설정을 따를 수 있습니다. 이름을 바꿔도 선택은 유지되며 삭제된 계정이 다른 계정으로 자동 교체되지 않습니다.
+- **큰 위젯.** 최대 네 개의 제공업체·계정 행에 두 개의 한도 기간과 초기화 시간을 표시합니다. 정제된 스냅샷만 렌더링합니다.
+- **한도 사용 속도.** 가장 임박한 한도에 대해 15분 이상에 걸친 최신 측정 세 건 이상으로 로컬 차트와 추정치를 표시합니다. 캐시 반복, 오래된 값, 긴 공백, 초기화, 알 수 없는 기간은 예측에 쓰지 않습니다. 토큰 수로 계산하지 않습니다.
+- **선택적 서비스 장애 표시.** OpenAI, Claude, Cursor, GitHub Copilot의 공개 상태 페이지를 확인합니다. 기본값은 꺼짐이며 10분간 캐시합니다. 계정 연결·한도와 별개이고 계정·사용량 데이터를 보내지 않습니다.
+- **네덜란드어(Nederlands).** 앱, 위젯, 내장 변경 기록을 포함해 이제 열 개 언어를 지원합니다.
+- **Windsurf와 ElevenLabs 아이콘 개선.** 밝은 화면과 어두운 화면에 맞는 올바른 로고를 사용합니다.
+
+- **IDE 없이 Antigravity 사용.** IDE가 응답하지 않으면 호환되는 CLI 1.x(1.1.11 이상)의 공식 `agy /usage` 보고서를 읽습니다. 에이전트를 실행하지 않고 UsageNow가 인증 정보에 접근하지 않으며, 5분간 캐시합니다. CLI 1.2.2에서 확인했습니다.
+
 ## 0.8.0
 
 ### Added
@@ -113,10 +127,6 @@ What's New in Korean: each version's changes, shorter than CHANGELOG.md. Heading
 - Kiro — 요금제의 월간 크레딧 한도, 재설정 날짜, 오늘의 크레딧과 프롬프트. Kiro가 Mac에 기록하는 내용에서 읽습니다. Kiro에 요청하지 않으며 Kiro 자격 증명도 사용하지 않습니다.
 - Warp — 오늘의 에이전트 요청, 크레딧, 모델별 토큰. Warp의 로컬 데이터베이스에서 읽기 전용으로 읽습니다.
 - DeepSeek, Kimi, OpenRouter — 공식 API의 잔액과 지출. 본인의 API 키를 사용합니다. 키는 키체인에 보관되며 해당 제공업체로만 전송됩니다. 세 가지 모두 아직 실제 계정에서 검증되지 않았습니다.
-
-### Fixed
-
-- Sparkle의 라이선스 고지가 정보 › 오픈 소스 라이선스에 표시됩니다.
 
 ## 0.4.0
 

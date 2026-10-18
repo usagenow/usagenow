@@ -61,6 +61,45 @@ their original timestamps. No response body or raw server error is displayed.
 
 ## Sources and attribution
 
+### JetBrains AI local source (0.9.0)
+
+JetBrains AI is a separate local provider, not an API-key connection. It
+follows the existing auto-detected local-provider toggle in Settings; turning
+it off prevents discovery and reads. No sign-in prompt is opened by UsageNow.
+
+- **Sources:** the selected installation's
+  `~/Library/Application Support/JetBrains/<IDE>/options/AIAssistantQuotaManager2.xml`
+  (at most 256 KiB), and a fixed, complete tail of
+  `~/Library/Logs/JetBrains/<IDE>/idea.log` (at most 4 MiB). Android Studio uses
+  `Google` in place of `JetBrains`. Paths are never included in snapshots.
+- **Selection:** the most recently modified quota XML picks one IDE. Only
+  that IDE's newer log can replace the cache, with quota and refill replaced
+  together. Without any XML, select the newest IDE log. There is no manual
+  IDE picker or aggregation across accounts in this version.
+- **Formats:** HTML-escaped JSON options; AI Assistant flat/nested quota
+  events; Junie's relayed quota JSON. Unknown, truncated or malformed latest
+  events fall back to XML, never to an older successful log record. Only the
+  specific disabled-assistant AirMigration error is ignored for Junie updates.
+- **Values:** monthly tariff used/maximum produces the remaining percentage,
+  excluding top-ups. Total-only legacy data is an Allowance, not Monthly.
+  Only a known refill date is a reset; `until` is expiry, never renewal.
+  Expired readings become unknown, and rereading a file never freshens its
+  capture date. Credit-to-currency conversion, top-up counters, token activity,
+  plan names, and organization-wide analytics are not provided.
+- **Privacy:** no HTTP requests, Keychain, account settings, prompt library,
+  telemetry event, or credentials. The widget reuses the sanitized snapshot.
+- **Validation:** synthetic parser, bounded-file, multi-IDE, menu-bar and
+  widget tests. The development Mac has an older IntelliJ cache with Unknown
+  quota; a fresh AI Assistant-enabled IDE/paid-account comparison is still
+  required before claiming live verification. Internal formats can change.
+
+Format references: [JetBrains licensing](https://www.jetbrains.com/help/ai-assistant/licensing-and-subscriptions.html)
+and the public [JetBrains source-format notes](https://github.com/steipete/CodexBar/blob/main/docs/jetbrains.md).
+The reader is independently implemented within UsageNow's existing provider
+and snapshot abstractions; no JetBrains credentials are used.
+
+### Explicit connection research (0.8.0)
+
 Schema research used [CodexBar](https://github.com/steipete/CodexBar) at commit
 [`6e118bdb5782707bfb0dfd0453d3483e3b216cd0`](https://github.com/steipete/CodexBar/tree/6e118bdb5782707bfb0dfd0453d3483e3b216cd0):
 `docs/{cursor,copilot,perplexity,elevenlabs,zai}.md`, the Cursor usage summary
@@ -68,7 +107,8 @@ decoder, `CopilotUsageModels.swift`, and the Perplexity/Z.ai/ElevenLabs plugins.
 These integrations were implemented using UsageNow's existing provider,
 Keychain, transport, and sanitized snapshot abstractions. CodexBar's browser
 cookie importer and VS Code OAuth identity are **not** included. The MIT notice
-is included in Settings › About › Open Source Licenses and below.
+is included in the app bundle's `Contents/Resources/THIRD-PARTY-NOTICES.txt`
+and below.
 
 Official references:
 

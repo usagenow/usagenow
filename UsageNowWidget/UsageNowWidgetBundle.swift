@@ -19,13 +19,13 @@ struct UsageNowWidget: Widget {
     static let kind = WidgetSnapshot.widgetKind
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: Self.kind, provider: UsageNowTimelineProvider()) { entry in
+        AppIntentConfiguration(kind: Self.kind, intent: WidgetSelectionIntent.self, provider: UsageNowTimelineProvider()) { entry in
             let language = AppLanguage(rawValue: entry.snapshot?.language ?? "")
             UsageNowWidgetEntryView(entry: entry)
                 .appLanguage(language)
         }
         .configurationDisplayName(Text(verbatim: Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? AppInfo.name))
         .description(Text("What’s left of your AI coding limits, at a glance."))
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }

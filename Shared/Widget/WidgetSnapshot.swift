@@ -4,7 +4,7 @@ import Foundation
 ///
 /// Only display values live here: provider identity, remaining quota,
 /// reset dates, and local activity totals. Credentials, tokens, account
-/// identifiers, file paths, project or session names, prompts, and raw
+/// identifiers from providers, file paths, project or session names, prompts, and raw
 /// provider files must never reach this model — see the serialization
 /// test that pins the JSON keys.
 struct WidgetSnapshot: Codable, Sendable, Equatable {
@@ -36,6 +36,20 @@ struct WidgetSnapshot: Codable, Sendable, Equatable {
     var providers: [WidgetProviderSnapshot] {
         if case .providers(let providers) = state { return providers }
         return []
+    }
+
+    /// Empty selection preserves automatic ordering. An explicit selection
+    /// never falls back to another account when one is removed or disabled.
+    func selecting(_ identifiers: [String]) -> WidgetSnapshot {
+        guard !identifiers.isEmpty else { return self }
+        var copy = self
+        var seen = Set<String>()
+        let selected = identifiers.compactMap { identifier -> WidgetProviderSnapshot? in
+            guard seen.insert(identifier).inserted else { return nil }
+            return providers.first { $0.id == identifier }
+        }
+        copy.state = .providers(selected)
+        return copy
     }
 
     /// The soonest upcoming reset across providers, for the small widget footer.
@@ -107,6 +121,9 @@ struct WidgetSnapshot: Codable, Sendable, Equatable {
 /// One provider's state, already filtered and sanitized by the main app.
 struct WidgetProviderSnapshot: Codable, Sendable, Equatable, Identifiable {
     var provider: ProviderID
+    /// An opaque local selection key, not an email, provider account ID,
+    /// credential or folder path. Survives account renaming.
+    var selectionID: String? = nil
     /// The name the person gave an added account, e.g. "Work"; `nil` for
     /// the provider's own. Optional, so snapshots from earlier versions
     /// still read.
@@ -141,8 +158,8 @@ struct WidgetProviderSnapshot: Codable, Sendable, Equatable, Identifiable {
         return date.timeIntervalSince(updatedAt) > WidgetSnapshot.staleThreshold
     }
 
-    /// Account names are unique per provider, so this tells rows apart.
-    var id: String { accountName.map { "\(provider.rawValue) · \($0)" } ?? provider.rawValue }
+    /// Old snapshots retain their original name-based identity.
+    var id: String { selectionID ?? (accountName.map { "\(provider.rawValue) · \($0)" } ?? provider.rawValue) }
 
     /// Days shown in the widget's chart: two weeks fit its width.
     static let recentDayCount = 14
@@ -208,7 +225,7 @@ extension WidgetSnapshot.State {
 
 extension WidgetProviderSnapshot {
     private enum CodingKeys: String, CodingKey {
-        case provider, accountName, planName, modelName, windows, tokensToday, requestsToday, creditsToday, quotaUnavailableReason, recentDays, updatedAt, totals
+        case provider, selectionID, accountName, planName, modelName, windows, tokensToday, requestsToday, creditsToday, quotaUnavailableReason, recentDays, updatedAt, totals
     }
 
     /// An unknown provider fails, so the list can skip it; an unknown window
@@ -216,6 +233,7 @@ extension WidgetProviderSnapshot {
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         provider = try container.decode(ProviderID.self, forKey: .provider)
+        selectionID = try? container.decodeIfPresent(String.self, forKey: .selectionID)
         accountName = try? container.decodeIfPresent(String.self, forKey: .accountName)
         planName = try container.decodeIfPresent(String.self, forKey: .planName)
         modelName = try container.decodeIfPresent(String.self, forKey: .modelName)

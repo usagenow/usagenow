@@ -15,6 +15,7 @@ final class AppPreferences {
         static let appearance = "appearance"
         static let usageAmountStyle = "usageAmountStyle"
         static let showsActivityHistory = "showsActivityHistory"
+        static let showsServiceStatus = "showsServiceStatus"
         static let fetchClaudeUsageLimits = "experimental.fetchClaudeUsageLimits"
         static let notifiesAboutLimits = "notifiesAboutLimits"
         static let popoverShortcut = "popoverShortcut"
@@ -52,6 +53,11 @@ final class AppPreferences {
     /// off keeps the popover compact with many providers.
     var showsActivityHistory: Bool {
         didSet { defaults.set(showsActivityHistory, forKey: Key.showsActivityHistory) }
+    }
+
+    /// Optional public status checks, independent of account usage.
+    var showsServiceStatus: Bool {
+        didSet { defaults.set(showsServiceStatus, forKey: Key.showsServiceStatus) }
     }
 
     var refreshInterval: RefreshInterval {
@@ -106,6 +112,7 @@ final class AppPreferences {
         appearance = defaults.string(forKey: Key.appearance).flatMap(AppAppearance.init(rawValue:)) ?? .default
         usageAmountStyle = defaults.string(forKey: Key.usageAmountStyle).flatMap(UsageAmountStyle.init(rawValue:)) ?? .default
         showsActivityHistory = defaults.object(forKey: Key.showsActivityHistory) as? Bool ?? true
+        showsServiceStatus = defaults.bool(forKey: Key.showsServiceStatus)
         fetchClaudeUsageLimits = defaults.bool(forKey: Key.fetchClaudeUsageLimits)
         notifiesAboutLimits = defaults.bool(forKey: Key.notifiesAboutLimits)
         popoverShortcut = defaults.data(forKey: Key.popoverShortcut).flatMap { try? JSONDecoder().decode(GlobalShortcut.self, from: $0) }

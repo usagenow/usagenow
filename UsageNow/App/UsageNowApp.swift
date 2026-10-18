@@ -32,7 +32,7 @@ struct UsageNowApp: App {
 
     var body: some Scene {
         MenuBarExtra {
-            MenuBarContentView(store: appState.store, navigation: appState.settingsNavigation)
+            MenuBarContentView(store: appState.store, serviceHealth: appState.serviceHealth, navigation: appState.settingsNavigation)
                 .appLanguage(appState.preferences.languageAtLaunch)
                 .environment(\.usageAmountStyle, appState.preferences.usageAmountStyle)
                 .environment(\.showsActivityHistory, appState.preferences.showsActivityHistory)

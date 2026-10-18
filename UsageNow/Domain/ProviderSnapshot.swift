@@ -37,6 +37,9 @@ struct ProviderSnapshot: Sendable, Equatable, Identifiable {
     /// The added account this reading is for; `nil` for the provider's own.
     /// Set by `UsageStore`, so providers needn't know.
     var account: AccountTag? = nil
+    /// Public tool name/version for a local source (not an account label,
+    /// plan or model). Never copied into telemetry or widget snapshots.
+    var sourceLabel: String? = nil
 
     var id: SourceKey { SourceKey(provider: provider, account: account?.id) }
 

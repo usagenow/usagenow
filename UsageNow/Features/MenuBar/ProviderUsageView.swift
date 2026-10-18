@@ -5,6 +5,7 @@ import SwiftUI
 struct ProviderUsageView: View {
     let state: ProviderState
     let now: Date
+    var serviceHealth: ServiceHealth? = nil
     let onRetry: () -> Void
 
     private let formatter = ResetTimeFormatter()
@@ -19,6 +20,27 @@ struct ProviderUsageView: View {
                 planName: snapshot?.planName,
                 note: staleNote
             )
+            if let sourceLabel = snapshot?.sourceLabel {
+                Text(verbatim: sourceLabel)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            if let health = serviceHealth {
+                if health.isFresh(at: now), health.condition == .incident {
+                    Link(destination: health.source.page) {
+                        Label("\(health.source.name): service incident", systemImage: "exclamationmark.icloud")
+                            .font(.caption)
+                            .foregroundStyle(.orange)
+                    }
+                    .help("Overall service status. Your account connection and usage limits are checked separately.")
+                } else if health.condition == .unknown || !health.isFresh(at: now) {
+                    Link(destination: health.source.page) {
+                        Label("\(health.source.name): status unavailable", systemImage: "questionmark.circle")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
             if let failure = state.failure {
                 RefreshFailureView(name: state.displayName, isRetrying: state.isRefreshing,
                                    retryAt: failure.retryAt, now: now, onRetry: onRetry)
@@ -41,6 +63,11 @@ struct ProviderUsageView: View {
                 }
                 if !snapshot.windows.isEmpty {
                     UsageWindowsView(windows: snapshot.windows, now: now)
+                    if showsActivityHistory, state.failure == nil, !snapshot.isStale(at: now),
+                       let window = snapshot.mostCriticalWindow,
+                       let pace = state.quotaPaces.first(where: { $0.id == window.id }) {
+                        QuotaPaceView(pace: pace, now: now)
+                    }
                 }
                 // Also under windows that are only known to have reset, so the fix stays visible.
                 // A balance is the reading for API accounts, so its absence of windows isn't news.

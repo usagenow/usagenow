@@ -2,6 +2,20 @@
 
 What's New in German: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 0.9.0
+
+### Added
+
+- **JetBrains AI (experimentell).** Lokale AI Assistant-Limits aus deiner JetBrains-IDE, einschließlich gemeldeter Auffüllzeiten, für Menüleiste und Widgets. Veraltete Werte behalten ihren ursprünglichen Zeitstempel. Keine Zugangsdaten und keine Netzwerkanfragen. Ein Live-Test mit aktivem AI Assistant steht noch aus.
+- **Persönliche Widgets.** Anbieter und Accounts je Widget wählen oder die Auswahl leer lassen, um UsageNow zu folgen. Umbenennen erhält die Auswahl; entfernte Accounts werden nicht still ersetzt.
+- **Großes Widget.** Bis zu vier detaillierte Anbieter-/Account-Zeilen mit zwei Limit-Fenstern und Reset-Zeiten. Es rendert weiterhin nur den bereinigten Snapshot.
+- **Verbrauchstempo.** Lokales Diagramm und klar markierte Schätzung für das kritischste Fenster aus mindestens drei frischen Messungen über 15 Minuten. Cache-Wiederholungen, veraltete Daten, lange Lücken, Resets und unbekannte Fensterlängen liefern keine Prognose. Token-Zahlen werden nicht verwendet.
+- **Optionale Dienststörungen.** Öffentliche Statusseiten von OpenAI, Claude, Cursor und GitHub Copilot, standardmäßig aus, zehn Minuten zwischengespeichert. Getrennt von Account-Verbindung und Limits; keine Account- oder Nutzungsdaten werden gesendet.
+- **Niederländisch (Nederlands).** App, Widgets und mitgelieferte Versionshinweise: jetzt zehn Sprachen.
+- **Neue Windsurf- und ElevenLabs-Symbole.** Passende Anbieterlogos für helle und dunkle Darstellung.
+
+- **Antigravity ohne IDE.** Antwortet die IDE nicht, liest UsageNow den offiziellen Bericht `agy /usage` kompatibler CLI-Versionen 1.x ab 1.1.11. Kein Agent-Aufruf und kein Zugriff auf Zugangsdaten durch UsageNow; fünf Minuten Cache. Mit CLI 1.2.2 geprüft.
+
 ## 0.8.0
 
 ### Added
@@ -113,10 +127,6 @@ What's New in German: each version's changes, shorter than CHANGELOG.md. Heading
 - Kiro – das monatliche Credit-Limit deines Tarifs, wann es zurückgesetzt wird, und die heutigen Credits und Prompts, aus dem, was Kiro auf deinem Mac schreibt. Keine Anfrage an Kiro, keine Kiro-Zugangsdaten.
 - Warp – heutige Agent-Anfragen, Credits und Tokens je Modell, aus Warps lokaler Datenbank, schreibgeschützt.
 - DeepSeek, Kimi und OpenRouter – Guthaben und Ausgaben aus ihren offiziellen APIs, mit deinem eigenen API-Schlüssel. Der Schlüssel bleibt im Schlüsselbund und geht nur an diesen Anbieter. Keiner der drei ist bisher an einem echten Konto geprüft.
-
-### Fixed
-
-- Der Lizenzhinweis von Sparkle steht jetzt unter Über › Open-Source-Lizenzen.
 
 ## 0.4.0
 

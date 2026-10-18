@@ -18,6 +18,7 @@ enum ProviderID: String, CaseIterable, Codable, Sendable, Identifiable, Comparab
     case cline
     case grok
     case windsurf
+    case jetbrains
     case deepseek
     case kimi
     case openrouter
@@ -195,8 +196,17 @@ enum ProviderCatalog {
             displayName: "Windsurf",
             summary: "Track Windsurf daily and weekly limits.",
             availability: .available,
-            logoAssetName: nil,
+            logoAssetName: "WindsurfLogo",
             symbolName: "wind"
+        ),
+        ProviderDefinition(
+            id: .jetbrains,
+            displayName: "JetBrains AI",
+            summary: "Track AI Assistant limits from your JetBrains IDE.",
+            availability: .available,
+            logoAssetName: nil,
+            symbolName: "square.stack.3d.up",
+            isExperimental: true
         ),
         ProviderDefinition(
             id: .deepseek,
@@ -265,7 +275,7 @@ enum ProviderCatalog {
         ProviderDefinition(
             id: .elevenlabs, displayName: "ElevenLabs",
             summary: "Track ElevenLabs character usage.", availability: .available,
-            logoAssetName: nil, symbolName: "waveform",
+            logoAssetName: "ElevenLabsLogo", symbolName: "waveform",
             apiKey: APIKeyConnection(host: "api.elevenlabs.io", keysPage: URL(string: "https://elevenlabs.io/app/settings/api-keys")!, authentication: .elevenLabs)
         ),
         ProviderDefinition(
