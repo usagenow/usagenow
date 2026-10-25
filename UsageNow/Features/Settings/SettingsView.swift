@@ -79,7 +79,7 @@ struct SettingsView: View {
                 MenuBarSettingsView(preferences: preferences, providerPreferences: providerPreferences, hotKey: hotKey)
             }
             Tab("Notifications", systemImage: "bell", value: SettingsTab.notifications) {
-                NotificationsSettingsView(preferences: preferences, notifier: limitNotifier)
+                NotificationsSettingsView(preferences: preferences, notifier: limitNotifier, enabledProviders: providerPreferences.enabledProviders)
             }
             Tab("Privacy", systemImage: "hand.raised", value: SettingsTab.privacy) {
                 PrivacySettingsView(analyticsPreferences: analyticsPreferences)
@@ -115,6 +115,7 @@ struct SettingsView: View {
 }
 
 struct GeneralSettingsView: View {
+    @Environment(\.openWindow) private var openWindow
     @Bindable var preferences: AppPreferences
     let providerPreferences: ProviderPreferences
     let launchAtLogin: LaunchAtLogin
@@ -242,6 +243,11 @@ struct GeneralSettingsView: View {
                 }
             }
 
+            Section {
+                Button("Open Setup…") { openWindow(id: "setup") }
+                CLISettingsView()
+            }
+
             // Only meaningful while Claude Code is tracked at all.
             if providerPreferences.isEnabled(.claudeCode) {
                 Section {
@@ -258,9 +264,8 @@ struct GeneralSettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .scrollDisabled(true)
-        .fixedSize(horizontal: false, vertical: true)
         .onAppear { launchAtLogin.refreshStatus() }
+        .frame(height: 650)
     }
 
     private func retryRow(_ issue: QuotaUnavailableReason, provider: ProviderID) -> some View {
@@ -321,13 +326,14 @@ struct MenuBarSettingsView: View {
 struct NotificationsSettingsView: View {
     @Bindable var preferences: AppPreferences
     let notifier: LimitNotifier
+    var enabledProviders: Set<ProviderID> = ProviderCatalog.availableIDs
 
     var body: some View {
         Form {
             Section {
                 Toggle(isOn: $preferences.notifiesAboutLimits) {
                     Text("Notify me about limits")
-                    Text("When 20% and 5% of a limit are left, and when a limit you were warned about resets.")
+                    Text("Choose when each provider warns you about remaining limits.")
                 }
                 if preferences.notifiesAboutLimits, notifier.permission == .denied {
                     LabeledContent {
@@ -343,11 +349,56 @@ struct NotificationsSettingsView: View {
                     .font(.callout)
                     .foregroundStyle(.secondary)
             }
+            if preferences.notifiesAboutLimits {
+                Section("Quiet hours") {
+                    Toggle("Enable quiet hours", isOn: $preferences.notificationPolicy.quietHoursEnabled)
+                    if preferences.notificationPolicy.quietHoursEnabled {
+                        DatePicker("From", selection: quietTime(\.quietStart), displayedComponents: .hourAndMinute)
+                        DatePicker("Until", selection: quietTime(\.quietEnd), displayedComponents: .hourAndMinute)
+                        Text("Uses this Mac’s time zone. Alerts during quiet hours are skipped.")
+                            .font(.callout).foregroundStyle(.secondary)
+                    }
+                }
+                ForEach(ProviderCatalog.available.filter { enabledProviders.contains($0.id) }) { definition in
+                    Section {
+                        Toggle("Enable notifications", isOn: rule(definition.id, \.enabled))
+                        if preferences.notificationPolicy.rule(for: definition.id).enabled {
+                            Stepper(value: rule(definition.id, \.warning), in: 2...99) {
+                                Text("Warning at \(preferences.notificationPolicy.rule(for: definition.id).warning)% left")
+                            }
+                            Stepper(value: rule(definition.id, \.critical), in: 1...max(1, preferences.notificationPolicy.rule(for: definition.id).warning - 1)) {
+                                Text("Critical at \(preferences.notificationPolicy.rule(for: definition.id).critical)% left")
+                            }
+                            Toggle("Notify when a warned limit resets", isOn: rule(definition.id, \.resets))
+                        }
+                    } header: { Text(verbatim: definition.displayName) }
+                }
+            }
         }
         .formStyle(.grouped)
-        .scrollDisabled(true)
-        .fixedSize(horizontal: false, vertical: true)
+        .frame(height: preferences.notifiesAboutLimits ? 520 : 190)
         .task { await notifier.refreshPermission() }
+    }
+
+    private func rule<Value>(_ provider: ProviderID, _ key: WritableKeyPath<NotificationPolicy.Rule, Value>) -> Binding<Value> {
+        Binding(get: { preferences.notificationPolicy.rule(for: provider)[keyPath: key] }, set: { value in
+            var policy = preferences.notificationPolicy
+            var rule = policy.rule(for: provider)
+            rule[keyPath: key] = value
+            rule.warning = min(99, max(2, rule.warning))
+            rule.critical = min(rule.warning - 1, max(1, rule.critical))
+            policy.providers[provider.rawValue] = rule
+            preferences.notificationPolicy = policy
+        })
+    }
+
+    private func quietTime(_ key: WritableKeyPath<NotificationPolicy, Int>) -> Binding<Date> {
+        Binding(get: {
+            let minutes = preferences.notificationPolicy[keyPath: key]
+            return Calendar.current.date(bySettingHour: minutes / 60, minute: minutes % 60, second: 0, of: .now) ?? .now
+        }, set: { date in
+            preferences.notificationPolicy[keyPath: key] = Calendar.current.component(.hour, from: date) * 60 + Calendar.current.component(.minute, from: date)
+        })
     }
 }
 

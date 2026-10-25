@@ -1,0 +1,476 @@
+{
+  "0.9.0": {
+    "summary": null,
+    "items": [
+      null,
+      null,
+      null,
+      null,
+      [
+        "Сервис ақауларының ерікті көрсеткіші. OpenAI, Claude, Cursor және Copilot ашық күйін тексеру бастапқыда өшірулі, кэші 10 минут. Аккаунт пен қолданыс деректері жіберілмейді.",
+        "Xizmat uzilişlarining ixtiyoriy körsatkiçi. OpenAI, Claude, Cursor va Copilot oçiq holati tekşiruvi dastlab öçirilgan, keşi 10 daqiqa. Hisob va sarf ma’lumotlari yuborilmaydi.",
+        "İsteğe bağlı hizmet kesintileri. OpenAI, Claude, Cursor ve Copilot açık durum denetimleri varsayılan kapalı, önbelleği 10 dakika. Hesap veya kullanım verisi gönderilmez."
+      ],
+      [
+        "Нидерланд тілі. Қолданба, виджеттер мен кірістірілген жаңалықтар енді он тілде.",
+        "Niderland tili. Dastur, vidjetlar va içki yangiliklar endi ön tilda.",
+        "Felemenkçe. Uygulama, araç takımları ve yerleşik yenilikler artık on dilde."
+      ],
+      [
+        "Windsurf және ElevenLabs белгішелері жаңартылды, ашық және қараңғы көріністерге бейімделді.",
+        "Windsurf va ElevenLabs belgilari yangilandi, oç va töq körinişlarga moslandi.",
+        "Windsurf ve ElevenLabs simgeleri açık ve koyu görünüme uygun yenilendi."
+      ],
+      null
+    ]
+  },
+  "0.8.0": {
+    "summary": [
+      "Алты жаңа провайдер, сенімді виджеттер және тоғыз тіл.",
+      "Olti yangi provayder, işonçli vidjetlar va töqqiz til.",
+      "Altı yeni sağlayıcı, daha güvenilir araç takımları ve dokuz dil."
+    ],
+    "items": [
+      [
+        "Windsurf лимиттері жергілікті кэштен; Cursor, Copilot, Perplexity, ElevenLabs және Z.ai жеке қосылымдар арқылы. ElevenLabs ресми API қолданады, қалған төртеуі сынақ нұсқасы.",
+        "Windsurf limitlari mahalliy keşdan; Cursor, Copilot, Perplexity, ElevenLabs va Z.ai alohida ulanişlar orqali. ElevenLabs rasmiy API işlatadi, qolgan törttasi tajribaviy.",
+        "Windsurf limitleri yerel önbellekten; Cursor, Copilot, Perplexity, ElevenLabs ve Z.ai açık bağlantılarla. ElevenLabs resmi API kullanır, diğer dördü deneyseldir."
+      ],
+      [
+        "Cursor не Perplexity жүйесіне бөлек уақытша терезеде кіру не cookie файлын қолмен енгізу. Браузер профильдері импортталмайды.",
+        "Cursor yoki Perplexity’ga alohida vaqtinça oynada kiriş yoki cookie faylini qölda kiritiş. Brauzer profillari import qilinmaydi.",
+        "Cursor veya Perplexity’ye yalıtılmış geçici pencerede giriş veya elle çerez ekleme. Tarayıcı profilleri içe aktarılmaz."
+      ],
+      [
+        "Сақтау алдында кілт, токен және сеанс тексеріледі. Қолмен және автоматты жаңарту rate limit күту мерзімін сақтайды.",
+        "Saqlaşdan oldin kalit, token va seans tekşiriladi. Qölda va avtomatik yangilaş rate limit kutiş muddatiga amal qiladi.",
+        "Kaydetmeden önce anahtar, token ve oturum doğrulanır. Elle ve otomatik yenileme hız sınırı bekleme süresine uyar."
+      ],
+      [
+        "Португал, жапон, корей және иврит: қолданба тоғыз тілде. Жаңалықтар аударылған және офлайн жұмыс істейді.",
+        "Portugal, yapon, koreys va ivrit: dastur töqqiz tilda. Yangiliklar tarjima qilingan va oflayn işlaydi.",
+        "Portekizce, Japonca, Korece ve İbranice: uygulama dokuz dilde. Yenilikler çevrildi ve çevrimdışı çalışır."
+      ],
+      [
+        "Мәзірге қосымша аккаунтты таңдау. Аккаунт кредиттері мен таңбалары бүгінгі жергілікті белсенділіктен бөлек.",
+        "Menyuga qöşimça hisobni tanlaş. Hisob kreditlari va belgilari bugungi mahalliy faollikdan alohida.",
+        "Menü için ek hesap seçimi. Hesap kredileri ve karakterler bugünkü yerel etkinlikten ayrıdır."
+      ],
+      [
+        "Виджет әр провайдердің жаңалығын бақылайды, өзгермеген мәнге де жаңа оқу уақытын жазады және кері санауды жалғастырады. Лимит жаңарғанда ескі пайыз белгісіз болады.",
+        "Vidjet har bir provayderning yangiligini kuzatadi, özgarmagan qiymatga ham yangi öqiş vaqtini yozadi va sanaşni davom ettiradi. Limit yangilanganda eski foiz noma’lum böladi.",
+        "Araç takımı sağlayıcı başına güncelliği izler, değişmeyen değerde bile yeni okuma zamanı yazar ve geri sayımı sürdürür. Limit yenilenince eski yüzde bilinmiyor olur."
+      ]
+    ]
+  },
+  "0.7.2": {
+    "summary": [
+      "Әр тілде барлық параметр бөлімдері ашылады.",
+      "Har bir tilda barça sozlama bölimlari oçiladi.",
+      "Tüm ayar sekmeleri her dilde açılır."
+    ],
+    "items": [
+      [
+        "Орыс, француз және испан тілдерінде бөлім атаулары сыймағандықтан Құпиялық пен Қолданба туралы ашылмады. Параметрлер терезесі енді кеңейеді.",
+        "Rus, fransuz va ispan tillarida bölim nomlari siğmagani uçun Maxfiylik va Dastur haqida oçilmasdi. Sozlamalar oynasi endi kengayadi.",
+        "Rusça, Fransızca ve İspanyolcada sekme adları sığmadığından Gizlilik ve Hakkında açılmıyordu. Ayarlar penceresi artık genişler."
+      ]
+    ]
+  },
+  "0.7.1": {
+    "summary": [
+      "Қолданба тілін таңдау және аккаунт атауын өзгерту.",
+      "Dastur tilini tanlaş va hisob nomini özgartiriş.",
+      "Uygulama dili seçimi ve hesapları yeniden adlandırma."
+    ],
+    "items": [
+      [
+        "Параметрлер › Жалпы › Тіл бөлімінде macOS тілі не неміс, ағылшын, испан, француз, орыс тілдерін таңдау. Виджет те сол тілді қолданады.",
+        "Sozlamalar › Umumiy › Til bölimida macOS tili yoki nemis, ingliz, ispan, fransuz, rus tillarini tanlaş. Vidjet ham şu tilni işlatadi.",
+        "Ayarlar › Genel › Dil’de macOS dili veya Almanca, İngilizce, İspanyolca, Fransızca, Rusça seçimi. Araç takımı aynı dili izler."
+      ],
+      [
+        "Қосымша аккаунт атауын Параметрлер › Провайдерлер ішіндегі … мәзірінен өзгерту.",
+        "Qöşimça hisob nomini Sozlamalar › Provayderlardagi … menyusidan özgartiriş.",
+        "Ek hesabı Ayarlar › Sağlayıcılar’daki … menüsünden yeniden adlandırma."
+      ],
+      [
+        "Қосымша аккаунт әрекеттері бір мәзірге жиналып, әр тілде жолға сыяды.",
+        "Qöşimça hisob amallari bitta menyuga yiğilib, har tilda qatorga siğadi.",
+        "Ek hesap işlemleri tek menüde toplanarak her dilde satıra sığar."
+      ],
+      [
+        "Бос не жоқ аккаунт қалтасы орынсыз кіру сұрауынсыз көрсетіледі.",
+        "Böş yoki yöq hisob jildi örinsiz kiriş söramasdan körsatiladi.",
+        "Boş veya eksik hesap klasörü gereksiz giriş istemeden belirtilir."
+      ],
+      [
+        "Аккаунт қосқанда басқа аккаунттардың бір айлық сеанстары қайта оқылатын мәселе түзетілді.",
+        "Hisob qöşilganda boşqa hisoblarning bir oylik seanslari qayta öqilişi tuzatildi.",
+        "Hesap eklenince diğer hesapların bir aylık oturumlarının yeniden okunması düzeltildi."
+      ]
+    ]
+  },
+  "0.7.0": {
+    "summary": [
+      "Бірнеше аккаунт, Qwen Code, Cline, Grok Build және төрт жаңа тіл.",
+      "Bir neçta hisob, Qwen Code, Cline, Grok Build va tört yangi til.",
+      "Birden fazla hesap, Qwen Code, Cline, Grok Build ve dört yeni dil."
+    ],
+    "items": [
+      [
+        "Codex не Claude Code үшін екінші қалта, DeepSeek, Kimi, OpenRouter не Ollama Cloud үшін қосымша кілт. Әр аккаунттың өз бөлімі мен өзіңіз қойған атауы бар. Нақты аккаунт аты не эл. поштасы оқылмайды.",
+        "Codex yoki Claude Code uçun ikkinçi jild, DeepSeek, Kimi, OpenRouter yoki Ollama Cloud uçun qöşimça kalit. Har bir hisobning öz bölimi va özingiz qöygan nomi bor. Asl hisob nomi yoki poçtasi öqilmaydi.",
+        "Codex veya Claude Code için ikinci klasör; DeepSeek, Kimi, OpenRouter veya Ollama Cloud için ek anahtar. Her hesabın kendi bölümü ve verdiğiniz ad vardır. Asıl hesap adı veya e-posta okunmaz."
+      ],
+      [
+        "Qwen Code жергілікті сеанстарынан бүгінгі токендер, сұраулар, модельдер және болжамды құн.",
+        "Qwen Code mahalliy seanslaridan bugungi tokenlar, sörovlar, modellar va taxminiy xarajat.",
+        "Qwen Code yerel oturumlarından bugünkü tokenlar, istekler, modeller ve tahmini maliyet."
+      ],
+      [
+        "Cline редактор тапсырмалары мен CLI-ден токендер, API сұраулары, модельдер және өзі жазған құн. Промпттар, жауаптар мен кілттер оқылмайды.",
+        "Cline muharrir vazifalari va CLI’dan tokenlar, API sörovlari, modellar va özi yozgan xarajat. Sörovlar, javoblar va kalitlar öqilmaydi.",
+        "Cline düzenleyici görevleri ve CLI’den tokenlar, API istekleri, modeller ve kaydettiği maliyet. İstemler, yanıtlar ve anahtarlar okunmaz."
+      ],
+      [
+        "Grok Build сеанс журналдарынан бүгінгі токендер, модель шақырулары, модельдер және xAI берген құн.",
+        "Grok Build seans jurnallaridan bugungi tokenlar, model çaqiruvlari, modellar va xAI bildirgan xarajat.",
+        "Grok Build oturum günlüklerinden bugünkü tokenlar, model çağrıları, modeller ve xAI maliyeti."
+      ],
+      [
+        "Лимит бермейтін провайдерлерге виджетте соңғы екі апта: нақты сандарсыз белсенділік пішімі.",
+        "Limit bermaydigan provayderlarga vidjetda oxirgi ikki hafta: aniq sonlarsiz faollik şakli.",
+        "Limit bildirmeyen sağlayıcılara araç takımında son iki hafta: miktarsız etkinlik şekli."
+      ],
+      [
+        "Mac тіліне сәйкес неміс, испан, француз және орыс тілдері.",
+        "Mac tiliga mos nemis, ispan, fransuz va rus tillari.",
+        "Mac dilini izleyen Almanca, İspanyolca, Fransızca ve Rusça."
+      ],
+      [
+        "Параметрлер › Қолданба туралы ішіндегі жаңалықтар: әр нұсқаның өзгерісі қолданбада.",
+        "Sozlamalar › Dastur haqidadagi yangiliklar: har bir versiya özgarişi dasturda.",
+        "Ayarlar › Hakkında’da Yenilikler: her sürümün değişiklikleri uygulamada."
+      ],
+      [
+        "Cline мен Grok Build үшін болжам орнына құрал жазған нақты құн көрсетіледі.",
+        "Cline va Grok Build uçun taxmin örniga vosita yozgan xarajat körsatiladi.",
+        "Cline ve Grok Build için tahmin yerine aracın kaydettiği maliyet gösterilir."
+      ]
+    ]
+  },
+  "0.6.1": {
+    "summary": [
+      "Лимит хабарландырулары және перне тіркесімі.",
+      "Limit bildirişlari va tugmalar birikmasi.",
+      "Limit bildirimleri ve klavye kestirmesi."
+    ],
+    "items": [
+      [
+        "Лимиттің 20% және 5% қалғанында бір реттен, ескертілген лимит жаңарғанда хабарлау. Бастапқыда өшірулі; Параметрлер › Хабарландырулар бөлімінде қосылады.",
+        "Limitning 20% va 5% qolganda bir martadan, ogohlantirilgan limit yangilanganda bildiriş. Dastlab öçirilgan; Sozlamalar › Bildirişlarda yoqiladi.",
+        "Limitin %20’si ve %5’i kalınca birer kez, uyarılan limit yenilenince bildirim. Varsayılan kapalı; Ayarlar › Bildirimler’den açılır."
+      ],
+      [
+        "UsageNow-ды кез келген қолданбадан ашатын жеке перне тіркесімі. Параметрлер › Мәзір жолағында жазылады. Қосымша рұқсат қажет емес.",
+        "UsageNow’ni istalgan dasturdan oçadigan şaxsiy tugmalar birikmasi. Sozlamalar › Menyu panelida yoziladi. Qöşimça ruxsat kerak emas.",
+        "UsageNow’u her uygulamadan açan özel kestirme. Ayarlar › Menü çubuğu’nda kaydedilir. Ek izin gerekmez."
+      ],
+      [
+        "Құн бағалауы Claude Sonnet 5.5 пен GPT-6.1 модельдерін біледі.",
+        "Xarajat taxmini Claude Sonnet 5.5 va GPT-6.1 modellarini biladi.",
+        "Maliyet tahmini Claude Sonnet 5.5 ve GPT-6.1 modellerini tanır."
+      ],
+      [
+        "Жаңарту үстінде Қайта көру, жаңа API кілті немесе жаңа провайдер әрекеті еленбей қалатын мәселе түзетілді.",
+        "Yangilaş paytida Qayta uriniş, yangi API kaliti yoki yangi provayder amali e’tiborsiz qolişi tuzatildi.",
+        "Yenileme sırasında Yeniden Dene, yeni API anahtarı veya yeni sağlayıcı işleminin yok sayılması düzeltildi."
+      ],
+      [
+        "Antigravity тіл серверін іздеу басқа провайдерлерді тоқтатпайды.",
+        "Antigravity til serverini qidiriş boşqa provayderlarni töxtatmaydi.",
+        "Antigravity dil sunucusu araması diğer sağlayıcıları bekletmez."
+      ],
+      [
+        "Өте ұзын сеанс жолы жадқа жүктелмей өткізіледі.",
+        "Juda uzun seans qatori xotiraga yuklanmay ötkaziladi.",
+        "Çok uzun oturum satırı belleğe alınmadan atlanır."
+      ]
+    ]
+  },
+  "0.6.0": {
+    "summary": [
+      "Соңғы 30 күн, OpenCode, Qoder және Ollama Cloud.",
+      "Oxirgi 30 kun, OpenCode, Qoder va Ollama Cloud.",
+      "Son 30 gün, OpenCode, Qoder ve Ollama Cloud."
+    ],
+    "items": [
+      [
+        "Әр провайдерде соңғы 30 күн: күндік баған, айлық токендер, болжамды құн және негізгі модель. Меңзеп күнді көріңіз. Параметрлер › Жалпы бөлімінде график өшіріледі.",
+        "Har bir provayderda oxirgi 30 kun: kunlik ustun, oylik tokenlar, taxminiy xarajat va asosiy model. Işora qilib kunni köring. Sozlamalar › Umumiyda grafik öçiriladi.",
+        "Her sağlayıcıda son 30 gün: günlük sütun, aylık tokenlar, tahmini maliyet ve üst model. Üzerine gelerek günü görün. Ayarlar › Genel’den grafik kapatılır."
+      ],
+      [
+        "OpenCode жергілікті дерекқорынан тек оқумен токендер, сұраулар, модельдер мен болжамды құн. Промпт пен жауап оқылмайды.",
+        "OpenCode mahalliy bazasidan faqat öqiş bilan tokenlar, sörovlar, modellar va taxminiy xarajat. Sörov va javob öqilmaydi.",
+        "OpenCode yerel veritabanından salt okunur tokenlar, istekler, modeller ve tahmini maliyet. İstemler ve yanıtlar okunmaz."
+      ],
+      [
+        "Qoder транскрипттерінен бүгінгі жұмсалған кредиттер мен жауаптар. Кіру деректері ашылмайды.",
+        "Qoder transkriptlaridan bugungi sarflangan kreditlar va javoblar. Kiriş ma’lumotlari oçilmaydi.",
+        "Qoder kayıtlarından bugünkü harcanan krediler ve yanıtlar. Kimlik bilgileri açılmaz."
+      ],
+      [
+        "Ollama Cloud (сынақ) — жеке Cloud API кілтімен сеанс және апталық лимиттер.",
+        "Ollama Cloud (tajribaviy) — şaxsiy Cloud API kaliti bilan seans va haftalik limitlar.",
+        "Ollama Cloud (deneysel): kendi Cloud API anahtarınızla oturum ve haftalık limitler."
+      ],
+      [
+        "Мәзір мен виджетте лимиттерді Қалған не Пайдаланылған түрінде көрсету.",
+        "Menyu va vidjetda limitlarni Qolgan yoki Işlatilgan tarzida körsatiş.",
+        "Menü ve araç takımında limitleri Kalan veya Kullanılan olarak gösterme."
+      ],
+      [
+        "Kiro, Warp және Qoder үшін виджетте кредиттер.",
+        "Kiro, Warp va Qoder uçun vidjetda kreditlar.",
+        "Kiro, Warp ve Qoder için araç takımında krediler."
+      ],
+      [
+        "Параметрлер › Қолданба туралы ішіндегі мәселе есебін алдымен көріп, кейін GitHub не хат арқылы өзіңіз жіберіңіз. Атау, жол, кілт не промпт жоқ.",
+        "Sozlamalar › Dastur haqidadagi muammo hisobotini avval körib, keyin GitHub yoki xat orqali özingiz yuboring. Nom, yöl, kalit yoki sörov yöq.",
+        "Ayarlar › Hakkında’daki sorun raporunu önce görün, sonra GitHub veya e-postayla kendiniz gönderin. Ad, yol, anahtar veya istem içermez."
+      ],
+      [
+        "Мәзір терезесі мөлдірлігі азайтылды және шағын экраннан шығудың орнына айналдырылады.",
+        "Menyu oynasining şaffofligi kamaytirildi va kiçik ekrandan çiqiş örniga aylantiriladi.",
+        "Menü penceresi daha opak ve küçük ekrandan taşmak yerine kaydırılır."
+      ],
+      [
+        "Параметрлер › Провайдерлер ноутбук экранына сыяды.",
+        "Sozlamalar › Provayderlar noutbuk ekraniga siğadi.",
+        "Ayarlar › Sağlayıcılar dizüstü ekranına sığar."
+      ],
+      [
+        "Құн бағалауы Claude Opus 5.5 пен GPT-6 сияқты жаңа модельдерді біледі.",
+        "Xarajat taxmini Claude Opus 5.5 va GPT-6 kabi yangi modellarni biladi.",
+        "Maliyet tahmini Claude Opus 5.5 ve GPT-6 gibi yeni modelleri tanır."
+      ],
+      [
+        "Бір айлық сеанстарды оқу бірнеше есе жылдам және жадты әлдеқайда аз қолданады.",
+        "Bir oylik seanslarni öqiş bir neça baravar tez va xotirani ança kam işlatadi.",
+        "Bir aylık oturumları okuma birkaç kat hızlı ve daha az bellek kullanır."
+      ],
+      [
+        "ChatGPT 26.9 ішіндегі Codex CLI орны өзгергеннен кейін лимиттердің жаңармауы түзетілді.",
+        "ChatGPT 26.9 içidagi Codex CLI joyi özgargandan keyin limitlar yangilanmasligi tuzatildi.",
+        "ChatGPT 26.9’da Codex CLI taşındıktan sonra limitlerin yenilenmemesi düzeltildi."
+      ],
+      [
+        "Ескі Claude лимиттері енді жаңарту тәсілін көрсетеді; ескі пайыз жаңа деп көрінбейді.",
+        "Eski Claude limitlari endi yangilaş usulini körsatadi; eski foiz yangi deb körinmaydi.",
+        "Eski Claude limitleri artık yenileme yolunu gösterir; eski yüzde güncel görünmez."
+      ],
+      [
+        "Виджет жаңарақ қолданба деректерін оқып, UsageNow ашуды сұрамайды.",
+        "Vidjet yangiroq dastur ma’lumotlarini öqib, UsageNow’ni oçişni söramaydi.",
+        "Araç takımı yeni uygulama verisini okuyup UsageNow’u açmanızı istemez."
+      ],
+      [
+        "Codex app-server ерте жабылғанда қолданбаның үнсіз шығуы түзетілді.",
+        "Codex app-server erta yopilganda dasturning jim çiqişi tuzatildi.",
+        "Codex app-server erken kapanınca uygulamanın sessizce çıkması düzeltildi."
+      ]
+    ]
+  },
+  "0.5.0": {
+    "summary": [
+      "Kiro, Warp және жеке кілтпен DeepSeek, Kimi, OpenRouter.",
+      "Kiro, Warp va şaxsiy kalit bilan DeepSeek, Kimi, OpenRouter.",
+      "Kiro, Warp ve kendi anahtarınızla DeepSeek, Kimi, OpenRouter."
+    ],
+    "items": [
+      [
+        "Kiro — Mac-та жазылған айлық кредит лимиті, жаңару, бүгінгі кредиттер мен сұраулар. Kiro-ға сұрау мен кіру деректерін оқу жоқ.",
+        "Kiro — Mac’da yozilgan oylik kredit limiti, yangilaniş, bugungi kreditlar va sörovlar. Kiro’ga sörov va kiriş ma’lumotlarini öqiş yöq.",
+        "Kiro: Mac’teki aylık kredi limiti, yenilenme, bugünkü kredi ve istemler. Kiro’ya istek veya kimlik bilgisi okuma yoktur."
+      ],
+      [
+        "Warp — жергілікті дерекқордан тек оқумен бүгінгі агент сұраулары, кредиттер мен модель токендері.",
+        "Warp — mahalliy bazadan faqat öqiş bilan bugungi agent sörovlari, kreditlar va model tokenlari.",
+        "Warp: yerel veritabanından salt okunur bugünkü ajan istekleri, krediler ve model tokenları."
+      ],
+      [
+        "DeepSeek, Kimi, OpenRouter — жеке API кілтімен ресми баланс пен шығын. Кілт Кілттер тізбегінде және тек өз провайдеріне жіберіледі. Осы релизде нақты аккаунтпен әлі тексерілмеген.",
+        "DeepSeek, Kimi, OpenRouter — şaxsiy API kaliti bilan rasmiy balans va xarajat. Kalit Keychain’da va faqat öz provayderiga yuboriladi. Şu relizda haqiqiy hisobda hali tekşirilmagan.",
+        "DeepSeek, Kimi, OpenRouter: kendi API anahtarınızla resmi bakiye ve harcama. Anahtar Anahtar Zinciri’nde, yalnızca ilgili sağlayıcıya gider. Bu sürümde gerçek hesapla henüz doğrulanmadı."
+      ]
+    ]
+  },
+  "0.4.0": {
+    "summary": [
+      "Бүгінгі токендердің құны және қолданбадағы жаңартулар.",
+      "Bugungi tokenlar qiymati va dasturdagi yangilanişlar.",
+      "Bugünkü tokenların maliyeti ve uygulama içi güncellemeler."
+    ],
+    "items": [
+      [
+        "Әр провайдерде жарияланған API бағасымен токен құнының бағалауы, кэш өз бағасымен. Бұл ауқым көрсеткіші, шот емес; жазылым токенге ақы алмайды.",
+        "Har bir provayderda e’lon qilingan API narxida token qiymati taxmini, keş öz narxida. Bu kölam körsatkiçi, hisob emas; obuna tokenga haq olmaydi.",
+        "Her sağlayıcıda API fiyatlarıyla token maliyet tahmini, önbellek kendi fiyatıyla. Ölçek göstergesidir, fatura değil; abonelik token başına ücret almaz."
+      ],
+      [
+        "Қолданба тек өз қолтаңбасы бар жаңартуларды тексеріп, орнатады. Тексеру сіз туралы дерек жібермейді. 0.3.0-ден бір рет 0.4.0 қолмен орнатылады.",
+        "Dastur faqat öz imzosi bor yangilanişlarni tekşirib örnatadi. Tekşiruv siz haqingizda ma’lumot yubormaydi. 0.3.0’dan bir marta 0.4.0 qölda örnatiladi.",
+        "Uygulama yalnızca kendi imzalı güncellemelerini denetleyip yükler. Denetleme size ait veri göndermez. 0.3.0’dan bir kez 0.4.0 elle yüklenir."
+      ],
+      [
+        "Жаңарту кезінде белгіше айналмай, жебе айналасында прогресс доғасы көрсетіледі.",
+        "Yangilaşda belgi aylanmay, öq atrofida jarayon yoyi körsatiladi.",
+        "Yenilemede simge dönmez, okun çevresinde ilerleme yayı gösterilir."
+      ],
+      [
+        "Мәзір жолағындағы пайыз көрші белгішелерге сәйкес өлшемде.",
+        "Menyu panelidagi foiz yonidagi belgilarga mos ölçamda.",
+        "Menü çubuğu yüzdesi yanındaki simgelere uygun boyuttadır."
+      ]
+    ]
+  },
+  "0.3.0": {
+    "summary": [
+      "Antigravity, Gemini CLI, модель белсенділігі және Team тарифтері.",
+      "Antigravity, Gemini CLI, model faolligi va Team tariflari.",
+      "Antigravity, Gemini CLI, model etkinliği ve Team planları."
+    ],
+    "items": [
+      [
+        "Antigravity — жұмыс істейтін қолданбадан модель тобының 5 сағаттық, апталық лимиті мен тарифі. Кіру деректері жоқ, тек 127.0.0.1.",
+        "Antigravity — işlayotgan dasturdan model guruhining 5 soatlik, haftalik limiti va tarifi. Kiriş ma’lumotlari yöq, faqat 127.0.0.1.",
+        "Antigravity: çalışan uygulamadan model grubu başına 5 saatlik, haftalık limitler ve plan. Kimlik bilgisi yok, yalnızca 127.0.0.1."
+      ],
+      [
+        "Gemini CLI жергілікті сеанстарынан токендер, сұраулар мен модельдер. Квота берілмейтіндіктен көрсетілмейді.",
+        "Gemini CLI mahalliy seanslaridan tokenlar, sörovlar va modellar. Kvota berilmagani uçun körsatilmaydi.",
+        "Gemini CLI yerel oturumlarından tokenlar, istekler ve modeller. Kota bildirilmediği için gösterilmez."
+      ],
+      [
+        "Codex, Claude Code және Gemini CLI үшін бүгінгі модельдер тізімі, ең белсендісі алдымен.",
+        "Codex, Claude Code va Gemini CLI uçun bugungi modellar röyxati, eng faoli birinçi.",
+        "Codex, Claude Code ve Gemini CLI için bugünkü modeller listesi, en etkin önce."
+      ],
+      [
+        "Team тарифтері: Claude орын түрін, мысалы Team · Premium; Codex Team, Business және Enterprise көрсетеді.",
+        "Team tariflari: Claude örin turini, masalan Team · Premium; Codex Team, Business va Enterprise körsatadi.",
+        "Team planları: Claude Team · Premium gibi koltuğu; Codex Team, Business ve Enterprise gösterir."
+      ],
+      [
+        "Antigravity және Gemini CLI мәзір режимдері.",
+        "Antigravity va Gemini CLI menyu rejimlari.",
+        "Antigravity ve Gemini CLI menü modları."
+      ],
+      [
+        "Параметрлерде провайдерді сүйреп реттеу; мәзір мен виджет сол ретпен жүреді.",
+        "Sozlamalarda provayderni sudrab tartiblaş; menyu va vidjet şu tartibda yuradi.",
+        "Ayarlar’da sürükleyerek sıralama; menü ve araç takımı aynı sırayı izler."
+      ],
+      [
+        "Cursor және GitHub Copilot жақында қосылатындар тізімінде.",
+        "Cursor va GitHub Copilot tez kunda qöşiladiganlar röyxatida.",
+        "Cursor ve GitHub Copilot yakında listesinde."
+      ],
+      [
+        "Үш не одан көп провайдерде орта виджетте әрқайсысы бір жол, шағын виджетте ең аз қалған үш провайдерге дейін.",
+        "Uç yoki undan köp provayderda örta vidjetda har biri bitta qator, kiçik vidjetda eng kam qolgan uçtagaça provayder.",
+        "Üç ve üzeri sağlayıcıda orta araç takımında birer satır, küçükte limite en yakın en fazla üç sağlayıcı."
+      ],
+      [
+        "Жаңадан қосылған провайдер жаңартуда бір рет қосылады. Бұрын өшірілгендері өшірулі қалады.",
+        "Yangi provayder yangilanişda bir marta yoqiladi. Oldin öçirilganlari öçirilgan qoladi.",
+        "Yeni sağlayıcı güncellemede bir kez açılır. Kapattıklarınız kapalı kalır."
+      ],
+      [
+        "Claude лимиттері енді macOS құпиясөзін сұрамайды және Claude Code іске қосылғаннан кейін өздері оралады.",
+        "Claude limitlari endi macOS parolini söramaydi va Claude Code işga tuşirilgandan keyin özi qaytadi.",
+        "Claude limitleri artık macOS parolasını istemez ve Claude Code çalıştırılınca kendiliğinden geri gelir."
+      ],
+      [
+        "Сіз жоқта жаңарған Claude кезеңі жоғалмайды; жеткен лимиттер кірусіз де көрінеді.",
+        "Siz yöqda yangilangan Claude davri yöqolmaydi; yetilgan limitlar kirişsiz ham körinadi.",
+        "Siz yokken yenilenen Claude penceresi kaybolmaz; ulaşılan limitler giriş olmadan da görünür."
+      ],
+      [
+        "Соңғы Claude лимиттері қолданба жабылса не жаңартылса сақталады.",
+        "Sönggi Claude limitlari dastur yopilsa yoki yangilansa saqlanadi.",
+        "Son Claude limitleri uygulama kapanınca veya güncellenince korunur."
+      ]
+    ]
+  },
+  "0.2.0": {
+    "summary": [
+      "Нақты провайдер деректері мен жұмыс үстелі виджеттері.",
+      "Haqiqiy provayder ma’lumotlari va iş stoli vidjetlari.",
+      "Gerçek sağlayıcı verileri ve masaüstü araç takımları."
+    ],
+    "items": [
+      [
+        "Нақты деректер: Codex лимиті, жаңаруы мен тарифі ресми app-server-ден; Codex пен Claude Code токендері, сұраулары мен соңғы моделі жергілікті сеанстардан.",
+        "Haqiqiy ma’lumotlar: Codex limiti, yangilanişi va tarifi rasmiy app-server’dan; Codex va Claude Code tokenlari, sörovlari va sönggi modeli mahalliy seanslardan.",
+        "Gerçek veriler: Codex limitleri, yenilenmeleri ve planı resmi app-server’dan; Codex ve Claude Code tokenları, istekleri ve son modeli yerel oturumlardan."
+      ],
+      [
+        "Шағын және орта жұмыс үстелі виджеттері.",
+        "Kiçik va örta iş stoli vidjetlari.",
+        "Küçük ve orta masaüstü araç takımları."
+      ],
+      [
+        "Claude Code лимиттері сынақ ретінде және бастапқыда өшірулі.",
+        "Claude Code limitlari tajribaviy va dastlab öçirilgan.",
+        "Claude Code limitleri deneysel ve varsayılan kapalı."
+      ],
+      [
+        "Codex пен Claude Code бөлек қосылып-өшіріледі.",
+        "Codex va Claude Code alohida yoqiladi va öçiriladi.",
+        "Codex ve Claude Code ayrı açılıp kapatılabilir."
+      ],
+      [
+        "Мәзір режимдері: тек белгіше, ең аз қалған лимит не бір провайдер.",
+        "Menyu rejimlari: faqat belgi, eng kam qolgan limit yoki bitta provayder.",
+        "Menü modları: yalnızca simge, en kritik kullanım veya tek sağlayıcı."
+      ],
+      [
+        "Ашық, қараңғы не жүйелік көрініс.",
+        "Oç, töq yoki tizim körinişi.",
+        "Açık, koyu veya sistem görünümü."
+      ],
+      [
+        "Қолданыс «58% қалды» түрінде, жұмсалған сайын жолақ қысқарады.",
+        "Sarf «58% qoldi» tarzida, sarflangan sari çiziq qisqaradi.",
+        "Kullanım “%58 kaldı” olarak gösterilir; kullandıkça çubuk küçülür."
+      ],
+      [
+        "Кезеңдер провайдер берген күйінде көрсетіледі; жоқ кезең ойдан жасалмайды.",
+        "Davrlar provayder bildirganidek körsatiladi; yöq davr öylab topilmaydi.",
+        "Pencereler sağlayıcının bildirdiği gibi gösterilir; eksik pencere uydurulmaz."
+      ],
+      [
+        "Лимит оқылмаса, соңғы мәндер бір күн ескі деп белгіленіп, қысқа себебімен сақталады.",
+        "Limit öqilmasa, sönggi qiymatlar bir kun eski deb belgilanib, qisqa sabab bilan saqlanadi.",
+        "Limit okunamazsa son değerler bir gün eski etiketi ve kısa nedeni ile korunur."
+      ]
+    ]
+  },
+  "0.1.0": {
+    "summary": [
+      "Алғашқы мәзір қолданбасы.",
+      "Birinçi menyu dasturi.",
+      "İlk menü çubuğu uygulaması."
+    ],
+    "items": [
+      [
+        "Нативті мәзір қолданбасы, параметрлері мен күйлері мысал деректермен жұмыс істейді.",
+        "Nativ menyu dasturi, sozlamalari va holatlari misol ma’lumotlar bilan işlaydi.",
+        "Yerel menü uygulaması, ayarları ve durumları örnek verilerle çalışır."
+      ]
+    ]
+  }
+}

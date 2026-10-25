@@ -67,7 +67,9 @@ struct LimitNoticeTests {
         #expect(actions.isEmpty)
         #expect(memory.isEmpty)
         // And the new window warns again when it runs low.
-        #expect(kinds(LimitNoticePlanner.plan(snapshots: [snapshot(81, resetsAt: later.addingTimeInterval(5 * 3600))], memory: &memory, now: later)) == ["low", "schedule-reset"])
+        var fresh = snapshot(81, resetsAt: later.addingTimeInterval(5 * 3600))
+        fresh.updatedAt = later
+        #expect(kinds(LimitNoticePlanner.plan(snapshots: [fresh], memory: &memory, now: later)) == ["low", "schedule-reset"])
     }
 
     @Test func aStaleWindowPastItsResetIsForgotten() {
@@ -176,5 +178,33 @@ struct LimitNoticeTests {
         notifier.setEnabled(true)
         notifier.update(snapshots: [snapshot(85, resetsAt: reset)], enabledProviders: [.claudeCode], style: .remaining)
         #expect(recorder.delivered.count == 4)
+    }
+
+    @Test func loadingSourcesAfterRelaunchDoNotLoseDeduplication() {
+        let saved = makeDefaults()
+        let recorder = Recorder()
+        let first = LimitNotifier(defaults: saved, delivery: recorder, now: { [now] in now })
+        first.setEnabled(true)
+        first.update(snapshots: [snapshot(85, resetsAt: reset)], enabledProviders: [.claudeCode], style: .remaining)
+        let relaunched = LimitNotifier(defaults: saved, delivery: recorder, now: { [now] in now })
+        relaunched.setEnabled(true)
+        relaunched.update(snapshots: [], enabledProviders: [.claudeCode], style: .remaining,
+                          activeSources: [SourceKey(provider: .claudeCode, account: nil)])
+        relaunched.update(snapshots: [snapshot(85, resetsAt: reset)], enabledProviders: [.claudeCode], style: .remaining)
+        #expect(recorder.delivered.count == 2)
+        #expect(recorder.cancelled.isEmpty)
+    }
+
+    @Test func removingAnAccountWithdrawsItsReset() {
+        let recorder = Recorder()
+        let notifier = LimitNotifier(defaults: makeDefaults(), delivery: recorder, now: { [now] in now })
+        notifier.setEnabled(true)
+        var added = snapshot(90, resetsAt: reset)
+        added.account = AccountTag(id: "work", name: "Work")
+        notifier.update(snapshots: [added], enabledProviders: [.claudeCode], style: .remaining)
+        notifier.update(snapshots: [], enabledProviders: [.claudeCode], style: .remaining,
+                        activeSources: [SourceKey(provider: .claudeCode, account: nil)])
+        #expect(recorder.cancelled.count == 1)
+        #expect(recorder.cancelled.first?.contains("@work") == true)
     }
 }

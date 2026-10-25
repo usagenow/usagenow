@@ -2,9 +2,15 @@
 
 All notable changes to UsageNow. This project follows [Semantic Versioning](https://semver.org).
 
-## Unreleased
+## 1.0.0
 
 ### Added
+
+- Kazakh, Uzbek and Turkish across the app and widgets: thirteen languages. Uzbek copy uses Ö, Ğ, Ş and Ç as specified for this localization.
+- Optional first-run setup with provider choices. Skip it or reopen it in Settings. Existing installations keep their preferences and do not show setup automatically; no provider reads begin until first-run setup is finished or skipped.
+- Per-provider notification thresholds, independent reset alerts and quiet hours in this Mac’s time zone. Quiet alerts are skipped, not queued. Stale and expired readings do not trigger low-limit alerts.
+- Optional CLI: usagenow status and usagenow status --json read the app’s safe snapshot, with freshness and reset times. No provider runtime, network, authentication or history export. Install from Settings › General; shell configuration is left to the user.
+- Refresh after wake, notification migration and snapshot compatibility checks. CLI output clears percentages after reported resets, preserves unknown values and rejects unsupported snapshot versions.
 
 - **Gemini 4 Argon cost estimates.** Official standard Gemini API prices: $2 input, $10 output (including thinking), and $0.10 cached input per million tokens through November 30, 2026; $4 / $20 / $0.20 from December 1. Estimates use each activity record's date, so past activity keeps its introductory rate. UsageNow uses midnight UTC for the published date change; these are estimates, not provider billing totals. The reviewed schedule is preserved when the bundled price table is regenerated.
 

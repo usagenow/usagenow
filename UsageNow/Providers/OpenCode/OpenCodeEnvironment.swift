@@ -15,7 +15,8 @@ struct OpenCodeEnvironment: Sendable, Equatable {
 
     static func discover(
         homeDirectory: URL = FileManager.default.homeDirectoryForCurrentUser,
-        fileManager: FileManager = .default
+        fileManager: FileManager = .default,
+        executableCandidates: [URL]? = nil
     ) -> OpenCodeEnvironment {
         // OpenCode follows the XDG layout on macOS too.
         let dataDirectory = homeDirectory.appending(path: ".local/share/opencode", directoryHint: .isDirectory)
@@ -27,8 +28,8 @@ struct OpenCodeEnvironment: Sendable, Equatable {
             dataDirectory: dataDirectory,
             database: database(in: dataDirectory, fileManager: fileManager),
             executable: ExecutableLocator.newest(
-                among: [homeDirectory.appending(path: ".opencode/bin/opencode")]
-                    + ExecutableLocator.commonCandidates(named: "opencode", homeDirectory: homeDirectory, fileManager: fileManager),
+                among: executableCandidates ?? ([homeDirectory.appending(path: ".opencode/bin/opencode")]
+                    + ExecutableLocator.commonCandidates(named: "opencode", homeDirectory: homeDirectory, fileManager: fileManager)),
                 fileManager: fileManager
             ),
             application: applications.first { fileManager.fileExists(atPath: $0.path) }

@@ -1,5 +1,15 @@
 # Wijzigingen
 
+## 1.0.0
+
+### Added
+
+- Kazachs, Oezbeeks en Turks in app en widgets: dertien talen. Oezbeeks gebruikt Ö, Ğ, Ş en Ç.
+- Optionele eerste configuratie met providerkeuze. Overslaan en opnieuw openen via Instellingen zijn mogelijk. Bestaande installaties behouden hun keuzes; de eerste lezing begint na afronden of overslaan.
+- Meldingsdrempels per provider, afzonderlijke resetmeldingen en stille uren in de tijdzone van de Mac. Overgeslagen meldingen worden niet opgespaard; oude gegevens veroorzaken geen waarschuwing.
+- Optionele CLI: usagenow status en usagenow status --json lezen de veilige momentopname met actualiteit. Geen providerverzoeken, aanmelding of geschiedenisexport. Installeer via Instellingen › Algemeen.
+- Vernieuwen na ontwaken en controles voor meldingsmigratie en snapshotcompatibiliteit. De CLI verwijdert percentages na resets en weigert onbekende formaten.
+
 ## 0.9.0
 
 ### Added

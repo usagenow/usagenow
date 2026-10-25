@@ -1,0 +1,1542 @@
+{
+  "%@": [
+    "%@",
+    "%@",
+    "%@"
+  ],
+  "%@ %@ usage": [
+    "%1$@ %2$@ қолданысы",
+    "%1$@ %2$@ sarfi",
+    "%1$@ %2$@ kullanımı"
+  ],
+  "%@ characters used": [
+    "%@ таңба пайдаланылды",
+    "%@ belgi işlatildi",
+    "%@ karakter kullanıldı"
+  ],
+  "%@ credits": [
+    "%@ кредит",
+    "%@ kredit",
+    "%@ kredi"
+  ],
+  "%@ credits remaining": [
+    "%@ кредит қалды",
+    "%@ kredit qoldi",
+    "%@ kredi kaldı"
+  ],
+  "%@ credits today": [
+    "бүгін %@ кредит",
+    "bugun %@ kredit",
+    "bugün %@ kredi"
+  ],
+  "%@ credits used": [
+    "%@ кредит пайдаланылды",
+    "%@ kredit işlatildi",
+    "%@ kredi kullanıldı"
+  ],
+  "%@ isn’t installed": [
+    "%@ орнатылмаған",
+    "%@ örnatilmagan",
+    "%@ yüklü değil"
+  ],
+  "%@ left": [
+    "%@ қалды",
+    "%@ qoldi",
+    "%@ kaldı"
+  ],
+  "%@ plan": [
+    "%@ тарифі",
+    "%@ tarifi",
+    "%@ planı"
+  ],
+  "%@ rejected the connection. Sign in again or replace the credential in Settings › Providers.": [
+    "%@ қосылымды қабылдамады. Қайта кіріңіз немесе Параметрлер › Провайдерлер бөлімінде кіру деректерін ауыстырыңыз.",
+    "%@ ulanişni rad etdi. Qayta kiring yoki Sozlamalar › Provayderlar bölimida kiriş ma’lumotini almaştiring.",
+    "%@ bağlantıyı reddetti. Yeniden giriş yapın veya Ayarlar › Sağlayıcılar bölümünde kimlik bilgisini değiştirin."
+  ],
+  "%@ tokens": [
+    "%@ токен",
+    "%@ token",
+    "%@ token"
+  ],
+  "%@ tokens today": [
+    "бүгін %@ токен",
+    "bugun %@ token",
+    "bugün %@ token"
+  ],
+  "%@ tokens, %@ requests": [
+    "%1$@ токен, %2$@ сұрау",
+    "%1$@ token, %2$@ sörov",
+    "%1$@ token, %2$@ istek"
+  ],
+  "%@ usage": [
+    "%@ қолданысы",
+    "%@ sarfi",
+    "%@ kullanımı"
+  ],
+  "%@ usage limits are temporarily unavailable.": [
+    "%@ лимиттері уақытша қолжетімсіз.",
+    "%@ limitlari vaqtinça mavjud emas.",
+    "%@ kullanım limitleri geçici olarak kullanılamıyor."
+  ],
+  "%@ used": [
+    "%@ пайдаланылды",
+    "%@ işlatildi",
+    "%@ kullanıldı"
+  ],
+  "%@: %@ limit has reset": [
+    "%1$@: %2$@ лимиті жаңарды",
+    "%1$@: %2$@ limiti yangilandi",
+    "%1$@: %2$@ limiti yenilendi"
+  ],
+  "%@: %@ limit reached": [
+    "%1$@: %2$@ лимитіне жетті",
+    "%1$@: %2$@ limitiga yetildi",
+    "%1$@: %2$@ limitine ulaşıldı"
+  ],
+  "%@: %@ of the %@ limit left": [
+    "%1$@: %3$@ лимитінің %2$@ қалды",
+    "%1$@: %3$@ limitidan %2$@ qoldi",
+    "%1$@: %3$@ limitinin %2$@ kadarı kaldı"
+  ],
+  "%@: %@ of the %@ limit used": [
+    "%1$@: %3$@ лимитінің %2$@ пайдаланылды",
+    "%1$@: %3$@ limitidan %2$@ işlatildi",
+    "%1$@: %3$@ limitinin %2$@ kadarı kullanıldı"
+  ],
+  "%@: service incident": [
+    "%@: сервисте ақау бар",
+    "%@: xizmatda uziliş",
+    "%@: hizmet kesintisi"
+  ],
+  "%@: status unavailable": [
+    "%@: күйі белгісіз",
+    "%@: holati noma’lum",
+    "%@: durum alınamıyor"
+  ],
+  "%lld-day": [
+    "%lld күндік",
+    "%lld kunlik",
+    "%lld günlük"
+  ],
+  "%lld-hour": [
+    "%lld сағаттық",
+    "%lld soatlik",
+    "%lld saatlik"
+  ],
+  "%lld-minute": [
+    "%lld минуттық",
+    "%lld daqiqalik",
+    "%lld dakikalık"
+  ],
+  "%lldd %lldh": [
+    "%1$lldк %2$lldсағ",
+    "%1$lldk %2$llds",
+    "%1$lldg %2$llds"
+  ],
+  "%lldd ago": [
+    "%lld күн бұрын",
+    "%lld kun oldin",
+    "%lld gün önce"
+  ],
+  "%lldh %@m": [
+    "%1$lldсағ %2$@мин",
+    "%1$llds %2$@daq",
+    "%1$lldsa %2$@dk"
+  ],
+  "%lldh ago": [
+    "%lld сағат бұрын",
+    "%lld soat oldin",
+    "%lld saat önce"
+  ],
+  "%lldm": [
+    "%lld мин",
+    "%lld daq",
+    "%lld dk"
+  ],
+  "%lldm ago": [
+    "%lld минут бұрын",
+    "%lld daqiqa oldin",
+    "%lld dakika önce"
+  ],
+  "+%lld more": [
+    "тағы %lld",
+    "yana %lld",
+    "+%lld daha"
+  ],
+  "15 minutes": [
+    "15 минут",
+    "15 daqiqa",
+    "15 dakika"
+  ],
+  "30 minutes": [
+    "30 минут",
+    "30 daqiqa",
+    "30 dakika"
+  ],
+  "5 minutes": [
+    "5 минут",
+    "5 daqiqa",
+    "5 dakika"
+  ],
+  "5-hour": [
+    "5 сағат",
+    "5 soat",
+    "5 saat"
+  ],
+  "A chart of daily activity under each provider in the menu bar window. Turn it off to keep the window short.": [
+    "Мәзір жолағындағы әр провайдердің күнделікті белсенділік графигі. Терезені ықшамдау үшін өшіріңіз.",
+    "Menyu panelida har bir provayderning kunlik faollik grafigi. Oynani ixçam saqlaş uçun öçiring.",
+    "Menü çubuğu penceresinde her sağlayıcının günlük etkinlik grafiği. Pencereyi kısa tutmak için kapatın."
+  ],
+  "A session cookie grants access to your web account. UsageNow never imports existing browser profiles or renews the session. Sign in again when it expires.": [
+    "Сеанс cookie файлы вебаккаунтқа қол жеткізуге мүмкіндік береді. UsageNow браузер профильдерін импорттамайды және сеансты жаңартпайды. Мерзімі біткенде қайта кіріңіз.",
+    "Seans cookie fayli veb hisobingizga kiriş imkonini beradi. UsageNow brauzer profillarini import qilmaydi va seansni yangilamaydi. Muddati tugaganda qayta kiring.",
+    "Oturum çerezi web hesabınıza erişim sağlar. UsageNow mevcut tarayıcı profillerini içe aktarmaz veya oturumu yenilemez. Süresi dolduğunda yeniden giriş yapın."
+  ],
+  "AI coding usage tracker for macOS": [
+    "macOS үшін ЖИ бағдарламалау қолданысын бақылау",
+    "macOS uçun AI dasturlaş sarfini kuzatiş",
+    "macOS için yapay zekâ kodlama kullanım takibi"
+  ],
+  "API key": [
+    "API кілті",
+    "API kaliti",
+    "API anahtarı"
+  ],
+  "API key saved": [
+    "API кілті сақталды",
+    "API kaliti saqlandi",
+    "API anahtarı kaydedildi"
+  ],
+  "API keys can usually spend money, not just read it. If %@ lets you, create a separate key for UsageNow.": [
+    "API кілттері әдетте ақшаны оқумен қатар жұмсай алады. %@ мүмкіндік берсе, UsageNow үшін жеке кілт жасаңыз.",
+    "API kalitlari odatda pul sarflaşi ham mumkin. %@ ruxsat bersa, UsageNow uçun alohida kalit yarating.",
+    "API anahtarları genellikle para harcayabilir. %@ izin veriyorsa UsageNow için ayrı bir anahtar oluşturun."
+  ],
+  "About": [
+    "Қолданба туралы",
+    "Dastur haqida",
+    "Hakkında"
+  ],
+  "Actions for %@": [
+    "%@ әрекеттері",
+    "%@ amallari",
+    "%@ işlemleri"
+  ],
+  "Activity, last 14 days": [
+    "Соңғы 14 күндегі белсенділік",
+    "Oxirgi 14 kunlik faollik",
+    "Son 14 günlük etkinlik"
+  ],
+  "Activity, last 30 days": [
+    "Соңғы 30 күндегі белсенділік",
+    "Oxirgi 30 kunlik faollik",
+    "Son 30 günlük etkinlik"
+  ],
+  "Add %@ Account": [
+    "%@ аккаунтын қосу",
+    "%@ hisobini qöşiş",
+    "%@ hesabı ekle"
+  ],
+  "Add Account": [
+    "Аккаунт қосу",
+    "Hisob qöşiş",
+    "Hesap ekle"
+  ],
+  "Add Account…": [
+    "Аккаунт қосу…",
+    "Hisob qöşiş…",
+    "Hesap ekle…"
+  ],
+  "Added": [
+    "Қосылды",
+    "Qöşildi",
+    "Eklenenler"
+  ],
+  "Allow UsageNow in System Settings to finish setup.": [
+    "Орнатуды аяқтау үшін Жүйелік параметрлерде UsageNow-ға рұқсат беріңіз.",
+    "Sozlaşni tugatiş uçun Tizim sozlamalarida UsageNow’ga ruxsat bering.",
+    "Kurulumu tamamlamak için Sistem Ayarları’nda UsageNow’a izin verin."
+  ],
+  "Allow UsageNow to access your Claude Code sign-in in Keychain.": [
+    "UsageNow-ға Кілттер тізбегіндегі Claude Code сеансына қол жеткізуге рұқсат беріңіз.",
+    "UsageNow’ga Keychain’dagi Claude Code seansiga kirişga ruxsat bering.",
+    "UsageNow’un Anahtar Zinciri’ndeki Claude Code oturumunuza erişmesine izin verin."
+  ],
+  "Allow user_read on your ElevenLabs API key, then try again.": [
+    "ElevenLabs API кілтінде user_read рұқсатын қосып, қайталаңыз.",
+    "ElevenLabs API kalitida user_read ruxsatini yoqib, qayta urinib köring.",
+    "ElevenLabs API anahtarında user_read iznini etkinleştirip yeniden deneyin."
+  ],
+  "Allowance": [
+    "Қолжетімді көлем",
+    "Ajratilgan hajm",
+    "Kullanım hakkı"
+  ],
+  "Another %@ account already has this name.": [
+    "Басқа %@ аккаунтында бұл атау бар.",
+    "Boşqa %@ hisobida bu nom bor.",
+    "Başka bir %@ hesabı bu adı kullanıyor."
+  ],
+  "Another app already uses this shortcut. Record a different one.": [
+    "Бұл перне тіркесімін басқа қолданба пайдаланады. Басқасын таңдаңыз.",
+    "Bu tugmalar birikmasini boşqa dastur işlatmoqda. Boşqasini tanlang.",
+    "Bu kestirmeyi başka bir uygulama kullanıyor. Farklı bir kestirme seçin."
+  ],
+  "Appearance": [
+    "Көрініс",
+    "Köriniş",
+    "Görünüm"
+  ],
+  "Applies to the popover, the menu bar, and the widget.": [
+    "Қалқымалы терезеге, мәзір жолағына және виджетке қолданылады.",
+    "Qalqib çiquvçi oyna, menyu paneli va vidjetga qöllanadi.",
+    "Açılır pencereye, menü çubuğuna ve araç takımına uygulanır."
+  ],
+  "Available": [
+    "Қолжетімді",
+    "Mavjud",
+    "Kullanılabilir"
+  ],
+  "Cancel": [
+    "Болдырмау",
+    "Bekor qiliş",
+    "İptal"
+  ],
+  "Changed": [
+    "Өзгертілді",
+    "Özgartirildi",
+    "Değişiklikler"
+  ],
+  "Characters used": [
+    "Пайдаланылған таңбалар",
+    "Işlatilgan belgilar",
+    "Kullanılan karakterler"
+  ],
+  "Check Now": [
+    "Қазір тексеру",
+    "Hozir tekşiriş",
+    "Şimdi denetle"
+  ],
+  "Check and Add Account": [
+    "Тексеріп, аккаунт қосу",
+    "Tekşiriş va hisob qöşiş",
+    "Denetle ve hesap ekle"
+  ],
+  "Check and Save": [
+    "Тексеріп, сақтау",
+    "Tekşiriş va saqlaş",
+    "Denetle ve kaydet"
+  ],
+  "Check for updates automatically": [
+    "Жаңартуларды автоматты тексеру",
+    "Yangilanişlarni avtomatik tekşiriş",
+    "Güncellemeleri otomatik denetle"
+  ],
+  "Check the credential format. Session cookies must include their name.": [
+    "Кіру деректерінің пішімін тексеріңіз. Сеанс cookie файлында атауы болуы керек.",
+    "Kiriş ma’lumoti formatini tekşiring. Seans cookie faylida uning nomi bölişi kerak.",
+    "Kimlik bilgisi biçimini denetleyin. Oturum çerezleri adlarını içermelidir."
+  ],
+  "Check this connection’s permissions in Settings › Providers.": [
+    "Қосылым рұқсаттарын Параметрлер › Провайдерлер бөлімінде тексеріңіз.",
+    "Ulaniş ruxsatlarini Sozlamalar › Provayderlar bölimida tekşiring.",
+    "Bu bağlantının izinlerini Ayarlar › Sağlayıcılar bölümünde denetleyin."
+  ],
+  "Checking connection…": [
+    "Қосылым тексерілуде…",
+    "Ulaniş tekşirilmoqda…",
+    "Bağlantı denetleniyor…"
+  ],
+  "Checking usage…": [
+    "Қолданыс тексерілуде…",
+    "Sarf tekşirilmoqda…",
+    "Kullanım denetleniyor…"
+  ],
+  "Choose": [
+    "Таңдау",
+    "Tanlaş",
+    "Seç"
+  ],
+  "Choose a provider in Settings to start tracking usage.": [
+    "Бақылауды бастау үшін Параметрлерден провайдерді таңдаңыз.",
+    "Kuzatişni başlaş uçun Sozlamalarda provayder tanlang.",
+    "Kullanımı izlemeye başlamak için Ayarlar’dan bir sağlayıcı seçin."
+  ],
+  "Choose providers": [
+    "Провайдерлерді таңдау",
+    "Provayderlarni tanlaş",
+    "Sağlayıcıları seç"
+  ],
+  "Choose which services UsageNow displays and monitors, and drag them into the order you want.": [
+    "UsageNow көрсететін және бақылайтын сервистерді таңдап, сүйреп қажетті ретке келтіріңіз.",
+    "UsageNow körsatadigan va kuzatadigan xizmatlarni tanlab, sudrab kerakli tartibga keltiring.",
+    "UsageNow’un göstereceği ve izleyeceği hizmetleri seçip istediğiniz sıraya sürükleyin."
+  ],
+  "Choose…": [
+    "Таңдау…",
+    "Tanlaş…",
+    "Seç…"
+  ],
+  "Claude usage limits — Experimental": [
+    "Claude лимиттері — Сынақ нұсқасы",
+    "Claude limitlari — Tajribaviy",
+    "Claude kullanım limitleri — Deneysel"
+  ],
+  "Coming soon": [
+    "Жақында",
+    "Tez kunda",
+    "Yakında"
+  ],
+  "Connect": [
+    "Қосу",
+    "Ulaş",
+    "Bağlan"
+  ],
+  "Connect %@": [
+    "%@ қосу",
+    "%@’ga ulaniş",
+    "%@ bağlantısı kur"
+  ],
+  "Connection verified, but it couldn’t be saved. Check Keychain access and try again.": [
+    "Қосылым тексерілді, бірақ сақталмады. Кілттер тізбегіне рұқсатты тексеріп, қайталаңыз.",
+    "Ulaniş tekşirildi, ammo saqlanmadi. Keychain ruxsatini tekşirib, qayta urinib köring.",
+    "Bağlantı doğrulandı ancak kaydedilemedi. Anahtar Zinciri erişimini denetleyip yeniden deneyin."
+  ],
+  "Connect…": [
+    "Қосу…",
+    "Ulaniş…",
+    "Bağlan…"
+  ],
+  "Copied": [
+    "Көшірілді",
+    "Nusxalandi",
+    "Kopyalandı"
+  ],
+  "Copy": [
+    "Көшіру",
+    "Nusxalaş",
+    "Kopyala"
+  ],
+  "Couldn’t refresh %@": [
+    "%@ жаңартылмады",
+    "%@ yangilanmadi",
+    "%@ yenilenemedi"
+  ],
+  "Couldn’t save the connection. Check the credential format and Keychain access.": [
+    "Қосылым сақталмады. Кіру деректерінің пішімі мен Кілттер тізбегіне рұқсатты тексеріңіз.",
+    "Ulaniş saqlanmadi. Kiriş ma’lumoti formati va Keychain ruxsatini tekşiring.",
+    "Bağlantı kaydedilemedi. Kimlik bilgisi biçimini ve Anahtar Zinciri erişimini denetleyin."
+  ],
+  "Create a restricted key with user_read permission. UsageNow does not generate audio.": [
+    "user_read рұқсаты бар шектеулі кілт жасаңыз. UsageNow дыбыс жасамайды.",
+    "user_read ruxsatli çeklangan kalit yarating. UsageNow audio yaratmaydi.",
+    "user_read iznine sahip kısıtlı bir anahtar oluşturun. UsageNow ses üretmez."
+  ],
+  "Credits": [
+    "Кредиттер",
+    "Kreditlar",
+    "Krediler"
+  ],
+  "Credits remaining": [
+    "Қалған кредиттер",
+    "Qolgan kreditlar",
+    "Kalan krediler"
+  ],
+  "Credits used": [
+    "Пайдаланылған кредиттер",
+    "Işlatilgan kreditlar",
+    "Kullanılan krediler"
+  ],
+  "Daily": [
+    "Күндік",
+    "Kunlik",
+    "Günlük"
+  ],
+  "Dark": [
+    "Қараңғы",
+    "Töq",
+    "Koyu"
+  ],
+  "Day": [
+    "Күн",
+    "Kun",
+    "Gün"
+  ],
+  "Development": [
+    "Әзірлеушілерге",
+    "Dasturlaş",
+    "Geliştirme"
+  ],
+  "Display": [
+    "Көрсету",
+    "Körsatiş",
+    "Görüntü"
+  ],
+  "Done": [
+    "Дайын",
+    "Tayyor",
+    "Bitti"
+  ],
+  "Edit this widget to choose an enabled provider and account.": [
+    "Қосылған провайдер мен аккаунтты таңдау үшін виджетті өңдеңіз.",
+    "Yoqilgan provayder va hisobni tanlaş uçun vidjetni tahrirlang.",
+    "Etkin bir sağlayıcı ve hesap seçmek için bu araç takımını düzenleyin."
+  ],
+  "Email…": [
+    "Эл. хат…",
+    "Xat yuboriş…",
+    "E-posta…"
+  ],
+  "Estimate from recent quota readings, not token activity. Your pace can change.": [
+    "Бағалау соңғы квота көрсеткіштеріне негізделген, токен белсенділігіне емес. Қарқын өзгеруі мүмкін.",
+    "Taxmin sönggi kvota körsatkiçlariga asoslangan, token faolligiga emas. Sur’atingiz özgarişi mumkin.",
+    "Tahmin, token etkinliğine değil son kota okumalarına dayanır. Hızınız değişebilir."
+  ],
+  "Estimated cost at API prices": [
+    "API бағаларымен есептелген құн",
+    "API narxlaridagi taxminiy xarajat",
+    "API fiyatlarıyla tahmini maliyet"
+  ],
+  "Experimental": [
+    "Сынақ нұсқасы",
+    "Tajribaviy",
+    "Deneysel"
+  ],
+  "Experimental: %@ doesn’t document how to read usage, so this may stop working without notice. If it does, UsageNow shows limits as unavailable rather than guessing.": [
+    "Сынақ нұсқасы: %@ қолданысты оқу тәсілін құжаттамаған, сондықтан бұл күтпеген жерден істемей қалуы мүмкін. Ондайда UsageNow лимиттерді болжамай, қолжетімсіз деп көрсетеді.",
+    "Tajribaviy: %@ sarfni öqiş usulini hujjatlamagan, şu sababli bu manba ogohlantirişsiz işlamay qolişi mumkin. Bunda UsageNow taxmin qilmay, limitlarni mavjud emas deb körsatadi.",
+    "Deneysel: %@ kullanım verilerini okuma yöntemini belgelemediği için bu özellik haber verilmeden çalışmayı durdurabilir. Bu durumda UsageNow tahmin etmek yerine limitleri kullanılamıyor olarak gösterir."
+  ],
+  "Fetch Claude usage limits": [
+    "Claude лимиттерін алу",
+    "Claude limitlarini oliş",
+    "Claude kullanım limitlerini al"
+  ],
+  "Fetch current Claude Code subscription limits directly from Anthropic using your existing Claude Code sign-in. This uses an undocumented Anthropic endpoint and may stop working without notice.": [
+    "Қазіргі Claude Code сеансы арқылы жазылым лимиттерін Anthropic-тен тікелей алу. Құжатталмаған Anthropic endpoint қолданылады және ол күтпеген жерден істемей қалуы мүмкін.",
+    "Mavjud Claude Code seansi orqali obuna limitlarini Anthropic’dan bevosita oliş. Hujjatlanmagan Anthropic endpoint işlatiladi va u ogohlantirişsiz işlamay qolişi mumkin.",
+    "Mevcut Claude Code oturumunuzla abonelik limitlerini doğrudan Anthropic’ten alın. Belgelenmemiş bir Anthropic uç noktası kullanılır ve haber verilmeden çalışmayı durdurabilir."
+  ],
+  "Fixed": [
+    "Түзетілді",
+    "Tuzatildi",
+    "Düzeltmeler"
+  ],
+  "Folder not found": [
+    "Қалта табылмады",
+    "Jild topilmadi",
+    "Klasör bulunamadı"
+  ],
+  "General": [
+    "Жалпы",
+    "Umumiy",
+    "Genel"
+  ],
+  "GitHub token": [
+    "GitHub токені",
+    "GitHub tokeni",
+    "GitHub token’ı"
+  ],
+  "Helps improve UsageNow by sharing basic app usage and device information.": [
+    "Қолданба мен құрылғы туралы негізгі ақпаратты бөлісу арқылы UsageNow-ды жақсартуға көмектеседі.",
+    "Dastur va qurilma haqida asosiy ma’lumotlarni ulaşib, UsageNow’ni yaxşilaşga yordam beradi.",
+    "Temel uygulama kullanımı ve aygıt bilgilerini paylaşarak UsageNow’un geliştirilmesine yardımcı olur."
+  ],
+  "High usage": [
+    "Жоғары қолданыс",
+    "Yuqori sarf",
+    "Yüksek kullanım"
+  ],
+  "Icon only": [
+    "Тек белгіше",
+    "Faqat belgi",
+    "Yalnızca simge"
+  ],
+  "Install or use a supported AI coding tool to start tracking usage.": [
+    "Бақылауды бастау үшін қолдау көрсетілетін ЖИ құралын орнатыңыз немесе қолданыңыз.",
+    "Kuzatişni başlaş uçun qöllab-quvvatlanadigan AI dasturlaş vositasini örnating yoki işlating.",
+    "Kullanımı izlemeye başlamak için desteklenen bir yapay zekâ kodlama aracı yükleyin veya kullanın."
+  ],
+  "Installed": [
+    "Орнатылған",
+    "Örnatilgan",
+    "Yüklü"
+  ],
+  "Just now": [
+    "Жаңа ғана",
+    "Hozirgina",
+    "Az önce"
+  ],
+  "Keyboard shortcut": [
+    "Перне тіркесімі",
+    "Tugmalar birikmasi",
+    "Klavye kestirmesi"
+  ],
+  "Language": [
+    "Тіл",
+    "Til",
+    "Dil"
+  ],
+  "Last 30 days": [
+    "Соңғы 30 күн",
+    "Oxirgi 30 kun",
+    "Son 30 gün"
+  ],
+  "Last checked %@": [
+    "Соңғы тексеру: %@",
+    "Oxirgi tekşiruv: %@",
+    "Son denetim: %@"
+  ],
+  "Launch UsageNow at login": [
+    "Жүйеге кіргенде UsageNow-ды іске қосу",
+    "Tizimga kirganda UsageNow’ni işga tuşiriş",
+    "Oturum açıldığında UsageNow’u başlat"
+  ],
+  "Leave the selection empty to follow UsageNow. Select providers and accounts to personalize this widget.": [
+    "UsageNow таңдауын қолдану үшін бос қалдырыңыз. Виджетті баптау үшін провайдерлер мен аккаунттарды таңдаңыз.",
+    "UsageNow tanloviga ergaşiş uçun böş qoldiring. Vidjetni moslaş uçun provayder va hisoblarni tanlang.",
+    "UsageNow’u izlemek için seçimi boş bırakın. Bu araç takımını özelleştirmek için sağlayıcı ve hesapları seçin."
+  ],
+  "Light": [
+    "Ашық",
+    "Oç",
+    "Açık"
+  ],
+  "Likely to last until reset": [
+    "Жаңарғанға дейін жетуі ықтимал",
+    "Yangilangunça yetişi mumkin",
+    "Yenilenene kadar yetmesi olası"
+  ],
+  "Limits are checked when UsageNow refreshes. Notifications come from this Mac; nothing is sent anywhere.": [
+    "Лимиттер UsageNow жаңарғанда тексеріледі. Хабарландыруларды осы Mac жібереді; ешқайда дерек берілмейді.",
+    "Limitlar UsageNow yangilanganda tekşiriladi. Bildirişlar şu Mac’da yaratiladi; heç qayerga ma’lumot yuborilmaydi.",
+    "Limitler UsageNow yenilendiğinde denetlenir. Bildirimler bu Mac’ten gelir; hiçbir yere veri gönderilmez."
+  ],
+  "Limits unavailable": [
+    "Лимиттер қолжетімсіз",
+    "Limitlar mavjud emas",
+    "Limitler alınamıyor"
+  ],
+  "Manual": [
+    "Қолмен",
+    "Qölda",
+    "Elle"
+  ],
+  "May run out in %@": [
+    "%@ ішінде таусылуы мүмкін",
+    "%@ dan keyin tugaşi mumkin",
+    "%@ içinde tükenebilir"
+  ],
+  "Menu Bar": [
+    "Мәзір жолағы",
+    "Menyu paneli",
+    "Menü çubuğu"
+  ],
+  "Models today": [
+    "Бүгінгі модельдер",
+    "Bugungi modellar",
+    "Bugünkü modeller"
+  ],
+  "Monthly": [
+    "Айлық",
+    "Oylik",
+    "Aylık"
+  ],
+  "Most critical usage": [
+    "Ең аз қалған лимит",
+    "Eng kam qolgan limit",
+    "En kritik kullanım"
+  ],
+  "Move Down": [
+    "Төмен жылжыту",
+    "Pastga suriş",
+    "Aşağı taşı"
+  ],
+  "Move Up": [
+    "Жоғары жылжыту",
+    "Yuqoriga suriş",
+    "Yukarı taşı"
+  ],
+  "Name": [
+    "Атауы",
+    "Nomi",
+    "Ad"
+  ],
+  "Nearly exhausted": [
+    "Таусылуға жақын",
+    "Tugaşga yaqin",
+    "Tükenmek üzere"
+  ],
+  "Never includes prompts, tokens, project names, files, credentials, or coding activity.": [
+    "Промпттар, токендер, жоба атаулары, файлдар, кіру деректері немесе код жазу белсенділігі ешқашан қамтылмайды.",
+    "Sörov matnlari, tokenlar, loyiha nomlari, fayllar, kiriş ma’lumotlari yoki kodlaş faolligi heç qaçon kiritilmaydi.",
+    "İstemleri, tokenları, proje adlarını, dosyaları, kimlik bilgilerini veya kodlama etkinliğini asla içermez."
+  ],
+  "Next reset": [
+    "Келесі жаңару",
+    "Keyingi yangilaniş",
+    "Sonraki yenilenme"
+  ],
+  "No API key yet": [
+    "API кілті әлі жоқ",
+    "Hali API kaliti yöq",
+    "Henüz API anahtarı yok"
+  ],
+  "No activity": [
+    "Белсенділік жоқ",
+    "Faollik yöq",
+    "Etkinlik yok"
+  ],
+  "No folder chosen": [
+    "Қалта таңдалмаған",
+    "Jild tanlanmagan",
+    "Klasör seçilmedi"
+  ],
+  "No internet connection. Reconnect and try again; nothing has been saved.": [
+    "Интернет жоқ. Қосылып, қайта көріңіз; ештеңе сақталмады.",
+    "Internet yöq. Qayta ulanib urinib köring; heç narsa saqlanmadi.",
+    "İnternet bağlantısı yok. Yeniden bağlanıp deneyin; hiçbir şey kaydedilmedi."
+  ],
+  "No providers detected": [
+    "Провайдерлер табылмады",
+    "Provayder topilmadi",
+    "Sağlayıcı bulunamadı"
+  ],
+  "No providers enabled": [
+    "Провайдерлер қосылмаған",
+    "Provayder yoqilmagan",
+    "Etkin sağlayıcı yok"
+  ],
+  "No sign-in or sessions in this account’s folder. Check it in Settings › Providers.": [
+    "Аккаунт қалтасында кіру деректері не сеанстар жоқ. Параметрлер › Провайдерлер бөлімінде тексеріңіз.",
+    "Hisob jildida kiriş yoki seanslar yöq. Sozlamalar › Provayderlar bölimida tekşiring.",
+    "Bu hesabın klasöründe giriş veya oturum yok. Ayarlar › Sağlayıcılar bölümünde denetleyin."
+  ],
+  "No valid session yet. Finish signing in, or use the manual session cookie option.": [
+    "Жарамды сеанс әлі жоқ. Кіруді аяқтаңыз немесе сеанс cookie файлын қолмен енгізіңіз.",
+    "Hali yaroqli seans yöq. Kirişni tugating yoki seans cookie faylini qölda kiriting.",
+    "Henüz geçerli oturum yok. Girişi tamamlayın veya oturum çerezini elle girin."
+  ],
+  "None": [
+    "Жоқ",
+    "Yöq",
+    "Yok"
+  ],
+  "Not checked yet": [
+    "Әлі тексерілмеген",
+    "Hali tekşirilmagan",
+    "Henüz denetlenmedi"
+  ],
+  "Not connected": [
+    "Қосылмаған",
+    "Ulanmagan",
+    "Bağlı değil"
+  ],
+  "Notifications": [
+    "Хабарландырулар",
+    "Bildirişlar",
+    "Bildirimler"
+  ],
+  "Notifications are turned off for UsageNow in System Settings.": [
+    "Жүйелік параметрлерде UsageNow хабарландырулары өшірілген.",
+    "Tizim sozlamalarida UsageNow bildirişlari öçirilgan.",
+    "Sistem Ayarları’nda UsageNow bildirimleri kapalı."
+  ],
+  "Notify me about limits": [
+    "Лимиттер туралы хабарлау",
+    "Limitlar haqida bildiriş",
+    "Limitleri bildir"
+  ],
+  "Observed quota usage": [
+    "Бақыланған квота қолданысы",
+    "Kuzatilgan kvota sarfi",
+    "Gözlenen kota kullanımı"
+  ],
+  "Open %@ to update usage limits.": [
+    "Лимиттерді жаңарту үшін %@ ашыңыз.",
+    "Limitlarni yangilaş uçun %@’ni oçing.",
+    "Limitleri güncellemek için %@ uygulamasını açın."
+  ],
+  "Open %@…": [
+    "%@ ашу…",
+    "%@’ni oçiş…",
+    "%@ aç…"
+  ],
+  "Open Antigravity, or sign in with agy in Terminal, to update usage limits.": [
+    "Лимиттерді жаңарту үшін Antigravity ашыңыз немесе Терминалда agy арқылы кіріңіз.",
+    "Limitlarni yangilaş uçun Antigravity’ni oçing yoki Terminal’da agy orqali kiring.",
+    "Limitleri güncellemek için Antigravity’yi açın veya Terminal’de agy ile giriş yapın."
+  ],
+  "Open GitHub Issue…": [
+    "GitHub Issue ашу…",
+    "GitHub Issue oçiş…",
+    "GitHub sorunu aç…"
+  ],
+  "Open Login Items…": [
+    "Кіру элементтерін ашу…",
+    "Kiriş elementlarini oçiş…",
+    "Giriş öğelerini aç…"
+  ],
+  "Open Notification Settings…": [
+    "Хабарландыру параметрлерін ашу…",
+    "Bildiriş sozlamalarini oçiş…",
+    "Bildirim ayarlarını aç…"
+  ],
+  "Open Provider Settings": [
+    "Провайдер параметрлерін ашу",
+    "Provayder sozlamalarini oçiş",
+    "Sağlayıcı ayarlarını aç"
+  ],
+  "Open Source Licenses": [
+    "Ашық код лицензиялары",
+    "Oçiq kod litsenziyalari",
+    "Açık kaynak lisansları"
+  ],
+  "Open Source Licenses…": [
+    "Ашық код лицензиялары…",
+    "Oçiq kod litsenziyalari…",
+    "Açık kaynak lisansları…"
+  ],
+  "Open UsageNow": [
+    "UsageNow ашу",
+    "UsageNow’ni oçiş",
+    "UsageNow’u aç"
+  ],
+  "Open UsageNow to choose providers.": [
+    "Провайдерлерді таңдау үшін UsageNow ашыңыз.",
+    "Provayderlarni tanlaş uçun UsageNow’ni oçing.",
+    "Sağlayıcıları seçmek için UsageNow’u açın."
+  ],
+  "Open UsageNow to load usage data.": [
+    "Қолданыс деректерін жүктеу үшін UsageNow ашыңыз.",
+    "Sarf ma’lumotlarini yuklaş uçun UsageNow’ni oçing.",
+    "Kullanım verilerini yüklemek için UsageNow’u açın."
+  ],
+  "Opens and closes UsageNow from any app.": [
+    "Кез келген қолданбадан UsageNow ашады және жабады.",
+    "Istalgan dasturdan UsageNow’ni oçadi va yopadi.",
+    "UsageNow’u herhangi bir uygulamadan açıp kapatır."
+  ],
+  "Or paste a named session cookie (name=value):": [
+    "Немесе атауы бар сеанс cookie файлын қойыңыз (name=value):",
+    "Yoki nomlangan seans cookie faylini qöying (name=value):",
+    "Veya adlandırılmış oturum çerezini yapıştırın (name=value):"
+  ],
+  "Overall service status. Your account connection and usage limits are checked separately.": [
+    "Сервистің жалпы күйі. Аккаунт қосылымы мен лимиттер бөлек тексеріледі.",
+    "Xizmatning umumiy holati. Hisob ulanişi va limitlar alohida tekşiriladi.",
+    "Genel hizmet durumu. Hesap bağlantınız ve kullanım limitleriniz ayrı denetlenir."
+  ],
+  "Periodically check public OpenAI, Claude, Cursor and GitHub Copilot status pages. No account or usage data is sent. Service status does not diagnose your connection.": [
+    "OpenAI, Claude, Cursor және GitHub Copilot ашық күй беттерін мерзімді тексеру. Аккаунт не қолданыс деректері жіберілмейді. Сервис күйі қосылым диагнозы емес.",
+    "OpenAI, Claude, Cursor va GitHub Copilot oçiq holat sahifalarini vaqti-vaqti bilan tekşiriş. Hisob yoki sarf ma’lumotlari yuborilmaydi. Xizmat holati ulaniş taşxisi emas.",
+    "OpenAI, Claude, Cursor ve GitHub Copilot’un herkese açık durum sayfalarını düzenli denetler. Hesap veya kullanım verileri gönderilmez. Hizmet durumu bağlantınızın tanısı değildir."
+  ],
+  "Press a shortcut…": [
+    "Перне тіркесімін басыңыз…",
+    "Tugmalar birikmasini bosing…",
+    "Bir kestirmeye basın…"
+  ],
+  "Privacy": [
+    "Құпиялық",
+    "Maxfiylik",
+    "Gizlilik"
+  ],
+  "Provider and account": [
+    "Провайдер және аккаунт",
+    "Provayder va hisob",
+    "Sağlayıcı ve hesap"
+  ],
+  "Providers": [
+    "Провайдерлер",
+    "Provayderlar",
+    "Sağlayıcılar"
+  ],
+  "Providers and accounts": [
+    "Провайдерлер мен аккаунттар",
+    "Provayderlar va hisoblar",
+    "Sağlayıcılar ve hesaplar"
+  ],
+  "Quit": [
+    "Шығу",
+    "Çiqiş",
+    "Çık"
+  ],
+  "Quit UsageNow": [
+    "UsageNow-дан шығу",
+    "UsageNow’dan çiqiş",
+    "UsageNow’dan çık"
+  ],
+  "Quota pace": [
+    "Квотаны жұмсау қарқыны",
+    "Kvota sarf sur’ati",
+    "Kota tüketim hızı"
+  ],
+  "Reconnect %@ in Settings › Providers.": [
+    "%@ қосылымын Параметрлер › Провайдерлер бөлімінде жаңартыңыз.",
+    "%@’ni Sozlamalar › Provayderlar bölimida qayta ulang.",
+    "%@ bağlantısını Ayarlar › Sağlayıcılar bölümünde yeniden kurun."
+  ],
+  "Reconnect…": [
+    "Қайта қосу…",
+    "Qayta ulaniş…",
+    "Yeniden bağlan…"
+  ],
+  "Record Shortcut": [
+    "Перне тіркесімін жазу",
+    "Tugmalar birikmasini yoziş",
+    "Kestirme kaydet"
+  ],
+  "Refresh": [
+    "Жаңарту",
+    "Yangilaş",
+    "Yenile"
+  ],
+  "Refresh Claude Code from Terminal to view usage limits.": [
+    "Лимиттерді көру үшін Claude Code сеансын Терминалдан жаңартыңыз.",
+    "Limitlarni köriş uçun Claude Code seansini Terminal’da yangilang.",
+    "Limitleri görmek için Claude Code’u Terminal’den yenileyin."
+  ],
+  "Refresh interval": [
+    "Жаңарту аралығы",
+    "Yangilaş oraliği",
+    "Yenileme aralığı"
+  ],
+  "Refresh temporarily limited. Try again after %@.": [
+    "Жаңарту уақытша шектелген. %@ кейін қайталаңыз.",
+    "Yangilaş vaqtinça çeklangan. %@ dan keyin urinib köring.",
+    "Yenileme geçici olarak sınırlandı. %@ sonrasında yeniden deneyin."
+  ],
+  "Refreshing…": [
+    "Жаңартылуда…",
+    "Yangilanmoqda…",
+    "Yenileniyor…"
+  ],
+  "Reload": [
+    "Қайта жүктеу",
+    "Qayta yuklaş",
+    "Yeniden yükle"
+  ],
+  "Remaining": [
+    "Қалғаны",
+    "Qolgan",
+    "Kalan"
+  ],
+  "Remove": [
+    "Жою",
+    "Öçiriş",
+    "Kaldır"
+  ],
+  "Remove shortcut": [
+    "Перне тіркесімін жою",
+    "Tugmalar birikmasini öçiriş",
+    "Kestirmeyi kaldır"
+  ],
+  "Removed": [
+    "Жойылды",
+    "Öçirildi",
+    "Kaldırılanlar"
+  ],
+  "Rename": [
+    "Атауын өзгерту",
+    "Nomini özgartiriş",
+    "Yeniden adlandır"
+  ],
+  "Rename %@": [
+    "%@ атауын өзгерту",
+    "%@ nomini özgartiriş",
+    "%@ yeniden adlandır"
+  ],
+  "Rename…": [
+    "Атауын өзгерту…",
+    "Nomini özgartiriş…",
+    "Yeniden adlandır…"
+  ],
+  "Replace…": [
+    "Ауыстыру…",
+    "Almaştiriş…",
+    "Değiştir…"
+  ],
+  "Report a Problem": [
+    "Мәселе туралы хабарлау",
+    "Muammo haqida xabar beriş",
+    "Sorun bildir"
+  ],
+  "Report a Problem…": [
+    "Мәселе туралы хабарлау…",
+    "Muammo haqida xabar beriş…",
+    "Sorun bildir…"
+  ],
+  "Requests": [
+    "Сұраулар",
+    "Sörovlar",
+    "İstekler"
+  ],
+  "Reset %@ · not updated since": [
+    "%@ жаңарды · содан бері тексерілмеген",
+    "%@ yangilandi · şundan beri tekşirilmagan",
+    "%@ yenilendi · o zamandan beri güncellenmedi"
+  ],
+  "Resets %@": [
+    "Жаңарады: %@",
+    "Yangilanadi: %@",
+    "Yenilenme: %@"
+  ],
+  "Resets in %@": [
+    "%@ кейін жаңарады",
+    "%@ dan keyin yangilanadi",
+    "%@ sonra yenilenir"
+  ],
+  "Resetting now": [
+    "Қазір жаңаруда",
+    "Hozir yangilanmoqda",
+    "Şimdi yenileniyor"
+  ],
+  "Restart Now": [
+    "Қазір қайта іске қосу",
+    "Hozir qayta işga tuşiriş",
+    "Şimdi yeniden başlat"
+  ],
+  "Retry": [
+    "Қайталау",
+    "Qayta uriniş",
+    "Yeniden dene"
+  ],
+  "Retry refreshing %@": [
+    "%@ жаңартуын қайталау",
+    "%@ yangilaşni qayta sinaş",
+    "%@ yenilemeyi yeniden dene"
+  ],
+  "Save to finish connecting.": [
+    "Қосылуды аяқтау үшін сақтаңыз.",
+    "Ulanişni tugatiş uçun saqlang.",
+    "Bağlantıyı tamamlamak için kaydedin."
+  ],
+  "Selected account unavailable": [
+    "Таңдалған аккаунт қолжетімсіз",
+    "Tanlangan hisob mavjud emas",
+    "Seçilen hesap kullanılamıyor"
+  ],
+  "Session cookie": [
+    "Сеанс cookie файлы",
+    "Seans cookie fayli",
+    "Oturum çerezi"
+  ],
+  "Session saved": [
+    "Сеанс сақталды",
+    "Seans saqlandi",
+    "Oturum kaydedildi"
+  ],
+  "Settings…": [
+    "Параметрлер…",
+    "Sozlamalar…",
+    "Ayarlar…"
+  ],
+  "Share anonymous usage analytics": [
+    "Анонимді талдауды бөлісу",
+    "Anonim tahlilni ulaşiş",
+    "Anonim kullanım analizlerini paylaş"
+  ],
+  "Show limits as": [
+    "Лимиттерді көрсету",
+    "Limitlarni körsatiş",
+    "Limit gösterimi"
+  ],
+  "Show service incidents": [
+    "Сервис ақауларын көрсету",
+    "Xizmat uzilişlarini körsatiş",
+    "Hizmet kesintilerini göster"
+  ],
+  "Show the last 30 days": [
+    "Соңғы 30 күнді көрсету",
+    "Oxirgi 30 kunni körsatiş",
+    "Son 30 günü göster"
+  ],
+  "Shown after %@ in the menu bar window and the widget. UsageNow never reads the account’s own name or email.": [
+    "Мәзір терезесі мен виджетте %@ соңынан көрсетіледі. UsageNow аккаунттың өз атауын не эл. поштасын оқымайды.",
+    "Menyu oynasi va vidjetda %@ dan keyin körsatiladi. UsageNow hisobning öz nomi yoki elektron poçtasini öqimaydi.",
+    "Menü çubuğu penceresinde ve araç takımında %@ sonrasında gösterilir. UsageNow hesabın kendi adını veya e-postasını okumaz."
+  ],
+  "Shows the icon alone when no usage limit is available.": [
+    "Лимит жоқ кезде тек белгішені көрсетеді.",
+    "Limit mavjud bölmaganda faqat belgi körsatiladi.",
+    "Kullanım limiti olmadığında yalnızca simgeyi gösterir."
+  ],
+  "Sign In…": [
+    "Кіру…",
+    "Kiriş…",
+    "Giriş yap…"
+  ],
+  "Sign in on the official website, then click Connect. Save the connection in Settings to keep only its session cookie in Keychain. If this window cannot sign you in, cancel and use a session cookie from your browser.": [
+    "Ресми сайтқа кіріп, Қосу түймесін басыңыз. Кілттер тізбегінде тек сеанс cookie файлын сақтау үшін қосылымды Параметрлерде сақтаңыз. Бұл терезеден кіре алмасаңыз, бас тартып, браузердегі сеанс cookie файлын қолданыңыз.",
+    "Rasmiy saytga kirib, Ulaş tugmasini bosing. Keychain’da faqat seans cookie faylini saqlaş uçun ulanişni Sozlamalarda saqlang. Bu oynada kira olmasangiz, bekor qilib, brauzerdagi seans cookie faylidan foydalaning.",
+    "Resmi sitede giriş yapıp Bağlan’a tıklayın. Yalnızca oturum çerezini Anahtar Zinciri’nde tutmak için bağlantıyı Ayarlar’da kaydedin. Bu pencerede giriş yapamazsanız iptal edip tarayıcınızdan oturum çerezi kullanın."
+  ],
+  "Sign in to %@": [
+    "%@ жүйесіне кіру",
+    "%@’ga kiriş",
+    "%@ oturumu aç"
+  ],
+  "Sign in to %@ to view usage": [
+    "Қолданысты көру үшін %@ жүйесіне кіріңіз",
+    "Sarfni köriş uçun %@’ga kiring",
+    "Kullanımı görmek için %@ oturumu açın"
+  ],
+  "Signed-in usage couldn’t be verified. This account or response may not be supported; nothing has been saved.": [
+    "Сеанс қолданысы тексерілмеді. Бұл аккаунт не жауап пішімі қолдау таппауы мүмкін; ештеңе сақталмады.",
+    "Seans sarfi tekşirilmadi. Bu hisob yoki javob formati qöllanmasligi mumkin; heç narsa saqlanmadi.",
+    "Oturum kullanımı doğrulanamadı. Bu hesap veya yanıt desteklenmiyor olabilir; hiçbir şey kaydedilmedi."
+  ],
+  "System": [
+    "Жүйелік",
+    "Tizim",
+    "Sistem"
+  ],
+  "The UsageNow name, logo, icon, and other brand assets are not covered by the MIT License.": [
+    "UsageNow атауы, логотипі, белгішесі және басқа бренд материалдары MIT лицензиясымен қамтылмайды.",
+    "UsageNow nomi, logotipi, belgisi va boşqa brend materiallari MIT litsenziyasiga kirmaydi.",
+    "UsageNow adı, logosu, simgesi ve diğer marka varlıkları MIT Lisansı kapsamında değildir."
+  ],
+  "The balance can’t pay for more requests.": [
+    "Баланс жаңа сұрауларға жеткіліксіз.",
+    "Balans yangi sörovlar uçun yetarli emas.",
+    "Bakiye yeni istekleri karşılamıyor."
+  ],
+  "The folder %@ uses when %@ is set to it. Only usage is read from it, as from %@.": [
+    "%2$@ көрсеткенде %1$@ қолданатын қалта. Одан %3$@ сияқты тек қолданыс оқылады.",
+    "%2$@ belgilanganda %1$@ işlatadigan jild. Undan %3$@ kabi faqat sarf öqiladi.",
+    "%2$@ ayarlandığında %1$@ tarafından kullanılan klasör. %3$@ gibi yalnızca kullanım okunur."
+  ],
+  "The full limit is available again.": [
+    "Толық лимит қайта қолжетімді.",
+    "Töliq limit yana mavjud.",
+    "Limitin tamamı yeniden kullanılabilir."
+  ],
+  "The list of changes isn’t included in this build.": [
+    "Бұл жинақта өзгерістер тізімі жоқ.",
+    "Bu yiğmada özgarişlar röyxati yöq.",
+    "Bu derlemede değişiklik listesi bulunmuyor."
+  ],
+  "The service couldn’t be reached. Try again later; nothing has been saved.": [
+    "Сервиске қосылу мүмкін болмады. Кейін қайталаңыз; ештеңе сақталмады.",
+    "Xizmatga ulanib bölmadi. Keyinroq urinib köring; heç narsa saqlanmadi.",
+    "Hizmete ulaşılamadı. Daha sonra deneyin; hiçbir şey kaydedilmedi."
+  ],
+  "The service rejected this connection. Check the credential and its permissions, or sign in again.": [
+    "Сервис қосылымды қабылдамады. Кіру деректері мен рұқсаттарын тексеріңіз немесе қайта кіріңіз.",
+    "Xizmat ulanişni rad etdi. Kiriş ma’lumoti va ruxsatlarini tekşiring yoki qayta kiring.",
+    "Hizmet bu bağlantıyı reddetti. Kimlik bilgisini ve izinlerini denetleyin veya yeniden giriş yapın."
+  ],
+  "This build can't update itself: it wasn't made by the release process, which is what signs an update.": [
+    "Бұл жинақ өздігінен жаңармайды: ол жаңартуға қол қоятын релиз үдерісімен жасалмаған.",
+    "Bu yiğma özini yangilay olmaydi: u yangilanişni imzolaydigan reliz jarayonida yaratilmagan.",
+    "Bu derleme kendini güncelleyemez: güncellemeyi imzalayan yayın süreciyle oluşturulmadı."
+  ],
+  "This build doesn’t send analytics yet.": [
+    "Бұл жинақ әлі талдау деректерін жібермейді.",
+    "Bu yiğma hali tahlil ma’lumotlarini yubormaydi.",
+    "Bu derleme henüz analiz göndermiyor."
+  ],
+  "This is everything the report contains: versions, screens, settings, and what each provider shows. No names, emails, file paths, keys, or prompts. Nothing is sent until you send it yourself.": [
+    "Есеп тек нұсқалар, экрандар, параметрлер мен провайдер көрсететін деректерден тұрады. Атаулар, эл. пошта, файл жолдары, кілттер немесе промпттар жоқ. Өзіңіз жібермейінше ештеңе жіберілмейді.",
+    "Hisobotda faqat versiyalar, ekranlar, sozlamalar va har bir provayder körsatadigan ma’lumotlar bor. Ismlar, elektron poçta, fayl yöllari, kalitlar yoki sörov matnlari yöq. Özingiz yubormagunça heç narsa yuborilmaydi.",
+    "Rapor yalnızca sürümleri, ekranları, ayarları ve her sağlayıcının gösterdiklerini içerir. Ad, e-posta, dosya yolu, anahtar veya istem içermez. Siz göndermeden hiçbir şey gönderilmez."
+  ],
+  "This key cannot read usage. Enable the required read permission and try again.": [
+    "Бұл кілт қолданысты оқи алмайды. Оқу рұқсатын қосып, қайталаңыз.",
+    "Bu kalit sarfni öqiy olmaydi. Kerakli öqiş ruxsatini yoqib, qayta urinib köring.",
+    "Bu anahtar kullanımı okuyamıyor. Gerekli okuma iznini etkinleştirip yeniden deneyin."
+  ],
+  "Time": [
+    "Уақыт",
+    "Vaqt",
+    "Zaman"
+  ],
+  "Token saved": [
+    "Токен сақталды",
+    "Token saqlandi",
+    "Token kaydedildi"
+  ],
+  "Tokens": [
+    "Токендер",
+    "Tokenlar",
+    "Tokenlar"
+  ],
+  "Try Again": [
+    "Қайта көру",
+    "Qayta uriniş",
+    "Yeniden dene"
+  ],
+  "Unavailable": [
+    "Қолжетімсіз",
+    "Mavjud emas",
+    "Kullanılamıyor"
+  ],
+  "Updated %@": [
+    "Жаңартылды: %@",
+    "Yangilandi: %@",
+    "Güncelleme: %@"
+  ],
+  "Updated just now": [
+    "Жаңа ғана жаңартылды",
+    "Hozirgina yangilandi",
+    "Az önce güncellendi"
+  ],
+  "Updates are off in this build": [
+    "Бұл жинақта жаңартулар өшірілген",
+    "Bu yiğmada yangilanişlar öçirilgan",
+    "Bu derlemede güncellemeler kapalı"
+  ],
+  "Usage Analytics": [
+    "Қолданба талдауы",
+    "Dastur tahlili",
+    "Kullanım analizleri"
+  ],
+  "Usage limits unavailable": [
+    "Қолданыс лимиттері қолжетімсіз",
+    "Sarf limitlari mavjud emas",
+    "Kullanım limitleri alınamıyor"
+  ],
+  "UsageNow already reads this folder as the first %@ account.": [
+    "UsageNow бұл қалтаны алғашқы %@ аккаунты ретінде оқып жатыр.",
+    "UsageNow bu jildni birinçi %@ hisobi sifatida öqimoqda.",
+    "UsageNow bu klasörü zaten ilk %@ hesabı olarak okuyor."
+  ],
+  "UsageNow also checks for new usage when you open it.": [
+    "UsageNow ашылғанда да жаңа қолданысты тексереді.",
+    "UsageNow oçilganda ham yangi sarfni tekşiradi.",
+    "UsageNow açıldığında da yeni kullanımı denetler."
+  ],
+  "UsageNow installs an update only when it's signed with the UsageNow update key. Checking sends no information about you.": [
+    "UsageNow жаңартуды тек UsageNow жаңарту кілтімен қол қойылғанда орнатады. Тексеру сіз туралы ақпарат жібермейді.",
+    "UsageNow faqat öz yangilaş kaliti bilan imzolangan yangilanişni örnatadi. Tekşiruv siz haqingizda ma’lumot yubormaydi.",
+    "UsageNow yalnızca UsageNow güncelleme anahtarıyla imzalanmış güncellemeleri yükler. Denetleme sizinle ilgili bilgi göndermez."
+  ],
+  "UsageNow is available under the MIT License.": [
+    "UsageNow MIT лицензиясымен таратылады.",
+    "UsageNow MIT litsenziyasi asosida tarqatiladi.",
+    "UsageNow MIT Lisansı altında sunulur."
+  ],
+  "UsageNow is local-first. Your usage data stays on this Mac.": [
+    "UsageNow жергілікті жұмыс істейді. Қолданыс деректеріңіз осы Mac-та қалады.",
+    "UsageNow avvalo mahalliy işlaydi. Sarf ma’lumotlaringiz şu Mac’da qoladi.",
+    "UsageNow yerel önceliklidir. Kullanım verileriniz bu Mac’te kalır."
+  ],
+  "UsageNow sends this credential only to %@ to read usage. It is stored in Keychain on this Mac and deleted when you turn %@ off.": [
+    "UsageNow бұл кіру деректерін қолданысты оқу үшін тек %1$@ сервисіне жібереді. Олар осы Mac-тың Кілттер тізбегінде сақталып, %2$@ өшірілгенде жойылады.",
+    "UsageNow bu kiriş ma’lumotini sarfni öqiş uçun faqat %1$@’ga yuboradi. U şu Mac’dagi Keychain’da saqlanadi va %2$@ öçirilganda öçiriladi.",
+    "UsageNow bu kimlik bilgisini kullanımı okumak için yalnızca %1$@ hizmetine gönderir. Bu Mac’in Anahtar Zinciri’nde saklanır ve %2$@ kapatıldığında silinir."
+  ],
+  "UsageNow switches language when it restarts.": [
+    "UsageNow қайта іске қосылғанда тіл өзгереді.",
+    "UsageNow qayta işga tuşirilganda til özgaradi.",
+    "UsageNow yeniden başlatıldığında dil değişir."
+  ],
+  "Use your own GitHub token. Copilot access depends on the token and account; the experimental API may reject personal tokens. UsageNow does not sign in as VS Code.": [
+    "Өзіңіздің GitHub токеніңізді қолданыңыз. Copilot қолжетімділігі токен мен аккаунтқа байланысты; сынақ API жеке токенді қабылдамауы мүмкін. UsageNow VS Code атынан кірмейді.",
+    "Öz GitHub tokeningizdan foydalaning. Copilot’ga kiriş token va hisobga boğliq; tajribaviy API şaxsiy tokenni rad etişi mumkin. UsageNow VS Code nomidan kirmaydi.",
+    "Kendi GitHub token’ınızı kullanın. Copilot erişimi token’a ve hesaba bağlıdır; deneysel API kişisel token’ları reddedebilir. UsageNow VS Code kimliğiyle giriş yapmaz."
+  ],
+  "Used": [
+    "Пайдаланылған",
+    "Işlatilgan",
+    "Kullanılan"
+  ],
+  "Version %@": [
+    "%@ нұсқасы",
+    "%@ versiyasi",
+    "Sürüm %@"
+  ],
+  "Version %@ (%@)": [
+    "%1$@ нұсқасы (%2$@)",
+    "%1$@ versiyasi (%2$@)",
+    "Sürüm %1$@ (%2$@)"
+  ],
+  "View on GitHub": [
+    "GitHub-та көру",
+    "GitHub’da köriş",
+    "GitHub’da görüntüle"
+  ],
+  "Waiting for update": [
+    "Жаңартуды күту",
+    "Yangilaniş kutilmoqda",
+    "Güncelleme bekleniyor"
+  ],
+  "Weekly": [
+    "Апталық",
+    "Haftalik",
+    "Haftalık"
+  ],
+  "What these tokens would cost at published API prices, for the models UsageNow has a price for. Your subscription doesn't charge per token.": [
+    "UsageNow бағасын білетін модельдер үшін жарияланған API бағаларымен токендердің ықтимал құны. Жазылымыңызда әр токен үшін ақы алынбайды.",
+    "UsageNow narxini biladigan modellar uçun e’lon qilingan API narxlaridagi tokenlar qiymati. Obunangizda har bir token uçun haq olinmaydi.",
+    "UsageNow’un fiyatını bildiği modeller için yayımlanmış API fiyatlarıyla bu tokenların maliyeti. Aboneliğiniz token başına ücretlendirilmez."
+  ],
+  "What these tokens would cost at published API prices. Your subscription doesn't charge per token.": [
+    "Жарияланған API бағаларымен токендердің ықтимал құны. Жазылымыңызда әр токен үшін ақы алынбайды.",
+    "E’lon qilingan API narxlaridagi tokenlar qiymati. Obunangizda har bir token uçun haq olinmaydi.",
+    "Yayımlanmış API fiyatlarıyla bu tokenların maliyeti. Aboneliğiniz token başına ücretlendirilmez."
+  ],
+  "What today's tokens would cost at published API prices, for the models UsageNow has a price for. Your subscription doesn't charge per token.": [
+    "UsageNow бағасын білетін модельдер үшін бүгінгі токендердің API бағаларымен ықтимал құны. Жазылымыңызда әр токен үшін ақы алынбайды.",
+    "UsageNow narxini biladigan modellar uçun bugungi tokenlarning API narxlaridagi qiymati. Obunangizda har bir token uçun haq olinmaydi.",
+    "UsageNow’un fiyatını bildiği modeller için bugünkü tokenların API fiyatlarıyla maliyeti. Aboneliğiniz token başına ücretlendirilmez."
+  ],
+  "What today's tokens would cost at published API prices. Your subscription doesn't charge per token.": [
+    "Бүгінгі токендердің API бағаларымен ықтимал құны. Жазылымыңызда әр токен үшін ақы алынбайды.",
+    "Bugungi tokenlarning API narxlaridagi qiymati. Obunangizda har bir token uçun haq olinmaydi.",
+    "Bugünkü tokenların API fiyatlarıyla maliyeti. Aboneliğiniz token başına ücretlendirilmez."
+  ],
+  "What’s New": [
+    "Не жаңалық",
+    "Yangiliklar",
+    "Yenilikler"
+  ],
+  "What’s New…": [
+    "Не жаңалық…",
+    "Yangiliklar…",
+    "Yenilikler…"
+  ],
+  "What’s left of your AI coding limits, at a glance.": [
+    "ЖИ бағдарламалау лимиттерінің қалдығын бір қарағанда көріңіз.",
+    "AI dasturlaş limitlaringiz qoldiği bir qaraşda.",
+    "Yapay zekâ kodlama limitlerinizden kalanı bir bakışta görün."
+  ],
+  "When 20% and 5% of a limit are left, and when a limit you were warned about resets.": [
+    "Лимиттің 20% және 5% қалғанында және ескертілген лимит жаңарғанда.",
+    "Limitning 20% va 5% qolganda hamda ogohlantirilgan limit yangilanganda.",
+    "Limitin %20’si ve %5’i kaldığında ve uyarıldığınız limit yenilendiğinde."
+  ],
+  "Work": [
+    "Жұмыс",
+    "Iş",
+    "İş"
+  ],
+  "about %@": [
+    "шамамен %@",
+    "taxminan %@",
+    "yaklaşık %@"
+  ],
+  "at API prices": [
+    "API бағаларымен",
+    "API narxlarida",
+    "API fiyatlarıyla"
+  ],
+  "at API prices, partial": [
+    "API бағаларымен, ішінара",
+    "API narxlarida, qisman",
+    "API fiyatlarıyla, kısmi"
+  ],
+  "credits today": [
+    "бүгінгі кредиттер",
+    "bugungi kreditlar",
+    "bugünkü krediler"
+  ],
+  "credits today, partial": [
+    "бүгінгі кредиттер, ішінара",
+    "bugungi kreditlar, qisman",
+    "bugünkü krediler, kısmi"
+  ],
+  "left": [
+    "қалды",
+    "qoldi",
+    "kaldı"
+  ],
+  "requests.few": [
+    "сұрау",
+    "sörov",
+    "istek"
+  ],
+  "requests.many": [
+    "сұрау",
+    "sörov",
+    "istek"
+  ],
+  "requests.one": [
+    "сұрау",
+    "sörov",
+    "istek"
+  ],
+  "requests.other": [
+    "сұрау",
+    "sörov",
+    "istek"
+  ],
+  "spent today": [
+    "бүгін жұмсалды",
+    "bugun sarflandi",
+    "bugün harcanan"
+  ],
+  "this month": [
+    "осы айда",
+    "şu oyda",
+    "bu ay"
+  ],
+  "tokens today": [
+    "бүгінгі токендер",
+    "bugungi tokenlar",
+    "bugünkü tokenlar"
+  ],
+  "unit.left.short": [
+    "қал.",
+    "qoldi",
+    "kalan"
+  ],
+  "unit.used.short": [
+    "пайд.",
+    "işl.",
+    "kull."
+  ],
+  "used": [
+    "пайдаланылды",
+    "işlatildi",
+    "kullanıldı"
+  ],
+  "Welcome to UsageNow": [
+    "UsageNow-ға қош келдіңіз",
+    "UsageNow’ga xuş kelibsiz",
+    "UsageNow’a hoş geldiniz"
+  ],
+  "Your AI usage, at a glance.": [
+    "ЖИ қолданысы бір қарағанда.",
+    "AI sarfingiz bir qaraşda.",
+    "Yapay zekâ kullanımınız bir bakışta."
+  ],
+  "Find UsageNow in the menu bar": [
+    "UsageNow мәзір жолағында орналасқан",
+    "UsageNow’ni menyu panelidan toping",
+    "UsageNow’u menü çubuğunda bulun"
+  ],
+  "See your remaining limits and reset times, and add a widget to your desktop.": [
+    "Қалған лимиттер мен жаңару уақытын көріңіз және жұмыс үстеліне виджет қосыңыз.",
+    "Qolgan limitlar va yangilaniş vaqtlarini köring hamda iş stoliga vidjet qöşing.",
+    "Kalan limitlerinizi ve yenilenme zamanlarını görün, masaüstünüze araç takımı ekleyin."
+  ],
+  "Local tools provide activity on this Mac. Optional connections add the usage your provider reports.": [
+    "Жергілікті құралдар осы Mac-тағы белсенділікті көрсетеді. Қосымша қосылымдар провайдер мәлімдеген қолданысты қосады.",
+    "Mahalliy vositalar şu Mac’dagi faollikni körsatadi. Ixtiyoriy ulanişlar provayder bildirgan sarfni qöşadi.",
+    "Yerel araçlar bu Mac’teki etkinliği sağlar. İsteğe bağlı bağlantılar sağlayıcınızın bildirdiği kullanımı ekler."
+  ],
+  "You choose which providers to enable. Connect accounts later in Settings › Providers.": [
+    "Қай провайдерді қосуды өзіңіз таңдайсыз. Аккаунттарды кейін Параметрлер › Провайдерлер бөлімінде қосыңыз.",
+    "Qaysi provayderlarni yoqişni özingiz tanlaysiz. Hisoblarni keyin Sozlamalar › Provayderlar bölimida ulang.",
+    "Etkinleştirilecek sağlayıcıları siz seçersiniz. Hesapları daha sonra Ayarlar › Sağlayıcılar’dan bağlayın."
+  ],
+  "Choose your providers": [
+    "Провайдерлеріңізді таңдаңыз",
+    "Provayderlaringizni tanlang",
+    "Sağlayıcılarınızı seçin"
+  ],
+  "Local source": [
+    "Жергілікті дереккөз",
+    "Mahalliy manba",
+    "Yerel kaynak"
+  ],
+  "Connect in Settings": [
+    "Параметрлерде қосу",
+    "Sozlamalarda ulaniş",
+    "Ayarlar’dan bağlan"
+  ],
+  "Skip Setup": [
+    "Баптауды өткізу",
+    "Sozlaşni ötkaziş",
+    "Kurulumu atla"
+  ],
+  "Continue": [
+    "Жалғастыру",
+    "Davom etiş",
+    "Sürdür"
+  ],
+  "Connect Accounts…": [
+    "Аккаунттарды қосу…",
+    "Hisoblarni ulaş…",
+    "Hesapları bağla…"
+  ],
+  "Open Setup…": [
+    "Баптауды ашу…",
+    "Sozlaşni oçiş…",
+    "Kurulumu aç…"
+  ],
+  "Choose when each provider warns you about remaining limits.": [
+    "Әр провайдердің қалған лимит туралы қашан ескертетінін таңдаңыз.",
+    "Har bir provayder qolgan limitlar haqida qaçon ogohlantirişini tanlang.",
+    "Her sağlayıcının kalan limitler hakkında ne zaman uyaracağını seçin."
+  ],
+  "Quiet hours": [
+    "Тыныш уақыт",
+    "Sokin soatlar",
+    "Sessiz saatler"
+  ],
+  "Enable quiet hours": [
+    "Тыныш уақытты қосу",
+    "Sokin soatlarni yoqiş",
+    "Sessiz saatleri etkinleştir"
+  ],
+  "From": [
+    "Басталуы",
+    "Başlanişi",
+    "Başlangıç"
+  ],
+  "Until": [
+    "Аяқталуы",
+    "Tugaşi",
+    "Bitiş"
+  ],
+  "Uses this Mac’s time zone. Alerts during quiet hours are skipped.": [
+    "Осы Mac-тың уақыт белдеуі қолданылады. Тыныш уақыттағы ескертулер өткізілмейді.",
+    "Şu Mac’ning vaqt mintaqasi işlatiladi. Sokin soatlardagi ogohlantirişlar ötkazib yuboriladi.",
+    "Bu Mac’in saat dilimini kullanır. Sessiz saatlerdeki uyarılar atlanır."
+  ],
+  "Enable notifications": [
+    "Хабарландыруларды қосу",
+    "Bildirişlarni yoqiş",
+    "Bildirimleri etkinleştir"
+  ],
+  "Warning at %lld%% left": [
+    "%lld%% қалғанда ескерту",
+    "%lld%% qolganda ogohlantiriş",
+    "%%%lld kaldığında uyar"
+  ],
+  "Critical at %lld%% left": [
+    "%lld%% қалғанда шұғыл ескерту",
+    "%lld%% qolganda jiddiy ogohlantiriş",
+    "%%%lld kaldığında kritik uyarı"
+  ],
+  "Notify when a warned limit resets": [
+    "Ескертілген лимит жаңарғанда хабарлау",
+    "Ogohlantirilgan limit yangilanganda bildiriş",
+    "Uyarılan limit yenilendiğinde bildir"
+  ],
+  "Command line": [
+    "Командалық жол",
+    "Buyruq qatori",
+    "Komut satırı"
+  ],
+  "Remove CLI": [
+    "CLI жою",
+    "CLI’ni öçiriş",
+    "CLI’yi kaldır"
+  ],
+  "Install CLI": [
+    "CLI орнату",
+    "CLI’ni örnatiş",
+    "CLI’yi yükle"
+  ],
+  "Read your latest usage with usagenow status or usagenow status --json.": [
+    "Соңғы қолданысты usagenow status немесе usagenow status --json арқылы оқыңыз.",
+    "Sönggi sarfni usagenow status yoki usagenow status --json orqali öqing.",
+    "Son kullanımınızı usagenow status veya usagenow status --json ile okuyun."
+  ],
+  "Add ~/.local/bin to your PATH if needed. Shell settings are never changed automatically.": [
+    "Қажет болса, PATH айнымалысына ~/.local/bin қосыңыз. Shell параметрлері автоматты өзгермейді.",
+    "Kerak bölsa, PATH’ga ~/.local/bin qöşing. Shell sozlamalari avtomatik özgarmaydi.",
+    "Gerekirse PATH’inize ~/.local/bin ekleyin. Kabuk ayarları otomatik değiştirilmez."
+  ],
+  "Couldn’t install the command. Check the folder permissions or an existing usagenow command.": [
+    "Команда орнатылмады. Қалта рұқсаттарын немесе бұрынғы usagenow командасын тексеріңіз.",
+    "Buyruq örnatilmadi. Jild ruxsatlarini yoki mavjud usagenow buyruğini tekşiring.",
+    "Komut yüklenemedi. Klasör izinlerini veya mevcut usagenow komutunu denetleyin."
+  ]
+}

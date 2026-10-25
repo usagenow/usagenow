@@ -68,6 +68,8 @@ as today's activity unless the source explicitly reports that period.
 ## Highlights
 
 - **macOS native.** SwiftUI and `MenuBarExtra`. Lives in the menu bar, not the Dock.
+- **Optional first-run setup.** Choose providers or skip setup; reopen it in Settings. Existing installations keep their choices without an automatic welcome window.
+- **Optional command line.** Install `usagenow status` and `usagenow status --json` in Settings › General. It reads only the safe snapshot, without provider requests or sign-in. [CLI details](docs/cli.md).
 - **Codex, Claude Code, Gemini CLI, Antigravity, Kiro, Warp, OpenCode, Qoder, Qwen Code, Cline, and Grok Build** side by side: usage limits and reset times where the tool reports them, and daily token, credit, and request activity.
 - **The last 30 days.** A bar per day under each provider, with the month's tokens, estimated cost, and top model — hover a bar for that day.
 - **More than one account.** A second Codex or Claude Code folder, or another explicitly connected account, shows as its own section — "Codex · Work" — under a name you choose.
@@ -77,11 +79,11 @@ as today's activity unless the source explicitly reports that period.
 - **What it would have cost.** An estimate of today’s activity at published API prices, with cached tokens priced as cached. A sense of scale, never a bill.
 - **Pick your providers, in your order.** Turn each one on or off in Settings › Providers, and drag them into the order the popover and widget should use. A provider that’s off is never refreshed and never read from disk.
 - **Left or used.** Every percentage — popover, menu bar, and widget — reads as what's left or what's used, your choice.
-- **Notifications about limits.** Optional: a notice when a limit is down to 20% and at 5%, and when a limit you were warned about resets.
+- **Notifications about limits.** Optional thresholds per provider (20% and 5% initially), independent reset alerts, and quiet hours in this Mac’s time zone. Quiet alerts are skipped and stale readings do not trigger low-limit alerts.
 - **A keyboard shortcut of your own** to open UsageNow from any app, with no extra permissions.
 - **Desktop widget.** Small, medium, and large widgets showing what’s left at a glance. In 0.9.0, choose providers and accounts per widget; the large size shows up to four detailed rows with two windows each.
 - **Honest widget freshness.** A clock marks old readings per provider. Countdown timers keep ticking between reloads, and a limit's old percentage expires at its reset time until new data arrives. The main app must be running to fetch new usage; the widget reads only its safe snapshot.
-- **In your language.** English, German, Spanish, French, Portuguese, Russian, Hebrew, Japanese, and Korean, with Dutch (Nederlands) added in 0.9.0 — your Mac's language, or the one you choose in Settings › General. What's New follows it too.
+- **In your language.** English, German, Spanish, French, Portuguese, Russian, Hebrew, Japanese, Korean, Dutch, Kazakh, Uzbek and Turkish — thirteen languages in 1.0.0. Choose in Settings › General, or follow macOS. Uzbek copy uses the requested Ö, Ğ, Ş and Ç spelling. Widgets and What's New follow the same language.
 - **What's New** in Settings › About: every version's changes, shipped inside the app.
 - **Any account in the menu bar.** Settings › Menu Bar can show an added account, such as "Codex · Work", instead of the first one.
 - **Report a Problem.** Shows you the whole diagnostic report first — versions, screens, settings, what each provider shows, never names, paths, keys, or prompts — and opens a prefilled GitHub issue or email.

@@ -2,6 +2,16 @@
 
 What's New in German: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.0.0
+
+### Added
+
+- Kasachisch, Usbekisch und Türkisch in App und Widgets: dreizehn Sprachen. Usbekisch verwendet Ö, Ğ, Ş und Ç.
+- Optionale Ersteinrichtung mit Anbieterauswahl; überspringbar und über Einstellungen erneut aufrufbar. Bestehende Installationen behalten ihre Auswahl. Beim ersten Start beginnen Datenzugriffe erst nach Abschluss oder Überspringen.
+- Mitteilungsschwellen pro Anbieter, separate Reset-Hinweise und Ruhezeiten in der Zeitzone des Mac. Stille Hinweise werden nicht nachgeholt; alte Messwerte lösen keine Warnung aus.
+- Optionale CLI: usagenow status und usagenow status --json lesen den sicheren Snapshot samt Aktualität. Keine Anbieterabfragen, Anmeldung oder Verlaufsdateien. Installation unter Einstellungen › Allgemein.
+- Aktualisierung nach dem Aufwachen sowie Prüfungen für Mitteilungsmigration und Snapshot-Kompatibilität. CLI-Prozentwerte werden nach einem Reset unbekannt; nicht unterstützte Formate werden abgelehnt.
+
 ## 0.9.0
 
 ### Added

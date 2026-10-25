@@ -1,0 +1,2112 @@
+{
+  "Features": [
+    "Мүмкіндіктер",
+    "Imkoniyatlar",
+    "Özellikler"
+  ],
+  "Changelog": [
+    "Өзгерістер",
+    "Özgarişlar",
+    "Değişiklikler"
+  ],
+  "Frequently asked questions": [
+    "Жиі қойылатын сұрақтар",
+    "Köp söraladigan savollar",
+    "Sık sorulan sorular"
+  ],
+  "Notes": [
+    "Жазбалар",
+    "Qaydlar",
+    "Notlar"
+  ],
+  "Notes about UsageNow.": [
+    "UsageNow туралы жазбалар.",
+    "UsageNow haqida qaydlar.",
+    "UsageNow hakkında notlar."
+  ],
+  "Roadmap": [
+    "Даму жоспары",
+    "Rivojlaniş rejasi",
+    "Yol haritası"
+  ],
+  "What UsageNow has shipped, and what’s next.": [
+    "UsageNow-да не шықты және алда не бар.",
+    "UsageNow’da nimalar çiqdi va keyin nimalar böladi.",
+    "UsageNow’da yayımlananlar ve sıradakiler."
+  ],
+  "Trash": [
+    "Себет",
+    "Savat",
+    "Çöp"
+  ],
+  "Everything UsageNow decided not to do.": [
+    "UsageNow жасаудан бас тартқанның бәрі.",
+    "UsageNow qilmaslikka qaror qilgan barça narsalar.",
+    "UsageNow’un yapmamaya karar verdiği her şey."
+  ],
+  "Connection": [
+    "Қосылым",
+    "Ulaniş",
+    "Bağlantı"
+  ],
+  "Keychain": [
+    "Кілттер тізбегі",
+    "Keychain",
+    "Anahtar Zinciri"
+  ],
+  "Scope": [
+    "Қамту аясы",
+    "Qamrovi",
+    "Kapsam"
+  ],
+  "Web account": [
+    "Вебаккаунт",
+    "Veb hisob",
+    "Web hesabı"
+  ],
+  "Characters": [
+    "Таңбалар",
+    "Belgilar",
+    "Karakterler"
+  ],
+  "Official API": [
+    "Ресми API",
+    "Rasmiy API",
+    "Resmi API"
+  ],
+  "Plan and reset": [
+    "Тариф және жаңару",
+    "Tarif va yangilaniş",
+    "Plan ve yenilenme"
+  ],
+  "Subscription": [
+    "Жазылым",
+    "Obuna",
+    "Abonelik"
+  ],
+  "Quota windows": [
+    "Квота кезеңдері",
+    "Kvota davrlari",
+    "Kota pencereleri"
+  ],
+  "MCP allowance": [
+    "MCP квотасы",
+    "MCP kvotasi",
+    "MCP kullanım hakkı"
+  ],
+  "Coding Plan": [
+    "Бағдарламалау тарифі",
+    "Dasturlaş tarifi",
+    "Kodlama planı"
+  ],
+  "Favorites": [
+    "Таңдаулылар",
+    "Sevimlilar",
+    "Favoriler"
+  ],
+  "Back": [
+    "Артқа",
+    "Orqaga",
+    "Geri"
+  ],
+  "Icon view": [
+    "Белгішелер",
+    "Belgilar körinişi",
+    "Simge görünümü"
+  ],
+  "List view": [
+    "Тізім",
+    "Röyxat körinişi",
+    "Liste görünümü"
+  ],
+  "Kind": [
+    "Түрі",
+    "Turi",
+    "Tür"
+  ],
+  "What it does": [
+    "Не істейді",
+    "Nima qiladi",
+    "Ne yapar"
+  ],
+  "${0} notes": [
+    "${0} жазба",
+    "${0} qayd",
+    "${0} not"
+  ],
+  "${0} items": [
+    "${0} элемент",
+    "${0} element",
+    "${0} öğe"
+  ],
+  "Where it lives": [
+    "Қайда орналасқан",
+    "Qayerda joylaşgan",
+    "Nerede bulunur"
+  ],
+  "SwiftUI and MenuBarExtra": [
+    "SwiftUI және MenuBarExtra",
+    "SwiftUI va MenuBarExtra",
+    "SwiftUI ve MenuBarExtra"
+  ],
+  "Icon only, most critical, or one provider": [
+    "Тек белгіше, ең аз қалған лимит не бір провайдер",
+    "Faqat belgi, eng kam qolgan limit yoki bitta provayder",
+    "Yalnızca simge, en kritik kullanım veya tek sağlayıcı"
+  ],
+  "Light, Dark, or System appearance": [
+    "Ашық, қараңғы немесе жүйелік көрініс",
+    "Oç, töq yoki tizim körinişi",
+    "Açık, koyu veya sistem görünümü"
+  ],
+  "Menu bar guide": [
+    "Мәзір жолағы нұсқаулығы",
+    "Menyu paneli qöllanmasi",
+    "Menü çubuğu rehberi"
+  ],
+  "Widgets": [
+    "Виджеттер",
+    "Vidjetlar",
+    "Araç takımları"
+  ],
+  "Desktop": [
+    "Жұмыс үстелі",
+    "Iş stoli",
+    "Masaüstü"
+  ],
+  "WidgetKit: small, medium and large": [
+    "WidgetKit: шағын, орта және үлкен",
+    "WidgetKit: kiçik, örta va katta",
+    "WidgetKit: küçük, orta ve büyük"
+  ],
+  "Renders a snapshot, nothing else": [
+    "Тек snapshot көрсетеді",
+    "Faqat snapshot körsatadi",
+    "Yalnızca anlık görüntüyü gösterir"
+  ],
+  "Stale data says “Updated … ago”": [
+    "Ескі дерек «… бұрын жаңартылды» деп белгіленеді",
+    "Eski ma’lumot «… oldin yangilandi» deb belgilanadi",
+    "Eski veride “… önce güncellendi” yazar"
+  ],
+  "Widgets guide": [
+    "Виджет нұсқаулығы",
+    "Vidjet qöllanmasi",
+    "Araç takımı rehberi"
+  ],
+  "Usage Tracking": [
+    "Қолданысты бақылау",
+    "Sarfni kuzatiş",
+    "Kullanım takibi"
+  ],
+  "Limits and activity": [
+    "Лимиттер мен белсенділік",
+    "Limitlar va faollik",
+    "Limitler ve etkinlik"
+  ],
+  "Remaining or used, your choice": [
+    "Қалған не пайдаланылған — өз таңдауыңыз",
+    "Qolgan yoki işlatilgan — öz tanlovingiz",
+    "Kalan veya kullanılan, seçim sizin"
+  ],
+  "Tokens, credits, models, and cost today": [
+    "Бүгінгі токендер, кредиттер, модельдер мен құн",
+    "Bugungi tokenlar, kreditlar, modellar va xarajat",
+    "Bugünkü tokenlar, krediler, modeller ve maliyet"
+  ],
+  "History": [
+    "Тарих",
+    "Tarix",
+    "Geçmiş"
+  ],
+  "The last 30 days": [
+    "Соңғы 30 күн",
+    "Oxirgi 30 kun",
+    "Son 30 gün"
+  ],
+  "One bar per calendar day": [
+    "Әр күнге бір баған",
+    "Har bir kunga bitta ustun",
+    "Her takvim günü için bir sütun"
+  ],
+  "Month’s cost at API prices": [
+    "Айлық құн API бағаларымен",
+    "API narxlaridagi oylik xarajat",
+    "API fiyatlarıyla aylık maliyet"
+  ],
+  "Hover a bar for that day": [
+    "Күнді көру үшін бағанға меңзеңіз",
+    "Kunni köriş uçun ustunga işora qiling",
+    "Günü görmek için sütunun üzerine gelin"
+  ],
+  "${0} AI coding tools": [
+    "${0} ЖИ бағдарламалау құралы",
+    "${0} AI dasturlaş vositasi",
+    "${0} yapay zekâ kodlama aracı"
+  ],
+  "${0}, side by side.": [
+    "${0} — қатар.",
+    "${0} — yonma-yon.",
+    "${0}, yan yana."
+  ],
+  "Planned: ${0}. Not available in the current release.": [
+    "Жоспарда: ${0}. Қазіргі нұсқада қолжетімсіз.",
+    "Rejada: ${0}. Joriy versiyada mavjud emas.",
+    "Planlanan: ${0}. Mevcut sürümde yok."
+  ],
+  "Each can be turned off": [
+    "Әрқайсысын өшіруге болады",
+    "Har birini öçiriş mumkin",
+    "Her biri kapatılabilir"
+  ],
+  "Drag to reorder": [
+    "Ретін өзгерту үшін сүйреңіз",
+    "Tartibni özgartiriş uçun sudrang",
+    "Sıralamak için sürükleyin"
+  ],
+  "Only what a provider reports": [
+    "Тек провайдер берген деректер",
+    "Faqat provayder bildirgan ma’lumotlar",
+    "Yalnızca sağlayıcının bildirdikleri"
+  ],
+  "Providers in the docs": [
+    "Құжаттамадағы провайдерлер",
+    "Hujjatlardagi provayderlar",
+    "Belgelerde sağlayıcılar"
+  ],
+  "Local-first": [
+    "Жергілікті деректер",
+    "Avvalo mahalliy",
+    "Yerel öncelikli"
+  ],
+  "Architecture": [
+    "Архитектура",
+    "Arxitektura",
+    "Mimari"
+  ],
+  "No account required": [
+    "Аккаунт қажет емес",
+    "Hisob talab qilinmaydi",
+    "Hesap gerekmez"
+  ],
+  "Nothing leaves your Mac for Antigravity or Gemini CLI": [
+    "Antigravity мен Gemini CLI үшін деректер Mac-тан шықпайды",
+    "Antigravity va Gemini CLI uçun ma’lumotlar Mac’dan çiqmaydi",
+    "Antigravity veya Gemini CLI için veriler Mac’ten çıkmaz"
+  ],
+  "Honors CODEX_HOME and CLAUDE_CONFIG_DIR": [
+    "CODEX_HOME мен CLAUDE_CONFIG_DIR ескеріледі",
+    "CODEX_HOME va CLAUDE_CONFIG_DIR hisobga olinadi",
+    "CODEX_HOME ve CLAUDE_CONFIG_DIR dikkate alınır"
+  ],
+  "What’s read, and what isn’t": [
+    "Не оқылады және не оқылмайды",
+    "Nima öqiladi va nima öqilmaydi",
+    "Okunanlar ve okunmayanlar"
+  ],
+  "Only counts and timestamps. Never prompts, responses, or code.": [
+    "Тек сандар мен уақыт белгілері. Промпттар, жауаптар не код оқылмайды.",
+    "Faqat sonlar va vaqt belgilari. Sörov matnlari, javoblar yoki kod öqilmaydi.",
+    "Yalnızca sayılar ve zaman damgaları. İstemler, yanıtlar veya kod asla okunmaz."
+  ],
+  "No prompts or code read": [
+    "Промпттар мен код оқылмайды",
+    "Sörov matnlari va kod öqilmaydi",
+    "İstemler veya kod okunmaz"
+  ],
+  "Claude Code credentials never stored": [
+    "Claude Code кіру деректері сақталмайды",
+    "Claude Code kiriş ma’lumotlari saqlanmaydi",
+    "Claude Code kimlik bilgileri saklanmaz"
+  ],
+  "Analytics opt-in, off by default": [
+    "Талдау ерікті, бастапқыда өшірулі",
+    "Tahlil ixtiyoriy, dastlab öçirilgan",
+    "Analiz isteğe bağlı ve varsayılan olarak kapalı"
+  ],
+  "Privacy in the docs": [
+    "Құжаттамадағы құпиялық",
+    "Hujjatlardagi maxfiylik",
+    "Belgelerde gizlilik"
+  ],
+  "Provider": [
+    "Провайдер",
+    "Provayder",
+    "Sağlayıcı"
+  ],
+  "Providers from Google": [
+    "Google провайдерлері",
+    "Google provayderlari",
+    "Google sağlayıcıları"
+  ],
+  "Coming in ${0}": [
+    "${0} нұсқасында шығады",
+    "${0} versiyasida çiqadi",
+    "${0} sürümünde geliyor"
+  ],
+  "Local files": [
+    "Жергілікті файлдар",
+    "Mahalliy fayllar",
+    "Yerel dosyalar"
+  ],
+  "Local database": [
+    "Жергілікті дерекқор",
+    "Mahalliy ma’lumotlar bazasi",
+    "Yerel veritabanı"
+  ],
+  "Not reported": [
+    "Мәлімделмеген",
+    "Bildirilmagan",
+    "Bildirilmedi"
+  ],
+  "Not available": [
+    "Қолжетімсіз",
+    "Mavjud emas",
+    "Kullanılamıyor"
+  ],
+  "Price table": [
+    "Баға кестесі",
+    "Narx jadvali",
+    "Fiyat tablosu"
+  ],
+  "Antigravity app": [
+    "Antigravity қолданбасы",
+    "Antigravity dasturi",
+    "Antigravity uygulaması"
+  ],
+  "Kiro’s log": [
+    "Kiro журналы",
+    "Kiro jurnali",
+    "Kiro günlüğü"
+  ],
+  "Usage limits": [
+    "Қолданыс лимиттері",
+    "Sarf limitlari",
+    "Kullanım limitleri"
+  ],
+  "app-server": [
+    "app-server",
+    "app-server",
+    "app-server"
+  ],
+  "Windows": [
+    "Кезеңдер",
+    "Davrlar",
+    "Pencereler"
+  ],
+  "Reset times": [
+    "Жаңару уақыты",
+    "Yangilaniş vaqtlari",
+    "Yenilenme zamanları"
+  ],
+  "For every window, in your local time.": [
+    "Әр кезең үшін жергілікті уақытпен.",
+    "Har bir davr uçun mahalliy vaqtda.",
+    "Her pencere için yerel saatinizle."
+  ],
+  "Plan": [
+    "Тариф",
+    "Tarif",
+    "Plan"
+  ],
+  "Plus, Pro, and others, as a badge.": [
+    "Plus, Pro және басқа тарифтер белгімен көрсетіледі.",
+    "Plus, Pro va boşqa tariflar belgi sifatida körsatiladi.",
+    "Plus, Pro ve diğerleri rozet olarak gösterilir."
+  ],
+  "Tokens today": [
+    "Бүгінгі токендер",
+    "Bugungi tokenlar",
+    "Bugünkü tokenlar"
+  ],
+  "Since midnight, including cached input.": [
+    "Түн ортасынан бері, кэштелген кірісті қоса.",
+    "Yarim tundan beri, keşlangan kiriş bilan birga.",
+    "Önbellekteki girdi dahil gece yarısından beri."
+  ],
+  "Requests today": [
+    "Бүгінгі сұраулар",
+    "Bugungi sörovlar",
+    "Bugünkü istekler"
+  ],
+  "Model responses recorded today.": [
+    "Бүгін жазылған модель жауаптары.",
+    "Bugun qayd etilgan model javoblari.",
+    "Bugün kaydedilen model yanıtları."
+  ],
+  "Recent model": [
+    "Соңғы модель",
+    "Sönggi model",
+    "Son model"
+  ],
+  "The last model Codex used.": [
+    "Codex қолданған соңғы модель.",
+    "Codex işlatgan sönggi model.",
+    "Codex’in kullandığı son model."
+  ],
+  "Codex in the docs": [
+    "Құжаттамадағы Codex",
+    "Hujjatlarda Codex",
+    "Belgelerde Codex"
+  ],
+  "The last model Claude Code used.": [
+    "Claude Code қолданған соңғы модель.",
+    "Claude Code işlatgan sönggi model.",
+    "Claude Code’un kullandığı son model."
+  ],
+  "Pro, Max, Team, and others, from `~/.claude.json`.": [
+    "Pro, Max, Team және басқалар — `~/.claude.json` файлынан.",
+    "Pro, Max, Team va boşqalar — `~/.claude.json` faylidan.",
+    "Pro, Max, Team ve diğerleri, `~/.claude.json` dosyasından."
+  ],
+  "Your credentials stay yours.": [
+    "Кіру деректеріңіз өзіңізде қалады.",
+    "Kiriş ma’lumotlaringiz özingizda qoladi.",
+    "Kimlik bilgileriniz sizde kalır."
+  ],
+  "Claude Code in the docs": [
+    "Құжаттамадағы Claude Code",
+    "Hujjatlarda Claude Code",
+    "Belgelerde Claude Code"
+  ],
+  "Off by default. Try it.": [
+    "Бастапқыда өшірулі. Байқап көріңіз.",
+    "Dastlab öçirilgan. Sinab köring.",
+    "Varsayılan olarak kapalı. Deneyin."
+  ],
+  "Deny": [
+    "Рұқсат бермеу",
+    "Rad etiş",
+    "Reddet"
+  ],
+  "Allow": [
+    "Рұқсат беру",
+    "Ruxsat beriş",
+    "İzin ver"
+  ],
+  "Gemini CLI in the docs": [
+    "Құжаттамадағы Gemini CLI",
+    "Hujjatlarda Gemini CLI",
+    "Belgelerde Gemini CLI"
+  ],
+  "Antigravity without the IDE.": [
+    "Antigravity IDE-сіз.",
+    "Antigravity IDE’siz.",
+    "IDE olmadan Antigravity."
+  ],
+  "The quota summary the app’s own usage panel shows.": [
+    "Қолданбаның өз қолданыс тақтасындағы квота.",
+    "Dasturning öz sarf panelidagi kvota.",
+    "Uygulamanın kendi kullanım panelindeki kota özeti."
+  ],
+  "Your Antigravity tier, such as Starter.": [
+    "Starter сияқты Antigravity тарифіңіз.",
+    "Starter kabi Antigravity tarifingiz.",
+    "Starter gibi Antigravity planınız."
+  ],
+  "Activity": [
+    "Белсенділік",
+    "Faollik",
+    "Etkinlik"
+  ],
+  "Antigravity IDE": [
+    "Antigravity IDE",
+    "Antigravity IDE",
+    "Antigravity IDE"
+  ],
+  "Antigravity in the docs": [
+    "Құжаттамадағы Antigravity",
+    "Hujjatlarda Antigravity",
+    "Belgelerde Antigravity"
+  ],
+  "Monthly limit": [
+    "Айлық лимит",
+    "Oylik limit",
+    "Aylık limit"
+  ],
+  "The share of your plan’s credits left, and the reset date.": [
+    "Тариф кредиттерінің қалдығы мен жаңару күні.",
+    "Tarif kreditlarining qoldiği va yangilaniş sanasi.",
+    "Plan kredilerinizin kalan payı ve yenilenme tarihi."
+  ],
+  "Free, Pro, and others, as a badge.": [
+    "Free, Pro және басқалар белгімен көрсетіледі.",
+    "Free, Pro va boşqalar belgi bilan körsatiladi.",
+    "Free, Pro ve diğerleri rozet olarak gösterilir."
+  ],
+  "Credits today": [
+    "Бүгінгі кредиттер",
+    "Bugungi kreditlar",
+    "Bugünkü krediler"
+  ],
+  "Credits used since midnight.": [
+    "Түн ортасынан бері жұмсалған кредиттер.",
+    "Yarim tundan beri sarflangan kreditlar.",
+    "Gece yarısından beri kullanılan krediler."
+  ],
+  "Prompts answered today.": [
+    "Бүгін жауап берілген сұраулар.",
+    "Bugun javob berilgan sörovlar.",
+    "Bugün yanıtlanan istemler."
+  ],
+  "Tokens and models": [
+    "Токендер мен модельдер",
+    "Tokenlar va modellar",
+    "Tokenlar ve modeller"
+  ],
+  "Kiro records neither, so neither is shown.": [
+    "Kiro оларды жазбайды, сондықтан көрсетілмейді.",
+    "Kiro ularni qayd etmaydi, şu sababli körsatilmaydi.",
+    "Kiro bunları kaydetmediği için gösterilmez."
+  ],
+  "Kiro in the docs": [
+    "Құжаттамадағы Kiro",
+    "Hujjatlarda Kiro",
+    "Belgelerde Kiro"
+  ],
+  "Prompts the agent answered today.": [
+    "Агент бүгін жауап берген сұраулар.",
+    "Agent bugun javob bergan sörovlar.",
+    "Ajanın bugün yanıtladığı istemler."
+  ],
+  "From conversations that began today.": [
+    "Бүгін басталған әңгімелерден.",
+    "Bugun başlangan suhbatlardan.",
+    "Bugün başlayan konuşmalardan."
+  ],
+  "Warp in the docs": [
+    "Құжаттамадағы Warp",
+    "Hujjatlarda Warp",
+    "Belgelerde Warp"
+  ],
+  "Estimated cost": [
+    "Болжамды құн",
+    "Taxminiy xarajat",
+    "Tahmini maliyet"
+  ],
+  "Cost": [
+    "Құны",
+    "Xarajat",
+    "Maliyet"
+  ],
+  "OpenCode in the docs": [
+    "Құжаттамадағы OpenCode",
+    "Hujjatlarda OpenCode",
+    "Belgelerde OpenCode"
+  ],
+  "Credits left": [
+    "Қалған кредиттер",
+    "Qolgan kreditlar",
+    "Kalan krediler"
+  ],
+  "Qoder in the docs": [
+    "Құжаттамадағы Qoder",
+    "Hujjatlarda Qoder",
+    "Belgelerde Qoder"
+  ],
+  "Weekly limit": [
+    "Апталық лимит",
+    "Haftalik limit",
+    "Haftalık limit"
+  ],
+  "Your key": [
+    "Кілтіңіз",
+    "Kalitingiz",
+    "Anahtarınız"
+  ],
+  "Ollama Cloud in the docs": [
+    "Құжаттамадағы Ollama Cloud",
+    "Hujjatlarda Ollama Cloud",
+    "Belgelerde Ollama Cloud"
+  ],
+  "Pay-as-you-go accounts": [
+    "Қолданысқа қарай төленетін аккаунттар",
+    "Işlatgança tölovli hisoblar",
+    "Kullandıkça öde hesapları"
+  ],
+  "API key providers in the docs": [
+    "Құжаттамадағы API кілт провайдерлері",
+    "Hujjatlarda API kalitli provayderlar",
+    "Belgelerde API anahtarlı sağlayıcılar"
+  ],
+  "Close": [
+    "Жабу",
+    "Yopiş",
+    "Kapat"
+  ],
+  "Minimize": [
+    "Жиыру",
+    "Kiçraytiriş",
+    "Simge durumuna küçült"
+  ],
+  "Zoom": [
+    "Үлкейту",
+    "Kattalaştiriş",
+    "Büyüt"
+  ],
+  "Restore": [
+    "Қалпына келтіру",
+    "Tiklaş",
+    "Geri yükle"
+  ],
+  "Dock": [
+    "Dock",
+    "Dock",
+    "Dock"
+  ],
+  "Email UsageNow": [
+    "UsageNow-ға хат жазу",
+    "UsageNow’ga xat yoziş",
+    "UsageNow’a e-posta gönder"
+  ],
+  "Settings": [
+    "Параметрлер",
+    "Sozlamalar",
+    "Ayarlar"
+  ],
+  "tokens": [
+    "токен",
+    "token",
+    "token"
+  ],
+  "credits": [
+    "кредит",
+    "kredit",
+    "kredi"
+  ],
+  "Resets": [
+    "Жаңарады",
+    "Yangilanadi",
+    "Yenilenme"
+  ],
+  "Resets in": [
+    "Жаңаруға дейін",
+    "Yangilanişgaça",
+    "Yenilenmesine"
+  ],
+  "request": [
+    "сұрау",
+    "sörov",
+    "istek"
+  ],
+  "requests": [
+    "сұрау",
+    "sörov",
+    "istek"
+  ],
+  "d": [
+    "к",
+    "k",
+    "g"
+  ],
+  "h": [
+    "сағ",
+    "s",
+    "sa"
+  ],
+  "m": [
+    "мин",
+    "daq",
+    "dk"
+  ],
+  "Track ${0}": [
+    "${0} бақылау",
+    "${0} kuzatiş",
+    "${0} takibi"
+  ],
+  "Search results": [
+    "Іздеу нәтижелері",
+    "Qidiruv natijalari",
+    "Arama sonuçları"
+  ],
+  "Search questions": [
+    "Сұрақ іздеу",
+    "Savollarni qidiriş",
+    "Soru ara"
+  ],
+  "FAQ topics": [
+    "Сұрақ тақырыптары",
+    "Savol mavzulari",
+    "SSS konuları"
+  ],
+  "All questions": [
+    "Барлық сұрақтар",
+    "Barcha savollar",
+    "Tüm sorular"
+  ],
+  "Topics": [
+    "Тақырыптар",
+    "Mavzular",
+    "Konular"
+  ],
+  "${0} ${1}": [
+    "${0} ${1}",
+    "${0} ${1}",
+    "${0} ${1}"
+  ],
+  "More in the": [
+    "Толығырақ",
+    "Batafsil",
+    "Daha fazlası"
+  ],
+  "documentation": [
+    "құжаттамада",
+    "hujjatlarda",
+    "belgelerde"
+  ],
+  "No questions match “${0}”.": [
+    "«${0}» бойынша сұрақ табылмады.",
+    "«${0}» böyiça savol topilmadi.",
+    "“${0}” ile eşleşen soru yok."
+  ],
+  "See what’s left.": [
+    "Қанша қалғанын көріңіз.",
+    "Qança qolganini köring.",
+    "Kalanı görün."
+  ],
+  "Keep building.": [
+    "Жасауды жалғастырыңыз.",
+    "Yaratişda davom eting.",
+    "Üretmeye devam edin."
+  ],
+  "Download": [
+    "Жүктеп алу",
+    "Yuklab oliş",
+    "İndir"
+  ],
+  "Docs": [
+    "Құжаттама",
+    "Hujjatlar",
+    "Belgeler"
+  ],
+  "Version ${0} · ${1} or later": [
+    "${0} нұсқасы · ${1} немесе кейінгі",
+    "${0} versiyasi · ${1} yoki yangiroq",
+    "Sürüm ${0} · ${1} veya üzeri"
+  ],
+  "What’s new": [
+    "Не жаңалық",
+    "Yangiliklar",
+    "Yenilikler"
+  ],
+  "Hover a day": [
+    "Күнге меңзеңіз",
+    "Kunga işora qiling",
+    "Bir günün üzerine gelin"
+  ],
+  "In the menu bar": [
+    "Мәзір жолағында",
+    "Menyu panelida",
+    "Menü çubuğunda"
+  ],
+  "What’s left — or what’s used.": [
+    "Қалған не пайдаланылған көлем.",
+    "Qolgan yoki işlatilgan hajm.",
+    "Kalan veya kullanılan."
+  ],
+  "Supported providers": [
+    "Қолдау көрсетілетін провайдерлер",
+    "Qöllanadigan provayderlar",
+    "Desteklenen sağlayıcılar"
+  ],
+  "coming soon": [
+    "жақында",
+    "tez kunda",
+    "yakında"
+  ],
+  "coming in ${0}": [
+    "${0} нұсқасында",
+    "${0} versiyasida",
+    "${0} sürümünde"
+  ],
+  "Version ${0}": [
+    "${0} нұсқасы",
+    "${0} versiyasi",
+    "Sürüm ${0}"
+  ],
+  "Latest": [
+    "Соңғысы",
+    "Sönggi",
+    "En yeni"
+  ],
+  "What’s next": [
+    "Алда не бар",
+    "Keyingi rejalar",
+    "Sırada ne var"
+  ],
+  "Model price coverage and the longer-term roadmap.": [
+    "Модель бағаларын қамту және ұзақ мерзімді жоспар.",
+    "Model narxlari qamrovi va uzoq muddatli reja.",
+    "Model fiyat kapsamı ve uzun vadeli yol haritası."
+  ],
+  "Planned, without a promised version:": [
+    "Нұсқасы белгіленбеген жоспарлар:",
+    "Versiyasi belgilanmagan rejalar:",
+    "Sürüm sözü verilmeden planlananlar:"
+  ],
+  "Gemini 4 Argon": [
+    "Gemini 4 Argon",
+    "Gemini 4 Argon",
+    "Gemini 4 Argon"
+  ],
+  "See the calendar": [
+    "Күнтізбені көру",
+    "Taqvimni köriş",
+    "Takvimi gör"
+  ],
+  "Why UsageNow": [
+    "Неліктен UsageNow",
+    "Nega UsageNow",
+    "Neden UsageNow"
+  ],
+  "Limits live in different places.": [
+    "Лимиттер әр жерде орналасқан.",
+    "Limitlar turli joylarda.",
+    "Limitler farklı yerlerde bulunur."
+  ],
+  "Your usage data stays on your Mac.": [
+    "Қолданыс деректеріңіз Mac-та қалады.",
+    "Sarf ma’lumotlaringiz Mac’da qoladi.",
+    "Kullanım verileriniz Mac’inizde kalır."
+  ],
+  "UsageNow reads what’s already on your Mac:": [
+    "UsageNow Mac-та бұрыннан бар деректерді оқиды:",
+    "UsageNow Mac’da mavjud ma’lumotlarni öqiydi:",
+    "UsageNow Mac’inizde zaten bulunanları okur:"
+  ],
+  "Your Claude plan from `~/.claude.json`": [
+    "Claude тарифі — `~/.claude.json` файлынан",
+    "Claude tarifi — `~/.claude.json` faylidan",
+    "Claude planınız, `~/.claude.json` dosyasından"
+  ],
+  "Keyboard shortcuts": [
+    "Перне тіркесімдері",
+    "Tugmalar birikmalari",
+    "Klavye kestirmeleri"
+  ],
+  "${0} closes a window, ${1} switches.": [
+    "${0} терезені жабады, ${1} ауыстырады.",
+    "${0} oynani yopadi, ${1} almaştiradi.",
+    "${0} pencereyi kapatır, ${1} değiştirir."
+  ],
+  "This desktop answers to the keyboard, too:": [
+    "Бұл жұмыс үстелі пернетақтамен де басқарылады:",
+    "Bu iş stoli klaviaturadan ham boşqariladi:",
+    "Bu masaüstü klavyeyle de yönetilir:"
+  ],
+  "The menus show each shortcut next to its command.": [
+    "Мәзірлерде әр команданың жанында перне тіркесімі бар.",
+    "Menyularda har bir buyruq yonida tugmalar birikmasi bor.",
+    "Menüler her komutun yanında kestirmesini gösterir."
+  ],
+  "Close the front window": [
+    "Алдыңғы терезені жабу",
+    "Oldingi oynani yopiş",
+    "Öndeki pencereyi kapat"
+  ],
+  "Minimize the front window": [
+    "Алдыңғы терезені жиыру",
+    "Oldingi oynani kiçraytiriş",
+    "Öndeki pencereyi küçült"
+  ],
+  "Switch to the next window": [
+    "Келесі терезеге ауысу",
+    "Keyingi oynaga ötiş",
+    "Sonraki pencereye geç"
+  ],
+  "Change the wallpaper": [
+    "Тұсқағазды өзгерту",
+    "Fon rasmini özgartiriş",
+    "Duvar kâğıdını değiştir"
+  ],
+  "Show these shortcuts": [
+    "Перне тіркесімдерін көрсету",
+    "Tugmalar birikmalarini körsatiş",
+    "Bu kestirmeleri göster"
+  ],
+  "Close an open menu": [
+    "Ашық мәзірді жабу",
+    "Oçiq menyuni yopiş",
+    "Açık menüyü kapat"
+  ],
+  "Docs & links": [
+    "Құжаттама мен сілтемелер",
+    "Hujjatlar va havolalar",
+    "Belgeler ve bağlantılar"
+  ],
+  "Everything else lives in the docs.": [
+    "Қалғанының бәрі құжаттамада.",
+    "Qolgan barçasi hujjatlarda.",
+    "Diğer her şey belgelerde."
+  ],
+  "The full documentation covers installation, every setting, and each provider in detail.": [
+    "Толық құжаттама орнатуды, әр параметр мен провайдерді егжей-тегжейлі түсіндіреді.",
+    "Töliq hujjatlar örnatiş, har bir sozlama va provayderni batafsil tuşuntiradi.",
+    "Tam belgeler kurulumu, her ayarı ve her sağlayıcıyı ayrıntılı açıklar."
+  ],
+  "Documentation": [
+    "Құжаттама",
+    "Hujjatlar",
+    "Belgeler"
+  ],
+  "Installation": [
+    "Орнату",
+    "Örnatiş",
+    "Kurulum"
+  ],
+  "Troubleshooting": [
+    "Мәселелерді шешу",
+    "Muammolarni hal qiliş",
+    "Sorun giderme"
+  ],
+  "GitHub repository": [
+    "GitHub репозиторийі",
+    "GitHub repozitoriysi",
+    "GitHub deposu"
+  ],
+  "MIT License": [
+    "MIT лицензиясы",
+    "MIT litsenziyasi",
+    "MIT Lisansı"
+  ],
+  "@UsageNow on X": [
+    "X желісіндегі @UsageNow",
+    "X’da @UsageNow",
+    "X’te @UsageNow"
+  ],
+  "All notes": [
+    "Барлық жазбалар",
+    "Barcha qaydlar",
+    "Tüm notlar"
+  ],
+  "Search": [
+    "Іздеу",
+    "Qidiriş",
+    "Ara"
+  ],
+  "Search notes": [
+    "Жазбаларды іздеу",
+    "Qaydlarni qidiriş",
+    "Not ara"
+  ],
+  "No notes match “${0}”.": [
+    "«${0}» бойынша жазба табылмады.",
+    "«${0}» böyiça qayd topilmadi.",
+    "“${0}” ile eşleşen not yok."
+  ],
+  "No note selected": [
+    "Жазба таңдалмаған",
+    "Qayd tanlanmagan",
+    "Not seçilmedi"
+  ],
+  "Pinned": [
+    "Бекітілген",
+    "Mahkamlangan",
+    "Sabitlenmiş"
+  ],
+  "Shipped": [
+    "Шыққан",
+    "Çiqqan",
+    "Yayımlanan"
+  ],
+  "Next": [
+    "Келесі",
+    "Keyingi",
+    "Sıradaki"
+  ],
+  "Planned": [
+    "Жоспарда",
+    "Rejada",
+    "Planlanan"
+  ],
+  "Later": [
+    "Кейін",
+    "Keyinroq",
+    "Sonra"
+  ],
+  "Up to ${0}": [
+    "${0} нұсқасына дейін",
+    "${0} versiyasigaça",
+    "${0} sürümüne kadar"
+  ],
+  "In planning": [
+    "Жоспарлануда",
+    "Rejalaştirilmoqda",
+    "Planlanıyor"
+  ],
+  "Signed download": [
+    "Қол қойылған жүктеу",
+    "Imzolangan yuklama",
+    "İmzalı indirme"
+  ],
+  "A notarized disk image, from this site and GitHub Releases.": [
+    "Осы сайт пен GitHub Releases-тегі Apple тексерген диск бейнесі.",
+    "Şu sayt va GitHub Releases’dagi Apple tekşirgan disk tasviri.",
+    "Bu siteden ve GitHub Releases’dan noter onaylı disk görüntüsü."
+  ],
+  "What’s left, from your terminal.": [
+    "Қалған лимиттер терминалда.",
+    "Qolgan limitlar terminalingizda.",
+    "Terminalinizden kalan limitler."
+  ],
+  "More providers": [
+    "Қосымша провайдерлер",
+    "Yangi provayderlar",
+    "Daha fazla sağlayıcı"
+  ],
+  "When reliable, privacy-respecting data exists.": [
+    "Сенімді әрі құпиялықты сақтайтын деректер болғанда.",
+    "Işonçli va maxfiylikni hurmat qiladigan ma’lumotlar bölganda.",
+    "Güvenilir ve gizliliğe saygılı veriler olduğunda."
+  ],
+  "What’s shipped, and what’s next": [
+    "Не шықты және алда не бар",
+    "Nimalar çiqdi va keyingi rejalar",
+    "Yayımlananlar ve sıradakiler"
+  ],
+  "No dates.": [
+    "Күндер белгіленбеген.",
+    "Sanalar belgilanmagan.",
+    "Tarih yok."
+  ],
+  "No dates. Things ship when they’re ready.": [
+    "Күндер белгіленбеген. Дайын болғанда шығады.",
+    "Sanalar belgilanmagan. Tayyor bölganda çiqadi.",
+    "Tarih yok. Hazır olduklarında yayımlanırlar."
+  ],
+  "Calendars": [
+    "Күнтізбелер",
+    "Taqvimlar",
+    "Takvimler"
+  ],
+  "Accounts": [
+    "Аккаунттар",
+    "Hisoblar",
+    "Hesaplar"
+  ],
+  "UsageNow has no accounts. Nothing to sign up for, nothing to sign in to.": [
+    "UsageNow аккаунт қажет етпейді. Тіркелу не кіру жоқ.",
+    "UsageNow hisobi yöq. Röyxatdan ötiş va kiriş talab qilinmaydi.",
+    "UsageNow hesabı yoktur. Kaydolmanız veya giriş yapmanız gerekmez."
+  ],
+  "Trackers": [
+    "Трекерлер",
+    "Kuzatuvçilar",
+    "İzleyiciler"
+  ],
+  "Ads": [
+    "Жарнама",
+    "Reklama",
+    "Reklamlar"
+  ],
+  "None. UsageNow doesn’t sell anything, including your attention.": [
+    "Жоқ. UsageNow ештеңені, оның ішінде назарыңызды да сатпайды.",
+    "Yöq. UsageNow heç narsani, hatto e’tiboringizni ham sotmaydi.",
+    "Yok. UsageNow dikkatiniz dahil hiçbir şey satmaz."
+  ],
+  "Prompt contents": [
+    "Промпт мазмұны",
+    "Sörov matnlari",
+    "İstem içerikleri"
+  ],
+  "Guessed numbers": [
+    "Ойдан шығарылған сандар",
+    "Taxminiy sonlar",
+    "Tahmini sayılar"
+  ],
+  "Empty": [
+    "Бос",
+    "Böş",
+    "Boş"
+  ],
+  "Everything UsageNow decided not to do. Kept here on purpose.": [
+    "UsageNow жасаудан бас тартқанның бәрі. Әдейі осында сақталған.",
+    "UsageNow qilmaslikka qaror qilgan barça narsalar. Ataylab şu yerda saqlangan.",
+    "UsageNow’un yapmamaya karar verdiği her şey. Bilerek burada tutulur."
+  ],
+  "The Trash stays full — that’s the point.": [
+    "Себет толы күйінде қалады — мақсаты да сол.",
+    "Savat töla qoladi — maqsad ham şu.",
+    "Çöp dolu kalır; amaç da budur."
+  ],
+  "How UsageNow handles your data": [
+    "UsageNow деректеріңізді қалай өңдейді",
+    "UsageNow ma’lumotlaringizni qanday işlaydi",
+    "UsageNow verilerinizi nasıl işler"
+  ],
+  "Your Ollama Cloud session and weekly limits in the menu bar, with a Cloud API key you add. Experimental.": [
+    "Жеке Cloud API кілтімен мәзірде Ollama Cloud сеанс және апталық лимиттері. Сынақ нұсқасы.",
+    "Şaxsiy Cloud API kaliti bilan menyuda Ollama Cloud seans va haftalik limitlari. Tajribaviy.",
+    "Kendi Cloud API anahtarınızla menüde Ollama Cloud oturum ve haftalık limitleri. Deneysel."
+  ],
+  "How much of the session allowance is left.": [
+    "Сеанс квотасының қалған бөлігі.",
+    "Seans kvotasining qolgan qismi.",
+    "Oturum hakkının kalan miktarı."
+  ],
+  "How much of the weekly allowance is left.": [
+    "Апталық квотаның қалған бөлігі.",
+    "Haftalik kvotaning qolgan qismi.",
+    "Haftalık hakkın kalan miktarı."
+  ],
+  "Kept in the Keychain on your Mac, sent only to ollama.com.": [
+    "Mac Кілттер тізбегінде сақталады, тек ollama.com-ға жіберіледі.",
+    "Mac Keychain’ida saqlanadi, faqat ollama.com’ga yuboriladi.",
+    "Mac’in Anahtar Zinciri’nde tutulur, yalnızca ollama.com’a gönderilir."
+  ],
+  "Ollama doesn’t report them, so none are shown.": [
+    "Ollama оларды бермейді, сондықтан көрсетілмейді.",
+    "Ollama ularni bermaydi, şu sababli körsatilmaydi.",
+    "Ollama bildirmediği için gösterilmez."
+  ],
+  "Illustrative values. Plans started after August 2026 may have only the weekly window.": [
+    "Мысал көрсеткіштер. 2026 жылғы тамыздан кейінгі тарифтерде тек апталық кезең болуы мүмкін.",
+    "Misol körsatkiçlar. 2026-yil avgustdan keyingi tariflarda faqat haftalik davr bölişi mumkin.",
+    "Örnek değerler. Ağustos 2026 sonrasında başlayan planlarda yalnızca haftalık pencere olabilir."
+  ],
+  "Ollama doesn’t document how to read these limits, so Ollama Cloud is marked Experimental in Settings and may stop working without notice. UsageNow reads just two numbers from the answer. If they’re ever missing, the section says limits are unavailable rather than guessing.": [
+    "Ollama лимиттерді оқу тәсілін құжаттамаған, сондықтан қосылым сынақ ретінде белгіленген және күтпеген жерден істемей қалуы мүмкін. UsageNow тек екі санды оқиды. Олар болмаса, болжаудың орнына лимиттер қолжетімсіз деп көрсетіледі.",
+    "Ollama limitlarni öqiş usulini hujjatlamagan, şu sababli ulaniş tajribaviy deb belgilangan va ogohlantirişsiz işlamay qolişi mumkin. UsageNow faqat ikki sonni öqiydi. Ular bölmasa, taxmin örniga limitlar mavjud emas deb körsatiladi.",
+    "Ollama limitleri okumayı belgelemediğinden bağlantı Deneysel olarak işaretlidir ve haber verilmeden durabilir. UsageNow yalnızca iki sayıyı okur. Eksiklerse tahmin etmek yerine limitlerin alınamadığı gösterilir."
+  ],
+  "The key goes over HTTPS to ollama.com and nowhere else; redirects aren’t followed, and turning Ollama Cloud off deletes it. Local models keep no record of cloud usage on your Mac, so they aren’t read.": [
+    "Кілт HTTPS арқылы тек ollama.com-ға жіберіледі; қайта бағыттау орындалмайды, Ollama Cloud өшірілсе кілт жойылады. Жергілікті модельдер бұлт қолданысын сақтамайтындықтан оқылмайды.",
+    "Kalit HTTPS orqali faqat ollama.com’ga yuboriladi; qayta yönaltiriş bajarilmaydi, Ollama Cloud öçirilsa kalit öçadi. Mahalliy modellar bulut sarfini saqlamagani uçun öqilmaydi.",
+    "Anahtar HTTPS ile yalnızca ollama.com’a gider; yönlendirmeler izlenmez, Ollama Cloud kapatılırsa silinir. Yerel modeller bulut kullanımını tutmadığından okunmaz."
+  ],
+  "DeepSeek, Kimi, and OpenRouter publish an official API for what’s left on your account. Add your own key and UsageNow shows the balance beside your subscriptions.": [
+    "DeepSeek, Kimi және OpenRouter аккаунт қалдығына ресми API береді. Жеке кілтті қоссаңыз, баланс жазылымдарыңыздың жанында көрінеді.",
+    "DeepSeek, Kimi va OpenRouter hisob qoldiği uçun rasmiy API beradi. Şaxsiy kalitni qöşsangiz, balans obunalaringiz yonida körinadi.",
+    "DeepSeek, Kimi ve OpenRouter hesap bakiyesi için resmi API sunar. Kendi anahtarınızı ekleyince bakiye aboneliklerinizin yanında görünür."
+  ],
+  "The balance left, in your account’s own currency.": [
+    "Аккаунттың өз валютасындағы қалдық.",
+    "Hisobning öz valyutasidagi qoldiq.",
+    "Hesabınızın kendi para birimindeki bakiye."
+  ],
+  "The available balance on your account.": [
+    "Аккаунттағы қолжетімді баланс.",
+    "Hisobdagi mavjud balans.",
+    "Hesabınızın kullanılabilir bakiyesi."
+  ],
+  "Spent today and this month, and what’s left on the key.": [
+    "Бүгінгі, айлық шығын және кілттегі қалдық.",
+    "Bugungi, oylik xarajat va kalitdagi qoldiq.",
+    "Bugünkü ve bu ayki harcama, anahtarda kalan."
+  ],
+  "Kept in the Keychain on your Mac, and nowhere else.": [
+    "Тек Mac-тың Кілттер тізбегінде сақталады.",
+    "Faqat Mac’dagi Keychain’da saqlanadi.",
+    "Yalnızca Mac’inizin Anahtar Zinciri’nde tutulur."
+  ],
+  "Illustrative values. Amounts stay in the currency the service reports — nothing is converted.": [
+    "Мысал көрсеткіштер. Сомалар сервис берген валютада қалады; айырбасталмайды.",
+    "Misol körsatkiçlar. Summalar xizmat bildirgan valyutada qoladi; ayirbaşlanmaydi.",
+    "Örnek değerler. Tutarlar hizmetin bildirdiği para biriminde kalır; dönüştürülmez."
+  ],
+  "These providers start off. Turn one on in Settings, add a key, and it appears. A key is sent over HTTPS to that provider’s own host and nowhere else, only to read your balance. Redirects aren’t followed, an answer from any other host is refused, and turning the provider off deletes the key.": [
+    "Бұл провайдерлер бастапқыда өшірулі. Параметрлерде қосып, кілт енгізіңіз. Кілт тек баланс оқу үшін HTTPS арқылы өз провайдеріне жіберіледі. Қайта бағыттау мен басқа хост жауабы қабылданбайды; провайдер өшірілсе кілт жойылады.",
+    "Bu provayderlar dastlab öçirilgan. Sozlamalarda yoqib, kalit kiriting. Kalit faqat balans öqiş uçun HTTPS orqali öz provayderiga yuboriladi. Qayta yönaltiriş va boşqa host javobi qabul qilinmaydi; provayder öçirilsa kalit öçadi.",
+    "Bu sağlayıcılar varsayılan olarak kapalıdır. Ayarlar’dan açıp anahtar ekleyin. Anahtar yalnızca bakiyeyi okumak için HTTPS ile ilgili sağlayıcıya gönderilir. Yönlendirmeler ve başka sunucu yanıtları reddedilir; sağlayıcı kapanınca anahtar silinir."
+  ],
+  "These services don’t offer read-only keys, so create a separate key for UsageNow where you can.": [
+    "Бұл сервистерде тек оқуға арналған кілт жоқ; мүмкіндік болса UsageNow үшін бөлек кілт жасаңыз.",
+    "Bu xizmatlarda faqat öqiş kaliti yöq; iloji bölsa UsageNow uçun alohida kalit yarating.",
+    "Bu hizmetler salt okunur anahtar sunmaz; mümkünse UsageNow için ayrı anahtar oluşturun."
+  ],
+  "Ollama Cloud works the same way, for session and weekly limits rather than a balance — [Ollama Cloud in UsageNow](window:ollama).": [
+    "Ollama Cloud та осылай, бірақ баланс орнына сеанс пен апталық лимиттерді көрсетеді — [UsageNow ішіндегі Ollama Cloud](window:ollama).",
+    "Ollama Cloud ham şunday, ammo balans örniga seans va haftalik limitlarni körsatadi — [UsageNow’dagi Ollama Cloud](window:ollama).",
+    "Ollama Cloud aynı şekilde, bakiye yerine oturum ve haftalık limitleri gösterir — [UsageNow’da Ollama Cloud](window:ollama)."
+  ],
+  "What today’s tokens would cost at published API prices": [
+    "Бүгінгі токендердің жарияланған API бағаларымен құны",
+    "Bugungi tokenlarning e’lon qilingan API narxlaridagi qiymati",
+    "Bugünkü tokenların yayımlanmış API fiyatlarıyla maliyeti"
+  ],
+  "UsageNow shows only what each provider reports. Explicit connections start off; experimental endpoints are labeled, and their availability depends on your plan.": [
+    "UsageNow тек провайдер берген деректерді көрсетеді. Қосымша қосылымдар бастапқыда өшірулі; сынақ көздері белгіленеді, қолжетімділігі тарифке байланысты.",
+    "UsageNow faqat provayder bildirgan ma’lumotlarni körsatadi. Qöşimça ulanişlar dastlab öçirilgan; tajribaviy manbalar belgilanadi, mavjudligi tarifga boğliq.",
+    "UsageNow yalnızca sağlayıcının bildirdiklerini gösterir. Açık bağlantılar varsayılan olarak kapalıdır; deneysel kaynaklar etiketlidir, kullanılabilirlik plana bağlıdır."
+  ],
+  "official API pricing in cost estimates in the next patch, including the December 1 rate change.": [
+    "келесі патчта ресми API бағаларымен құн бағалауы, 1 желтоқсандағы баға өзгерісін қоса.",
+    "keyingi patçda rasmiy API narxlaridagi xarajat taxmini, 1-dekabrdagi narx özgarişi bilan.",
+    "sonraki yamada resmi API fiyatlarıyla tahminler, 1 Aralık fiyat değişikliği dahil."
+  ],
+  "Official API pricing in cost estimates in the next patch, including the December 1 rate change.": [
+    "Келесі патчта ресми API бағаларымен құн бағалауы, 1 желтоқсандағы баға өзгерісін қоса.",
+    "Keyingi patçda rasmiy API narxlaridagi xarajat taxmini, 1-dekabrdagi narx özgarişi bilan.",
+    "Sonraki yamada resmi API fiyatlarıyla tahminler, 1 Aralık fiyat değişikliği dahil."
+  ],
+  "New sources are added only when their data can be read reliably with clear permission. No dates — things ship when they’re ready.": [
+    "Жаңа дереккөздер деректерін сенімді және айқын рұқсатпен оқуға болғанда қосылады. Күн белгіленбейді — дайын болғанда шығады.",
+    "Yangi manbalar ma’lumotlarini işonçli va aniq ruxsat bilan öqiş mumkin bölganda qöşiladi. Sana belgilanmaydi — tayyor bölganda çiqadi.",
+    "Yeni kaynaklar verileri güvenilir ve açık izinle okunabildiğinde eklenir. Tarih yok; hazır olunca yayımlanır."
+  ],
+  "Every AI coding tool keeps its own limits, windows, and reset times — ${0} each in a different place. UsageNow puts them in one quiet spot in the menu bar, so you can see what’s left without opening a dashboard or breaking your flow.": [
+    "Әр ЖИ құралында өз лимиті, кезеңі мен жаңару уақыты бар: ${0} әр жерде. UsageNow бәрін мәзір жолағына жинайды, сондықтан жұмысқа кедергі келтірмей қалғанын көресіз.",
+    "Har bir AI vositasining öz limiti, davri va yangilaniş vaqti bor: ${0} turli joylarda. UsageNow barçasini menyu paneliga yiğadi, işdan çalğimasdan qoldiqni körasiz.",
+    "Her yapay zekâ aracının kendi limiti, penceresi ve yenilenmesi vardır: ${0} farklı yerlerdedir. UsageNow hepsini menü çubuğunda toplar; akışınızı bölmeden kalanı görürsünüz."
+  ],
+  "It shows only what a provider reports. When a value isn’t available, UsageNow says so instead of guessing.": [
+    "Тек провайдер берген мәндер көрсетіледі. Мән болмаса, UsageNow болжамай, белгісіз екенін айтады.",
+    "Faqat provayder bildirgan qiymatlar körsatiladi. Qiymat bölmasa, UsageNow taxmin qilmay, noma’lumligini aytadi.",
+    "Yalnızca sağlayıcının bildirdiği değerler gösterilir. Değer yoksa UsageNow tahmin etmek yerine bunu belirtir."
+  ],
+  "Codex limits from the official `codex app-server`, which UsageNow runs locally": [
+    "Codex лимиттері UsageNow жергілікті іске қосатын ресми `codex app-server` арқылы",
+    "Codex limitlari UsageNow mahalliy işga tuşiradigan rasmiy `codex app-server` orqali",
+    "Codex limitleri, UsageNow’un yerelde çalıştırdığı resmi `codex app-server` üzerinden"
+  ],
+  "Activity from session files in `~/.codex`, `~/.claude`, and `~/.gemini`": [
+    "Белсенділік `~/.codex`, `~/.claude` және `~/.gemini` сеанс файлдарынан",
+    "Faollik `~/.codex`, `~/.claude` va `~/.gemini` seans fayllaridan",
+    "Etkinlik, `~/.codex`, `~/.claude` ve `~/.gemini` oturum dosyalarından"
+  ],
+  "JetBrains AI (experimental). Local AI Assistant quota from a JetBrains IDE: monthly tariff remaining and a reported refill date, with menu-bar and widget support. A newer quota event from the same IDE can replace its XML cache; old readings keep their original time. No JetBrains credentials or network requests. Live validation with an active AI Assistant subscription is still pending.": [
+    "JetBrains AI (сынақ). JetBrains IDE ішіндегі жергілікті AI Assistant айлық квотасы мен берілген жаңару күні мәзірде және виджетте. Сол IDE-дің жаңа оқиғасы XML кэшін алмастырады; ескі дерек бастапқы уақытын сақтайды. Кіру деректері мен желі сұраулары жоқ. Белсенді жазылыммен тексеру әлі қажет.",
+    "JetBrains AI (tajribaviy). JetBrains IDE’dagi mahalliy AI Assistant oylik kvotasi va bildirilgan yangilaniş sanasi menyu va vidjetda. Şu IDE’ning yangi hodisasi XML keşini almaştiradi; eski ma’lumot asl vaqtini saqlaydi. Kiriş ma’lumotlari va tarmoq sörovlari yöq. Faol obuna bilan tekşiruv hali kerak.",
+    "JetBrains AI (deneysel). JetBrains IDE’den yerel AI Assistant aylık kotası ve bildirilen yenilenme tarihi menü ve araç takımında. Aynı IDE’nin yeni olayı XML önbelleğini değiştirebilir; eski veriler zamanını korur. Kimlik bilgisi veya ağ isteği yoktur. Etkin abonelikle doğrulama bekleniyor."
+  ],
+  "There’s no UsageNow account, and usage data never goes to a UsageNow server. Optional connections ask the provider directly using credentials you add; those stay in this Mac’s Keychain. Other network requests cover update checks and downloads, optional Claude limits, and anonymous analytics only if you opt in. Optional service incidents. Public OpenAI, Claude, Cursor and GitHub Copilot status checks, off by default and cached for ten minutes. Service status is separate from account connections and usage limits; no usage or account data is sent.": [
+    "UsageNow аккаунты жоқ, қолданыс деректері оның серверіне жіберілмейді. Ерікті қосылымдар өзіңіз қосқан, Mac Кілттер тізбегіндегі деректермен тікелей провайдерге сұрайды. Желі жаңартулар, ерікті Claude лимиттері мен келісім бергендегі анонимді талдау үшін қолданылады. OpenAI, Claude, Cursor және Copilot ашық күйін тексеру ерікті, бастапқыда өшірулі, кэші 10 минут. Бұл аккаунт лимиттерінен бөлек, жеке деректер жіберілмейді.",
+    "UsageNow hisobi yöq, sarf ma’lumotlari uning serveriga yuborilmaydi. Ixtiyoriy ulanişlar özingiz qöşgan, Mac Keychain’idagi ma’lumotlar bilan bevosita provayderga söraydi. Tarmoq yangilanişlar, ixtiyoriy Claude limitlari va rozilikdagi anonim tahlil uçun işlatiladi. OpenAI, Claude, Cursor va Copilot oçiq holatini tekşiriş ixtiyoriy, dastlab öçirilgan, keşi 10 daqiqa. Bu hisob limitlaridan alohida, şaxsiy ma’lumotlar yuborilmaydi.",
+    "UsageNow hesabı yoktur; kullanım verileri sunucusuna gönderilmez. İsteğe bağlı bağlantılar Mac’in Anahtar Zinciri’ne eklediğiniz bilgilerle doğrudan sağlayıcıya sorar. Ağ; güncellemeler, isteğe bağlı Claude limitleri ve izinli anonim analiz içindir. OpenAI, Claude, Cursor ve Copilot açık durum denetimleri isteğe bağlı, varsayılan kapalı ve 10 dakika önbelleklidir. Hesap bağlantısından ve limitlerinden ayrıdır; kişisel veya kullanım verisi gönderilmez."
+  ],
+  "On a Mac you’d reach for ⌘, but the browser keeps ⌘W, ⌘M, and ⌘` for its own tabs and windows. So the site uses the same letters with ⌥ Option — Alt on other keyboards. They work anywhere except while you’re typing in a search field.": [
+    "Mac-та браузер ⌘W, ⌘M және ⌘` тіркесімдерін өз терезелеріне қолданады. Сондықтан сайт сол әріптерді ⌥ Option, басқа пернетақтада Alt арқылы қолданады. Іздеу өрісінде теріп отырғанда жұмыс істемейді.",
+    "Mac’da brauzer ⌘W, ⌘M va ⌘` birikmalarini öz oynalari uçun işlatadi. Şu sababli sayt şu harflarni ⌥ Option, boşqa klaviaturada Alt bilan işlatadi. Qidiruv maydonida yozayotganda işlamaydi.",
+    "Mac’te tarayıcı ⌘W, ⌘M ve ⌘` kestirmelerini kendi pencereleri için ayırır. Bu yüzden site aynı harfleri ⌥ Option, diğer klavyelerde Alt ile kullanır. Arama alanında yazarken çalışmaz."
+  ],
+  "Menu bar app, Codex and Claude Code, the widget, Gemini CLI and Antigravity, cost estimates, and updates.": [
+    "Мәзір қолданбасы, Codex пен Claude Code, виджет, Gemini CLI мен Antigravity, құн бағалауы және жаңартулар.",
+    "Menyu dasturi, Codex va Claude Code, vidjet, Gemini CLI va Antigravity, xarajat taxmini va yangilanişlar.",
+    "Menü uygulaması, Codex ve Claude Code, araç takımı, Gemini CLI ve Antigravity, maliyet tahminleri ve güncellemeler."
+  ],
+  "Kiro limits, Warp activity, and DeepSeek, Kimi, and OpenRouter balances.": [
+    "Kiro лимиттері, Warp белсенділігі және DeepSeek, Kimi, OpenRouter баланстары.",
+    "Kiro limitlari, Warp faolligi va DeepSeek, Kimi, OpenRouter balanslari.",
+    "Kiro limitleri, Warp etkinliği, DeepSeek, Kimi ve OpenRouter bakiyeleri."
+  ],
+  "A month of activity per provider, OpenCode, Qoder, Ollama Cloud, and remaining or used.": [
+    "Әр провайдердің айлық белсенділігі, OpenCode, Qoder, Ollama Cloud және қалған не пайдаланылған көлем.",
+    "Har bir provayderning oylik faolligi, OpenCode, Qoder, Ollama Cloud va qolgan yoki işlatilgan hajm.",
+    "Sağlayıcı başına aylık etkinlik, OpenCode, Qoder, Ollama Cloud ve kalan veya kullanılan gösterimi."
+  ],
+  "Notices when a limit runs low and when it resets, and a keyboard shortcut of your own.": [
+    "Лимит азайғанда және жаңарғанда хабарландыру, жеке перне тіркесімі.",
+    "Limit kamayganda va yangilanganda bildiriş, şaxsiy tugmalar birikmasi.",
+    "Limit azaldığında ve yenilendiğinde bildirimler, özel klavye kestirmesi."
+  ],
+  "Several accounts per tool, Qwen Code, Cline, and Grok Build, two weeks in the widget, and the app in five languages.": [
+    "Бір құралда бірнеше аккаунт, Qwen Code, Cline, Grok Build, виджетте екі апта және бес тіл.",
+    "Bitta vositada bir neçta hisob, Qwen Code, Cline, Grok Build, vidjetda ikki hafta va beş til.",
+    "Araç başına birden fazla hesap, Qwen Code, Cline, Grok Build, araç takımında iki hafta ve beş dil."
+  ],
+  "Pick UsageNow’s language in Settings, and rename accounts.": [
+    "Параметрлерде тілді таңдау және аккаунт атауын өзгерту.",
+    "Sozlamalarda tilni tanlaş va hisob nomini özgartiriş.",
+    "Ayarlar’dan dil seçimi ve hesapları yeniden adlandırma."
+  ],
+  "Windsurf, Cursor, GitHub Copilot, Perplexity, ElevenLabs, and Z.ai. Checked connections, nine languages, translated What’s New, and added accounts in the menu bar.": [
+    "Windsurf, Cursor, GitHub Copilot, Perplexity, ElevenLabs, Z.ai. Тексерілетін қосылымдар, тоғыз тіл, аударылған жаңалықтар және мәзірде қосымша аккаунттар.",
+    "Windsurf, Cursor, GitHub Copilot, Perplexity, ElevenLabs, Z.ai. Tekşiriladigan ulanişlar, töqqiz til, tarjima qilingan yangiliklar va menyuda qöşimça hisoblar.",
+    "Windsurf, Cursor, GitHub Copilot, Perplexity, ElevenLabs ve Z.ai. Doğrulanan bağlantılar, dokuz dil, çevrilmiş yenilikler ve menüde ek hesaplar."
+  ],
+  "Personal widgets, quota pace, Dutch, and experimental JetBrains AI.": [
+    "Жеке виджеттер, квота қарқыны, нидерланд тілі және сынақ JetBrains AI.",
+    "Şaxsiy vidjetlar, kvota sur’ati, niderland tili va tajribaviy JetBrains AI.",
+    "Kişisel araç takımları, kota hızı, Felemenkçe ve deneysel JetBrains AI."
+  ],
+  "In the app: anonymous analytics are opt-in and off by default, and never include usage numbers, prompts, or code.": [
+    "Қолданбада анонимді талдау ерікті әрі бастапқыда өшірулі. Қолданыс сандары, промпттар не код жіберілмейді.",
+    "Dasturda anonim tahlil ixtiyoriy va dastlab öçirilgan. Sarf sonlari, sörov matnlari yoki kod yuborilmaydi.",
+    "Uygulamada anonim analiz isteğe bağlı ve varsayılan kapalıdır. Kullanım sayıları, istemler veya kod içermez."
+  ],
+  "Only timestamps, identifiers, model names, and token counts are read — never prompts, responses, or code.": [
+    "Тек уақыт, идентификатор, модель атауы мен токен саны оқылады; промпт, жауап не код емес.",
+    "Faqat vaqt, identifikator, model nomi va token soni öqiladi; sörov, javob yoki kod emas.",
+    "Yalnızca zaman, tanımlayıcı, model adı ve token sayısı okunur; istemler, yanıtlar veya kod asla okunmaz."
+  ],
+  "When a provider doesn’t report a window, UsageNow shows nothing — never a made-up 0%.": [
+    "Провайдер кезеңді бермесе, UsageNow ойдан 0% қоспайды, оны көрсетпейді.",
+    "Provayder davrni bermasa, UsageNow öylab 0% qöşmaydi, uni körsatmaydi.",
+    "Sağlayıcı pencere bildirmezse UsageNow hiçbir şey göstermez; uydurma %0 asla olmaz."
+  ],
+  "Menu bar, desktop widgets, usage limits, activity by model, and local-first privacy: what UsageNow does for ${0} on macOS.": [
+    "Мәзір жолағы, виджеттер, лимиттер, модель белсенділігі және жергілікті құпиялық: macOS-тағы ${0} үшін UsageNow мүмкіндіктері.",
+    "Menyu paneli, vidjetlar, limitlar, model faolligi va mahalliy maxfiylik: macOS’da ${0} uçun UsageNow imkoniyatlari.",
+    "Menü çubuğu, araç takımları, limitler, model etkinliği ve yerel gizlilik: macOS’ta ${0} için UsageNow özellikleri."
+  ],
+  "Codex usage limits on your Mac": [
+    "Mac-тағы Codex лимиттері",
+    "Mac’dagi Codex limitlari",
+    "Mac’inizde Codex kullanım limitleri"
+  ],
+  "See Codex usage limits, 5-hour and weekly windows, reset times, plan, and tokens and requests by model in the macOS menu bar with UsageNow.": [
+    "UsageNow арқылы macOS мәзірінде Codex лимиттерін, 5 сағаттық және апталық кезеңдерін, жаңару уақытын, тарифін, модель бойынша токендер мен сұрауларын көріңіз.",
+    "UsageNow bilan macOS menyusida Codex limitlari, 5 soatlik va haftalik davrlari, yangilaniş vaqti, tarifi hamda model böyiça token va sörovlarini köring.",
+    "UsageNow ile macOS menü çubuğunda Codex limitlerini, 5 saatlik ve haftalık pencereleri, yenilenmeleri, planı ve model başına tokenlarla istekleri görün."
+  ],
+  "Claude Code usage on your Mac": [
+    "Mac-тағы Claude Code қолданысы",
+    "Mac’dagi Claude Code sarfi",
+    "Mac’inizde Claude Code kullanımı"
+  ],
+  "Track Claude Code tokens and requests by model, plan, and Team seat on macOS, with optional 5-hour and weekly usage limits — without touching your credentials.": [
+    "macOS-та Claude Code токендері мен сұрауларын модель бойынша, тарифі мен Team орнын бақылаңыз. Кіру деректерін өзгертпей, 5 сағаттық және апталық лимиттерді ерікті түрде қосыңыз.",
+    "macOS’da Claude Code token va sörovlarini model böyiça, tarifi va Team örnini kuzating. Kiriş ma’lumotlarini özgartirmasdan, ixtiyoriy 5 soatlik va haftalik limitlarni yoqing.",
+    "macOS’ta Claude Code tokenlarını, isteklerini, planını ve Team koltuğunu izleyin. Kimlik bilgilerinizi değiştirmeden isteğe bağlı 5 saatlik ve haftalık limitleri görün."
+  ],
+  "Gemini CLI and Antigravity usage on your Mac": [
+    "Mac-тағы Gemini CLI және Antigravity",
+    "Mac’da Gemini CLI va Antigravity sarfi",
+    "Mac’inizde Gemini CLI ve Antigravity kullanımı"
+  ],
+  "Google’s AI coding tools in the macOS menu bar: Gemini CLI tokens, requests, and models used today, and Antigravity’s 5-hour and weekly limits — without your Google sign-in.": [
+    "macOS мәзіріндегі Google ЖИ құралдары: Gemini CLI-дің бүгінгі токендері, сұраулары мен модельдері, Antigravity-дің 5 сағаттық және апталық лимиттері. Google сеансы оқылмайды.",
+    "macOS menyusidagi Google AI vositalari: Gemini CLI’ning bugungi tokenlari, sörovlari va modellari, Antigravity’ning 5 soatlik va haftalik limitlari. Google seansi öqilmaydi.",
+    "macOS menüsünde Google’ın yapay zekâ araçları: Gemini CLI’nin bugünkü tokenları, istekleri ve modelleri ile Antigravity’nin 5 saatlik ve haftalık limitleri. Google oturumunuz okunmaz."
+  ],
+  "Gemini CLI usage on your Mac": [
+    "Mac-тағы Gemini CLI қолданысы",
+    "Mac’dagi Gemini CLI sarfi",
+    "Mac’inizde Gemini CLI kullanımı"
+  ],
+  "Track Gemini CLI tokens, requests, and models used today in the macOS menu bar with UsageNow — read from local session recordings, never from credential files.": [
+    "UsageNow мәзірінде Gemini CLI-дің бүгінгі токендерін, сұраулары мен модельдерін бақылаңыз. Деректер жергілікті сеанстардан, кіру файлдарынсыз оқылады.",
+    "UsageNow menyusida Gemini CLI’ning bugungi tokenlari, sörovlari va modellarini kuzating. Ma’lumotlar mahalliy seanslardan, kiriş fayllarisiz öqiladi.",
+    "UsageNow menüsünde Gemini CLI’nin bugünkü tokenlarını, isteklerini ve modellerini izleyin. Veriler yerel oturum kayıtlarından okunur; kimlik dosyaları açılmaz."
+  ],
+  "Antigravity usage limits on your Mac": [
+    "Mac-тағы Antigravity лимиттері",
+    "Mac’dagi Antigravity limitlari",
+    "Mac’inizde Antigravity kullanım limitleri"
+  ],
+  "See Google Antigravity’s 5-hour and weekly limits for each model group, reset times, and plan in the macOS menu bar with UsageNow — read locally, with no credentials.": [
+    "macOS мәзірінде Antigravity модель топтарының 5 сағаттық, апталық лимиттері, жаңару уақыты мен тарифін көріңіз. Жергілікті деректер, кіру деректерінсіз.",
+    "macOS menyusida Antigravity model guruhlarining 5 soatlik, haftalik limitlari, yangilaniş vaqti va tarifini köring. Mahalliy ma’lumotlar, kiriş ma’lumotlarisiz.",
+    "macOS menüsünde Antigravity model gruplarının 5 saatlik ve haftalık limitlerini, yenilenmelerini ve planını görün. Yerel okuma, kimlik bilgisi gerekmez."
+  ],
+  "Kiro usage limits on your Mac": [
+    "Mac-тағы Kiro лимиттері",
+    "Mac’dagi Kiro limitlari",
+    "Mac’inizde Kiro kullanım limitleri"
+  ],
+  "See how many monthly Kiro credits are left, when they reset, your plan, and today’s credits and prompts in the macOS menu bar with UsageNow — read locally, with no Kiro credential.": [
+    "macOS мәзірінде Kiro айлық кредиттерінің қалдығын, жаңару күнін, тарифін және бүгінгі кредиттер мен сұрауларын көріңіз. Жергілікті деректерден, Kiro сеансынсыз.",
+    "macOS menyusida Kiro oylik kreditlarining qoldiği, yangilanişi, tarifi va bugungi kredit hamda sörovlarini köring. Mahalliy ma’lumotlardan, Kiro seansisiz.",
+    "macOS menüsünde kalan aylık Kiro kredilerini, yenilenmelerini, planınızı ve bugünkü krediyle istemleri görün. Yerel okuma; Kiro kimlik bilgisi gerekmez."
+  ],
+  "Warp AI usage on your Mac": [
+    "Mac-тағы Warp AI қолданысы",
+    "Mac’dagi Warp AI sarfi",
+    "Mac’inizde Warp AI kullanımı"
+  ],
+  "Track Warp agent requests, credits, and tokens by model for today in the macOS menu bar with UsageNow — read from Warp’s own database, never from your prompts.": [
+    "macOS мәзірінде Warp агентінің бүгінгі сұрауларын, кредиттері мен модель токендерін бақылаңыз. Warp дерекқорынан оқылады; промпттар оқылмайды.",
+    "macOS menyusida Warp agentining bugungi sörovlari, kreditlari va model tokenlarini kuzating. Warp bazasidan öqiladi; sörov matnlari öqilmaydi.",
+    "macOS menüsünde Warp ajanının bugünkü isteklerini, kredilerini ve model tokenlarını izleyin. Warp veritabanından okunur; istemleriniz okunmaz."
+  ],
+  "OpenCode usage and cost on your Mac": [
+    "Mac-тағы OpenCode қолданысы мен құны",
+    "Mac’dagi OpenCode sarfi va xarajati",
+    "Mac’inizde OpenCode kullanımı ve maliyeti"
+  ],
+  "Track OpenCode tokens, requests, models, and what they would cost at API prices — today and over the last 30 days — in the macOS menu bar with UsageNow, read-only from OpenCode’s own database.": [
+    "UsageNow мәзірінде OpenCode токендері, сұраулары, модельдері мен API бағаларымен құнын бүгін және соңғы 30 күн үшін бақылаңыз. Өз дерекқоры тек оқуға ашылады.",
+    "UsageNow menyusida OpenCode tokenlari, sörovlari, modellari va API narxlaridagi qiymatini bugun va oxirgi 30 kun uçun kuzating. Öz bazasi faqat öqiş uçun oçiladi.",
+    "UsageNow menüsünde OpenCode tokenlarını, isteklerini, modellerini ve API fiyatlarıyla maliyetini bugün ve son 30 gün için izleyin. Kendi veritabanı salt okunur açılır."
+  ],
+  "Qoder credits on your Mac": [
+    "Mac-тағы Qoder кредиттері",
+    "Mac’dagi Qoder kreditlari",
+    "Mac’inizde Qoder kredileri"
+  ],
+  "See the credits Qoder spent today and over the last 30 days, and the answers they paid for, in the macOS menu bar with UsageNow — read from Qoder’s own transcripts, with no Qoder sign-in.": [
+    "macOS мәзірінде Qoder-дің бүгін және соңғы 30 күнде жұмсаған кредиттері мен жауаптарын көріңіз. Qoder транскрипттерінен оқылады; сеанс қажет емес.",
+    "macOS menyusida Qoder’ning bugun va oxirgi 30 kunda sarflagan kreditlari va javoblarini köring. Qoder transkriptlaridan öqiladi; seans kerak emas.",
+    "macOS menüsünde Qoder’in bugün ve son 30 günde harcadığı kredileri ve yanıtlarını görün. Qoder kayıtlarından okunur; oturum bilgisi gerekmez."
+  ],
+  "Qwen Code usage on your Mac": [
+    "Mac-тағы Qwen Code қолданысы",
+    "Mac’dagi Qwen Code sarfi",
+    "Mac’inizde Qwen Code kullanımı"
+  ],
+  "Track Qwen Code tokens, requests, and models — today and over the last 30 days — in the macOS menu bar with UsageNow, read from Qwen Code’s own session recordings.": [
+    "UsageNow мәзірінде Qwen Code токендерін, сұраулары мен модельдерін бүгін және соңғы 30 күн үшін бақылаңыз. Деректер өз сеанс жазбаларынан оқылады.",
+    "UsageNow menyusida Qwen Code tokenlari, sörovlari va modellarini bugun va oxirgi 30 kun uçun kuzating. Ma’lumotlar öz seans yozuvlaridan öqiladi.",
+    "UsageNow menüsünde Qwen Code tokenlarını, isteklerini ve modellerini bugün ve son 30 gün için izleyin. Veriler kendi oturum kayıtlarından okunur."
+  ],
+  "Cline usage and cost on your Mac": [
+    "Mac-тағы Cline қолданысы мен құны",
+    "Mac’dagi Cline sarfi va xarajati",
+    "Mac’inizde Cline kullanımı ve maliyeti"
+  ],
+  "Track Cline tokens, API requests, models, and the cost Cline recorded — from VS Code, Cursor, Windsurf, Kiro, and the Cline CLI — in the macOS menu bar with UsageNow.": [
+    "UsageNow мәзірінде VS Code, Cursor, Windsurf, Kiro және Cline CLI ішіндегі Cline токендерін, API сұрауларын, модельдері мен жазылған құнын бақылаңыз.",
+    "UsageNow menyusida VS Code, Cursor, Windsurf, Kiro va Cline CLI’dagi Cline tokenlari, API sörovlari, modellari va qayd etilgan xarajatini kuzating.",
+    "UsageNow menüsünde VS Code, Cursor, Windsurf, Kiro ve Cline CLI’den Cline tokenlarını, API isteklerini, modellerini ve kaydettiği maliyeti izleyin."
+  ],
+  "Grok Build usage and cost on your Mac": [
+    "Mac-тағы Grok Build қолданысы мен құны",
+    "Mac’dagi Grok Build sarfi va xarajati",
+    "Mac’inizde Grok Build kullanımı ve maliyeti"
+  ],
+  "Track Grok Build tokens, model calls, models, and the cost xAI reported — today and over the last 30 days — in the macOS menu bar with UsageNow, read from Grok Build’s own session logs.": [
+    "UsageNow мәзірінде Grok Build токендерін, модель шақыруларын, модельдері мен xAI мәлімдеген құнын бүгін және соңғы 30 күн үшін бақылаңыз. Өз сеанс журналдарынан оқылады.",
+    "UsageNow menyusida Grok Build tokenlari, model çaqiruvlari, modellari va xAI bildirgan xarajatni bugun va oxirgi 30 kun uçun kuzating. Öz seans jurnallaridan öqiladi.",
+    "UsageNow menüsünde Grok Build tokenlarını, model çağrılarını, modellerini ve xAI’nin bildirdiği maliyeti bugün ve son 30 gün için izleyin. Kendi oturum günlüklerinden okunur."
+  ],
+  "Ollama Cloud usage limits on your Mac": [
+    "Mac-тағы Ollama Cloud лимиттері",
+    "Mac’dagi Ollama Cloud limitlari",
+    "Mac’inizde Ollama Cloud kullanım limitleri"
+  ],
+  "Keep your Ollama Cloud session and weekly limits in the macOS menu bar with UsageNow, using a Cloud API key kept in your Keychain and sent only to ollama.com. Experimental.": [
+    "UsageNow мәзірінде Ollama Cloud сеанс және апталық лимиттерін бақылаңыз. Cloud API кілті Кілттер тізбегінде сақталып, тек ollama.com-ға жіберіледі. Сынақ нұсқасы.",
+    "UsageNow menyusida Ollama Cloud seans va haftalik limitlarini kuzating. Cloud API kaliti Keychain’da saqlanib, faqat ollama.com’ga yuboriladi. Tajribaviy.",
+    "UsageNow menüsünde Ollama Cloud oturum ve haftalık limitlerini izleyin. Cloud API anahtarı Anahtar Zinciri’nde tutulur ve yalnızca ollama.com’a gönderilir. Deneysel."
+  ],
+  "DeepSeek, Kimi, and OpenRouter balances on your Mac": [
+    "Mac-тағы DeepSeek, Kimi және OpenRouter баланстары",
+    "Mac’dagi DeepSeek, Kimi va OpenRouter balanslari",
+    "Mac’inizde DeepSeek, Kimi ve OpenRouter bakiyeleri"
+  ],
+  "Keep pay-as-you-go AI balances in the macOS menu bar: DeepSeek and Kimi balances and OpenRouter spending, with your own API key kept in the Keychain and sent only to that provider.": [
+    "macOS мәзірінде қолданысқа қарай төленетін ЖИ баланстарын көріңіз: DeepSeek, Kimi және OpenRouter. Жеке API кілті Кілттер тізбегінде сақталып, тек өз провайдеріне жіберіледі.",
+    "macOS menyusida işlatgança tölovli AI balanslarini köring: DeepSeek, Kimi va OpenRouter. Şaxsiy API kaliti Keychain’da saqlanib, faqat öz provayderiga yuboriladi.",
+    "macOS menüsünde kullandıkça öde yapay zekâ bakiyelerini görün: DeepSeek, Kimi ve OpenRouter. Kendi API anahtarınız Anahtar Zinciri’nde saklanır ve yalnızca ilgili sağlayıcıya gönderilir."
+  ],
+  "Perplexity credits on your Mac": [
+    "Mac-тағы Perplexity кредиттері",
+    "Mac’dagi Perplexity kreditlari",
+    "Mac’inizde Perplexity kredileri"
+  ],
+  "See your Perplexity web credit balance and reported allowance in the Mac menu bar. An optional, experimental connection — separate from Sonar API usage.": [
+    "Mac мәзірінде Perplexity вебкредит балансы мен берілген квотасын көріңіз. Sonar API қолданысынан бөлек, ерікті сынақ қосылымы.",
+    "Mac menyusida Perplexity veb kredit balansi va bildirilgan kvotasini köring. Sonar API sarfidan alohida, ixtiyoriy tajribaviy ulaniş.",
+    "Mac menüsünde Perplexity web kredi bakiyenizi ve bildirilen hakkı görün. Sonar API kullanımından ayrı, isteğe bağlı deneysel bağlantı."
+  ],
+  "ElevenLabs usage on your Mac": [
+    "Mac-тағы ElevenLabs қолданысы",
+    "Mac’dagi ElevenLabs sarfi",
+    "Mac’inizde ElevenLabs kullanımı"
+  ],
+  "Track your ElevenLabs monthly character allowance, remaining characters, and reported reset date in the Mac menu bar using its official subscription API.": [
+    "Ресми жазылым API арқылы Mac мәзірінде ElevenLabs айлық таңба квотасын, қалған таңбалар мен жаңару күнін бақылаңыз.",
+    "Rasmiy obuna API orqali Mac menyusida ElevenLabs oylik belgi kvotasi, qolgan belgilar va yangilaniş sanasini kuzating.",
+    "Resmi abonelik API’siyle Mac menüsünde ElevenLabs aylık karakter hakkınızı, kalan karakterleri ve yenilenme tarihini izleyin."
+  ],
+  "Z.ai Coding Plan limits on your Mac": [
+    "Mac-тағы Z.ai Coding Plan лимиттері",
+    "Mac’dagi Z.ai Coding Plan limitlari",
+    "Mac’inizde Z.ai Coding Plan limitleri"
+  ],
+  "See global Z.ai Coding Plan quota windows and MCP allowance in the Mac menu bar. An optional, experimental connection with your own API key.": [
+    "Mac мәзірінде жаһандық Z.ai Coding Plan квота кезеңдері мен MCP квотасын көріңіз. Жеке API кілтімен ерікті сынақ қосылымы.",
+    "Mac menyusida global Z.ai Coding Plan kvota davrlari va MCP kvotasini köring. Şaxsiy API kaliti bilan ixtiyoriy tajribaviy ulaniş.",
+    "Mac menüsünde küresel Z.ai Coding Plan kota pencerelerini ve MCP hakkını görün. Kendi API anahtarınızla isteğe bağlı deneysel bağlantı."
+  ],
+  "What’s new in each UsageNow release, from the first menu bar app to ${0} support.": [
+    "Алғашқы мәзір қолданбасынан ${0} қолдауына дейінгі әр UsageNow нұсқасының жаңалықтары.",
+    "Birinçi menyu dasturidan ${0} qöllovigaça har bir UsageNow versiyasidagi yangiliklar.",
+    "İlk menü uygulamasından ${0} desteğine kadar her UsageNow sürümünün yenilikleri."
+  ],
+  "Answers about UsageNow: downloading, requirements, privacy, credentials, supported AI coding tools, and what the usage numbers mean for ${0}.": [
+    "UsageNow туралы жауаптар: жүктеу, талаптар, құпиялық, кіру деректері, ЖИ құралдары және ${0} көрсеткіштерінің мәні.",
+    "UsageNow haqida javoblar: yuklaş, talablar, maxfiylik, kiriş ma’lumotlari, AI vositalari va ${0} körsatkiçlarining ma’nosi.",
+    "UsageNow hakkında yanıtlar: indirme, gereksinimler, gizlilik, kimlik bilgileri, yapay zekâ araçları ve ${0} kullanım sayılarının anlamı."
+  ],
+  "Your Perplexity web credits, beside your coding tools.": [
+    "Perplexity вебкредиттері — бағдарламалау құралдарыңыздың жанында.",
+    "Perplexity veb kreditlari — dasturlaş vositalaringiz yonida.",
+    "Perplexity web kredileriniz, kodlama araçlarınızın yanında."
+  ],
+  "Available balance and allowance, when Perplexity reports them.": [
+    "Perplexity берген қолжетімді баланс пен квота.",
+    "Perplexity bildirgan mavjud balans va kvota.",
+    "Perplexity bildirdiğinde kullanılabilir bakiye ve hak."
+  ],
+  "Sign in in a temporary window, or add a session cookie in Settings.": [
+    "Уақытша терезеде кіріңіз немесе Параметрлерде сеанс cookie файлын қосыңыз.",
+    "Vaqtinça oynada kiring yoki Sozlamalarda seans cookie faylini qöşing.",
+    "Geçici pencerede giriş yapın veya Ayarlar’dan oturum çerezi ekleyin."
+  ],
+  "Web credits only — not Sonar API usage, tokens, or spending.": [
+    "Тек вебкредиттер; Sonar API, токендер мен шығындар емес.",
+    "Faqat veb kreditlar; Sonar API, tokenlar va xarajatlar emas.",
+    "Yalnızca web kredileri; Sonar API, token veya harcama değil."
+  ],
+  "Off by default. Connect in Settings › Providers; Check and Save verifies the session first.": [
+    "Бастапқыда өшірулі. Параметрлер › Провайдерлер бөлімінде қосыңыз; Тексеріп, сақтау алдымен сеансты тексереді.",
+    "Dastlab öçirilgan. Sozlamalar › Provayderlar bölimida ulang; Tekşiriş va saqlaş avval seansni tekşiradi.",
+    "Varsayılan olarak kapalı. Ayarlar › Sağlayıcılar’dan bağlanın; Denetle ve Kaydet önce oturumu doğrular."
+  ],
+  "UsageNow never imports your browser profiles. Only the selected session cookie is saved in this Mac’s Keychain and sent to Perplexity.": [
+    "UsageNow браузер профильдерін импорттамайды. Таңдалған сеанс cookie файлы ғана осы Mac-тың Кілттер тізбегінде сақталып, Perplexity-ге жіберіледі.",
+    "UsageNow brauzer profillarini import qilmaydi. Faqat tanlangan seans cookie fayli şu Mac’dagi Keychain’da saqlanib, Perplexity’ga yuboriladi.",
+    "UsageNow tarayıcı profillerinizi içe aktarmaz. Yalnızca seçilen oturum çerezi bu Mac’in Anahtar Zinciri’nde tutulur ve Perplexity’ye gönderilir."
+  ],
+  "A remaining percentage appears only when the reported credit totals agree. Renewal dates are shown only for recurring credits.": [
+    "Қалған пайыз тек кредит қорытындылары сәйкес болғанда көрінеді. Жаңару күні тек қайталанатын кредиттерге көрсетіледі.",
+    "Qolgan foiz faqat kredit jami mos kelganda körinadi. Yangilaniş sanasi faqat takroriy kreditlar uçun körsatiladi.",
+    "Kalan yüzde yalnızca bildirilen kredi toplamları uyuşursa görünür. Yenilenme tarihleri yalnızca tekrarlayan krediler içindir."
+  ],
+  "Perplexity connection guide": [
+    "Perplexity қосу нұсқаулығы",
+    "Perplexity ulaniş qöllanmasi",
+    "Perplexity bağlantı rehberi"
+  ],
+  "See how many characters remain in your ElevenLabs subscription.": [
+    "ElevenLabs жазылымында қанша таңба қалғанын көріңіз.",
+    "ElevenLabs obunangizda qança belgi qolganini köring.",
+    "ElevenLabs aboneliğinizde kaç karakter kaldığını görün."
+  ],
+  "Monthly usage and allowance — characters, not tokens.": [
+    "Айлық қолданыс пен квота — токен емес, таңба.",
+    "Oylik sarf va kvota — token emas, belgi.",
+    "Aylık kullanım ve hak: token değil karakter."
+  ],
+  "Your reported plan and explicit reset date, when available.": [
+    "Қолжетімді болса, мәлімделген тариф пен нақты жаңару күні.",
+    "Mavjud bölsa, bildirilgan tarif va aniq yangilaniş sanasi.",
+    "Varsa bildirilen planınız ve açık yenilenme tarihi."
+  ],
+  "Your own API key with permission to read your user account.": [
+    "Пайдаланушы аккаунтын оқу рұқсаты бар жеке API кілтіңіз.",
+    "Foydalanuvçi hisobini öqiş ruxsatli şaxsiy API kalitingiz.",
+    "Kullanıcı hesabınızı okuma iznine sahip kendi API anahtarınız."
+  ],
+  "Off by default. Add a restricted API key in Settings › Providers, then Check and Save.": [
+    "Бастапқыда өшірулі. Параметрлер › Провайдерлерде шектеулі API кілтін қосып, тексеріп сақтаңыз.",
+    "Dastlab öçirilgan. Sozlamalar › Provayderlarda çeklangan API kalitini qöşib, tekşirib saqlang.",
+    "Varsayılan olarak kapalı. Ayarlar › Sağlayıcılar’a kısıtlı API anahtarı ekleyip Denetle ve Kaydet’i seçin."
+  ],
+  "UsageNow reads ElevenLabs’ official subscription API. Checking usage does not generate audio or consume your character allowance.": [
+    "UsageNow ElevenLabs ресми жазылым API-сін оқиды. Қолданысты тексеру дыбыс жасамайды және таңба квотасын жұмсамайды.",
+    "UsageNow ElevenLabs rasmiy obuna API’sini öqiydi. Sarfni tekşiriş audio yaratmaydi va belgi kvotasini sarflamaydi.",
+    "UsageNow ElevenLabs’ın resmi abonelik API’sini okur. Kullanımı denetlemek ses üretmez veya karakter hakkınızı tüketmez."
+  ],
+  "The key is stored only in this Mac’s Keychain and sent only to ElevenLabs. Missing allowances or reset dates stay unknown.": [
+    "Кілт тек осы Mac-тың Кілттер тізбегінде сақталып, тек ElevenLabs-қа жіберіледі. Жоқ квота не күн белгісіз болып қалады.",
+    "Kalit faqat şu Mac’dagi Keychain’da saqlanib, faqat ElevenLabs’ga yuboriladi. Mavjud bölmagan kvota yoki sana noma’lum qoladi.",
+    "Anahtar yalnızca bu Mac’in Anahtar Zinciri’nde saklanır ve yalnızca ElevenLabs’a gönderilir. Eksik haklar veya tarihler bilinmiyor kalır."
+  ],
+  "ElevenLabs connection guide": [
+    "ElevenLabs қосу нұсқаулығы",
+    "ElevenLabs ulaniş qöllanmasi",
+    "ElevenLabs bağlantı rehberi"
+  ],
+  "Your global Z.ai Coding Plan limits, one glance away.": [
+    "Жаһандық Z.ai Coding Plan лимиттері бір қарағанда.",
+    "Global Z.ai Coding Plan limitlaringiz bir qaraşda.",
+    "Küresel Z.ai Coding Plan limitleriniz bir bakışta."
+  ],
+  "Remaining allowance and reset times, only as reported.": [
+    "Қалған квота мен жаңару уақыты — тек берілген күйінде.",
+    "Qolgan kvota va yangilaniş vaqti — faqat bildirilganidek.",
+    "Kalan hak ve yenilenme zamanları, yalnızca bildirildiği gibi."
+  ],
+  "Separate MCP limits when returned by your account.": [
+    "Аккаунт берген бөлек MCP лимиттері.",
+    "Hisob bildirgan alohida MCP limitlari.",
+    "Hesabınız döndürdüğünde ayrı MCP limitleri."
+  ],
+  "Your own API key for the global Z.ai service.": [
+    "Жаһандық Z.ai сервисі үшін жеке API кілтіңіз.",
+    "Global Z.ai xizmati uçun şaxsiy API kalitingiz.",
+    "Küresel Z.ai hizmeti için kendi API anahtarınız."
+  ],
+  "Off by default. Add your key in Settings › Providers; Check and Save verifies access without generating content.": [
+    "Бастапқыда өшірулі. Кілтті Параметрлер › Провайдерлерде қосыңыз; тексеру мазмұн жасамай рұқсатты анықтайды.",
+    "Dastlab öçirilgan. Kalitni Sozlamalar › Provayderlarda qöşing; tekşiruv mazmun yaratmasdan ruxsatni aniqlaydi.",
+    "Varsayılan olarak kapalı. Anahtarı Ayarlar › Sağlayıcılar’a ekleyin; doğrulama içerik üretmeden erişimi denetler."
+  ],
+  "This integration is for the global Z.ai Coding Plan, not the China-region service or organization-wide administration.": [
+    "Бұл қосылым жаһандық Z.ai Coding Plan үшін; Қытай сервисі не ұйым әкімшілігі үшін емес.",
+    "Bu ulaniş global Z.ai Coding Plan uçun; Xitoy xizmati yoki taşkilot ma’muriyati uçun emas.",
+    "Bu bağlantı küresel Z.ai Coding Plan içindir; Çin bölgesi hizmeti veya kuruluş yönetimi için değildir."
+  ],
+  "UsageNow keeps the provider’s reported units. It does not turn quota into local token activity or estimated spending, and it omits implausible reset dates.": [
+    "UsageNow провайдердің өлшем бірліктерін сақтайды. Квотаны жергілікті токен белсенділігіне не болжамды шығынға айналдырмайды; қисынсыз күндерді көрсетпейді.",
+    "UsageNow provayder bildirgan birliklarni saqlaydi. Kvotani mahalliy token faolligi yoki taxminiy xarajatga aylantirmaydi; mantiqsiz sanalarni körsatmaydi.",
+    "UsageNow sağlayıcının bildirdiği birimleri korur. Kotayı yerel token etkinliğine veya tahmini harcamaya dönüştürmez; tutarsız yenilenme tarihlerini göstermez."
+  ],
+  "Z.ai connection guide": [
+    "Z.ai қосу нұсқаулығы",
+    "Z.ai ulaniş qöllanmasi",
+    "Z.ai bağlantı rehberi"
+  ],
+  "One symbol in the menu bar. Click it to see what’s left.": [
+    "Мәзір жолағындағы бір белгіше. Қалғанын көру үшін басыңыз.",
+    "Menyu panelidagi bitta belgi. Qolganini köriş uçun bosing.",
+    "Menü çubuğunda tek simge. Kalanı görmek için tıklayın."
+  ],
+  "UsageNow lives in the menu bar, not the Dock. Click its symbol and a popover shows every provider you track: each limit window, how much of it is left, and when it resets.": [
+    "UsageNow Dock-та емес, мәзір жолағында орналасады. Белгішені басқанда провайдерлердің әр лимит кезеңі, қалдығы және жаңару уақыты ашылады.",
+    "UsageNow Dock’da emas, menyu panelida joylaşadi. Belgini bosganda provayderlarning har bir limit davri, qoldiği va yangilaniş vaqti oçiladi.",
+    "UsageNow Dock yerine menü çubuğunda bulunur. Simgeye tıklayınca izlediğiniz sağlayıcıların limit pencereleri, kalan miktarı ve yenilenme zamanı açılır."
+  ],
+  "The symbol itself can stay quiet or show a number — the most critical usage across providers, or one provider you choose.": [
+    "Белгіше жеке тұра алады немесе провайдерлердің ең аз қалған лимитін не таңдалған провайдерді санмен көрсетеді.",
+    "Belgi alohida turişi yoki provayderlarning eng kam qolgan limiti yoxud tanlangan provayderni son bilan körsatişi mumkin.",
+    "Simge tek başına kalabilir veya sağlayıcılardaki en kritik kullanımı ya da seçtiğiniz sağlayıcıyı sayı ile gösterebilir."
+  ],
+  "Personal widgets. Choose providers and accounts independently for each widget, or leave the selection empty to follow UsageNow. Renaming an account keeps the selection; a removed account never silently switches to another.": [
+    "Жеке виджеттер. Әр виджетке провайдерлер мен аккаунттарды таңдаңыз немесе UsageNow таңдауын қолдану үшін бос қалдырыңыз. Атау өзгергенде таңдау сақталады; жойылған аккаунт басқасына ауыспайды.",
+    "Şaxsiy vidjetlar. Har bir vidjetga provayder va hisoblarni tanlang yoki UsageNow tanloviga ergaşiş uçun böş qoldiring. Nom özgarganda tanlov saqlanadi; öçirilgan hisob boşqasiga almaşmaydi.",
+    "Kişisel araç takımları. Her biri için sağlayıcı ve hesap seçin veya UsageNow’u izlemek için boş bırakın. Yeniden adlandırma seçimi korur; silinen hesap sessizce başkasına geçmez."
+  ],
+  "Large widget. Up to four detailed provider/account rows, with two quota windows and their reset times. Like the smaller widgets, it only renders the sanitized snapshot.": [
+    "Үлкен виджет. Төртке дейін провайдер не аккаунт жолы, екі квота кезеңі және жаңару уақыты. Басқа өлшемдердей тек қауіпсіз snapshot көрсетеді.",
+    "Katta vidjet. Törttagaça provayder yoki hisob qatori, ikkita kvota davri va yangilaniş vaqti. Boşqa ölçamlar kabi faqat xavfsiz snapshot körsatadi.",
+    "Büyük araç takımı. En fazla dört sağlayıcı veya hesap satırı, iki kota penceresi ve yenilenme zamanları. Küçükler gibi yalnızca güvenli anlık görüntüyü gösterir."
+  ],
+  "The widget never reads provider files, opens the keychain, or touches the network. The app publishes a sanitized snapshot, and the widget only renders it.": [
+    "Виджет провайдер файлдарын, Кілттер тізбегін не желіні ашпайды. Қолданба қауіпсіз snapshot жазады, виджет тек соны көрсетеді.",
+    "Vidjet provayder fayllari, Keychain yoki tarmoqni oçmaydi. Dastur xavfsiz snapshot yozadi, vidjet faqat şuni körsatadi.",
+    "Araç takımı sağlayıcı dosyalarını, Anahtar Zinciri’ni veya ağı kullanmaz. Uygulama güvenli anlık görüntü yazar, araç takımı yalnızca onu gösterir."
+  ],
+  "What’s left in every window, when it resets, and today’s activity.": [
+    "Әр кезеңнің қалдығы, жаңару уақыты және бүгінгі белсенділік.",
+    "Har bir davr qoldiği, yangilaniş vaqti va bugungi faollik.",
+    "Her pencerede kalan, yenilenme zamanı ve bugünkü etkinlik."
+  ],
+  "Limits are shown as what’s left — “58% left” — and bars shrink as you use more. Prefer the other way round? Choose Used in Settings, and every percentage in the popover, the menu bar, and the widget reads “42% used”. Each window appears exactly as the provider reports it: a 5-hour window, a weekly one, or both.": [
+    "Лимиттер «58% қалды» түрінде көрсетіліп, жұмсалған сайын жолақ қысқарады. Параметрлерде Пайдаланылған түрін таңдасаңыз, мәзір мен виджетте «42% пайдаланылды» көрсетіледі. Кезеңдер провайдер бергендей: 5 сағат, апта немесе екеуі.",
+    "Limitlar «58% qoldi» tarzida körsatilib, sarflangan sari çiziq qisqaradi. Sozlamalarda Işlatilgan tanlansa, menyu va vidjetda «42% işlatildi» körsatiladi. Davrlar provayder bildirganidek: 5 soat, hafta yoki ikkalasi.",
+    "Limitler “%58 kaldı” olarak gösterilir ve kullanım arttıkça çubuk küçülür. Ayarlar’dan Kullanılan’ı seçerseniz menü ve araç takımında “%42 kullanıldı” görünür. Pencereler sağlayıcının bildirdiği gibi 5 saatlik, haftalık veya her ikisidir."
+  ],
+  "Alongside limits, UsageNow counts tokens, credits, and requests recorded on your Mac today, the models they went to, and what those tokens would cost at published API prices. That is local activity, kept separate from quota.": [
+    "UsageNow бүгін Mac-та жазылған токендер, кредиттер, сұраулар, модельдер және API бағаларымен болжамды құнды есептейді. Жергілікті белсенділік квотадан бөлек көрсетіледі.",
+    "UsageNow bugun Mac’da qayd etilgan token, kredit, sörov, model va API narxlaridagi taxminiy xarajatni hisoblaydi. Mahalliy faollik kvotadan alohida körsatiladi.",
+    "UsageNow bugün Mac’inizde kaydedilen tokenları, kredileri, istekleri, modelleri ve API fiyatlarıyla tahmini maliyeti sayar. Bu yerel etkinlik kotadan ayrı tutulur."
+  ],
+  "A bar per day under each provider, and what the month added up to.": [
+    "Әр провайдердің күнделікті бағаны және айлық қорытындысы.",
+    "Har bir provayderning kunlik ustuni va oylik jami.",
+    "Her sağlayıcı altında günlük bir sütun ve aylık toplam."
+  ],
+  "Under today’s numbers, each provider draws its last 30 days: one bar per day, today the brightest, with the month’s tokens or credits, what they would cost at API prices, and the model you used most. Hover a bar to see that day.": [
+    "Бүгінгі көрсеткіштер астында соңғы 30 күн бар: әр күнге баған, бүгінгісі ашықтау. Айлық токен не кредит, API бағасымен құн және ең көп қолданылған модель көрсетіледі. Бағанға меңзеп күнді көріңіз.",
+    "Bugungi körsatkiçlar ostida oxirgi 30 kun bor: har kunga ustun, bugungisi yorqinroq. Oylik token yoki kredit, API narxidagi xarajat va eng köp işlatilgan model körsatiladi. Ustunga işora qilib kunni köring.",
+    "Bugünkü sayıların altında son 30 gün bulunur: her güne sütun, bugün en parlak olanıdır. Aylık token veya kredi, API maliyeti ve en çok kullanılan model gösterilir. Günü görmek için sütunun üzerine gelin."
+  ],
+  "Quota pace. A local chart and a clearly labelled estimate for the most critical window, based on at least three fresh quota observations spanning 15 minutes. Cached repeats, stale readings, long gaps, resets and unknown window lengths do not produce a forecast. Estimates never use token counts.": [
+    "Квота қарқыны. Ең аз қалған кезең үшін 15 минутты қамтитын кемінде үш жаңа өлшемнен жергілікті график пен белгіленген бағалау. Кэш, ескі деректер, ұзақ үзілістер, жаңару не белгісіз кезең болжам бермейді. Токен саны қолданылмайды.",
+    "Kvota sur’ati. Eng kam qolgan davr uçun 15 daqiqani qamragan kamida uçta yangi ölçovdan mahalliy grafik va belgilangan taxmin. Keş, eski ma’lumot, uzoq uziliş, yangilaniş yoki noma’lum davrda taxmin berilmaydi. Token soni işlatilmaydi.",
+    "Kota hızı. En kritik pencere için 15 dakikaya yayılan en az üç yeni ölçümden yerel grafik ve etiketli tahmin. Önbellek tekrarları, eski veriler, uzun aralar, yenilenmeler ve bilinmeyen sürelerde tahmin yoktur. Token sayıları kullanılmaz."
+  ],
+  "UsageNow tracks ${0}. Turn any of them on or off, and drag them into the order you want, in Settings › Providers — a provider that’s off is never refreshed and never read from disk.": [
+    "UsageNow ${0} бақылайды. Параметрлер › Провайдерлерде қосып, өшіріп, сүйреп реттеңіз. Өшірілген провайдер жаңартылмайды және дискіден оқылмайды.",
+    "UsageNow ${0} kuzatadi. Sozlamalar › Provayderlarda yoqing, öçiring va sudrab tartiblang. Öçirilgan provayder yangilanmaydi va diskdan öqilmaydi.",
+    "UsageNow ${0} izler. Ayarlar › Sağlayıcılar’dan açıp kapatın ve sürükleyerek sıralayın. Kapalı sağlayıcı yenilenmez veya diskten okunmaz."
+  ],
+  "Reads what’s already on your Mac. No account, no server.": [
+    "Mac-та бар деректерді оқиды. Аккаунт та, сервер де қажет емес.",
+    "Mac’da mavjud ma’lumotlarni öqiydi. Hisob ham, server ham kerak emas.",
+    "Mac’inizde zaten bulunanları okur. Hesap veya sunucu gerekmez."
+  ],
+  "UsageNow reads the data your AI coding tools already keep on your Mac: Codex limits from the official Codex app-server, run locally; Antigravity limits from the Antigravity app’s own loopback server; activity from local session files, and Warp’s and OpenCode’s own databases, opened read-only.": [
+    "UsageNow Mac-та сақталған деректерді оқиды: Codex лимиттерін жергілікті ресми app-server-ден; Antigravity лимиттерін өз loopback серверінен; белсенділікті сеанстардан және тек оқуға ашылған Warp пен OpenCode дерекқорларынан.",
+    "UsageNow Mac’da saqlangan ma’lumotlarni öqiydi: Codex limitlarini mahalliy rasmiy app-server’dan; Antigravity limitlarini öz loopback serveridan; faollikni seanslar va faqat öqişga oçilgan Warp hamda OpenCode bazalaridan.",
+    "UsageNow Mac’te tutulan verileri okur: Codex limitlerini yerel resmi app-server’dan; Antigravity limitlerini kendi loopback sunucusundan; etkinliği oturum dosyaları ve salt okunur Warp ile OpenCode veritabanlarından."
+  ],
+  "There’s no UsageNow account and no UsageNow server. Your usage data stays on your Mac.": [
+    "UsageNow аккаунты және қолданыс деректеріне арналған сервері жоқ. Деректеріңіз Mac-та қалады.",
+    "UsageNow hisobi va sarf ma’lumotlari serveri yöq. Ma’lumotlaringiz Mac’da qoladi.",
+    "UsageNow hesabı veya kullanım verisi sunucusu yoktur. Verileriniz Mac’inizde kalır."
+  ],
+  "From session files, UsageNow extracts timestamps, identifiers, model names, and token counts. Prompts, responses, and code are never stored, logged, or sent anywhere.": [
+    "Сеанс файлдарынан уақыт, идентификатор, модель атауы мен токен саны алынады. Промпттар, жауаптар және код сақталмайды, журналға жазылмайды әрі жіберілмейді.",
+    "Seans fayllaridan vaqt, identifikator, model nomi va token soni olinadi. Sörov matnlari, javoblar va kod saqlanmaydi, jurnalga yozilmaydi yoki yuborilmaydi.",
+    "Oturum dosyalarından zaman, tanımlayıcı, model adı ve token sayısı alınır. İstemler, yanıtlar ve kod saklanmaz, günlüğe yazılmaz veya gönderilmez."
+  ],
+  "Credentials stay with the tools that own them. UsageNow never modifies or stores your Claude Code sign-in, and never reads Codex credentials at all. Sharing anonymous analytics is opt-in and off by default.": [
+    "Кіру деректері өз құралдарында қалады. UsageNow Claude Code сеансын өзгертпейді не сақтамайды, Codex кіру деректерін оқымайды. Анонимді талдау ерікті және бастапқыда өшірулі.",
+    "Kiriş ma’lumotlari öz vositalarida qoladi. UsageNow Claude Code seansini özgartirmaydi yoki saqlamaydi, Codex kiriş ma’lumotlarini öqimaydi. Anonim tahlil ixtiyoriy va dastlab öçirilgan.",
+    "Kimlik bilgileri ait oldukları araçlarda kalır. UsageNow Claude Code oturumunu değiştirmez veya saklamaz, Codex kimlik bilgilerini okumaz. Anonim analiz isteğe bağlı ve varsayılan olarak kapalıdır."
+  ],
+  "Usage limits come from Codex itself. Activity comes from what Codex recorded on your Mac today.": [
+    "Лимиттер Codex-тен алынады. Белсенділік Codex бүгін Mac-та жазған деректерден.",
+    "Limitlar Codex’dan olinadi. Faollik Codex bugun Mac’da yozgan ma’lumotlardan.",
+    "Limitler Codex’in kendisinden gelir. Etkinlik Codex’in bugün Mac’inizde kaydettikleridir."
+  ],
+  "Asked of the official Codex app-server, running on your Mac.": [
+    "Mac-тағы ресми Codex app-server арқылы сұралады.",
+    "Mac’dagi rasmiy Codex app-server orqali söraladi.",
+    "Mac’inizde çalışan resmi Codex app-server’a sorulur."
+  ],
+  "A bar per day, with the month’s tokens, estimated cost, and top model.": [
+    "Күнделікті бағандар, айлық токендер, болжамды құн және негізгі модель.",
+    "Kunlik ustunlar, oylik tokenlar, taxminiy xarajat va asosiy model.",
+    "Günlük sütunlar, aylık tokenlar, tahmini maliyet ve en çok kullanılan model."
+  ],
+  "Illustrative values. An account with only a weekly limit shows only a weekly window — nothing is invented.": [
+    "Мысал көрсеткіштер. Тек апталық лимиті бар аккаунтта сол кезең ғана көрсетіледі; мән ойдан қосылмайды.",
+    "Misol körsatkiçlar. Faqat haftalik limiti bor hisobda şu davrning özi körsatiladi; qiymat öylab topilmaydi.",
+    "Örnek değerler. Yalnızca haftalık limiti olan hesapta sadece haftalık pencere gösterilir; değer uydurulmaz."
+  ],
+  "The app-server signs in with Codex’s own credentials, so UsageNow never reads or copies them. If it can’t be reached, UsageNow shows the last limits Codex recorded in `~/.codex/sessions` and marks them _Updated … ago_.": [
+    "app-server Codex-тің өз сеансын қолданады; UsageNow оны оқымайды не көшірмейді. Байланыс болмаса, `~/.codex/sessions` ішіндегі соңғы лимиттер _… бұрын жаңартылды_ белгісімен көрсетіледі.",
+    "app-server Codex’ning öz seansidan foydalanadi; UsageNow uni öqimaydi yoki nusxalamaydi. Ulanmasa, `~/.codex/sessions` içidagi sönggi limitlar _… oldin yangilandi_ belgisi bilan körsatiladi.",
+    "app-server Codex’in kendi oturumunu kullanır; UsageNow bunu okumaz veya kopyalamaz. Ulaşılamazsa `~/.codex/sessions` içindeki son limitler _… önce güncellendi_ etiketiyle gösterilir."
+  ],
+  "Local activity and your plan, always. Usage limits, only if you opt in.": [
+    "Жергілікті белсенділік пен тариф үнемі бар. Лимиттер — тек келісіміңізбен.",
+    "Mahalliy faollik va tarif doim bor. Limitlar — faqat roziligingiz bilan.",
+    "Yerel etkinlik ve planınız her zaman. Kullanım limitleri yalnızca seçerseniz."
+  ],
+  "From `~/.claude/projects`, since midnight.": [
+    "Түн ортасынан бері, `~/.claude/projects` қалтасынан.",
+    "Yarim tundan beri, `~/.claude/projects` jildidan.",
+    "Gece yarısından beri, `~/.claude/projects` klasöründen."
+  ],
+  "Illustrative values. With the setting off, local activity and plan still appear.": [
+    "Мысал көрсеткіштер. Параметр өшірулі болса да жергілікті белсенділік пен тариф көрінеді.",
+    "Misol körsatkiçlar. Sozlama öçirilsa ham mahalliy faollik va tarif körinadi.",
+    "Örnek değerler. Ayar kapalıyken de yerel etkinlik ve plan görünür."
+  ],
+  "Claude Code doesn’t expose subscription limits through a supported local API. When you opt in, UsageNow reads the existing Claude Code sign-in from your Keychain, keeps the token in memory only, and sends it only to `api.anthropic.com`. It never refreshes, modifies, or stores your credentials.": [
+    "Claude Code қолдау көрсетілетін жергілікті API арқылы жазылым лимиттерін бермейді. Келіскенде UsageNow Кілттер тізбегіндегі Claude Code сеансын оқып, токенді тек жедел жадта ұстайды және тек `api.anthropic.com` мекенжайына жібереді. Кіру деректерін жаңартпайды, өзгертпейді не сақтамайды.",
+    "Claude Code qöllanadigan mahalliy API orqali obuna limitlarini bermaydi. Rozilik bersangiz, UsageNow Keychain’dagi Claude Code seansini öqib, tokenni faqat xotirada tutadi va faqat `api.anthropic.com` manziliga yuboradi. Kiriş ma’lumotlarini yangilamaydi, özgartirmaydi yoki saqlamaydi.",
+    "Claude Code desteklenen yerel API üzerinden abonelik limitlerini sunmaz. Seçerseniz UsageNow Anahtar Zinciri’ndeki Claude Code oturumunu okur, token’ı yalnızca bellekte tutar ve sadece `api.anthropic.com` adresine gönderir. Kimlik bilgilerini yenilemez, değiştirmez veya saklamaz."
+  ],
+  "**UsageNow** wants to use your confidential information stored in “Claude Code-credentials” in your keychain.": [
+    "**UsageNow** Кілттер тізбегіндегі «Claude Code-credentials» құпия деректерін қолданғысы келеді.",
+    "**UsageNow** Keychain’dagi «Claude Code-credentials» maxfiy ma’lumotlaridan foydalanmoqçi.",
+    "**UsageNow**, Anahtar Zinciri’nizdeki “Claude Code-credentials” gizli bilgilerini kullanmak istiyor."
+  ],
+  "Two Google tools, two kinds of numbers: today’s activity from Gemini CLI, and usage limits from the Antigravity app. Neither needs your Google sign-in.": [
+    "Google-дың екі құралы, екі дерек түрі: Gemini CLI-дің бүгінгі белсенділігі және Antigravity лимиттері. Екеуіне де Google сеансы оқылмайды.",
+    "Google’ning ikki vositasi, ikki ma’lumot turi: Gemini CLI’ning bugungi faolligi va Antigravity limitlari. Ikkalasida ham Google seansi öqilmaydi.",
+    "İki Google aracı, iki sayı türü: Gemini CLI’nin bugünkü etkinliği ve Antigravity limitleri. İkisi de Google oturum bilginizi gerektirmez."
+  ],
+  "Illustrative values. Each tool can be turned on or off in Settings › Providers.": [
+    "Мысал көрсеткіштер. Әр құралды Параметрлер › Провайдерлер бөлімінде қосып-өшіруге болады.",
+    "Misol körsatkiçlar. Har bir vositani Sozlamalar › Provayderlarda yoqiş yoki öçiriş mumkin.",
+    "Örnek değerler. Her araç Ayarlar › Sağlayıcılar’dan açılıp kapatılabilir."
+  ],
+  "Tokens, requests, and models used today, from what Gemini CLI records on your Mac.": [
+    "Gemini CLI Mac-та жазған бүгінгі токендер, сұраулар мен модельдер.",
+    "Gemini CLI Mac’da yozgan bugungi tokenlar, sörovlar va modellar.",
+    "Gemini CLI’nin Mac’inizde kaydettiği bugünkü tokenlar, istekler ve modeller."
+  ],
+  "From Gemini CLI’s session recordings in `~/.gemini/tmp`.": [
+    "Gemini CLI-дің `~/.gemini/tmp` ішіндегі сеанс жазбаларынан.",
+    "Gemini CLI’ning `~/.gemini/tmp` içidagi seans yozuvlaridan.",
+    "Gemini CLI’nin `~/.gemini/tmp` oturum kayıtlarından."
+  ],
+  "Tokens and requests for each model, most active first.": [
+    "Әр модельдің токендері мен сұраулары, ең белсендісі алдымен.",
+    "Har bir model tokenlari va sörovlari, eng faol birinçi.",
+    "Her modelin tokenları ve istekleri, en etkin olan önce."
+  ],
+  "A bar per day, with the month’s tokens and estimated cost.": [
+    "Күнделікті бағандар, айлық токендер мен болжамды құн.",
+    "Kunlik ustunlar, oylik tokenlar va taxminiy xarajat.",
+    "Günlük sütunlar, aylık tokenlar ve tahmini maliyet."
+  ],
+  "Gemini CLI doesn’t record them on your Mac, so none are shown.": [
+    "Gemini CLI оларды Mac-та жазбайды, сондықтан көрсетілмейді.",
+    "Gemini CLI ularni Mac’da yozmaydi, şu sababli körsatilmaydi.",
+    "Gemini CLI bunları Mac’inizde kaydetmediği için gösterilmez."
+  ],
+  "UsageNow reads one setting — which sign-in method Gemini CLI uses — and checks only whether a saved sign-in exists. It never opens credential files and never talks to Google. From session recordings it takes message identifiers, timestamps, model names, and token counts; prompts, responses, and tool calls are never decoded.": [
+    "UsageNow тек Gemini CLI кіру әдісін оқып, сақталған сеанстың бар-жоғын тексереді. Кіру файлдарын ашпайды, Google-ға сұрау жібермейді. Сеанстардан хабар ID, уақыт, модель мен токен санын алады; промпттар, жауаптар мен құрал шақырулары талданбайды.",
+    "UsageNow faqat Gemini CLI kiriş usulini öqib, saqlangan seans borligini tekşiradi. Kiriş fayllarini oçmaydi, Google’ga sörov yubormaydi. Seanslardan xabar ID’si, vaqt, model va token sonini oladi; sörov matnlari, javoblar va vosita çaqiruvlari tahlil qilinmaydi.",
+    "UsageNow yalnızca Gemini CLI giriş yöntemini okur ve kayıtlı oturumun varlığını denetler. Kimlik dosyalarını açmaz, Google’la iletişim kurmaz. Oturumlardan mesaj kimliği, zaman, model ve token sayısını alır; istemler, yanıtlar ve araç çağrıları çözümlenmez."
+  ],
+  "Google no longer lets personal Google accounts sign in to Gemini CLI. It still works with a Gemini API key, Vertex AI, or Gemini Code Assist Standard and Enterprise.": [
+    "Google жеке аккаунттардың Gemini CLI жүйесіне кіруін тоқтатты. Gemini API кілті, Vertex AI немесе Gemini Code Assist Standard және Enterprise арқылы жұмыс істейді.",
+    "Google şaxsiy hisoblarning Gemini CLI’ga kirişini töxtatdi. Gemini API kaliti, Vertex AI yoki Gemini Code Assist Standard va Enterprise bilan işlaydi.",
+    "Google artık kişisel hesapların Gemini CLI’ye girişine izin vermiyor. Gemini API anahtarı, Vertex AI veya Gemini Code Assist Standard ve Enterprise ile çalışır."
+  ],
+  "Antigravity stores conversations in an undocumented format, so no counts are guessed.": [
+    "Antigravity әңгімелерді құжатталмаған пішімде сақтайды, сондықтан сандар болжанбайды.",
+    "Antigravity suhbatlarni hujjatlanmagan formatda saqlaydi, şu sababli sonlar taxmin qilinmaydi.",
+    "Antigravity konuşmaları belgelenmemiş biçimde saklar; bu nedenle sayılar tahmin edilmez."
+  ],
+  "While the Antigravity app runs, it serves a language server on a loopback port. UsageNow reads that port and its token from the app’s own command line and asks for the quota summary on `127.0.0.1`. It never reads the Google sign-in Antigravity saved and never calls Google.": [
+    "Antigravity жұмыс істегенде loopback портында тіл сервері ашылады. UsageNow порт пен оның токенін қолданба командасынан оқып, `127.0.0.1` мекенжайынан квотаны сұрайды. Сақталған Google сеансын оқымайды және Google-ға сұрау жібермейді.",
+    "Antigravity işlaganda loopback portida til serveri oçiladi. UsageNow port va uning tokenini dastur buyruğidan öqib, `127.0.0.1` manzilidan kvotani söraydi. Saqlangan Google seansini öqimaydi va Google’ga sörov yubormaydi.",
+    "Antigravity çalışırken loopback portunda dil sunucusu açar. UsageNow portu ve token’ını uygulamanın komut satırından okuyup `127.0.0.1` üzerinden kotayı sorar. Kaydedilen Google oturumunu okumaz ve Google’a istek göndermez."
+  ],
+  "Antigravity without the IDE. If the IDE cannot answer, read the official agy /usage report from compatible CLI 1.x versions (1.1.11 or later). No agent turn, no credential access by UsageNow; reports are cached for five minutes. Verified with CLI 1.2.2.": [
+    "Antigravity IDE-сіз. IDE жауап бермесе, үйлесімді CLI 1.x (1.1.11+) ресми agy /usage есебі оқылады. Агент айналымы мен кіру деректерін оқу жоқ; есеп бес минут кэштеледі. CLI 1.2.2-де тексерілген.",
+    "Antigravity IDE’siz. IDE javob bermasa, mos CLI 1.x (1.1.11+) rasmiy agy /usage hisoboti öqiladi. Agent aylanişi va kiriş ma’lumotlarini öqiş yöq; hisobot beş daqiqa keşlanadi. CLI 1.2.2’da tekşirilgan.",
+    "IDE olmadan Antigravity. IDE yanıtlamazsa uyumlu CLI 1.x (1.1.11+) resmi agy /usage raporu okunur. Ajan turu veya kimlik bilgisi erişimi yoktur; rapor beş dakika önbelleğe alınır. CLI 1.2.2 ile doğrulandı."
+  ],
+  "How many of your monthly credits are left, when they reset, and what today cost — read from what Kiro writes on your Mac.": [
+    "Айлық кредит қалдығы, жаңару уақыты мен бүгінгі шығын — Kiro Mac-та жазған деректерден.",
+    "Oylik kredit qoldiği, yangilanişi va bugungi xarajat — Kiro Mac’da yozgan ma’lumotlardan.",
+    "Kalan aylık krediler, yenilenme zamanı ve bugünkü maliyet; Kiro’nun Mac’inizde yazdıklarından."
+  ],
+  "Credits used each day, with the month’s total.": [
+    "Күнделікті жұмсалған кредиттер мен айлық қорытынды.",
+    "Kunlik sarflangan kreditlar va oylik jami.",
+    "Günlük kullanılan krediler ve aylık toplam."
+  ],
+  "Illustrative values. A trial that has ended is ignored, so a plan with every credit left is never shown as used up.": [
+    "Мысал көрсеткіштер. Аяқталған сынақ ескерілмейді; кредиті толық қалған тариф таусылған деп көрсетілмейді.",
+    "Misol körsatkiçlar. Tugagan sinov hisobga olinmaydi; krediti töliq qolgan tarif tugagan deb körsatilmaydi.",
+    "Örnek değerler. Bitmiş deneme yok sayılır; tüm kredileri kalan plan tükenmiş gösterilmez."
+  ],
+  "Kiro has no public way to read these limits. While it runs, it asks its own service and writes the answer to its log; UsageNow reads that line and makes no request of its own. The same answer identifies your account — those fields are never read.": [
+    "Kiro лимиттерді оқудың ашық тәсілін бермейді. Жұмыс істегенде өз сервисінің жауабын журналға жазады; UsageNow тек сол жолды оқиды, сұрау жібермейді. Аккаунтты анықтайтын өрістер оқылмайды.",
+    "Kiro limitlarni öqişning oçiq usulini bermaydi. Işlaganda öz xizmati javobini jurnalga yozadi; UsageNow faqat şu qatorni öqiydi, sörov yubormaydi. Hisobni aniqlaydigan maydonlar öqilmaydi.",
+    "Kiro limitleri okumak için açık yöntem sunmaz. Çalışırken kendi hizmetinin yanıtını günlüğe yazar; UsageNow yalnızca o satırı okur, istek göndermez. Hesabı tanımlayan alanlar okunmaz."
+  ],
+  "When Kiro is closed, the last limits it recorded stay on screen with _Updated … ago_. After the reset date they’re dropped rather than shown as current.": [
+    "Kiro жабылғанда соңғы лимиттер _… бұрын жаңартылды_ белгісімен қалады. Жаңару күнінен кейін жаңа дерек ретінде көрсетілмейді.",
+    "Kiro yopilganda sönggi limitlar _… oldin yangilandi_ belgisi bilan qoladi. Yangilaniş sanasidan keyin yangi ma’lumot sifatida körsatilmaydi.",
+    "Kiro kapandığında son limitler _… önce güncellendi_ etiketiyle kalır. Yenilenme tarihinden sonra güncelmiş gibi gösterilmez."
+  ],
+  "Today’s agent requests, credits, and the models that answered — read from Warp’s own database, never from your prompts.": [
+    "Агенттің бүгінгі сұраулары, кредиттері мен жауап берген модельдері — Warp дерекқорынан, промпттардан емес.",
+    "Agentning bugungi sörovlari, kreditlari va javob bergan modellari — Warp bazasidan, sörov matnlaridan emas.",
+    "Ajanın bugünkü istekleri, kredileri ve yanıtlayan modeller; istemlerinizden değil Warp veritabanından."
+  ],
+  "Tokens per model, such as Claude Sonnet 4.6.": [
+    "Claude Sonnet 4.6 сияқты әр модельдің токендері.",
+    "Claude Sonnet 4.6 kabi har bir modelning tokenlari.",
+    "Claude Sonnet 4.6 gibi model başına tokenlar."
+  ],
+  "Requests per day — Warp keeps credits per conversation, not per day.": [
+    "Күнделікті сұраулар; Warp кредиттерді күнге емес, әңгімеге бөледі.",
+    "Kunlik sörovlar; Warp kreditlarni kunga emas, suhbatga ajratadi.",
+    "Günlük istekler; Warp kredileri gün yerine konuşma başına tutar."
+  ],
+  "Warp keeps no current credit limit on the Mac.": [
+    "Warp Mac-та қазіргі кредит лимитін сақтамайды.",
+    "Warp Mac’da joriy kredit limitini saqlamaydi.",
+    "Warp Mac’te güncel kredi limiti tutmaz."
+  ],
+  "Illustrative values. Model rows show tokens without a request count: Warp doesn’t record which model answered which prompt.": [
+    "Мысал көрсеткіштер. Модель жолдарында тек токендер бар: Warp қай модель қай сұрауға жауап бергенін жазбайды.",
+    "Misol körsatkiçlar. Model qatorlarida faqat tokenlar bor: Warp qaysi model qaysi sörovga javob berganini yozmaydi.",
+    "Örnek değerler. Model satırları istek sayısı olmadan tokenları gösterir; Warp hangi modelin hangi istemi yanıtladığını kaydetmez."
+  ],
+  "Warp counts credits per conversation, not per day. A conversation that began today counts in full; one that started earlier and continued today can’t be split honestly, so it’s left out and the label reads _credits today, partial_ rather than showing a number that’s too high.": [
+    "Warp кредиттерді әңгіме бойынша санайды. Бүгін басталған әңгіме толық есептеледі; бұрын басталып, бүгін жалғасқанын күнге дәл бөлу мүмкін емес. Ол есептелмей, _бүгінгі кредиттер, ішінара_ белгісі қойылады.",
+    "Warp kreditlarni suhbat böyiça sanaydi. Bugun başlangan suhbat töliq hisoblanadi; oldin başlanib, bugun davom etganini kunga aniq ajratib bölmaydi. U hisoblanmay, _bugungi kreditlar, qisman_ belgisi qöyiladi.",
+    "Warp kredileri konuşma başına sayar. Bugün başlayan konuşma tam sayılır; daha önce başlayıp bugün süren dürüstçe güne bölünemez. Hariç bırakılır ve yüksek sayı yerine _bugünkü krediler, kısmi_ yazılır."
+  ],
+  "The database is opened read-only. The columns holding your prompts and the agent’s replies are never selected.": [
+    "Дерекқор тек оқуға ашылады. Промпттар мен агент жауаптары бар бағандар таңдалмайды.",
+    "Baza faqat öqişga oçiladi. Sörov matnlari va agent javoblari bor ustunlar tanlanmaydi.",
+    "Veritabanı salt okunur açılır. İstemlerinizi ve ajan yanıtlarını içeren sütunlar seçilmez."
+  ],
+  "Tokens, requests, the models that answered, and what that work would cost at API prices — today and over the last 30 days, read from OpenCode’s own database.": [
+    "Токендер, сұраулар, жауап берген модельдер мен API бағаларымен құн — бүгін және соңғы 30 күн үшін OpenCode дерекқорынан.",
+    "Tokenlar, sörovlar, javob bergan modellar va API narxlaridagi xarajat — bugun va oxirgi 30 kun uçun OpenCode bazasidan.",
+    "Tokenlar, istekler, yanıtlayan modeller ve API fiyatlarıyla maliyet; bugün ve son 30 gün için OpenCode veritabanından."
+  ],
+  "Fresh input, output, reasoning, and prompt-cache reads and writes.": [
+    "Жаңа кіріс, шығыс, ойлау және промпт кэшін оқу-жазу.",
+    "Yangi kiriş, çiqiş, fikrlaş va sörov keşini öqiş-yoziş.",
+    "Yeni girdi, çıktı, akıl yürütme ve istem önbelleği okuma-yazmaları."
+  ],
+  "Whichever provider you run OpenCode with, most active first.": [
+    "OpenCode провайдеріңізге қарамастан, ең белсенді модель алдымен.",
+    "OpenCode provayderidan qat’i nazar, eng faol model birinçi.",
+    "OpenCode’u hangi sağlayıcıyla kullanırsanız kullanın, en etkin önce."
+  ],
+  "Today’s tokens at published API prices, cache priced as cache.": [
+    "Бүгінгі токендер API бағаларымен, кэш өз бағасымен.",
+    "Bugungi tokenlar API narxlarida, keş öz narxida.",
+    "Bugünkü tokenlar API fiyatlarıyla, önbellek kendi fiyatıyla."
+  ],
+  "A bar per day, with the month’s tokens, cost, and top model.": [
+    "Күнделікті бағандар, айлық токендер, құн және негізгі модель.",
+    "Kunlik ustunlar, oylik tokenlar, xarajat va asosiy model.",
+    "Günlük sütunlar, aylık tokenlar, maliyet ve en çok kullanılan model."
+  ],
+  "Limits belong to the provider you connect, not to OpenCode.": [
+    "Лимиттер OpenCode-қа емес, қосылған провайдерге тиесілі.",
+    "Limitlar OpenCode’ga emas, ulangan provayderga tegişli.",
+    "Limitler OpenCode’a değil bağlandığınız sağlayıcıya aittir."
+  ],
+  "Illustrative values. Hover the chart to see a single day.": [
+    "Мысал көрсеткіштер. Бір күнді көру үшін графикке меңзеңіз.",
+    "Misol körsatkiçlar. Bitta kunni köriş uçun grafikka işora qiling.",
+    "Örnek değerler. Tek günü görmek için grafiğin üzerine gelin."
+  ],
+  "OpenCode keeps every answer in a SQLite database on your Mac, and newer versions store the reply’s text right beside its token counts. UsageNow never reads that record whole: SQLite hands over only the time, the model, and the numbers. Tables holding your prompts aren’t read at all, and neither is OpenCode’s sign-in.": [
+    "OpenCode жауаптарды Mac-тағы SQLite дерекқорында сақтайды, жаңа нұсқаларда мәтін мен токен саны қатар тұрады. UsageNow толық жазбаны оқымайды: SQLite тек уақыт, модель мен сандарды береді. Промпт кестелері мен OpenCode сеансы оқылмайды.",
+    "OpenCode javoblarni Mac’dagi SQLite bazasida saqlaydi, yangi versiyalarda matn va token soni yonma-yon turadi. UsageNow töliq yozuvni öqimaydi: SQLite faqat vaqt, model va sonlarni beradi. Sörov jadvallari va OpenCode seansi öqilmaydi.",
+    "OpenCode yanıtları Mac’te SQLite veritabanında saklar; yeni sürümlerde metin token sayısının yanındadır. UsageNow kaydı bütün okumaz; SQLite yalnızca zaman, model ve sayıları verir. İstem tabloları ve OpenCode oturumu okunmaz."
+  ],
+  "The database is opened read-only, and read again only when it has changed.": [
+    "Дерекқор тек оқуға ашылып, өзгергенде ғана қайта оқылады.",
+    "Baza faqat öqişga oçilib, özgarganda qayta öqiladi.",
+    "Veritabanı salt okunur açılır ve yalnızca değiştiğinde yeniden okunur."
+  ],
+  "The credits Qoder spent today and over the last 30 days, and the answers they paid for — read from the transcripts Qoder writes on your Mac.": [
+    "Qoder-дің бүгін және соңғы 30 күнде жұмсаған кредиттері мен жауаптары — Mac-тағы өз транскрипттерінен.",
+    "Qoder’ning bugun va oxirgi 30 kunda sarflagan kreditlari va javoblari — Mac’dagi öz transkriptlaridan.",
+    "Qoder’in bugün ve son 30 günde harcadığı krediler ve yanıtlar; Mac’te yazdığı kayıtlardan."
+  ],
+  "What Qoder charged since midnight, after any discount.": [
+    "Түн ортасынан бері Qoder алған төлем, жеңілдіктерден кейін.",
+    "Yarim tundan beri Qoder olgan haq, çegirmalardan keyin.",
+    "Gece yarısından beri Qoder’in indirim sonrası ücretlendirdiği."
+  ],
+  "Answers from the model today.": [
+    "Модельдің бүгінгі жауаптары.",
+    "Modelning bugungi javoblari.",
+    "Modelin bugünkü yanıtları."
+  ],
+  "Credits per day, with the month’s total.": [
+    "Күнделікті кредиттер мен айлық қорытынды.",
+    "Kunlik kreditlar va oylik jami.",
+    "Günlük krediler ve aylık toplam."
+  ],
+  "Qoder records zero tokens and uses internal model names.": [
+    "Qoder нөл токен жазады және ішкі модель атауларын қолданады.",
+    "Qoder nol token yozadi va içki model nomlarini işlatadi.",
+    "Qoder sıfır token kaydeder ve dahili model adları kullanır."
+  ],
+  "Your plan’s balance lives only in Qoder’s app and website.": [
+    "Тариф балансы тек Qoder қолданбасы мен сайтында бар.",
+    "Tarif balansi faqat Qoder dasturi va saytida bor.",
+    "Plan bakiyeniz yalnızca Qoder uygulamasında ve sitesindedir."
+  ],
+  "Illustrative values. Works with the Qoder app and with qodercli.": [
+    "Мысал көрсеткіштер. Qoder қолданбасымен және qodercli-мен жұмыс істейді.",
+    "Misol körsatkiçlar. Qoder dasturi va qodercli bilan işlaydi.",
+    "Örnek değerler. Qoder uygulaması ve qodercli ile çalışır."
+  ],
+  "Every answer in a Qoder transcript records the credits Qoder charged for it. UsageNow decodes only that, the answer’s time, and its request ID — your prompts, the replies, and tool results on the same lines are never decoded. Qoder’s sign-in is never opened, and no request goes to Qoder.": [
+    "Qoder әр жауаптың кредитін жазады. UsageNow тек кредит, уақыт пен сұрау ID-сін талдайды. Сол жолдардағы промпт, жауап мәтіні мен құрал нәтижелері талданбайды. Qoder сеансы ашылмайды, оған сұрау жіберілмейді.",
+    "Qoder har bir javob kreditini yozadi. UsageNow faqat kredit, vaqt va sörov ID’sini tahlil qiladi. Şu qatorlardagi sörov, javob matni va vosita natijalari tahlil qilinmaydi. Qoder seansi oçilmaydi, unga sörov yuborilmaydi.",
+    "Qoder her yanıtın kredisini kaydeder. UsageNow yalnızca kredi, zaman ve istek kimliğini çözümler. Aynı satırlardaki istem, yanıt metni ve araç sonuçları çözümlenmez. Qoder oturumu açılmaz veya Qoder’e istek gönderilmez."
+  ],
+  "An answer copied into another session counts once; one Qoder marks as not billable counts as zero.": [
+    "Басқа сеансқа көшірілген жауап бір рет есептеледі; тегін деп белгіленгені нөл болады.",
+    "Boşqa seansga nusxalangan javob bir marta sanaladi; bepul deb belgilangan nol böladi.",
+    "Başka oturuma kopyalanan yanıt bir kez sayılır; ücretsiz işaretlenen sıfır sayılır."
+  ],
+  "Tokens, requests, and the models that answered — today and over the last 30 days, read from the session recordings Qwen Code writes on your Mac.": [
+    "Токендер, сұраулар мен модельдер — бүгін және соңғы 30 күн үшін Qwen Code-тың Mac-тағы сеанстарынан.",
+    "Tokenlar, sörovlar va modellar — bugun va oxirgi 30 kun uçun Qwen Code’ning Mac’dagi seanslaridan.",
+    "Tokenlar, istekler ve modeller; bugün ve son 30 gün için Qwen Code’un Mac’teki oturumlarından."
+  ],
+  "From Qwen Code’s recordings in `~/.qwen/projects`.": [
+    "Qwen Code-тың `~/.qwen/projects` жазбаларынан.",
+    "Qwen Code’ning `~/.qwen/projects` yozuvlaridan.",
+    "Qwen Code’un `~/.qwen/projects` kayıtlarından."
+  ],
+  "Model answers recorded today.": [
+    "Бүгін жазылған модель жауаптары.",
+    "Bugun yozilgan model javoblari.",
+    "Bugün kaydedilen model yanıtları."
+  ],
+  "A bar per day, with the month’s tokens and top model.": [
+    "Күнделікті бағандар, айлық токендер мен негізгі модель.",
+    "Kunlik ustunlar, oylik tokenlar va asosiy model.",
+    "Günlük sütunlar, aylık tokenlar ve en çok kullanılan model."
+  ],
+  "Qwen Code doesn’t record them on your Mac, so none are shown.": [
+    "Qwen Code оларды Mac-та жазбайды, сондықтан көрсетілмейді.",
+    "Qwen Code ularni Mac’da yozmaydi, şu sababli körsatilmaydi.",
+    "Qwen Code bunları Mac’inizde kaydetmediği için gösterilmez."
+  ],
+  "Illustrative values. Cached input is counted apart, so a cost estimate prices it as cache.": [
+    "Мысал көрсеткіштер. Кэштелген кіріс бөлек саналып, кэш бағасымен есептеледі.",
+    "Misol körsatkiçlar. Keşlangan kiriş alohida sanalib, keş narxida hisoblanadi.",
+    "Örnek değerler. Önbellek girdisi ayrı sayılır ve kendi fiyatıyla hesaplanır."
+  ],
+  "Qwen Code records every answer with its token counts. UsageNow reads each answer’s time, model, and counts — the messages themselves are never decoded. Qwen Code’s sign-in and settings are never opened, and nothing is sent anywhere.": [
+    "Qwen Code әр жауаптың токен санын жазады. UsageNow тек уақыт, модель мен сандарды оқиды; хабарлар талданбайды. Qwen Code сеансы мен параметрлері ашылмайды, ештеңе жіберілмейді.",
+    "Qwen Code har bir javobning token sonini yozadi. UsageNow faqat vaqt, model va sonlarni öqiydi; xabarlar tahlil qilinmaydi. Qwen Code seansi va sozlamalari oçilmaydi, heç narsa yuborilmaydi.",
+    "Qwen Code her yanıtın token sayısını kaydeder. UsageNow yalnızca zaman, model ve sayıları okur; mesajlar çözümlenmez. Qwen Code oturumu ve ayarları açılmaz, hiçbir şey gönderilmez."
+  ],
+  "An answer copied into a resumed session counts once.": [
+    "Жалғасқан сеансқа көшірілген жауап бір рет саналады.",
+    "Davom etgan seansga nusxalangan javob bir marta sanaladi.",
+    "Sürdürülen oturuma kopyalanan yanıt bir kez sayılır."
+  ],
+  "Tokens, API requests, models, and what Cline itself says they cost — from the extension in VS Code, Cursor, Windsurf, or Kiro, and from the Cline command line.": [
+    "Токендер, API сұраулары, модельдер мен Cline жазған құн — VS Code, Cursor, Windsurf, Kiro кеңейтімінен және Cline командалық жолынан.",
+    "Tokenlar, API sörovlari, modellar va Cline yozgan xarajat — VS Code, Cursor, Windsurf, Kiro kengaytmasidan va Cline buyruq qatoridan.",
+    "Tokenlar, API istekleri, modeller ve Cline’ın bildirdiği maliyet; VS Code, Cursor, Windsurf, Kiro eklentisinden ve Cline komut satırından."
+  ],
+  "Input, output, and prompt-cache reads and writes, as Cline records them.": [
+    "Cline жазған кіріс, шығыс және промпт кэшін оқу-жазу.",
+    "Cline yozgan kiriş, çiqiş va sörov keşini öqiş-yoziş.",
+    "Cline’ın kaydettiği girdi, çıktı ve istem önbelleği okuma-yazmaları."
+  ],
+  "API requests Cline made today.": [
+    "Cline бүгін жасаған API сұраулары.",
+    "Cline bugun qilgan API sörovlari.",
+    "Cline’ın bugün yaptığı API istekleri."
+  ],
+  "The cost Cline worked out for each request — not an estimate.": [
+    "Cline әр сұрауға есептеген құн, болжам емес.",
+    "Cline har bir sörovga hisoblagan xarajat, taxmin emas.",
+    "Cline’ın her istek için hesapladığı maliyet, tahmin değil."
+  ],
+  "Whichever provider you run Cline with, most active first.": [
+    "Cline провайдеріне қарамастан, ең белсендісі алдымен.",
+    "Cline provayderidan qat’i nazar, eng faoli birinçi.",
+    "Cline’ı hangi sağlayıcıyla kullanırsanız kullanın, en etkin önce."
+  ],
+  "Limits belong to the provider you connect, not to Cline.": [
+    "Лимиттер Cline-ға емес, қосылған провайдерге тиесілі.",
+    "Limitlar Cline’ga emas, ulangan provayderga tegişli.",
+    "Limitler Cline’a değil bağlandığınız sağlayıcıya aittir."
+  ],
+  "Illustrative values. Tasks from every supported editor add up in one section.": [
+    "Мысал көрсеткіштер. Барлық қолдаулы редактор тапсырмалары бір бөлімге жиналады.",
+    "Misol körsatkiçlar. Barcha qöllanadigan muharrir vazifalari bitta bölimga yiğiladi.",
+    "Örnek değerler. Desteklenen tüm düzenleyicilerdeki görevler tek bölümde toplanır."
+  ],
+  "Cline saves each task on your Mac, and records every API request with its tokens and cost. UsageNow reads only those numbers, the model, and the time. Cline keeps the request it sent in the same record; it passes through memory while the numbers are read and is never kept or logged. Replies and tool output are skipped.": [
+    "Cline тапсырмалар мен API сұрауларының токені мен құнын Mac-та сақтайды. UsageNow тек сандар, модель мен уақытты оқиды. Сол жазбадағы сұрау мәтіні сандарды оқу кезінде жадтан өтеді, бірақ сақталмайды не журналға жазылмайды. Жауаптар мен құрал нәтижелері өткізіледі.",
+    "Cline vazifalar va API sörovlarining tokeni va xarajatini Mac’da saqlaydi. UsageNow faqat sonlar, model va vaqtni öqiydi. Şu yozuvdagi sörov matni sonlarni öqişda xotiradan ötadi, ammo saqlanmaydi yoki jurnalga yozilmaydi. Javoblar va vosita natijalari ötkaziladi.",
+    "Cline görevleri ve API isteklerinin tokenlarıyla maliyetini Mac’te saklar. UsageNow yalnızca sayıları, modeli ve zamanı okur. Aynı kayıttaki istek metni okunurken bellekten geçer, saklanmaz veya günlüğe yazılmaz. Yanıtlar ve araç çıktısı atlanır."
+  ],
+  "Cline’s keys are never opened, and a task is read again only when it changes.": [
+    "Cline кілттері ашылмайды; тапсырма тек өзгергенде қайта оқылады.",
+    "Cline kalitlari oçilmaydi; vazifa faqat özgarganda qayta öqiladi.",
+    "Cline anahtarları açılmaz; görev yalnızca değiştiğinde yeniden okunur."
+  ],
+  "Tokens, model calls, models, and the cost xAI reported for each turn — today and over the last 30 days, read from the session logs Grok Build writes on your Mac.": [
+    "Токендер, модель шақырулары, модельдер мен әр айналымның xAI құны — бүгін және соңғы 30 күн үшін Grok Build сеанс журналдарынан.",
+    "Tokenlar, model çaqiruvlari, modellar va har bir aylanişning xAI xarajati — bugun va oxirgi 30 kun uçun Grok Build seans jurnallaridan.",
+    "Tokenlar, model çağrıları, modeller ve xAI’nin tur başına bildirdiği maliyet; bugün ve son 30 gün için Grok Build oturum günlüklerinden."
+  ],
+  "Input, output, and cache reads and writes, per model.": [
+    "Әр модельдің кірісі, шығысы және кэшті оқу-жазуы.",
+    "Har bir modelning kirişi, çiqişi va keşni öqiş-yozişi.",
+    "Model başına girdi, çıktı ve önbellek okuma-yazmaları."
+  ],
+  "Model calls — a turn often makes several.": [
+    "Модель шақырулары; бір айналымда бірнешеуі болуы мүмкін.",
+    "Model çaqiruvlari; bitta aylanişda bir neçta bölişi mumkin.",
+    "Model çağrıları; bir turda çoğunlukla birkaçı olur."
+  ],
+  "What xAI reported for each completed turn — dropped when a turn’s usage is incomplete.": [
+    "xAI аяқталған әр айналымға берген құн; қолданыс толық болмаса алынбайды.",
+    "xAI tugagan har bir aylanişga bildirgan xarajat; sarf töliq bölmasa olinmaydi.",
+    "xAI’nin tamamlanan her tur için bildirdiği maliyet; kullanım eksikse alınmaz."
+  ],
+  "A Grok plan’s weekly usage is shown only on the web.": [
+    "Grok тарифінің апталық қолданысы тек вебте бар.",
+    "Grok tarifining haftalik sarfi faqat vebda bor.",
+    "Grok planının haftalık kullanımı yalnızca web’de gösterilir."
+  ],
+  "Illustrative values. Only completed turns count; a turn still running is added when it ends.": [
+    "Мысал көрсеткіштер. Тек аяқталған айналымдар есептеледі; жүріп жатқаны аяқталғанда қосылады.",
+    "Misol körsatkiçlar. Faqat tugagan aylanişlar sanaladi; davom etayotgani tugaganda qöşiladi.",
+    "Örnek değerler. Yalnızca biten turlar sayılır; süren tur bitince eklenir."
+  ],
+  "When a turn ends, Grok Build records its usage per model in the session’s `updates.jsonl`. UsageNow reads only those numbers, the model names, and the time. The turn’s result text on the same line, and every prompt, reply, and tool call, are never decoded. Grok Build’s sign-in is never opened.": [
+    "Айналым аяқталғанда Grok Build модель қолданысын `updates.jsonl` файлына жазады. UsageNow тек сандар, модель атаулары мен уақытты оқиды. Сол жолдағы нәтиже мәтіні, промпттар, жауаптар мен құрал шақырулары талданбайды. Grok Build сеансы ашылмайды.",
+    "Aylaniş tugaganda Grok Build model sarfini `updates.jsonl` fayliga yozadi. UsageNow faqat sonlar, model nomlari va vaqtni öqiydi. Şu qatordagi natija matni, sörovlar, javoblar va vosita çaqiruvlari tahlil qilinmaydi. Grok Build seansi oçilmaydi.",
+    "Tur bitince Grok Build model kullanımını `updates.jsonl` dosyasına yazar. UsageNow yalnızca sayıları, model adlarını ve zamanı okur. Aynı satırdaki sonuç metni, istemler, yanıtlar ve araç çağrıları çözümlenmez. Grok Build oturumu açılmaz."
+  ]
+}

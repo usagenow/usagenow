@@ -2,6 +2,16 @@
 
 What's New in Korean: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.0.0
+
+### Added
+
+- 앱과 위젯에 카자흐어, 우즈베크어, 튀르키예어를 추가하여 13개 언어를 지원합니다. 우즈베크어는 Ö, Ğ, Ş, Ç를 사용합니다.
+- 제공업체를 선택하는 선택적 초기 설정을 추가했습니다. 건너뛰거나 설정에서 다시 열 수 있습니다. 기존 설정은 유지되며 첫 데이터 읽기는 초기 설정 완료 또는 건너뛰기 후 시작합니다.
+- 제공업체별 알림 임계값, 독립적인 초기화 알림, Mac 시간대의 방해 금지 시간을 지원합니다. 건너뛴 알림을 쌓아두지 않으며 오래된 데이터로 경고하지 않습니다.
+- 선택적 CLI: usagenow status와 usagenow status --json으로 안전한 스냅샷과 최신 여부를 읽습니다. 제공업체 통신, 인증, 기록 내보내기는 없습니다. 설정 › 일반에서 설치합니다.
+- 잠자기 해제 후 새로고침, 알림 이전, 스냅샷 호환성을 점검합니다. CLI는 초기화 후 백분율을 알 수 없음으로 처리하고 미지원 형식을 거부합니다.
+
 ## 0.9.0
 
 ### Added

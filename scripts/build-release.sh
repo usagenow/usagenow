@@ -63,8 +63,17 @@ case "$APP_GROUP" in
 esac
 codesign --verify --deep --strict --verbose=2 "$APP"
 codesign --verify --strict --verbose=2 "$APP/Contents/PlugIns/UsageNowWidget.appex"
+CLI="$APP/Contents/Helpers/usagenow"
+test -x "$CLI"
+codesign --verify --strict --verbose=2 "$CLI"
+"$CLI" --version
+CLI_GROUP=$(codesign -d --entitlements - --xml "$CLI" 2>/dev/null | plutil -extract 'com\.apple\.security\.application-groups.0' raw -)
+if [ "$CLI_GROUP" != "$APP_GROUP" ]; then
+    echo "error: CLI App Group does not match the app" >&2
+    exit 1
+fi
 
-for target in "$APP" "$APP/Contents/PlugIns/UsageNowWidget.appex"; do
+for target in "$APP" "$APP/Contents/PlugIns/UsageNowWidget.appex" "$CLI"; do
     echo "--- $(basename "$target")"
     # Collect once: piping codesign into grep -q would kill it with SIGPIPE.
     signature=$(codesign -dvvv "$target" 2>&1 || true)

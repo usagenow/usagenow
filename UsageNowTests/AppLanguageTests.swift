@@ -12,13 +12,16 @@ struct AppLanguageTests {
         #expect(AppLanguage(preferredLanguages: ["nl-NL"]) == .nl)
         #expect(AppLanguage(preferredLanguages: ["nl-BE"]) == .nl)
         #expect(AppLanguage(preferredLanguages: ["he-IL"]) == .he)
+        #expect(AppLanguage(preferredLanguages: ["kk-KZ"]) == .kk)
+        #expect(AppLanguage(preferredLanguages: ["uz-Latn-UZ"]) == .uz)
+        #expect(AppLanguage(preferredLanguages: ["tr-TR"]) == .tr)
         #expect(AppLanguage(preferredLanguages: ["zh-Hans"]) == .system)
         #expect(AppLanguage(preferredLanguages: nil) == .system)
     }
 
     @Test func namesEachLanguageInItself() {
         #expect(AppLanguage.allCases.compactMap(\.nativeName) == [
-            "Deutsch", "English", "Español", "Français", "Nederlands", "Português", "Русский", "עברית", "日本語", "한국어",
+            "Deutsch", "English", "Español", "Français", "Nederlands", "Özbekça", "Português", "Türkçe", "Қазақша", "Русский", "עברית", "日本語", "한국어",
         ])
     }
 
@@ -33,6 +36,18 @@ struct AppLanguageTests {
         for (key, value) in ["General": "Algemeen", "Quota pace": "Verbruikstempo", "Done": "Gereed"] {
             #expect(bundle.localizedString(forKey: key, value: nil, table: nil) == value)
         }
+    }
+
+    @Test func newLanguagesBundleRealTextAndUzbekSpelling() throws {
+        for (language, expected) in [("kk", "Жалпы"), ("uz", "Umumiy"), ("tr", "Genel")] {
+            let path = try #require(Bundle.main.path(forResource: language, ofType: "lproj"))
+            let bundle = try #require(Bundle(path: path))
+            #expect(bundle.localizedString(forKey: "General", value: nil, table: nil) == expected)
+        }
+        let path = try #require(Bundle.main.path(forResource: "uz", ofType: "lproj"))
+        let bundle = try #require(Bundle(path: path))
+        #expect(bundle.localizedString(forKey: "Choose your providers", value: nil, table: nil) == "Provayderlaringizni tanlang")
+        #expect(bundle.localizedString(forKey: "Skip Setup", value: nil, table: nil) == "Sozlaşni ötkaziş")
     }
 
     @Test func choosingALanguageSetsTheAppsOwnLanguageList() throws {

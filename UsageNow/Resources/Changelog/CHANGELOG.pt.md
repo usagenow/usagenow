@@ -2,6 +2,16 @@
 
 What's New in Portuguese: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.0.0
+
+### Added
+
+- Cazaque, usbeque e turco na app e nos widgets: treze idiomas. O usbeque usa Ö, Ğ, Ş e Ç.
+- Configuração inicial opcional com escolha de fornecedores. Pode ignorá-la ou reabri-la nas Definições. As instalações existentes mantêm as escolhas; a primeira leitura começa após concluir ou ignorar.
+- Limiares por fornecedor, alertas de reinício independentes e horas de silêncio no fuso do Mac. Os alertas ignorados não se acumulam; dados antigos não geram avisos.
+- CLI opcional: usagenow status e usagenow status --json leem a captura segura com a sua atualidade. Sem pedidos aos fornecedores, autenticação ou exportação do histórico. Instale em Definições › Geral.
+- Atualização ao acordar e verificações da migração de alertas e compatibilidade de capturas. A CLI remove percentagens após reinícios e rejeita formatos incompatíveis.
+
 ## 0.9.0
 
 ### Added

@@ -74,4 +74,10 @@ struct ResetTimeFormatterTests {
     @Test func futureDatesCountAsJustNow() {
         #expect(formatter.relative(now.addingTimeInterval(30), now: now) == "Just now")
     }
+
+    @Test func uzbekDateTextUsesTheRequestedAlphabetOnlyForUzbek() {
+        let original = "Oʻzbekcha G‘ shanba Chorshanba"
+        #expect(UzbekOrthography.dateText(original, locale: Locale(identifier: "uz-Latn-UZ")) == "Özbekça Ğ şanba Çorşanba")
+        #expect(UzbekOrthography.dateText(original, locale: Locale(identifier: "tr")) == original)
+    }
 }

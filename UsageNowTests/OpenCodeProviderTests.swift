@@ -161,7 +161,7 @@ struct OpenCodeEnvironmentTests {
 
     @Test func nothingThereMeansNotInstalled() throws {
         let dir = try TemporaryDirectory()
-        let environment = OpenCodeEnvironment.discover(homeDirectory: dir.url)
+        let environment = OpenCodeEnvironment.discover(homeDirectory: dir.url, executableCandidates: [])
         #expect(environment.database == nil)
         #expect(environment.executable == nil)
     }

@@ -12,7 +12,10 @@ enum AppLanguage: String, CaseIterable, Identifiable, Sendable {
     case es
     case fr
     case nl
+    case uz
     case pt
+    case tr
+    case kk
     case ru
     case he
     case ja
@@ -26,6 +29,8 @@ enum AppLanguage: String, CaseIterable, Identifiable, Sendable {
     /// "Deutsch", "Español", "Русский": each language in its own name, so
     /// it can be found from any of the others. `nil` for `system`.
     var nativeName: String? {
+        if self == .uz { return "Özbekça" }
+        if self == .kk { return "Қазақша" }
         guard let code else { return nil }
         let locale = Locale(identifier: code)
         return locale.localizedString(forLanguageCode: code)?.capitalized(with: locale)

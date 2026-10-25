@@ -9,6 +9,7 @@ final class AppState {
     static let popoverRefreshMaxAge: TimeInterval = 60
 
     let store: UsageStore
+    let firstRun: FirstRunSetup
     let serviceHealth: ServiceHealthStore
     let preferences: AppPreferences
     let providerPreferences: ProviderPreferences
@@ -24,6 +25,8 @@ final class AppState {
     /// label, which lives in a scene. The shortcut's panel doesn't.
     var openSettings: (@MainActor () -> Void)?
     private var shortcutPanel: ShortcutPanelController?
+    private var wakeObserver: (any NSObjectProtocol)?
+    private var timeZoneObserver: (any NSObjectProtocol)?
 
     /// Deliberately never given `store` or snapshots — only which providers
     /// are installed. See `TelemetryClient`.
@@ -56,6 +59,7 @@ final class AppState {
         serviceHealth: ServiceHealthStore = ServiceHealthStore(),
         accountProvider: @escaping @Sendable (ProviderAccount) -> (any UsageProvider)? = { _ in nil }
     ) {
+        firstRun = FirstRunSetup(defaults: defaults)
         let providerPreferences = ProviderPreferences(defaults: defaults)
         var accountProviders: [ProviderAccount: any UsageProvider] = [:]
         for account in providerPreferences.accounts {
@@ -180,21 +184,23 @@ final class AppState {
     }
 
     func start() {
-        claudeLimits?.isEnabled.isOn = preferences.fetchClaudeUsageLimits
-        Task { [store] in
-            await store.refresh()
-            // The first refresh reads a month of session files, and the
-            // allocator keeps the freed read buffers for reuse — shown as
-            // ~170 MB more in Activity Monitor. Later refreshes read only new
-            // lines, so hand that memory back to the system now.
-            malloc_zone_pressure_relief(nil, 0)
+        wakeObserver = NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: .main) { [weak self] _ in
+            Task { @MainActor [weak self] in self?.popoverDidOpen() }
         }
+        timeZoneObserver = NotificationCenter.default.addObserver(forName: .NSSystemTimeZoneDidChange, object: nil, queue: .main) { [weak self] _ in
+            Task { @MainActor [weak self] in self?.notifyAboutLimits() }
+        }
+        claudeLimits?.isEnabled.isOn = preferences.fetchClaudeUsageLimits
+        if !firstRun.needsSetup { startReadings() }
         applyAppearance()
-        applyRefreshInterval()
         applyLimitNotifications()
         applyServiceStatusPreference()
         hotKey.action = { [weak self] in self?.toggleShortcutPanel() }
         applyPopoverShortcut()
+
+        observe({ [firstRun] in _ = firstRun.needsSetup }, apply: { [weak self] in
+            if self?.firstRun.needsSetup == false { self?.startReadings() }
+        })
 
         observe({ [preferences] in _ = preferences.appearance }, apply: { [weak self] in self?.applyAppearance() })
         observe({ [preferences] in _ = preferences.refreshInterval }, apply: { [weak self] in self?.applyRefreshInterval() })
@@ -208,13 +214,27 @@ final class AppState {
         observe({ [preferences] in _ = preferences.showsServiceStatus }, apply: { [weak self] in self?.applyServiceStatusPreference() })
         observe({ [preferences] in _ = preferences.language }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.notifiesAboutLimits }, apply: { [weak self] in self?.applyLimitNotifications() })
+        observe({ [preferences] in _ = preferences.notificationPolicy }, apply: { [weak self] in self?.notifyAboutLimits() })
         observe({ [preferences] in _ = preferences.popoverShortcut }, apply: { [weak self] in self?.applyPopoverShortcut() })
         observe({ [analyticsPreferences] in _ = analyticsPreferences.isSharingEnabled }, apply: { [weak self] in self?.analyticsSharingChanged() })
 
         Task { [telemetry] in await telemetry.appDidBecomeActive() }
     }
 
+    private func startReadings() {
+        Task { [store] in
+            await store.refresh()
+            // The first refresh reads a month of session files, and the
+            // allocator keeps the freed read buffers for reuse — shown as
+            // ~170 MB more in Activity Monitor. Later refreshes read only new
+            // lines, so hand that memory back to the system now.
+            malloc_zone_pressure_relief(nil, 0)
+        }
+        applyRefreshInterval()
+    }
+
     func popoverDidOpen() {
+        guard !firstRun.needsSetup else { return }
         Task { await store.refreshIfNeeded(maxAge: Self.popoverRefreshMaxAge) }
         Task { await serviceHealth.refreshIfNeeded() }
         Task { [telemetry] in await telemetry.appDidBecomeActive() }
@@ -332,7 +352,9 @@ final class AppState {
     }
 
     private func notifyAboutLimits() {
-        limitNotifier.update(snapshots: store.snapshots, enabledProviders: store.enabledProviders, style: preferences.usageAmountStyle)
+        limitNotifier.update(snapshots: store.snapshots, enabledProviders: store.enabledProviders, style: preferences.usageAmountStyle,
+                             policy: preferences.notificationPolicy,
+                             activeSources: Set(store.states.filter { store.enabledProviders.contains($0.provider) }.map(\.id)))
     }
 
     private func toggleShortcutPanel() {
@@ -350,6 +372,7 @@ final class AppState {
     }
 
     private func applyRefreshInterval() {
+        guard !firstRun.needsSetup else { return }
         scheduler.schedule(every: preferences.refreshInterval.duration)
     }
 

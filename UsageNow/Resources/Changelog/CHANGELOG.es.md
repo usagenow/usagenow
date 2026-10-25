@@ -2,6 +2,16 @@
 
 What's New in Spanish: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.0.0
+
+### Added
+
+- Kazajo, uzbeko y turco en la app y los widgets: trece idiomas. El uzbeko usa Ö, Ğ, Ş y Ç.
+- Configuración inicial opcional con selección de proveedores. Puedes omitirla y reabrirla en Ajustes. Las instalaciones existentes conservan sus opciones; la primera lectura empieza al terminar u omitir la configuración.
+- Umbrales por proveedor, avisos de reinicio independientes y horario de silencio en la zona del Mac. Las alertas omitidas no se acumulan; los datos antiguos no provocan avisos.
+- CLI opcional: usagenow status y usagenow status --json leen la instantánea segura con su antigüedad. Sin consultas a proveedores, autenticación ni exportación del historial. Instálala en Ajustes › General.
+- Actualización al despertar y pruebas de migración de avisos y compatibilidad de instantáneas. La CLI elimina porcentajes tras el reinicio y rechaza formatos no compatibles.
+
 ## 0.9.0
 
 ### Added

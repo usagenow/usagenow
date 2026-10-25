@@ -3,11 +3,16 @@ import SwiftUI
 /// Hands the scene's "open Settings" action to code outside any scene.
 private struct SettingsOpener: View {
     let capture: (@escaping @MainActor () -> Void) -> Void
+    var needsSetup = false
 
     @Environment(\.openSettings) private var openSettings
+    @Environment(\.openWindow) private var openWindow
 
     var body: some View {
-        Color.clear.onAppear { capture { openSettings() } }
+        Color.clear.onAppear {
+            capture { openSettings() }
+            if needsSetup { openWindow(id: "setup") }
+        }
     }
 }
 
@@ -39,9 +44,20 @@ struct UsageNowApp: App {
                 .onPopoverOpen { appState.popoverDidOpen() }
         } label: {
             MenuBarLabel(preferences: appState.preferences, store: appState.store)
-                .background(SettingsOpener { appState.openSettings = $0 })
+                .background(SettingsOpener(capture: { appState.openSettings = $0 }, needsSetup: appState.firstRun.needsSetup))
         }
         .menuBarExtraStyle(.window)
+
+        Window("Welcome to UsageNow", id: "setup") {
+            FirstRunView(preferences: appState.providerPreferences, finish: { appState.firstRun.complete() }, connect: {
+                appState.settingsNavigation.tab = .providers
+                appState.openSettings?()
+            })
+            .appLanguage(appState.preferences.languageAtLaunch)
+        }
+        .windowResizability(.contentSize)
+        .defaultLaunchBehavior(.suppressed)
+        .restorationBehavior(.disabled)
 
         Settings {
             SettingsView(

@@ -39,7 +39,7 @@ if [ ! -d "$IMAGES" ]; then
     exit 1
 fi
 
-count=$(find "$IMAGES" -name "UsageNow-*.dmg" | wc -l | tr -d ' ')
+count=$(find "$IMAGES" -maxdepth 1 -name "UsageNow-*.dmg" | wc -l | tr -d ' ')
 if [ "$count" -eq 0 ]; then
     echo "error: no UsageNow-<version>.dmg in $IMAGES" >&2
     exit 1
@@ -52,6 +52,7 @@ echo "==> Signing $count disk image(s) from $IMAGES"
 # No delta updates: only the disk images are published to the site, so a
 # delta listed in the feed would point at a file that isn't there.
 "$GENERATE" \
+    --maximum-versions 0 \
     --maximum-deltas 0 \
     --download-url-prefix "$DOWNLOAD_PREFIX" \
     --link "https://usagenow.com" \

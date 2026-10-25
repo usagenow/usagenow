@@ -38,7 +38,7 @@ struct ResetTimeFormatter: Sendable {
         formatter.locale = locale
         formatter.timeZone = timeZone
         formatter.setLocalizedDateFormatFromTemplate("EEEHHmm")
-        return formatter.string(from: date)
+        return UzbekOrthography.dateText(formatter.string(from: date), locale: locale)
     }
 
     /// For a window that reset after its last reading: "Reset Mon 22:59 · not updated since".
@@ -71,7 +71,7 @@ struct ResetTimeFormatter: Sendable {
         formatter.unitsStyle = .full
         formatter.allowedUnits = [.hour, .minute]
         let roundedUp = (interval / 60).rounded(.up) * 60
-        let spoken = formatter.string(from: roundedUp) ?? countdown(from: now, to: date)
+        let spoken = UzbekOrthography.dateText(formatter.string(from: roundedUp) ?? countdown(from: now, to: date), locale: locale)
         return String(localized: "Resets in \(spoken)")
     }
 

@@ -18,6 +18,7 @@ final class AppPreferences {
         static let showsServiceStatus = "showsServiceStatus"
         static let fetchClaudeUsageLimits = "experimental.fetchClaudeUsageLimits"
         static let notifiesAboutLimits = "notifiesAboutLimits"
+        static let notificationPolicy = "notificationPolicy.v1"
         static let popoverShortcut = "popoverShortcut"
         /// macOS's own per-app language list, the one System Settings writes.
         static let appleLanguages = "AppleLanguages"
@@ -94,6 +95,10 @@ final class AppPreferences {
         didSet { defaults.set(notifiesAboutLimits, forKey: Key.notifiesAboutLimits) }
     }
 
+    var notificationPolicy: NotificationPolicy {
+        didSet { defaults.set(try? JSONEncoder().encode(notificationPolicy), forKey: Key.notificationPolicy) }
+    }
+
     /// Opens the menu bar window from any app. None until the person records one.
     var popoverShortcut: GlobalShortcut? {
         didSet { defaults.set(popoverShortcut.flatMap { try? JSONEncoder().encode($0) }, forKey: Key.popoverShortcut) }
@@ -115,6 +120,8 @@ final class AppPreferences {
         showsServiceStatus = defaults.bool(forKey: Key.showsServiceStatus)
         fetchClaudeUsageLimits = defaults.bool(forKey: Key.fetchClaudeUsageLimits)
         notifiesAboutLimits = defaults.bool(forKey: Key.notifiesAboutLimits)
+        notificationPolicy = defaults.data(forKey: Key.notificationPolicy)
+            .flatMap { try? JSONDecoder().decode(NotificationPolicy.self, from: $0) } ?? NotificationPolicy()
         popoverShortcut = defaults.data(forKey: Key.popoverShortcut).flatMap { try? JSONDecoder().decode(GlobalShortcut.self, from: $0) }
         refreshInterval = (defaults.object(forKey: Key.refreshInterval) as? Int)
             .flatMap(RefreshInterval.init(rawValue:)) ?? .default

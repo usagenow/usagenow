@@ -20,6 +20,7 @@ from __future__ import annotations
 import json
 import pathlib
 import sys
+import subprocess
 
 LANGUAGES = ("ru", "de", "es", "fr")
 MORE_LANGUAGES = ("pt", "ja", "ko", "he")
@@ -1556,7 +1557,10 @@ def main() -> None:
                 localizations[language] = {"variations": {"plural": {form: unit(text) for form, text in forms.items()}}}
             continue
         if key not in T or key not in T_MORE:
-            missing.append(key)
+            # Reviewed entries added in later versions are kept in their
+            # own catalogs; never replace them with an English fallback.
+            if not all(language in localizations for language in LANGUAGES + MORE_LANGUAGES):
+                missing.append(key)
             continue
         for language, text in zip(LANGUAGES + MORE_LANGUAGES, T[key] + T_MORE[key]):
             localizations[language] = unit(text)
@@ -1570,6 +1574,7 @@ def main() -> None:
         print("translations for strings no longer in the catalog:", *unused, sep="\n  ")
     if missing:
         sys.exit(1)
+    subprocess.run(["node", str(path.parents[2] / "scripts/localize-1.0.mjs")], check=True)
 
 
 if __name__ == "__main__":

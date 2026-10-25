@@ -204,7 +204,7 @@ enum ProviderCatalog {
             displayName: "JetBrains AI",
             summary: "Track AI Assistant limits from your JetBrains IDE.",
             availability: .available,
-            logoAssetName: nil,
+            logoAssetName: "JetBrainsLogo",
             symbolName: "square.stack.3d.up",
             isExperimental: true
         ),
@@ -268,7 +268,7 @@ enum ProviderCatalog {
         ProviderDefinition(
             id: .perplexity, displayName: "Perplexity",
             summary: "Track Perplexity web credits.", availability: .available,
-            logoAssetName: nil, symbolName: "magnifyingglass",
+            logoAssetName: "PerplexityLogo", symbolName: "magnifyingglass",
             apiKey: APIKeyConnection(host: "www.perplexity.ai", keysPage: URL(string: "https://www.perplexity.ai/account/usage")!, authentication: .perplexitySession),
             isExperimental: true
         ),

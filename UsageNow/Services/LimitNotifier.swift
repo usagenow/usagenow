@@ -34,6 +34,8 @@ final class LimitNotifier {
     @ObservationIgnored private let now: @Sendable () -> Date
     @ObservationIgnored private var memory: LimitNoticePlanner.Memory
     @ObservationIgnored private(set) var isEnabled = false
+    @ObservationIgnored private var configuration: NotificationPolicy?
+    @ObservationIgnored private var timeZone: String?
 
     private static let memoryKey = "limitNotifications.memory"
 
@@ -45,6 +47,9 @@ final class LimitNotifier {
         self.defaults = defaults
         self.delivery = delivery
         self.now = now
+        configuration = defaults.data(forKey: "limitNotifications.policy")
+            .flatMap { try? JSONDecoder().decode(NotificationPolicy.self, from: $0) } ?? NotificationPolicy()
+        timeZone = defaults.string(forKey: "limitNotifications.timeZone") ?? TimeZone.autoupdatingCurrent.identifier
         memory = defaults.data(forKey: Self.memoryKey)
             .flatMap { try? JSONDecoder().decode(LimitNoticePlanner.Memory.self, from: $0) } ?? [:]
     }
@@ -62,12 +67,39 @@ final class LimitNotifier {
     }
 
     /// Looks at fresh readings and sends whatever they call for.
-    func update(snapshots: [ProviderSnapshot], enabledProviders: Set<ProviderID>, style: UsageAmountStyle) {
+    func update(snapshots: [ProviderSnapshot], enabledProviders: Set<ProviderID>, style: UsageAmountStyle,
+                policy: NotificationPolicy = NotificationPolicy(), activeSources: Set<SourceKey>? = nil) {
         guard isEnabled else { return }
         let date = now()
         let before = memory
-        var actions = LimitNoticePlanner.forget(providersOtherThan: enabledProviders, memory: &memory)
-        actions += LimitNoticePlanner.plan(snapshots: snapshots, memory: &memory, now: date)
+        if configuration != policy || timeZone != TimeZone.autoupdatingCurrent.identifier {
+            // Also reconciles schedules left by an earlier app version.
+            delivery.cancelAll()
+            for key in memory.keys {
+                if (memory[key]?.resetsAt ?? .distantFuture) > date {
+                    memory[key]?.isResetScheduled = false
+                    memory[key]?.resetSuppressed = nil
+                }
+            }
+            configuration = policy
+            timeZone = TimeZone.autoupdatingCurrent.identifier
+            defaults.set(try? JSONEncoder().encode(policy), forKey: "limitNotifications.policy")
+            defaults.set(timeZone, forKey: "limitNotifications.timeZone")
+        }
+        let notifying = enabledProviders.filter { policy.rule(for: $0).enabled }
+        var actions = LimitNoticePlanner.forget(providersOtherThan: notifying, memory: &memory)
+        // Deleted accounts cannot leave a reset scheduled for another identity.
+        // The registry includes sources still loading after launch. An absent
+        // snapshot is not evidence that its account was removed.
+        let present = activeSources ?? Set(snapshots.map(\.id))
+        for (key, entry) in memory {
+            let source = key.split(separator: "|").first.map(String.init)
+            if let source, !present.contains(where: { "\($0)" == source }) {
+                if entry.isResetScheduled { actions.append(.cancel(identifier: "limit.reset.\(key)")) }
+                memory[key] = nil
+            }
+        }
+        actions += LimitNoticePlanner.plan(snapshots: snapshots, memory: &memory, now: date, policy: policy)
         if memory != before { save() }
 
         for action in actions {

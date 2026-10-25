@@ -53,6 +53,8 @@ enum LimitNoticePlanner {
         var resetsAt: Date?
         /// Whether a "has reset" notice is waiting for `resetsAt`.
         var isResetScheduled = false
+        /// A reset falling in quiet hours is consumed, never deferred.
+        var resetSuppressed: Bool? = nil
     }
 
     typealias Memory = [String: WindowMemory]
@@ -70,61 +72,89 @@ enum LimitNoticePlanner {
         "\(source)|\(UsageWindow(kind: kind, scope: scope).id)"
     }
 
-    static func plan(snapshots: [ProviderSnapshot], memory: inout Memory, now: Date) -> [Action] {
+    static func plan(snapshots: [ProviderSnapshot], memory: inout Memory, now: Date,
+                     policy: NotificationPolicy = NotificationPolicy(), calendar: Calendar = .autoupdatingCurrent) -> [Action] {
         var actions: [Action] = []
         var seen: Set<String> = []
+        let quiet = policy.isQuiet(at: now, calendar: calendar)
 
         for snapshot in snapshots where snapshot.status == .available {
+            let rule = policy.rule(for: snapshot.provider)
             for window in snapshot.windows {
                 let key = key(snapshot.id, kind: window.kind, scope: window.scope)
                 seen.insert(key)
                 func notice(_ kind: LimitNotice.Kind) -> LimitNotice {
                     LimitNotice(provider: snapshot.provider, account: snapshot.account, window: window.kind, scope: window.scope, kind: kind, resetsAt: window.resetsAt)
                 }
+                func reconcileReset(_ entry: inout WindowMemory) {
+                    guard rule.resets else {
+                        if entry.isResetScheduled { actions.append(.cancel(identifier: notice(.reset).identifier)) }
+                        entry.isResetScheduled = false
+                        return
+                    }
+                    guard let resetsAt = window.resetsAt, resetsAt > now else { return }
+                    let moved = abs(resetsAt.timeIntervalSince(entry.resetsAt ?? .distantPast)) > resetTolerance
+                    guard moved || !entry.isResetScheduled && entry.resetSuppressed != true else { return }
+                    entry.resetSuppressed = policy.isQuiet(at: resetsAt, calendar: calendar)
+                    if entry.resetSuppressed != true {
+                        actions.append(.schedule(notice(.reset), at: resetsAt))
+                    } else if entry.isResetScheduled {
+                        actions.append(.cancel(identifier: notice(.reset).identifier))
+                    }
+                    entry.resetsAt = resetsAt
+                    entry.isResetScheduled = entry.resetSuppressed != true
+                }
+
+                if !rule.enabled {
+                    if memory[key]?.isResetScheduled == true { actions.append(.cancel(identifier: notice(.reset).identifier)) }
+                    memory[key] = nil
+                    continue
+                }
 
                 // A window whose reset time has passed is a new window. A
                 // scheduled notice has said so already; without one — the
                 // reset time wasn't known when the warning went out — say so now.
                 if let remembered = memory[key], let resetsAt = remembered.resetsAt, resetsAt <= now {
-                    if !remembered.isResetScheduled { actions.append(.deliver(notice(.reset))) }
+                    if !remembered.isResetScheduled && remembered.resetSuppressed != true && rule.enabled && rule.resets && !quiet && !snapshot.isStale(at: now) {
+                        actions.append(.deliver(notice(.reset)))
+                    }
                     memory[key] = nil
                 }
 
+                guard rule.enabled, !snapshot.isStale(at: now), (window.resetsAt ?? .distantFuture) > now else { continue }
                 guard let usage = window.usage else { continue }
                 let remaining = usage.remainingDisplayValue
-                let crossed = thresholds.filter { remaining <= $0 }.min()
+                let crossed = rule.thresholds.filter { remaining <= $0 }.min()
 
                 guard var remembered = memory[key] else {
                     guard let crossed else { continue }
                     var entry = WindowMemory(notified: crossed, resetsAt: window.resetsAt)
-                    actions.append(.deliver(notice(.low(usage))))
-                    if let resetsAt = window.resetsAt, resetsAt > now {
-                        actions.append(.schedule(notice(.reset), at: resetsAt))
-                        entry.isResetScheduled = true
-                    }
+                    if !quiet { actions.append(.deliver(notice(.low(usage)))) }
+                    reconcileReset(&entry)
                     memory[key] = entry
                     continue
                 }
 
                 guard let crossed else {
+                    // Editing thresholds isn't evidence of a quota reset.
+                    guard remaining > remembered.notified else {
+                        reconcileReset(&remembered)
+                        memory[key] = remembered
+                        continue
+                    }
                     // Back above every threshold before the reset time: the
                     // limit was reset early, or it never had a reset time.
                     if remembered.isResetScheduled { actions.append(.cancel(identifier: notice(.reset).identifier)) }
-                    actions.append(.deliver(notice(.reset)))
+                    if rule.resets && !quiet { actions.append(.deliver(notice(.reset))) }
                     memory[key] = nil
                     continue
                 }
 
                 if crossed < remembered.notified {
-                    actions.append(.deliver(notice(.low(usage))))
+                    if !quiet { actions.append(.deliver(notice(.low(usage)))) }
                     remembered.notified = crossed
                 }
-                if let resetsAt = window.resetsAt, resetsAt > now,
-                   abs(resetsAt.timeIntervalSince(remembered.resetsAt ?? .distantPast)) > resetTolerance {
-                    actions.append(.schedule(notice(.reset), at: resetsAt))
-                    remembered.resetsAt = resetsAt
-                    remembered.isResetScheduled = true
-                }
+                reconcileReset(&remembered)
                 memory[key] = remembered
             }
         }

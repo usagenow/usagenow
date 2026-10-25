@@ -2,6 +2,16 @@
 
 What's New in Japanese: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.0.0
+
+### Added
+
+- アプリとウィジェットにカザフ語、ウズベク語、トルコ語を追加し、13言語に対応。ウズベク語ではÖ、Ğ、Ş、Çを使用します。
+- プロバイダーを選ぶ任意の初期設定を追加。スキップでき、設定から再度開けます。既存の設定は維持され、初回のデータ取得は初期設定の完了またはスキップ後に始まります。
+- プロバイダー別の通知しきい値、独立したリセット通知、Macの時間帯に従う通知休止時間を追加。スキップした通知は後送りせず、古い値では警告しません。
+- 任意のCLI：usagenow statusとusagenow status --jsonで安全なスナップショットと更新時刻を確認。プロバイダー通信、認証、履歴出力は行いません。設定 › 一般からインストールできます。
+- スリープ解除後の更新、通知設定の移行、スナップショット互換性を検証。CLIではリセット後の割合を不明とし、非対応の形式を拒否します。
+
 ## 0.9.0
 
 ### Added
