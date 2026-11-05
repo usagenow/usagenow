@@ -33,4 +33,11 @@ Intel runtime, older macOS runtime and every previously broken widget configurat
 - App, widget and CLI are universal and Developer ID signed. Apple accepted and stapled the app (`d35afd5f-d0fe-4d6f-9421-66027bf124ae`) and DMG (`c31469e9-589d-4c08-a4b4-b5df6fd5764b`). Gatekeeper accepted both.
 - DMG: 6,145,555 bytes; SHA-256 `a5e6c51144d7ffb28431230b852285134b9d903e8afc73c725013ce09553efbb`. Its Ed25519 signature was independently verified with the installed app's public key.
 - Site and docs `npm run check` passed, including build, type checking, lint, locale/navigation/server checks and documentation links.
-- Publication checks follow deployment; local acceptance above does not by itself verify public download URLs or the production appcast.
+
+## Publication verification
+
+- GitHub release `v1.1.2` is public and points to source commit `d0bfdb2a04c6d417d8febe94207232a78d48bfa9`. The downloaded DMG and checksum match the accepted artifact above.
+- Site commit `623f1023abf99d0fb718bb16954b36b245eae400` and docs commit `bff109aabfa94d949571c7ebdc3f070c0c0445b3` were built and checked in staging before promotion. Both services are online; previous deployments were retained for rollback.
+- Public checks passed for 52 site pages across 13 locales, 7 documentation pages and 10 static assets. The stable download redirects to `https://usagenow.com/download/UsageNow-1.1.2.dmg` and its bytes match the release checksum.
+- The production appcast contains build 18 first and preserves all 7 earlier releases. The public DMG signature was independently verified against the installed app's public key. A probe with the official Sparkle CLI and a 1.1.1 bundle found the update through `https://usagenow.com/appcast.xml`.
+- The user is running the accepted build 18 locally. The temporary loopback feed server is stopped; the installed application uses the production appcast.
