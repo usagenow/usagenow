@@ -2,6 +2,13 @@
 
 All notable changes to UsageNow. This project follows [Semantic Versioning](https://semver.org).
 
+## 1.1.2
+
+### Fixed
+
+- Improved recovery of existing widgets after an app update, preserving their selected accounts and placement.
+- Widget update-time labels now keep advancing while macOS delays the next refresh.
+
 ## 1.1.1
 
 ### Fixed

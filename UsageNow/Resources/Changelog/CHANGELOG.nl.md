@@ -1,5 +1,12 @@
 # Wijzigingen
 
+## 1.1.2
+
+### Opgelost
+
+- Betere herstelfunctie voor bestaande widgets na een app-update, met behoud van geselecteerde accounts en plaatsing.
+- De tijd sinds de laatste widgetupdate blijft doorlopen wanneer macOS de volgende verversing uitstelt.
+
 ## 1.1.1
 
 ### Fixed

@@ -1,3 +1,10 @@
+## 1.1.2
+
+### Düzeltmeler
+
+- Uygulama güncellendikten sonra mevcut widget’ların kurtarılması iyileştirildi. Seçili hesaplar ve yerleşim korunur.
+- macOS bir sonraki yenilemeyi ertelese bile widget’ın son güncellemesinden bu yana geçen süre ilerlemeye devam eder.
+
 ## 1.1.1
 
 ### Fixed

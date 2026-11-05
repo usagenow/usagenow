@@ -2,6 +2,13 @@
 
 What's New in Japanese: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.2
+
+### 修正
+
+- アプリ更新後の既存ウィジェットの復旧を改善しました。選択したアカウントと配置は保持されます。
+- macOSが次の更新を遅らせても、ウィジェットの最終更新からの経過時間が進むようになりました。
+
 ## 1.1.1
 
 ### Fixed

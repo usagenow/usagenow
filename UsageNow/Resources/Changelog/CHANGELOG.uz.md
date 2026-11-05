@@ -1,3 +1,10 @@
+## 1.1.2
+
+### Tuzatişlar
+
+- Ilova yangilangandan keyin vidjetlarni tiklaş yaxşilandi. Tanlangan hisoblar va joylaşuv saqlanadi.
+- macOS keyingi yangilanişni keçiktirsa ham, vidjetning oxirgi yangilanişidan beri ötgan vaqt körsatkiçi yangilanib turadi.
+
 ## 1.1.1
 
 ### Fixed

@@ -19,6 +19,7 @@ final class UpdateController {
     /// `nil` in a build with no public key, which is every local build.
     @ObservationIgnored private let controller: SPUStandardUpdaterController?
     @ObservationIgnored private let driverDelegate = UpdateUserDriverDelegate()
+    @ObservationIgnored private let lifecycleDelegate = UpdateLifecycleDelegate()
     @ObservationIgnored private var observations: [NSKeyValueObservation] = []
 
     /// False while a check is already running, and in builds without updates.
@@ -48,7 +49,7 @@ final class UpdateController {
 
         let controller = SPUStandardUpdaterController(
             startingUpdater: true,
-            updaterDelegate: nil,
+            updaterDelegate: lifecycleDelegate,
             userDriverDelegate: driverDelegate
         )
         controller.updater.sendsSystemProfile = false
@@ -76,6 +77,26 @@ final class UpdateController {
     /// Checks now, showing Sparkle's window whatever the result.
     func checkForUpdates() {
         controller?.checkForUpdates(nil)
+    }
+}
+
+/// Retire our renderer before Sparkle moves its bundle. The new app also has a
+/// startup recovery path for upgrades from older releases or manual replacement.
+@MainActor
+private final class UpdateLifecycleDelegate: NSObject, SPUUpdaterDelegate {
+    func updater(_ updater: SPUUpdater, shouldPostponeRelaunchForUpdate item: SUAppcastItem,
+                 untilInvokingBlock installHandler: @escaping () -> Void) -> Bool {
+        guard let installation = WidgetInstallation(bundle: .main) else { return false }
+        Task {
+            await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+                DispatchQueue.global(qos: .utility).async {
+                    WidgetExtensionProcess.retire(executable: installation.executableURL, owner: geteuid())
+                    continuation.resume()
+                }
+            }
+            installHandler()
+        }
+        return true
     }
 }
 

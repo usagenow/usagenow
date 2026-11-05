@@ -44,15 +44,14 @@ struct WidgetUpdatedLabel: View {
     var compact = false
 
     var text: Text {
-        let seconds = max(0, now.timeIntervalSince(updatedAt))
-        if seconds < 60 { return Text("Updated just now") }
-        let elapsed: Text
-        switch seconds {
-        case ..<3600: elapsed = Text("\(Int(seconds / 60))m ago")
-        case ..<86_400: elapsed = Text("\(Int(seconds / 3600))h ago")
-        default: elapsed = Text("\(Int(seconds / 86_400))d ago")
-        }
+        // WidgetKit advances this text even when it delays a new timeline.
+        // A string calculated from entry.date would stay "10m ago" indefinitely.
+        let elapsed = Text(.currentDate, format: Self.ageFormat(since: updatedAt))
         return compact ? elapsed : Text("Updated \(elapsed)")
+    }
+
+    static func ageFormat(since date: Date) -> SystemFormatStyle.DateReference {
+        .reference(to: date, allowedFields: [.day, .hour, .minute], maxFieldCount: 1)
     }
 
     var body: some View { text }

@@ -2,6 +2,13 @@
 
 What's New in French: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.2
+
+### Corrections
+
+- Amélioration de la restauration des widgets après une mise à jour, en conservant les comptes sélectionnés et leur emplacement.
+- Le temps écoulé depuis la dernière mise à jour du widget continue de progresser lorsque macOS reporte la suivante.
+
 ## 1.1.1
 
 ### Fixed

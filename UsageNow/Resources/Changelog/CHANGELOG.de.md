@@ -2,6 +2,13 @@
 
 What's New in German: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.2
+
+### Behoben
+
+- Bestehende Widgets werden nach App-Updates zuverlässiger wiederhergestellt. Ausgewählte Konten und Positionen bleiben erhalten.
+- Die Zeit seit der letzten Widget-Aktualisierung läuft weiter, auch wenn macOS die nächste Aktualisierung verzögert.
+
 ## 1.1.1
 
 ### Fixed

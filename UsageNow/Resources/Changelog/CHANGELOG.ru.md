@@ -2,6 +2,13 @@
 
 What's New in Russian: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.2
+
+### Исправлено
+
+- Улучшено восстановление виджетов после обновления приложения с сохранением выбранных аккаунтов и расположения.
+- Время последнего обновления в виджете больше не застывает, когда macOS откладывает следующее обновление.
+
 ## 1.1.1
 
 ### Fixed

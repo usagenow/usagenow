@@ -36,6 +36,7 @@ final class AppState {
     /// are installed. See `TelemetryClient`.
     private let telemetry: TelemetryReporter
     private let widgetSnapshots: WidgetSnapshotWriter
+    private let widgetUpgradeRecovery: WidgetUpgradeRecovery
     private let scheduler: AutoRefreshScheduler
     let refreshConditions = RefreshConditions()
     private var adaptiveScheduler: AdaptiveRefreshScheduler?
@@ -106,6 +107,7 @@ final class AppState {
         self.accountProvider = accountProvider
         self.accountProviders = accountProviders
         self.widgetSnapshots = widgetSnapshots
+        self.widgetUpgradeRecovery = WidgetUpgradeRecovery(defaults: defaults)
         self.scheduler = AutoRefreshScheduler { [weak store, weak serviceHealth] in
             await store?.refresh()
             await serviceHealth?.refreshIfNeeded()
@@ -203,6 +205,7 @@ final class AppState {
     }
 
     func start() {
+        widgetUpgradeRecovery.start()
         wakeObserver = NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: .main) { [weak self] _ in
             Task { @MainActor [weak self] in
                 if self?.preferences.refreshInterval == .adaptive { await self?.adaptiveScheduler?.tick(afterWake: true) }

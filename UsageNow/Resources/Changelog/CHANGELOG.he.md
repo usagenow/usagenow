@@ -2,6 +2,13 @@
 
 What's New in Hebrew: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.2
+
+### תיקונים
+
+- שופר שחזור הווידג׳טים לאחר עדכון האפליקציה, תוך שמירה על החשבונות שנבחרו ועל מיקומם.
+- הזמן שחלף מאז עדכון הווידג׳ט ממשיך להתקדם גם כאשר macOS דוחה את הרענון הבא.
+
 ## 1.1.1
 
 ### Fixed

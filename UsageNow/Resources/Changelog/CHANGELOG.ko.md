@@ -2,6 +2,13 @@
 
 What's New in Korean: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.2
+
+### 수정
+
+- 앱 업데이트 후 기존 위젯의 복구를 개선했습니다. 선택한 계정과 배치는 유지됩니다.
+- macOS가 다음 새로고침을 미뤄도 위젯의 마지막 업데이트 이후 경과 시간이 계속 표시됩니다.
+
 ## 1.1.1
 
 ### Fixed
