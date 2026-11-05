@@ -1,3 +1,9 @@
+## 1.1.1
+
+### Fixed
+
+- Provayder ikonalarini yoqişda yoki ilovani şu rejimda oçişda qotib qoliş va xotira sarfining ortib ketişi tuzatildi. Menyu qatoridagi ikonalar endi bir xil ölçamda; Antigravity oq kvadratsiz körsatiladi.
+
 ## 1.1.0
 
 ### Added

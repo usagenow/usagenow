@@ -2,6 +2,12 @@
 
 What's New in Korean: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.1
+
+### Fixed
+
+- 제공업체 아이콘으로 전환하거나 해당 모드로 앱을 시작할 때 발생하던 멈춤 현상과 과도한 메모리 사용을 수정했습니다. 메뉴 막대 아이콘 크기를 통일하고 Antigravity의 흰색 사각형 배경을 제거했습니다.
+
 ## 1.1.0
 
 ### Added

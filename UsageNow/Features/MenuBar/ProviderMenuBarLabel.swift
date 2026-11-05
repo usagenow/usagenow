@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 /// The same source store backs every icon. The local clock only expires
@@ -6,13 +7,12 @@ struct ProviderMenuBarLabel: View {
     let source: SourceKey
     let store: UsageStore
     let preferences: AppPreferences
+    let clock: MenuBarClock
 
     var body: some View {
-        TimelineView(.periodic(from: .now, by: 15)) { context in
-            if let state = store.states.first(where: { $0.id == source }) {
-                ProviderMenuBarReadingLabel(reading: ProviderMenuBarReading(state: state, at: context.date),
-                    style: preferences.usageAmountStyle, now: context.date)
-            }
+        if let state = store.states.first(where: { $0.id == source }) {
+            ProviderMenuBarReadingLabel(reading: ProviderMenuBarReading(state: state, at: clock.now),
+                style: preferences.usageAmountStyle, now: clock.now)
         }
     }
 }
@@ -56,22 +56,48 @@ struct ProviderMenuBarReadingLabel: View {
     }
 }
 
-/// Transparent artwork becomes a monochrome menu bar mark. MiniMax's
-/// bundled opaque avatar uses its catalog's neutral symbol here instead
-/// of producing a solid template square. Settings keep its full artwork.
+/// MenuBarExtra extracts an NSImage from its label and can ignore SwiftUI
+/// frame/resizable modifiers. Resize the actual image, not the surrounding view.
 struct ProviderMenuBarIcon: View {
     let provider: ProviderID
 
     var body: some View {
+        Image(nsImage: ProviderMenuBarArtwork.image(for: provider))
+            .renderingMode(.template)
+            .accessibilityHidden(true)
+    }
+}
+
+@MainActor
+enum ProviderMenuBarArtwork {
+    static let size = NSSize(width: 15, height: 15)
+    private static var images: [ProviderID: NSImage] = [:]
+
+    static func image(for provider: ProviderID) -> NSImage {
+        if let image = images[provider] { return image }
         let definition = ProviderCatalog.definition(for: provider)
-        Group {
-            if let name = definition.logoAssetName, provider != .minimax {
-                Image(name).renderingMode(.template).resizable().scaledToFit()
-            } else {
-                Image(systemName: definition.symbolName).resizable().scaledToFit()
-            }
+        let source: NSImage?
+        if provider == .antigravity {
+            // The older color PNG has an opaque white background. Use the
+            // official transparent single-color mark for this template image.
+            source = NSImage(named: "AntigravityMenuBarIcon")
+        } else if let name = definition.logoAssetName, provider != .minimax {
+            source = NSImage(named: name)
+        } else {
+            source = NSImage(systemSymbolName: definition.symbolName, accessibilityDescription: nil)
         }
-        .frame(width: 15, height: 15)
-        .accessibilityHidden(true)
+        let original = source ?? NSImage(systemSymbolName: "circle.dashed", accessibilityDescription: nil)!
+        let originalSize = original.size
+        let scale = min(size.width / max(1, originalSize.width), size.height / max(1, originalSize.height))
+        let drawingSize = NSSize(width: originalSize.width * scale, height: originalSize.height * scale)
+        let image = NSImage(size: size, flipped: false) { bounds in
+            let rect = NSRect(x: bounds.midX - drawingSize.width / 2, y: bounds.midY - drawingSize.height / 2,
+                width: drawingSize.width, height: drawingSize.height)
+            original.draw(in: rect, from: .zero, operation: .sourceOver, fraction: 1)
+            return true
+        }
+        image.isTemplate = true
+        images[provider] = image
+        return image
     }
 }

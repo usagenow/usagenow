@@ -2,6 +2,12 @@
 
 What's New in French: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.1
+
+### Fixed
+
+- Correction du blocage et de la hausse excessive de mémoire lors de l’activation des icônes des fournisseurs ou du lancement dans ce mode. Les icônes de la barre des menus ont désormais une taille uniforme ; Antigravity s’affiche sans carré blanc.
+
 ## 1.1.0
 
 ### Added

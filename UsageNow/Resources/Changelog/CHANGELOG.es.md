@@ -2,6 +2,12 @@
 
 What's New in Spanish: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.1
+
+### Fixed
+
+- Se corrigieron el bloqueo y el consumo excesivo de memoria al activar los iconos de proveedores o iniciar la app en ese modo. Los iconos de la barra de menús tienen ahora un tamaño uniforme; Antigravity se muestra sin el cuadrado blanco.
+
 ## 1.1.0
 
 ### Added

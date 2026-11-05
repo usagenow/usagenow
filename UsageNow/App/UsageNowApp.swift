@@ -27,6 +27,12 @@ struct UsageNowApp: App {
         // quitting early — raises SIGPIPE, which ends the app without a word.
         // Ignored, the write fails with an error the caller already handles.
         signal(SIGPIPE, SIG_IGN)
+        #if DEBUG
+        if MenuBarSmokeTest.isEnabled {
+            _appState = State(initialValue: MenuBarSmokeTest.makeState())
+            return
+        }
+        #endif
         // Hosted unit tests must not launch real providers, touch sign-ins,
         // or publish synthetic data to a desktop widget.
         let isTesting = UserDefaults.standard.bool(forKey: "UsageNowTesting")
@@ -115,7 +121,8 @@ struct UsageNowApp: App {
         } label: {
             Group {
                 if let source {
-                    ProviderMenuBarLabel(source: source, store: appState.store, preferences: appState.preferences)
+                    ProviderMenuBarLabel(source: source, store: appState.store,
+                        preferences: appState.preferences, clock: appState.menuBarClock)
                 }
             }
             .background(SettingsOpener(capture: { appState.openSettings = $0 }, captureOverview: { appState.openOverview = $0 }))

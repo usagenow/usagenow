@@ -2,6 +2,12 @@
 
 What's New in Japanese: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.1
+
+### Fixed
+
+- プロバイダーアイコンへの切り替え時や、このモードでの起動時に発生するフリーズとメモリ使用量の増加を修正しました。メニューバーのアイコンサイズを統一し、Antigravityの白い四角い背景を削除しました。
+
 ## 1.1.0
 
 ### Added

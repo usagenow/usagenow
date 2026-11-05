@@ -2,6 +2,12 @@
 
 What's New in German: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.1
+
+### Fixed
+
+- Ein Einfrieren und stark steigender Speicherverbrauch beim Aktivieren der Anbieter-Symbole oder beim Start mit diesem Modus wurden behoben. Die Symbole in der Menüleiste haben jetzt eine einheitliche Größe; Antigravity erscheint ohne weißes Quadrat.
+
 ## 1.1.0
 
 ### Added

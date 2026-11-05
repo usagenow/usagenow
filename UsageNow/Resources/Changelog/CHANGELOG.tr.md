@@ -1,3 +1,9 @@
+## 1.1.1
+
+### Fixed
+
+- Sağlayıcı simgelerine geçerken veya uygulamayı bu modda başlatırken oluşan donma ve aşırı bellek kullanımı giderildi. Menü çubuğu simgeleri artık aynı boyutta; Antigravity beyaz kare olmadan gösteriliyor.
+
 ## 1.1.0
 
 ### Added

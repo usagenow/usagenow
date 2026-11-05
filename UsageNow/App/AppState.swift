@@ -9,6 +9,7 @@ final class AppState {
     static let popoverRefreshMaxAge: TimeInterval = 60
 
     let store: UsageStore
+    let menuBarClock = MenuBarClock()
     let firstRun: FirstRunSetup
     let serviceHealth: ServiceHealthStore
     let preferences: AppPreferences
@@ -218,6 +219,7 @@ final class AppState {
         applyServiceStatusPreference()
         hotKey.action = { [weak self] in self?.toggleShortcutPanel() }
         applyPopoverShortcut()
+        startMenuBarClock()
 
         observe({ [firstRun] in _ = firstRun.needsSetup }, apply: { [weak self] in
             if self?.firstRun.needsSetup == false { self?.startReadings() }
@@ -256,6 +258,25 @@ final class AppState {
             malloc_zone_pressure_relief(nil, 0)
         }
         applyRefreshInterval()
+    }
+
+    /// Keep label scheduling outside the MenuBarExtra rendering lifecycle.
+    /// The fixture runtime also uses this path without starting live services.
+    func startMenuBarClock() {
+        let apply: @MainActor @Sendable () -> Void = { [weak self] in
+            guard let self else { return }
+            let visible = preferences.menuBarItems.visibleSources(in: store.states,
+                enabled: store.enabledProviders, set: accountSets.active)
+            menuBarClock.setActive(!firstRun.needsSetup && !visible.isEmpty)
+        }
+        apply()
+        observe({ [preferences, store, accountSets, firstRun] in
+            _ = preferences.menuBarItems
+            _ = store.states
+            _ = store.enabledProviders
+            _ = accountSets.active
+            _ = firstRun.needsSetup
+        }, apply: apply)
     }
 
     func popoverDidOpen() {

@@ -2,6 +2,13 @@
 
 All notable changes to UsageNow. This project follows [Semantic Versioning](https://semver.org).
 
+## 1.1.1
+
+### Fixed
+
+- Fixed a freeze and runaway memory use when switching to Provider icons in Menu Bar settings or reopening the app with that mode selected.
+- Provider icons now have a consistent menu bar size. Antigravity uses a transparent monochrome mark without a white square.
+
 ## 1.1.0
 
 ### Added

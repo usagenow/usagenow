@@ -12,8 +12,8 @@
 # --cask --online --strict, and an install/uninstall cycle all passed.
 
 cask "usagenow" do
-  version "1.1.0"
-  sha256 "9481545d4aa8600c515e8c249fa8110cbbfadae622792222dc853e0c5cf3346b"
+  version "1.1.1"
+  sha256 "65e12c1c947f16850e404ea719f8966a8a5eae7c67d37f55b127b858000cac99"
 
   url "https://github.com/usagenow/usagenow/releases/download/v#{version}/UsageNow-#{version}.dmg"
   name "UsageNow"

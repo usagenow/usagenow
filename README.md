@@ -16,6 +16,10 @@ A Homebrew cask is written and tested ([docs/homebrew-cask.rb](docs/homebrew-cas
 
 Requires macOS 15 or later. The app is signed with a Developer ID and notarized by Apple.
 
+## 1.1.1 hotfix
+
+Fixes the freeze and excessive memory use when enabling Provider icons or reopening the app in that mode. Provider logos now have a consistent menu bar size, including a transparent Antigravity mark. See [release notes](docs/release-notes-1.1.1.md).
+
 ## New in 1.1.0
 
 UsageNow 1.1.0 adds Overview (today / 7 / 30 days), Work/Personal/custom account

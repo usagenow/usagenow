@@ -1,5 +1,11 @@
 # Wijzigingen
 
+## 1.1.1
+
+### Fixed
+
+- Vastlopen en sterk oplopend geheugengebruik bij het inschakelen van providerpictogrammen of het starten in deze modus zijn verholpen. De pictogrammen in de menubalk hebben nu hetzelfde formaat; Antigravity verschijnt zonder wit vierkant.
+
 ## 1.1.0
 
 ### Added

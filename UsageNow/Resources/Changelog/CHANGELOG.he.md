@@ -2,6 +2,12 @@
 
 What's New in Hebrew: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.1
+
+### Fixed
+
+- תוקנו קיפאון וצריכת זיכרון חריגה בעת הפעלת סמלי הספקים או פתיחת האפליקציה במצב זה. לסמלים בשורת התפריטים יש כעת גודל אחיד, ו-Antigravity מוצג ללא הריבוע הלבן.
+
 ## 1.1.0
 
 ### Added

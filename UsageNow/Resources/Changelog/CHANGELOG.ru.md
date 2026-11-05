@@ -2,6 +2,12 @@
 
 What's New in Russian: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.1
+
+### Fixed
+
+- Исправлены зависание и рост потребления памяти при включении иконок провайдеров или запуске приложения с выбранным режимом. Иконки в строке меню теперь одного размера; Antigravity отображается без белого квадрата.
+
 ## 1.1.0
 
 ### Added
