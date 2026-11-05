@@ -18,7 +18,7 @@ Requires macOS 15 or later. The app is signed with a Developer ID and notarized 
 
 ## New in 1.1.0
 
-The current branch adds Overview (today / 7 / 30 days), Work/Personal/custom account
+UsageNow 1.1.0 adds Overview (today / 7 / 30 days), Work/Personal/custom account
 sets, separate provider icons in the menu bar, per-account Adaptive refresh, balance and reported-spend budget alerts,
 and global MiniMax M Plan support. See the
 [release notes](docs/release-notes-1.1.0.md) and [acceptance checks](docs/validation-1.1.0.md).

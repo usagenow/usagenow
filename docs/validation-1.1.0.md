@@ -8,7 +8,12 @@ Scope: local candidate validation and the production release authorized on Novem
 - App and DMG notarized and stapled; Gatekeeper accepts both as Notarized Developer ID.
 - Update public key matches the installed 1.0.0; the configured opt-in telemetry endpoint is restored.
 - DMG SHA-256: `9481545d4aa8600c515e8c249fa8110cbbfadae622792222dc853e0c5cf3346b`; size **6073110 bytes**.
-- GitHub publication, signed appcast and live site/docs verification are recorded after deployment.
+- Published GitHub tag/release: `v1.1.0`, app source `bd71410`; the downloaded GitHub asset matches the final SHA-256 and verifies with the installed app's public key.
+- Site `fa3c868` and docs `a29e90d` deployed to their named Hetzner services; both online, rollback copies retained.
+- Public verification passed for 52 site pages across all 13 languages, six docs pages, ten static assets, MiniMax artwork, and the six-entry appcast.
+- Stable download redirects to `https://usagenow.com/download/UsageNow-1.1.0.dmg`; the downloaded site image matches the final SHA-256.
+- The appcast offers build 15, minimum macOS 15.0, and the verified EdDSA signature. This verifies update eligibility and download integrity, not an interactive installation on this Mac.
+- Site checks: 312 localized pages, 17 navigation/history tests and seven static-server tests. Docs checks: 4,392 valid internal links across 42 pages and six server tests. All passed.
 
 ## Local candidate result
 
