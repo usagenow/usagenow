@@ -55,7 +55,7 @@ struct AccountTag: Codable, Hashable, Sendable {
 
 /// One row's identity: a provider's own account (`account == nil`) or an
 /// added one.
-struct SourceKey: Hashable, Sendable, CustomStringConvertible {
+struct SourceKey: Codable, Hashable, Sendable, CustomStringConvertible {
     let provider: ProviderID
     var account: String? = nil
 

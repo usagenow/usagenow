@@ -14,7 +14,7 @@ struct AppPreferencesTests {
     @Test func defaults() {
         let preferences = AppPreferences(defaults: makeDefaults())
         #expect(preferences.appearance == .light)
-        #expect(preferences.refreshInterval == .fiveMinutes)
+        #expect(preferences.refreshInterval == .adaptive)
         #expect(preferences.menuBarDisplayMode == .iconOnly)
         #expect(!preferences.showsServiceStatus)
     }

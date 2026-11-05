@@ -6,6 +6,8 @@ import SwiftUI
 /// behind them — those providers have no integration yet.
 struct ProvidersSettingsView: View {
     @Bindable var preferences: ProviderPreferences
+    var accountSets: AccountSets? = nil
+    var accountStates: [ProviderState] = []
     /// Reads whether a key is saved — the first account's (`nil`) or an
     /// added one's; the key itself never reaches this view.
     var hasAPIKey: (ProviderID, String?) -> Bool = { _, _ in false }
@@ -34,6 +36,7 @@ struct ProvidersSettingsView: View {
     }
     /// Bumped after a save or removal, so key status is read again.
     @State private var keyRevision = 0
+    @State private var showsAccountSets = false
 
     var body: some View {
         Form {
@@ -41,6 +44,14 @@ struct ProvidersSettingsView: View {
                 Text("Choose which services UsageNow displays and monitors, and drag them into the order you want.")
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
+                if let accountSets {
+                    HStack {
+                        Text("Account sets")
+                        Spacer()
+                        AccountSetsPicker(sets: accountSets)
+                        Button("Manage…") { showsAccountSets = true }
+                    }
+                }
             }
 
             Section {
@@ -75,6 +86,9 @@ struct ProvidersSettingsView: View {
         // The list outgrew a laptop screen, so this tab scrolls within a
         // height that fits, unlike the others, which size to their content.
         .frame(height: Self.height)
+        .sheet(isPresented: $showsAccountSets) {
+            if let accountSets { AccountSetsSettingsView(sets: accountSets, states: accountStates) }
+        }
         .sheet(item: $editingKey) { target in
             APIKeySheet(definition: target.definition, account: target.account) { key in
                 try setAPIKey(key, target.definition.id, target.account?.id)

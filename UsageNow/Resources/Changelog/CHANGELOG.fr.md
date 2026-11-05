@@ -2,6 +2,17 @@
 
 What's New in French: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.0
+
+### Added
+
+- Vue d’ensemble — Aujourd’hui / 7 jours / 30 jours. Activité locale enregistrée sur ce Mac. L’historique peut être incomplet.
+- Groupes de comptes — Les groupes changent l’affichage. Les comptes activés continuent à s’actualiser et à envoyer des notifications.
+- Icônes distinctes par fournisseur — Affichez côte à côte les icônes des fournisseurs sélectionnés et leur utilisation dans la barre des menus.
+- Adaptatif — L’actualisation tient compte de chaque compte, du réseau, du mode d’énergie et du verrouillage. Les délais du serveur sont toujours respectés.
+- Solde et budgets — Alertes à 80% et 100% du budget selon les dépenses déclarées. Alertes uniquement. Les budgets ne bloquent pas les dépenses. Le fuseau du fournisseur est utilisé ; les estimations aux tarifs API sont exclues.
+- MiniMax — Suivez les limites de MiniMax M Plan.
+
 ## 1.0.0
 
 ### Added

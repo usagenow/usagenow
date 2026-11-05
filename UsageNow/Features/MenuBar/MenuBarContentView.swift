@@ -10,6 +10,9 @@ struct MenuBarContentView: View {
     let store: UsageStore
     var serviceHealth: ServiceHealthStore? = nil
     var navigation = SettingsNavigation()
+    var accountSets: AccountSets? = nil
+    var focusedSource: SourceKey? = nil
+    var openOverviewOverride: (@MainActor () -> Void)? = nil
     /// Opens Settings where the environment's action can't: outside a
     /// SwiftUI scene, in the panel the global shortcut shows.
     var openSettingsOverride: (@MainActor () -> Void)?
@@ -19,6 +22,7 @@ struct MenuBarContentView: View {
     @State private var providersHeight: CGFloat?
 
     @Environment(\.openSettings) private var openSettings
+    @Environment(\.openWindow) private var openWindow
 
     var body: some View {
         TimelineView(.periodic(from: .now, by: Self.clockInterval)) { context in
@@ -28,6 +32,14 @@ struct MenuBarContentView: View {
                     onRefresh: refresh,
                     onOpenSettings: { showSettings(.general) }
                 )
+                HStack {
+                    if let accountSets { AccountSetsPicker(sets: accountSets).controlSize(.small) }
+                    Spacer()
+                    Button("Overview") {
+                        NSApplication.shared.activate()
+                        if let openOverviewOverride { openOverviewOverride() } else { openWindow(id: "overview") }
+                    }.buttonStyle(.borderless)
+                }.padding(.horizontal, 14).padding(.bottom, 8)
                 Divider()
                 content(now: context.date)
                 Divider()
@@ -61,8 +73,16 @@ struct MenuBarContentView: View {
         case .noProvidersEnabled:
             NoProvidersEnabledView { showSettings(.providers) }
         case .providers(let states):
+            let states = ProviderMenuBarReading.focusing(focusedSource,
+                in: accountSets?.displaying(states, enabled: store.enabledProviders) ?? states)
             ScrollView(.vertical) {
                 VStack(spacing: 0) {
+                    if states.isEmpty {
+                        VStack(spacing: 8) {
+                            Text("No accounts in this set").font(.headline)
+                            Button("Manage account sets") { showSettings(.providers) }
+                        }.padding(24)
+                    }
                     ForEach(states) { state in
                         ProviderUsageView(state: state, now: now, serviceHealth: serviceHealth?.readings[state.provider]) {
                             Task { await store.refresh(only: [state.provider], trigger: .manual) }

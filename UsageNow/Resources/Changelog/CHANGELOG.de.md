@@ -2,6 +2,17 @@
 
 What's New in German: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.0
+
+### Added
+
+- Übersicht — Heute / 7 Tage / 30 Tage. Lokal auf diesem Mac aufgezeichnete Aktivität. Der Verlauf kann unvollständig sein.
+- Account-Gruppen — Gruppen ändern die Anzeige. Aktivierte Accounts werden weiter aktualisiert und senden Mitteilungen.
+- Separate Anbietersymbole — Zeigen Sie ausgewählte Anbietersymbole und ihre Nutzung nebeneinander in der Menüleiste.
+- Adaptiv — Die Aktualisierung berücksichtigt jeden Account, Netzwerk, Energiemodus und Bildschirmsperre. Serverseitige Wartezeiten gelten immer.
+- Guthaben und Budgets — Budgetwarnungen bei 80% und 100% der gemeldeten Ausgaben. Nur Warnungen. Budgets sperren keine Ausgaben. Es gilt die Zeitzone des Anbieters; API-Preisschätzungen werden nicht berücksichtigt.
+- MiniMax — MiniMax-M-Plan-Limits verfolgen.
+
 ## 1.0.0
 
 ### Added

@@ -2,6 +2,17 @@
 
 What's New in Korean: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.0
+
+### Added
+
+- 개요 — 오늘 / 7일 / 30일. 이 Mac에 기록된 로컬 활동입니다. 기록이 완전하지 않을 수 있습니다.
+- 계정 모음 — 모음은 표시만 변경합니다. 활성 계정의 새로 고침과 알림은 계속됩니다.
+- 제공업체별 아이콘 — 선택한 제공업체의 아이콘과 사용량을 메뉴 막대에 나란히 표시합니다.
+- 자동 조절 — 계정별로 네트워크 상태, 전원 모드, 화면 잠금을 고려하여 새로 고칩니다. 서버의 대기 시간은 항상 지킵니다.
+- 잔액과 예산 — 보고된 지출이 예산의 80%와 100%에 도달하면 알립니다. 알림만 제공합니다. 예산이 지출을 차단하지 않습니다. 제공업체의 시간대를 사용하며 API 가격 추정치는 제외합니다.
+- MiniMax — MiniMax M Plan 한도를 확인합니다.
+
 ## 1.0.0
 
 ### Added

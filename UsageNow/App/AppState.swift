@@ -13,6 +13,7 @@ final class AppState {
     let serviceHealth: ServiceHealthStore
     let preferences: AppPreferences
     let providerPreferences: ProviderPreferences
+    let accountSets: AccountSets
     let analyticsPreferences: AnalyticsPreferences
     let launchAtLogin: LaunchAtLogin
     let updates: UpdateController
@@ -20,10 +21,12 @@ final class AppState {
     let apiKeys: any APIKeyStoring
     let settingsNavigation = SettingsNavigation()
     let limitNotifier: LimitNotifier
+    let financialNotifier: FinancialNotifier
     let hotKey = GlobalHotKey.shared
     /// SwiftUI's action for opening Settings, handed over by the menu bar
     /// label, which lives in a scene. The shortcut's panel doesn't.
     var openSettings: (@MainActor () -> Void)?
+    var openOverview: (@MainActor () -> Void)?
     private var shortcutPanel: ShortcutPanelController?
     private var wakeObserver: (any NSObjectProtocol)?
     private var timeZoneObserver: (any NSObjectProtocol)?
@@ -33,6 +36,8 @@ final class AppState {
     private let telemetry: TelemetryReporter
     private let widgetSnapshots: WidgetSnapshotWriter
     private let scheduler: AutoRefreshScheduler
+    let refreshConditions = RefreshConditions()
+    private var adaptiveScheduler: AdaptiveRefreshScheduler?
     private let claudeLimits: ClaudeLimitsControl?
     /// Builds the provider that reads an added account, or `nil` when it
     /// can't be read (mock providers).
@@ -60,6 +65,7 @@ final class AppState {
         accountProvider: @escaping @Sendable (ProviderAccount) -> (any UsageProvider)? = { _ in nil }
     ) {
         firstRun = FirstRunSetup(defaults: defaults)
+        let preferences = AppPreferences(defaults: defaults)
         let providerPreferences = ProviderPreferences(defaults: defaults)
         var accountProviders: [ProviderAccount: any UsageProvider] = [:]
         for account in providerPreferences.accounts {
@@ -80,16 +86,20 @@ final class AppState {
 
         self.store = store
         self.serviceHealth = serviceHealth
-        self.preferences = AppPreferences(defaults: defaults)
+        self.preferences = preferences
         // Also validate persisted selections at launch: the chosen account
         // may have been removed since this build last ran.
         self.preferences.menuBarChoice = self.preferences.menuBarChoice.validated(against: providerPreferences.accounts)
+        self.preferences.menuBarItems = self.preferences.menuBarItems.validated(against: providerPreferences.accounts)
         self.providerPreferences = providerPreferences
+        self.accountSets = AccountSets(defaults: defaults)
+        self.accountSets.reconcile(accounts: providerPreferences.accounts)
         self.analyticsPreferences = analyticsPreferences
         self.launchAtLogin = LaunchAtLogin()
         self.updates = UpdateController()
         self.apiKeys = apiKeys
         self.limitNotifier = limitNotifier ?? LimitNotifier(defaults: defaults)
+        self.financialNotifier = FinancialNotifier(defaults: defaults)
         self.telemetry = TelemetryReporter(client: client, preferences: analyticsPreferences, identity: identity, defaults: defaults)
         self.claudeLimits = claudeLimits
         self.accountProvider = accountProvider
@@ -99,6 +109,13 @@ final class AppState {
             await store?.refresh()
             await serviceHealth?.refreshIfNeeded()
         }
+        self.adaptiveScheduler = AdaptiveRefreshScheduler(states: { [weak store] in store?.states ?? [] },
+            enabled: { [weak store] in store?.enabledProviders ?? [] },
+            conditions: { [weak self] in self?.refreshConditions.value ?? .init() },
+            refresh: { [weak store, weak serviceHealth] due in
+                await store?.refresh(sources: due)
+                await serviceHealth?.refreshIfNeeded()
+            })
     }
 
     /// The app's runtime configuration.
@@ -180,12 +197,16 @@ final class AppState {
             APIKeyProvider.perplexity(keys: apiKeys),
             APIKeyProvider.elevenLabs(keys: apiKeys),
             APIKeyProvider.zai(keys: apiKeys),
+            APIKeyProvider.miniMax(keys: apiKeys),
         ]
     }
 
     func start() {
         wakeObserver = NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: .main) { [weak self] _ in
-            Task { @MainActor [weak self] in self?.popoverDidOpen() }
+            Task { @MainActor [weak self] in
+                if self?.preferences.refreshInterval == .adaptive { await self?.adaptiveScheduler?.tick(afterWake: true) }
+                else { self?.popoverDidOpen() }
+            }
         }
         timeZoneObserver = NotificationCenter.default.addObserver(forName: .NSSystemTimeZoneDidChange, object: nil, queue: .main) { [weak self] _ in
             Task { @MainActor [weak self] in self?.notifyAboutLimits() }
@@ -208,13 +229,16 @@ final class AppState {
         observe({ [providerPreferences] in _ = providerPreferences.enabledProviders }, apply: { [weak self] in self?.applyEnabledProviders() })
         observe({ [providerPreferences] in _ = providerPreferences.order }, apply: { [weak self] in self?.applyProviderOrder() })
         observe({ [providerPreferences] in _ = providerPreferences.accounts }, apply: { [weak self] in self?.applyAccounts() })
+        observe({ [accountSets] in _ = accountSets.selectedID; _ = accountSets.sets }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [store] in _ = store.states }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.usageAmountStyle }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.showsActivityHistory }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.showsServiceStatus }, apply: { [weak self] in self?.applyServiceStatusPreference() })
         observe({ [preferences] in _ = preferences.language }, apply: { [weak self] in self?.storeDidChange() })
         observe({ [preferences] in _ = preferences.notifiesAboutLimits }, apply: { [weak self] in self?.applyLimitNotifications() })
+        observe({ [limitNotifier] in _ = limitNotifier.permission }, apply: { [weak self] in self?.notifyAboutLimits() })
         observe({ [preferences] in _ = preferences.notificationPolicy }, apply: { [weak self] in self?.notifyAboutLimits() })
+        observe({ [preferences] in _ = preferences.financialPolicy }, apply: { [weak self] in self?.notifyAboutLimits() })
         observe({ [preferences] in _ = preferences.popoverShortcut }, apply: { [weak self] in self?.applyPopoverShortcut() })
         observe({ [analyticsPreferences] in _ = analyticsPreferences.isSharingEnabled }, apply: { [weak self] in self?.analyticsSharingChanged() })
 
@@ -222,6 +246,7 @@ final class AppState {
     }
 
     private func startReadings() {
+        refreshConditions.start()
         Task { [store] in
             await store.refresh()
             // The first refresh reads a month of session files, and the
@@ -235,7 +260,8 @@ final class AppState {
 
     func popoverDidOpen() {
         guard !firstRun.needsSetup else { return }
-        Task { await store.refreshIfNeeded(maxAge: Self.popoverRefreshMaxAge) }
+        if preferences.refreshInterval == .adaptive { Task { await adaptiveScheduler?.tick() } }
+        else { Task { await store.refreshIfNeeded(maxAge: Self.popoverRefreshMaxAge) } }
         Task { await serviceHealth.refreshIfNeeded() }
         Task { [telemetry] in await telemetry.appDidBecomeActive() }
     }
@@ -278,6 +304,12 @@ final class AppState {
     /// disappears, its key with it.
     private func applyAccounts() {
         let accounts = providerPreferences.accounts
+        accountSets.reconcile(accounts: accounts)
+        preferences.menuBarItems = preferences.menuBarItems.validated(against: accounts)
+        let valid = Set(ProviderCatalog.available.map { SourceKey(provider: $0.id).description }
+            + accounts.map { SourceKey(provider: $0.provider, account: $0.id).description })
+        let keptRules = preferences.financialPolicy.rules.filter { valid.contains($0.key) }
+        if keptRules != preferences.financialPolicy.rules { preferences.financialPolicy.rules = keptRules }
         // A removed account's menu bar choice falls back to the provider's own.
         let choice = preferences.menuBarChoice.validated(against: accounts)
         if choice != preferences.menuBarChoice { preferences.menuBarChoice = choice }
@@ -292,6 +324,7 @@ final class AppState {
 
     /// Removes an added account, and its key if it has one.
     func removeAccount(_ account: ProviderAccount) {
+        financialNotifier.forget(SourceKey(provider: account.provider, account: account.id))
         try? apiKeys.removeKey(for: account.provider, account: account.id)
         providerPreferences.removeAccount(id: account.id)
     }
@@ -329,6 +362,7 @@ final class AppState {
             try apiKeys.removeKey(for: provider, account: account)
         }
         store.connectionDidChange(provider: provider, account: account)
+        financialNotifier.forget(SourceKey(provider: provider, account: account))
         guard providerPreferences.isEnabled(provider) else { return }
         Task { [store] in await store.refresh(only: [provider], trigger: .manual) }
     }
@@ -344,6 +378,7 @@ final class AppState {
     private func applyLimitNotifications() {
         let isEnabled = preferences.notifiesAboutLimits
         limitNotifier.setEnabled(isEnabled)
+        if !isEnabled { notifyAboutLimits() }
         guard isEnabled else { return }
         Task { [weak self] in
             await self?.limitNotifier.requestPermission()
@@ -352,6 +387,11 @@ final class AppState {
     }
 
     private func notifyAboutLimits() {
+        if !preferences.notifiesAboutLimits || limitNotifier.permission == .allowed {
+            financialNotifier.update(states: store.states, enabledProviders: store.enabledProviders,
+                enabled: preferences.notifiesAboutLimits,
+                policy: preferences.financialPolicy, quietHours: preferences.notificationPolicy)
+        }
         limitNotifier.update(snapshots: store.snapshots, enabledProviders: store.enabledProviders, style: preferences.usageAmountStyle,
                              policy: preferences.notificationPolicy,
                              activeSources: Set(store.states.filter { store.enabledProviders.contains($0.provider) }.map(\.id)))
@@ -373,7 +413,9 @@ final class AppState {
 
     private func applyRefreshInterval() {
         guard !firstRun.needsSetup else { return }
+        adaptiveScheduler?.stop()
         scheduler.schedule(every: preferences.refreshInterval.duration)
+        if preferences.refreshInterval == .adaptive { adaptiveScheduler?.start() }
     }
 
     /// Installed providers, as plain identifiers — the only provider fact telemetry sees.
@@ -382,6 +424,7 @@ final class AppState {
     }
 
     private func storeDidChange() {
+        adaptiveScheduler?.observe()
         let detected = detectedProviders
         Task { [telemetry] in await telemetry.providersDetected(detected) }
         // The widget only ever sees what this writer publishes.
@@ -390,7 +433,10 @@ final class AppState {
             enabledProviders: store.enabledProviders,
             style: preferences.usageAmountStyle,
             includesRecentDays: preferences.showsActivityHistory,
-            language: preferences.language
+            language: preferences.language,
+            followedSelectionIDs: accountSets.active.map { _ in
+                accountSets.displaying(store.states, enabled: store.enabledProviders).map(WidgetSnapshotWriter.selectionID)
+            }
         )
         notifyAboutLimits()
     }
@@ -426,6 +472,8 @@ private struct ShortcutPanelContent: View {
             store: appState.store,
             serviceHealth: appState.serviceHealth,
             navigation: appState.settingsNavigation,
+            accountSets: appState.accountSets,
+            openOverviewOverride: appState.openOverview,
             openSettingsOverride: appState.openSettings
         )
         .appLanguage(appState.preferences.languageAtLaunch)

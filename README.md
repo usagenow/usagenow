@@ -16,6 +16,27 @@ A Homebrew cask is written and tested ([docs/homebrew-cask.rb](docs/homebrew-cas
 
 Requires macOS 15 or later. The app is signed with a Developer ID and notarized by Apple.
 
+## New in 1.1.0
+
+The current branch adds Overview (today / 7 / 30 days), Work/Personal/custom account
+sets, separate provider icons in the menu bar, per-account Adaptive refresh, balance and reported-spend budget alerts,
+and global MiniMax M Plan support. See the
+[release notes](docs/release-notes-1.1.0.md) and [acceptance checks](docs/validation-1.1.0.md).
+For local development, `scripts/build-local.sh` creates a signed universal app and ZIP,
+with update checks and telemetry disabled. It does not install or upload anything.
+
+Settings > Menu Bar > Provider icons shows up to four selected accounts side by
+side, with their most critical current limit. Selection and order are remembered;
+each icon opens that account first in the shared popover. The UsageNow icon is
+the default and returns when the current set has no selected available sources.
+
+Sets change display selection and order; all enabled accounts keep updating and
+notifying. Personalized widgets and the CLI still read the full safe snapshot.
+Daily/monthly budgets require reported spend with a known reporting calendar
+(initially OpenRouter's UTC counters). They warn at 80% and 100%; API-price
+estimates are excluded and budgets do not block spending. Other supported
+accounts can warn about a low balance, credits or characters.
+
 ## What it reads
 
 UsageNow reads what each tool already keeps on your Mac and the usage services you explicitly connect. Undocumented endpoints are labeled Experimental. Which data is available depends on the tool:
@@ -42,6 +63,7 @@ UsageNow reads what each tool already keeps on your Mac and the usage services y
 | Perplexity | web credit counters; percentage only for a reconciled reported allowance | — | experimental web billing endpoint, with your web session; not a Perplexity API key |
 | ElevenLabs | monthly characters and explicit reset date | — | official subscription API, with a restricted `user_read` key |
 | Z.ai | Coding Plan quota windows and MCP allowance | — | experimental global `api.z.ai` endpoint, with your key |
+| MiniMax (1.1.0 candidate) | global M Plan windows and reported resets | — | official `www.minimax.io/v1/token_plan/remains`, with an explicitly supplied subscription key; live account validation pending |
 
 The five connections above are new in **0.8.0** and off by default.
 Enable one under **Settings › Providers › Connect**. For Cursor and Perplexity,
@@ -254,3 +276,5 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). To report a security issue, see [SECURIT
 UsageNow source code is licensed under the MIT License. The UsageNow name, logo, icon, and other brand assets are not covered by the MIT License.
 
 See [LICENSE](LICENSE).
+
+Release packaging uses the pinned tooling in `scripts/requirements-dmg.txt`. Install it in a Python virtual environment and set `DMGBUILD_BIN` to its `dmgbuild` executable before running `scripts/release.sh`. The compact image layout is written directly without automating Finder.

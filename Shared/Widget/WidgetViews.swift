@@ -289,6 +289,7 @@ struct WidgetActivityLabel: View {
             case .creditsUsed: Text("\(amount) credits used")
             case .creditsRemaining: Text("\(amount) credits remaining")
             case .charactersUsed: Text("\(amount) characters used")
+            case .charactersRemaining: Text("\(amount) characters remaining")
             }
         }
     }

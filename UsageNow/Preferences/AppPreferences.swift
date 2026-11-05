@@ -12,6 +12,7 @@ final class AppPreferences {
         static let refreshInterval = "refreshInterval"
         static let menuBarDisplayMode = "menuBarDisplayMode"
         static let menuBarAccount = "menuBarAccount"
+        static let menuBarItems = "menuBarItems.v1"
         static let appearance = "appearance"
         static let usageAmountStyle = "usageAmountStyle"
         static let showsActivityHistory = "showsActivityHistory"
@@ -19,6 +20,7 @@ final class AppPreferences {
         static let fetchClaudeUsageLimits = "experimental.fetchClaudeUsageLimits"
         static let notifiesAboutLimits = "notifiesAboutLimits"
         static let notificationPolicy = "notificationPolicy.v1"
+        static let financialPolicy = "financialPolicy.v1"
         static let popoverShortcut = "popoverShortcut"
         /// macOS's own per-app language list, the one System Settings writes.
         static let appleLanguages = "AppleLanguages"
@@ -75,6 +77,10 @@ final class AppPreferences {
         didSet { defaults.set(menuBarAccount, forKey: Key.menuBarAccount) }
     }
 
+    var menuBarItems: MenuBarItemsConfiguration {
+        didSet { defaults.set(try? JSONEncoder().encode(menuBarItems), forKey: Key.menuBarItems) }
+    }
+
     /// The mode and account together, as the Display picker sets them.
     var menuBarChoice: MenuBarChoice {
         get { MenuBarChoice(mode: menuBarDisplayMode, account: menuBarAccount) }
@@ -97,6 +103,10 @@ final class AppPreferences {
 
     var notificationPolicy: NotificationPolicy {
         didSet { defaults.set(try? JSONEncoder().encode(notificationPolicy), forKey: Key.notificationPolicy) }
+    }
+
+    var financialPolicy: FinancialPolicy {
+        didSet { defaults.set(try? JSONEncoder().encode(financialPolicy), forKey: Key.financialPolicy) }
     }
 
     /// Opens the menu bar window from any app. None until the person records one.
@@ -122,12 +132,22 @@ final class AppPreferences {
         notifiesAboutLimits = defaults.bool(forKey: Key.notifiesAboutLimits)
         notificationPolicy = defaults.data(forKey: Key.notificationPolicy)
             .flatMap { try? JSONDecoder().decode(NotificationPolicy.self, from: $0) } ?? NotificationPolicy()
+        financialPolicy = defaults.data(forKey: Key.financialPolicy)
+            .flatMap { try? JSONDecoder().decode(FinancialPolicy.self, from: $0) } ?? FinancialPolicy()
         popoverShortcut = defaults.data(forKey: Key.popoverShortcut).flatMap { try? JSONDecoder().decode(GlobalShortcut.self, from: $0) }
+        let usedBefore = ["knownProviders", "enabledProviders", "setup.completed.v1", "telemetry.lastReportedVersion", Key.refreshInterval]
+            .contains { defaults.object(forKey: $0) != nil }
         refreshInterval = (defaults.object(forKey: Key.refreshInterval) as? Int)
-            .flatMap(RefreshInterval.init(rawValue:)) ?? .default
+            .flatMap(RefreshInterval.init(rawValue:)) ?? (usedBefore ? .fiveMinutes : .adaptive)
+        // Persist the resolved default once: completing setup/recording known
+        // providers must not make a new Adaptive install look like a legacy
+        // install without an explicit interval on its next launch.
         // Unknown identifiers fall back to the default.
         menuBarDisplayMode = defaults.string(forKey: Key.menuBarDisplayMode)
             .flatMap(MenuBarDisplayMode.init(rawValue:)) ?? .default
         menuBarAccount = defaults.string(forKey: Key.menuBarAccount)
+        menuBarItems = defaults.data(forKey: Key.menuBarItems)
+            .flatMap { try? JSONDecoder().decode(MenuBarItemsConfiguration.self, from: $0) } ?? MenuBarItemsConfiguration()
+        defaults.set(refreshInterval.rawValue, forKey: Key.refreshInterval)
     }
 }

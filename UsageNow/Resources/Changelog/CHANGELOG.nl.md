@@ -1,5 +1,16 @@
 # Wijzigingen
 
+## 1.1.0
+
+### Added
+
+- Overzicht — Vandaag / 7 dagen / 30 dagen. Lokale activiteit op deze Mac. De geschiedenis kan onvolledig zijn.
+- Accountgroepen — Groepen wijzigen de weergave. Ingeschakelde accounts blijven vernieuwen en meldingen sturen.
+- Afzonderlijke providersymbolen — Toon de geselecteerde providersymbolen en hun gebruik naast elkaar in de menubalk.
+- Adaptief — Vernieuwing houdt rekening met elk account, netwerk, energiemodus en schermvergrendeling. Wachttijden van de server gelden altijd.
+- Saldo en budgetten — Budgetwaarschuwingen bij 80% en 100% van de gemelde uitgaven. Alleen waarschuwingen. Budgetten blokkeren geen uitgaven. De tijdzone van de provider geldt; API-prijsschattingen tellen niet mee.
+- MiniMax — Volg de limieten van MiniMax M Plan.
+
 ## 1.0.0
 
 ### Added

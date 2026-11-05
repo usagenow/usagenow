@@ -11,6 +11,9 @@ struct ProviderState: Sendable, Equatable, Identifiable {
     var failure: RefreshFailure?
     var isRefreshing = false
     var quotaPaces: [QuotaPace] = []
+    /// Completion time of this source's attempt, separate from the capture
+    /// time of cached data and from another source finishing its request.
+    var lastAttemptAt: Date? = nil
 
     var id: SourceKey { SourceKey(provider: provider, account: account?.id) }
 

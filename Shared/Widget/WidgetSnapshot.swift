@@ -32,6 +32,9 @@ struct WidgetSnapshot: Codable, Sendable, Equatable {
     /// The language chosen in UsageNow, e.g. "ru"; `nil` follows macOS.
     /// The widget is its own process and doesn't share the app's setting.
     var language: String? = nil
+    /// Opaque display IDs in the active account set. The full safe snapshot
+    /// stays available to personalized widgets and the read-only CLI.
+    var followedSelectionIDs: [String]? = nil
 
     var providers: [WidgetProviderSnapshot] {
         if case .providers(let providers) = state { return providers }
@@ -41,7 +44,8 @@ struct WidgetSnapshot: Codable, Sendable, Equatable {
     /// Empty selection preserves automatic ordering. An explicit selection
     /// never falls back to another account when one is removed or disabled.
     func selecting(_ identifiers: [String]) -> WidgetSnapshot {
-        guard !identifiers.isEmpty else { return self }
+        let identifiers = identifiers.isEmpty ? (followedSelectionIDs ?? []) : identifiers
+        guard !identifiers.isEmpty || followedSelectionIDs != nil else { return self }
         var copy = self
         var seen = Set<String>()
         let selected = identifiers.compactMap { identifier -> WidgetProviderSnapshot? in

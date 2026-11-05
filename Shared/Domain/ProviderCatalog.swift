@@ -28,6 +28,7 @@ enum ProviderID: String, CaseIterable, Codable, Sendable, Identifiable, Comparab
     case perplexity
     case elevenlabs
     case zai
+    case minimax
 
     var id: String { rawValue }
 
@@ -284,6 +285,12 @@ enum ProviderCatalog {
             logoAssetName: nil, symbolName: "z.square",
             apiKey: APIKeyConnection(host: "api.z.ai", keysPage: URL(string: "https://z.ai/manage-apikey/apikey-list")!),
             isExperimental: true
+        ),
+        ProviderDefinition(
+            id: .minimax, displayName: "MiniMax",
+            summary: "Track MiniMax M Plan limits.", availability: .available,
+            logoAssetName: "MiniMaxLogo", symbolName: "m.square",
+            apiKey: APIKeyConnection(host: "www.minimax.io", keysPage: URL(string: "https://platform.minimax.io/console/plan")!)
         ),
     ]
 

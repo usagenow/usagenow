@@ -57,6 +57,8 @@ struct ActivityHistory: Sendable, Equatable {
         var estimatedCost: Decimal?
         var isCostComplete = true
         var credits: Decimal?
+        /// Numeric model aggregates only; never sessions, project names or text.
+        var models: [ModelActivity] = []
 
         var id: Date { start }
     }
@@ -102,7 +104,8 @@ extension ActivityHistory {
                 tokens: summary.tokens,
                 requests: summary.requests,
                 estimatedCost: summary.estimatedCost,
-                isCostComplete: summary.isCostComplete
+                isCostComplete: summary.isCostComplete,
+                models: summary.models
             )
         }
         let total = ActivitySummary(records: inPeriod, since: period.start, prices: prices)

@@ -91,6 +91,9 @@ struct AccountBalance: Sendable, Equatable {
     var spentThisMonth: Decimal? = nil
     /// False when the provider says the balance can no longer pay for requests.
     var canMakeRequests = true
+    /// Explicit reporting calendar, when known from the provider's contract.
+    /// Budget resets never guess from the Mac's time zone or balance changes.
+    var spendingTimeZoneID: String? = nil
 }
 
 /// Which kinds of data a snapshot actually contains, so the UI can hide the rest.

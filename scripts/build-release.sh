@@ -24,6 +24,12 @@ fi
 # setting rather than put in an xcconfig, where the // in a URL would start
 # a comment.
 TELEMETRY_ENDPOINT="${USAGENOW_TELEMETRY_ENDPOINT:-}"
+LOCAL_SETTINGS=()
+if [ "${USAGENOW_LOCAL_BUILD:-0}" = 1 ]; then
+    LOCAL_SETTINGS+=(USAGENOW_SPARKLE_PUBLIC_KEY=)
+    TELEMETRY_ENDPOINT=""
+    echo "==> Local test build: update checks and analytics are disabled"
+fi
 if [ -n "$TELEMETRY_ENDPOINT" ]; then
     echo "==> Telemetry endpoint: $TELEMETRY_ENDPOINT"
 else
@@ -35,7 +41,7 @@ rm -rf "$ARCHIVE" "$EXPORT"
 mkdir -p "$OUTPUT"
 xcodebuild -project UsageNow.xcodeproj -scheme UsageNow -configuration Release \
     -archivePath "$ARCHIVE" archive -quiet \
-    USAGENOW_TELEMETRY_ENDPOINT="$TELEMETRY_ENDPOINT"
+    USAGENOW_TELEMETRY_ENDPOINT="$TELEMETRY_ENDPOINT" ${LOCAL_SETTINGS[@]+"${LOCAL_SETTINGS[@]}"}
 
 echo "==> Exporting Developer ID application"
 xcodebuild -exportArchive -archivePath "$ARCHIVE" \

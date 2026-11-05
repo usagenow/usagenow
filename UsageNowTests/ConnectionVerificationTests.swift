@@ -14,6 +14,7 @@ struct ProviderConnectionVerifierTests {
             (.perplexity, "authjs.session-token=test-cookie", #"{"balance_cents":10,"total_usage_cents":0,"credit_grants":[]}"#),
             (.elevenlabs, "test-key", #"{"character_count":2,"character_limit":10}"#),
             (.zai, "test-key", #"{"success":true,"code":200,"data":{"limits":[{"type":"TOKENS_LIMIT","unit":3,"number":5,"percentage":10}]}}"#),
+            (.minimax, "subscription-test", #"{"base_resp":{"status_code":0},"model_remains":[{"model_name":"general","current_interval_total_count":100,"current_interval_usage_count":75}]}"#),
         ]
         #expect(Set(fixtures.map { $0.0 }) == Set(ProviderCatalog.available.filter { $0.apiKey != nil }.map(\.id)))
         for (id, credential, body) in fixtures {

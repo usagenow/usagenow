@@ -2,6 +2,17 @@
 
 All notable changes to UsageNow. This project follows [Semantic Versioning](https://semver.org).
 
+## 1.1.0
+
+### Added
+
+- Overview — Today / 7 days / 30 days. Local activity recorded on this Mac. History may be incomplete.
+- Account sets — Sets change what you see. Enabled accounts keep updating and sending notifications.
+- Separate provider icons — Show selected provider icons and usage side by side in the menu bar.
+- Adaptive — Adaptive refresh follows each account, network availability, power mode and screen lock. Server cooldowns always apply.
+- Balance and budgets — Budget alerts at 80% and 100% of reported spend. Alerts only. Budgets do not block spending. Reported spend uses the provider’s time zone; API price estimates are excluded.
+- MiniMax — Track MiniMax M Plan limits.
+
 ## 1.0.0
 
 ### Added

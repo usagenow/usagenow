@@ -1,4 +1,9 @@
-# Command line (1.0.0)
+# Command line (1.0.0 and later)
+
+In 1.1.0, account sets filter the interface and following widgets. CLI status
+continues to include **all enabled accounts**, regardless of the active set.
+Its schema version remains 1; additional safe snapshot fields are ignored by
+older CLI readers.
 
 In Settings › General choose **Install CLI**. This creates
 `~/.local/bin/usagenow`, a symlink to the command bundled inside UsageNow.

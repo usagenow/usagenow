@@ -89,6 +89,7 @@ struct APIKeyProvider: UsageProvider {
         case .perplexity: .perplexity(keys: keys, transport: transport)
         case .elevenlabs: .elevenLabs(keys: keys, transport: transport)
         case .zai: .zai(keys: keys, transport: transport)
+        case .minimax: .miniMax(keys: keys, transport: transport)
         default: nil
         }
     }
@@ -221,7 +222,8 @@ enum OpenRouterKey {
                 remaining: remaining,
                 spentToday: APIAmount.decimal(key.usage_daily),
                 spentThisMonth: APIAmount.decimal(key.usage_monthly),
-                canMakeRequests: remaining.map { $0 > 0 } ?? true
+                canMakeRequests: remaining.map { $0 > 0 } ?? true,
+                spendingTimeZoneID: "UTC"
             ),
             windows: windows
         )

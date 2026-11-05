@@ -36,12 +36,14 @@ final class WidgetSnapshotWriter {
         enabledProviders: Set<ProviderID>,
         style: UsageAmountStyle = .default,
         includesRecentDays: Bool = true,
-        language: AppLanguage = .system
+        language: AppLanguage = .system,
+        followedSelectionIDs: [String]? = nil
     ) {
         guard let store else { return }
         var snapshot = Self.makeSnapshot(states: states, enabledProviders: enabledProviders, generatedAt: now(), includesRecentDays: includesRecentDays)
         snapshot.usageAmountStyle = style
         snapshot.language = language.code
+        snapshot.followedSelectionIDs = followedSelectionIDs
         let needsReload = lastReloadRequested.map { snapshot.needsReload(comparedTo: $0, at: snapshot.generatedAt) } ?? true
         guard needsReload || snapshot.state != lastWritten?.state
             || snapshot.usageAmountStyle != lastWritten?.usageAmountStyle

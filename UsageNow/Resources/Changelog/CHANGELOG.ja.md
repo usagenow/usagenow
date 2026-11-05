@@ -2,6 +2,17 @@
 
 What's New in Japanese: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.0
+
+### Added
+
+- 概要 — 今日 / 7日間 / 30日間. このMacに記録されたローカルの利用状況です。履歴が不完全な場合があります。
+- アカウントセット — セットは表示を切り替えます。有効なアカウントの更新と通知は継続されます。
+- プロバイダーごとのアイコン — 選択したプロバイダーのアイコンと利用状況をメニューバーに並べて表示します。
+- 自動調整 — アカウントごとにネットワーク、電源モード、画面ロックを考慮して更新します。サーバーの待機時間は常に守られます。
+- 残高と予算 — 報告された支出が予算の80%と100%に達すると通知します。 通知のみです。予算で支出は停止されません。プロバイダーの時間帯を使用し、API料金の推定値は含めません。
+- MiniMax — MiniMax M Planの利用制限を確認。
+
 ## 1.0.0
 
 ### Added

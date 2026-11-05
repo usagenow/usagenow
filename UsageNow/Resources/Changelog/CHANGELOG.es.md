@@ -2,6 +2,17 @@
 
 What's New in Spanish: each version's changes, shorter than CHANGELOG.md. Headings stay in English; the app translates them. A version missing here shows in English.
 
+## 1.1.0
+
+### Added
+
+- Resumen — Hoy / 7 días / 30 días. Actividad local registrada en este Mac. El historial puede estar incompleto.
+- Grupos de cuentas — Los grupos cambian la vista. Las cuentas activadas siguen actualizándose y enviando avisos.
+- Iconos de proveedores separados — Muestra los iconos de los proveedores seleccionados y su uso juntos en la barra de menús.
+- Adaptativo — La actualización considera cada cuenta, la red, el modo de energía y el bloqueo de pantalla. Siempre respeta las pausas del servidor.
+- Saldo y presupuestos — Avisos al alcanzar el 80% y el 100% del presupuesto según el gasto informado. Solo avisos. Los presupuestos no bloquean el gasto. Se usa la zona horaria del proveedor; se excluyen las estimaciones a precios de API.
+- MiniMax — Sigue los límites de MiniMax M Plan.
+
 ## 1.0.0
 
 ### Added

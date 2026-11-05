@@ -18,6 +18,7 @@ enum MenuBarDisplayMode: String, CaseIterable, Identifiable, Sendable {
     case perplexityPercentage
     case elevenLabsPercentage
     case zaiPercentage
+    case minimaxPercentage
 
     static let `default` = MenuBarDisplayMode.iconOnly
 
@@ -37,6 +38,7 @@ enum MenuBarDisplayMode: String, CaseIterable, Identifiable, Sendable {
         case .perplexityPercentage: .perplexity
         case .elevenLabsPercentage: .elevenlabs
         case .zaiPercentage: .zai
+        case .minimaxPercentage: .minimax
         }
     }
 
@@ -66,6 +68,7 @@ enum MenuBarDisplayMode: String, CaseIterable, Identifiable, Sendable {
         case .perplexityPercentage: "Perplexity usage"
         case .elevenLabsPercentage: "ElevenLabs usage"
         case .zaiPercentage: "Z.ai usage"
+        case .minimaxPercentage: "MiniMax usage"
         }
     }
 

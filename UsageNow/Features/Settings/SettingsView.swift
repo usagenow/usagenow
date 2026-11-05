@@ -46,6 +46,7 @@ struct SettingsView: View {
     let updates: UpdateController
     let store: UsageStore
     let limitNotifier: LimitNotifier
+    var accountSets: AccountSets? = nil
     var hotKey: GlobalHotKey = .shared
     /// Asks an experimental limits source to try again, keychain included.
     let retryLimits: (ProviderID) -> Void
@@ -70,16 +71,20 @@ struct SettingsView: View {
             Tab("Providers", systemImage: "circle.hexagongrid", value: SettingsTab.providers) {
                 ProvidersSettingsView(
                     preferences: providerPreferences,
+                    accountSets: accountSets,
+                    accountStates: store.states,
                     hasAPIKey: hasAPIKey,
                     setAPIKey: setAPIKey,
                     removeAccount: removeAccount
                 )
             }
             Tab("Menu Bar", systemImage: "menubar.rectangle", value: SettingsTab.menuBar) {
-                MenuBarSettingsView(preferences: preferences, providerPreferences: providerPreferences, hotKey: hotKey)
+                MenuBarSettingsView(preferences: preferences, providerPreferences: providerPreferences,
+                    store: store, accountSets: accountSets, hotKey: hotKey)
             }
             Tab("Notifications", systemImage: "bell", value: SettingsTab.notifications) {
-                NotificationsSettingsView(preferences: preferences, notifier: limitNotifier, enabledProviders: providerPreferences.enabledProviders)
+                NotificationsSettingsView(preferences: preferences, notifier: limitNotifier, enabledProviders: providerPreferences.enabledProviders,
+                    accountStates: store.states.filter { store.enabledProviders.contains($0.provider) })
             }
             Tab("Privacy", systemImage: "hand.raised", value: SettingsTab.privacy) {
                 PrivacySettingsView(analyticsPreferences: analyticsPreferences)
@@ -231,7 +236,9 @@ struct GeneralSettingsView: View {
                     }
                 }
             } footer: {
-                Text("UsageNow also checks for new usage when you open it.")
+                Text(preferences.refreshInterval == .adaptive
+                     ? "Adaptive refresh follows each account, network availability, power mode and screen lock. Server cooldowns always apply."
+                     : "UsageNow also checks for new usage when you open it.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
             }
@@ -283,21 +290,28 @@ struct GeneralSettingsView: View {
 struct MenuBarSettingsView: View {
     @Bindable var preferences: AppPreferences
     let providerPreferences: ProviderPreferences
+    var store: UsageStore? = nil
+    var accountSets: AccountSets? = nil
     var hotKey: GlobalHotKey = .shared
 
     var body: some View {
         Form {
-            Section {
-                Picker("Display", selection: $preferences.menuBarChoice) {
-                    let accounts = providerPreferences.accounts
-                    ForEach(MenuBarChoice.available(for: providerPreferences.enabledProviders, accounts: accounts)) { choice in
-                        Text(verbatim: choice.title(accounts: accounts)).tag(choice)
+            MenuBarProviderSettingsView(preferences: preferences, providers: providerPreferences,
+                store: store, accountSets: accountSets)
+
+            if preferences.menuBarItems.layout == .usageNow {
+                Section {
+                    Picker("Display", selection: $preferences.menuBarChoice) {
+                        let accounts = providerPreferences.accounts
+                        ForEach(MenuBarChoice.available(for: providerPreferences.enabledProviders, accounts: accounts)) { choice in
+                            Text(verbatim: choice.title(accounts: accounts)).tag(choice)
+                        }
                     }
+                } footer: {
+                    Text("Shows the icon alone when no usage limit is available.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
                 }
-            } footer: {
-                Text("Shows the icon alone when no usage limit is available.")
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
             }
 
             Section {
@@ -318,8 +332,7 @@ struct MenuBarSettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .scrollDisabled(true)
-        .fixedSize(horizontal: false, vertical: true)
+        .frame(height: preferences.menuBarItems.layout == .providers ? 580 : 280)
     }
 }
 
@@ -327,6 +340,7 @@ struct NotificationsSettingsView: View {
     @Bindable var preferences: AppPreferences
     let notifier: LimitNotifier
     var enabledProviders: Set<ProviderID> = ProviderCatalog.availableIDs
+    var accountStates: [ProviderState] = []
 
     var body: some View {
         Form {
@@ -359,6 +373,7 @@ struct NotificationsSettingsView: View {
                             .font(.callout).foregroundStyle(.secondary)
                     }
                 }
+                FinancialSettingsView(preferences: preferences, states: accountStates)
                 ForEach(ProviderCatalog.available.filter { enabledProviders.contains($0.id) }) { definition in
                     Section {
                         Toggle("Enable notifications", isOn: rule(definition.id, \.enabled))

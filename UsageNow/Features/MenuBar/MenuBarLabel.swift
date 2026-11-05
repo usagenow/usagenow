@@ -7,9 +7,12 @@ struct MenuBarLabel: View {
 
     let preferences: AppPreferences
     let store: UsageStore
+    var accountSets: AccountSets? = nil
 
     var body: some View {
-        if let usage = preferences.menuBarDisplayMode.usage(in: store.snapshots, account: preferences.menuBarAccount) {
+        let choice = accountSets?.menuBarChoice(fallback: preferences.menuBarChoice, states: store.states, enabled: store.enabledProviders) ?? preferences.menuBarChoice
+        let snapshots = accountSets?.displaying(store.states, enabled: store.enabledProviders).compactMap(\.snapshot) ?? store.snapshots
+        if let usage = choice.mode.usage(in: snapshots, account: choice.account) {
             HStack(spacing: 3) {
                 icon
                 // Left or used, matching the popover. Set a size rather than

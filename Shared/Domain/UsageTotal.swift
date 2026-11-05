@@ -4,13 +4,14 @@ import Foundation
 /// Closed labels and numeric values are safe to copy into widget snapshots.
 struct UsageTotal: Codable, Sendable, Equatable, Identifiable {
     enum Kind: String, Codable, Sendable {
-        case creditsUsed, creditsRemaining, charactersUsed
+        case creditsUsed, creditsRemaining, charactersUsed, charactersRemaining
 
         var title: LocalizedStringResource {
             switch self {
             case .creditsUsed: "Credits used"
             case .creditsRemaining: "Credits remaining"
             case .charactersUsed: "Characters used"
+            case .charactersRemaining: "Characters remaining"
             }
         }
     }

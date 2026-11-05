@@ -1,3 +1,14 @@
+## 1.1.0
+
+### Added
+
+- Genel bakış — Bugün / 7 gün / 30 gün. Bu Mac’te kaydedilen yerel etkinlik. Geçmiş eksik olabilir.
+- Hesap grupları — Gruplar görünümü değiştirir. Etkin hesaplar yenilenmeye ve bildirim göndermeye devam eder.
+- Ayrı sağlayıcı simgeleri — Seçili sağlayıcı simgelerini ve kullanımlarını menü çubuğunda yan yana gösterin.
+- Uyarlanabilir — Yenileme her hesabı, ağ durumunu, güç modunu ve ekran kilidini dikkate alır. Sunucunun bekleme süreleri her zaman korunur.
+- Bakiye ve bütçeler — Bildirilen harcama bütçenin %80 ve %100’üne ulaştığında uyarır. Yalnızca uyarı verir. Bütçeler harcamayı engellemez. Sağlayıcının saat dilimi kullanılır; API fiyat tahminleri dâhil edilmez.
+- MiniMax — MiniMax M Plan limitlerini izleyin.
+
 ## 1.0.0
 
 ### Added

@@ -171,6 +171,12 @@ final class UsageStore {
         )
     }
 
+    /// Adaptive scheduling addresses individual accounts; one busy account
+    /// must not pull every account of its provider along with it.
+    func refresh(sources: Set<SourceKey>) async {
+        await refresh(matching: { sources.contains($0.sourceKey) }, isParticular: false, trigger: .automatic)
+    }
+
     private func refresh(matching include: (any UsageProvider) -> Bool, isParticular: Bool, trigger: RefreshTrigger) async {
         if let current = inFlightRefresh {
             await current.value
@@ -236,6 +242,7 @@ final class UsageStore {
         let history = quotaHistory
         update(id) { state in
             state.isRefreshing = false
+            state.lastAttemptAt = date
             switch result {
             case .success(var snapshot):
                 snapshot.account = state.account

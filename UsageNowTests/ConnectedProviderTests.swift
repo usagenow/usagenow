@@ -12,7 +12,7 @@ struct ConnectedProviderParsingTests {
         #expect(reading.windows.first?.kind == .monthly)
         #expect(reading.windows.first?.usage?.value == 25)
         #expect(reading.windows.first?.resetsAt == Date(timeIntervalSince1970: 1_800_000_000))
-        #expect(reading.totals == [UsageTotal(kind: .charactersUsed, value: 250)])
+        #expect(reading.totals == [UsageTotal(kind: .charactersUsed, value: 250), UsageTotal(kind: .charactersRemaining, value: 750)])
         #expect(reading.balance == nil)
     }
 

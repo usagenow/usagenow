@@ -97,7 +97,10 @@ enum ElevenLabsUsage {
         return APIKeyReading(balance: nil, windows: limit > 0 ? [UsageWindow(
             kind: .monthly, usage: UsagePercentage(used: used, limit: limit),
             resetsAt: ConnectedUsage.unix(value.next_character_count_reset_unix)
-        )] : [], planName: value.tier, totals: [ConnectedUsage.total(.charactersUsed, used)].compactMap { $0 })
+        )] : [], planName: value.tier, totals: [
+            ConnectedUsage.total(.charactersUsed, used),
+            limit > 0 ? ConnectedUsage.total(.charactersRemaining, max(0, limit - used)) : nil,
+        ].compactMap { $0 })
     }
 }
 

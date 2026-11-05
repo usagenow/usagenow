@@ -1,3 +1,14 @@
+## 1.1.0
+
+### Added
+
+- Umumiy köriniş — Bugun / 7 kun / 30 kun. Şu Mac’da yozilgan mahalliy faollik. Tarix töliq bölmasligi mumkin.
+- Hisoblar töplamlari — Töplamlar körinişni özgartiradi. Yoqilgan hisoblar yangilaniş va bildirişlarni davom ettiradi.
+- Provayderlar uçun alohida belgilar — Tanlangan provayder belgilarini va sarfini menyu satrida yonma-yon körsating.
+- Moslaşuvçan — Yangilaş har bir hisob, tarmoq, quvvat rejimi va ekran qulfini hisobga oladi. Server kutiş vaqti doim saqlanadi.
+- Balans va budjetlar — Bildirilgan sarf budjetning 80% va 100% iga yetganda ogohlantiriş. Faqat ogohlantirişlar. Budjet sarfni töxtatmaydi. Provayder vaqt mintaqasi qöllanadi; API narxi taxminlari hisoblanmaydi.
+- MiniMax — MiniMax M Plan limitlarini kuzating.
+
 ## 1.0.0
 
 ### Added
